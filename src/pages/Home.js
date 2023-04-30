@@ -1,5 +1,5 @@
 import React from "react";
-import Mapimpliment from "../map/Mapimpliment";
+import Mapimpliment from "../components/map/Mapimpliment";
 
 export default function Home() {
   return (

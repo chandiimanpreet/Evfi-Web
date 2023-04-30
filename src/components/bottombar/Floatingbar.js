@@ -6,7 +6,9 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
+import { useStyles } from "./Floatingbarstyle";
 export default function LabelBottomNavigation() {
+  const classes = useStyles();
   const [value, setValue] = React.useState("recents");
 
   const handleChange = (event, newValue) => {
@@ -15,15 +17,9 @@ export default function LabelBottomNavigation() {
 
   return (
     <BottomNavigation
+      className={classes.BottomNavigation}
       sx={{
-        width: 500,
-        backgroundColor: "#01080ee8",
-        position: "absolute",
-        width: "100%",
-        bottom: "0",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        backgroundcolor: "#fff",
       }}
       value={value}
       onChange={handleChange}
