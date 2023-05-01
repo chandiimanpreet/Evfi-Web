@@ -1,10 +1,9 @@
-import React from "react";
-import Mapimpliment from "../components/map/Mapimpliment";
+import DashboardMap from "./../components/DashboardMap";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div>
-      <Mapimpliment />
-    </div>
+    <DashboardMap />
   );
 }
+
+export default Home;

@@ -1,15 +1,15 @@
-import * as React from "react";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import FolderIcon from "@mui/icons-material/Folder";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useStyles } from "./Floatingbarstyle";
-export default function LabelBottomNavigation() {
+import { useStyles } from "./style";
+import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+// import { RestoreIcon, FavoriteIcon, FolderIcon, LocationOnIcon } from "@mui/icons-material";
+import { Folder, Restore, Favorite, LocationOn } from "@mui/icons-material";
+
+
+const FloatingNavbar = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState("recents");
+
+  const [value, setValue] = useState("recents");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -17,10 +17,8 @@ export default function LabelBottomNavigation() {
 
   return (
     <BottomNavigation
-      className={classes.BottomNavigation}
-      sx={{
-        backgroundcolor: "#fff",
-      }}
+      className={classes.bottomNavigation}
+      sx={{ backgroundcolor: "#fff" }}
       value={value}
       onChange={handleChange}
     >
@@ -28,7 +26,7 @@ export default function LabelBottomNavigation() {
         <BottomNavigationAction
           label="Recents"
           value="recents"
-          icon={<RestoreIcon />}
+          icon={<Restore />}
         />
       </Link>
 
@@ -36,7 +34,7 @@ export default function LabelBottomNavigation() {
         <BottomNavigationAction
           label="Favorites"
           value="favorites"
-          icon={<FavoriteIcon />}
+          icon={<Favorite />}
         />
       </Link>
 
@@ -44,7 +42,7 @@ export default function LabelBottomNavigation() {
         <BottomNavigationAction
           label="Nearby"
           value="nearby"
-          icon={<LocationOnIcon />}
+          icon={<LocationOn />}
         />
       </Link>
 
@@ -52,9 +50,11 @@ export default function LabelBottomNavigation() {
         <BottomNavigationAction
           label="Folder"
           value="folder"
-          icon={<FolderIcon />}
+          icon={<Folder />}
         />
       </Link>
     </BottomNavigation>
   );
 }
+
+export default FloatingNavbar;
