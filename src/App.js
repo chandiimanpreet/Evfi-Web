@@ -21,8 +21,8 @@ const App = () => {
           <Route path="/Location" element={<Location />} />
           <Route path="/Profile" element={<Profile />} />
         </Routes>
-        <FloatingNavbar />
         <Sidebar />
+        <FloatingNavbar />
       </BrowserRouter>
     </SearchResultsState>
   );

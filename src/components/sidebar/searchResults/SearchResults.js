@@ -24,7 +24,7 @@ const SearchResults = () => {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          overflowY: 'scroll',
+          overflowY: ` ${searchResults.length > 3 ? 'scroll' : ''} `,
           marginBottom: '10px',
         }}
       >
@@ -32,8 +32,7 @@ const SearchResults = () => {
           Your Results
         </Typography>
         {searchResults.map((result) => (
-          <SearchResultsItem result={result}  />
-
+          <SearchResultsItem result={result} />
         ))}
       </Box>
     </Fragment>
