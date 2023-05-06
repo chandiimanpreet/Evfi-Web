@@ -1,20 +1,21 @@
 import React, { useContext, Fragment } from 'react';
+
 import StarIcon from '@mui/icons-material/Star';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import { CardContent, Typography, Card, Box } from '@mui/material';
-import Button from '@mui/material/Button';
+import { CardContent, Typography, Card, Box, Button } from '@mui/material';
 
 import { useStyles } from './style';
 
-import SearchResultsContext from '../../../context/searchResults/searchResultsContext';
+import SearchResultsContext from '../../context/searchResults/searchResultsContext';
 
 const SearchResultsItem = ({ result }) => {
-  const searchResultsContext = useContext(SearchResultsContext);
 
-  const {searchResults} = searchResultsContext;
+  const searchResultsContext = useContext(SearchResultsContext);
+  const { searchResults } = searchResultsContext;
 
   const { name, location, type, isAvailable, price, timeSlot, rating } = result;
+
 
   const classes = useStyles();
 
@@ -23,16 +24,19 @@ const SearchResultsItem = ({ result }) => {
       {isAvailable === true && (
         <Box
           sx={{
-            minWidth: ` ${searchResults.length > 3 && isAvailable ? '26rem' : '27rem'}`,
+            minWidth: `${
+              searchResults.length > 4  ? '26rem' : '29rem'
+            }`,
             marginLeft: '8px',
             marginTop: '.5rem',
-            marginRight: '4rem',
+            marginRight: '.5rem',
+            marginBottom: '.6rem',
             '&:first-child': {
               marginTop: '0px',
             },
           }}
         >
-          <Card sx={{ borderRadius: '18px', paddingBottom: 0 }}>
+          <Card sx={{ borderRadius: '10px', paddingBottom: 0 }}>
             <CardContent
               sx={{
                 paddingTop: '10px',
@@ -75,7 +79,11 @@ const SearchResultsItem = ({ result }) => {
                     Ratings{' '}
                   </Typography>
                   <Box>
-                    <StarIcon sx={{ fontSize: '1rem', color: '#FCDD15' }} />
+                    {[...Array(rating).keys()].map(() => {
+                      return (
+                        <StarIcon sx={{ fontSize: '1rem', color: '#FCDD15' }} />
+                      );
+                    })}
                   </Box>
                 </Box>
               </Box>
