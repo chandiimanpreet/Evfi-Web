@@ -6,7 +6,7 @@ import Location from './pages/Location';
 import Profile from './pages/Profile';
 import FloatingNavbar from './components/FloatingNavbar';
 import NavigationBar from './components/NavigationBar';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/SidebarPopup';
 
 import SearchResultsState from './context/searchResults/SearchResultsState';
 
