@@ -10,30 +10,21 @@ import { useStyles } from './style';
 import SearchResultsContext from '../../context/searchResults/searchResultsContext';
 
 const SearchResultsItem = ({ result }) => {
-
   const searchResultsContext = useContext(SearchResultsContext);
   const { searchResults } = searchResultsContext;
-
   const { name, location, type, isAvailable, price, timeSlot, rating } = result;
-
-
   const classes = useStyles();
 
   return (
     <Fragment>
-      {isAvailable === true && (
+      {isAvailable && (
         <Box
           sx={{
             minWidth: `${
               searchResults.length > 4  ? '26rem' : '29rem'
             }`,
-            marginLeft: '8px',
-            marginTop: '.5rem',
-            marginRight: '.5rem',
-            marginBottom: '.6rem',
-            '&:first-child': {
-              marginTop: '0px',
-            },
+            margin: "0.8rem 0.6rem 0",
+            '&:first-child': {  marginTop: '0px', },
           }}
         >
           <Card sx={{ borderRadius: '10px', paddingBottom: 0 }}>
