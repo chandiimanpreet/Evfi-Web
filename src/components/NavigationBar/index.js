@@ -80,16 +80,35 @@ const NavigationBar = () => {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "#181717" }} className={classes.Navigaion}>
+    <AppBar
+      sx={{
+        backgroundColor: "#282828",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        right: "25%",
+        top: "15%",
+        borderRadius: "50px",
+        width: "50%",
+      }}
+      className={classes.Navigaion}
+    >
       <Container
         maxWidth="xl"
         sx={{ paddingLeft: "0px!important", paddingRight: "1rem!important" }}
       >
         <Toolbar disableGutters>
-          <BoltIcon sx={{ color: "yellow", fontSize: "2.5rem" }} />
-
-          <Box sx={{ flexGrow: 1 }}>
-            <Search>
+          <BoltIcon
+            sx={{
+              color: "yellow",
+              fontSize: "2.5rem",
+              border: "2px solid yellow",
+              borderRadius: "100%",
+              marginLeft: "0.8rem",
+            }}
+          />
+          <Box sx={{ flexGrow: 1, borderRadius: "50px" }}>
+            <Search sx={{ borderRadius: "50px" }}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -101,7 +120,7 @@ const NavigationBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 1 }}>
-            <Search>
+            <Search sx={{ borderRadius: "50px" }}>
               <SearchIconWrapper></SearchIconWrapper>
               <StyledInputBase
                 placeholder="Destination"

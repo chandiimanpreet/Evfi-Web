@@ -12,6 +12,8 @@ export const useStyles = makeStyles({
     alignItems: "center",
     borderRadius: "10px",
     bottom: "2.5rem",
-    background: "#282828!important"
+    bottom: "0!important",
+    background: "#282828!important",
+    top: "80%",
   },
 });

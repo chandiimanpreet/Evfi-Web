@@ -5,5 +5,6 @@ export const useStyles = makeStyles({
     position: "fixed",
     zIndex: "10000",
     padding: "0.8rem",
+    
   },
 });
