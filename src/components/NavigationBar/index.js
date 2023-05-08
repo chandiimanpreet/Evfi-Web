@@ -87,7 +87,7 @@ const NavigationBar = () => {
         justifyContent: "center",
         alignItems: "center",
         right: "25%",
-        top: "15%",
+        top: "10%",
         borderRadius: "50px",
         width: "50%",
       }}
