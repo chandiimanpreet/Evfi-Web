@@ -1,24 +1,7 @@
 import { useStyles } from "./style";
-import {
-  AppBar,
-  Container,
-  Toolbar,
-  Typography,
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  InputBase,
-  Tooltip,
-  Avatar,
-} from "@mui/material";
-import {
-  Adb as AdbIcon,
-  Bolt as BoltIcon,
-  Search as SearchIcon,
-} from "@mui/icons-material";
+import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, InputBase, Tooltip, Avatar } from "@mui/material";
+import { Adb as AdbIcon, Bolt as BoltIcon, Search as SearchIcon } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
-
 import { useState } from "react";
 
 // for searchbar
@@ -81,17 +64,7 @@ const NavigationBar = () => {
 
   return (
     <AppBar
-      sx={{
-        backgroundColor: "#282828",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        right: "25%",
-        top: "10%",
-        borderRadius: "50px",
-        width: "50%",
-      }}
-      className={classes.Navigaion}
+      className={classes.navigation}
     >
       <Container
         maxWidth="xl"
@@ -99,13 +72,7 @@ const NavigationBar = () => {
       >
         <Toolbar disableGutters>
           <BoltIcon
-            sx={{
-              color: "yellow",
-              fontSize: "2.5rem",
-              border: "2px solid yellow",
-              borderRadius: "100%",
-              marginLeft: "0.8rem",
-            }}
+            className={classes.boltIcon}
           />
           <Box sx={{ flexGrow: 1, borderRadius: "50px" }}>
             <Search sx={{ borderRadius: "50px" }}>

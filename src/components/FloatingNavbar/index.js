@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-// import { RestoreIcon, FavoriteIcon, FolderIcon, LocationOnIcon } from "@mui/icons-material";
 import { Folder, Restore, Favorite, LocationOn } from "@mui/icons-material";
 
 
@@ -18,12 +17,12 @@ const FloatingNavbar = () => {
   return (
     <BottomNavigation
       className={classes.bottomNavigation}
-      sx={{ backgroundcolor: "#fff" }}
       value={value}
       onChange={handleChange}
     >
       <Link to="/">
         <BottomNavigationAction
+          className={classes.bottomNavigationAction}
           label="Recents"
           value="recents"
           icon={<Restore />}
@@ -32,6 +31,7 @@ const FloatingNavbar = () => {
 
       <Link to="/About">
         <BottomNavigationAction
+          className={classes.bottomNavigationAction}
           label="Favorites"
           value="favorites"
           icon={<Favorite />}
@@ -40,6 +40,7 @@ const FloatingNavbar = () => {
 
       <Link to="/Location">
         <BottomNavigationAction
+          className={classes.bottomNavigationAction}
           label="Nearby"
           value="nearby"
           icon={<LocationOn />}
@@ -48,6 +49,7 @@ const FloatingNavbar = () => {
 
       <Link to="/Profile">
         <BottomNavigationAction
+          className={classes.bottomNavigationAction}
           label="Folder"
           value="folder"
           icon={<Folder />}
