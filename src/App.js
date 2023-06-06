@@ -8,23 +8,19 @@ import FloatingNavbar from './components/FloatingNavbar';
 import NavigationBar from './components/NavigationBar';
 import Sidebar from './components/SidebarPopup';
 
-import SearchResultsState from './context/searchResults/SearchResultsState';
-
 const App = () => {
   return (
-    <SearchResultsState>
-      <BrowserRouter>
-        <NavigationBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/Location" element={<Location />} />
-          <Route path="/Profile" element={<Profile />} />
-        </Routes>
-        <Sidebar />
-        <FloatingNavbar />
-      </BrowserRouter>
-    </SearchResultsState>
+    <BrowserRouter>
+      <NavigationBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Location" element={<Location />} />
+        <Route path="/Profile" element={<Profile />} />
+      </Routes>
+      <Sidebar />
+      <FloatingNavbar />
+    </BrowserRouter>
   );
 };
 
