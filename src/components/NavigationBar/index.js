@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Box, Button, Popover, TextField, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from "@mui/material";
 import { Bolt as BoltIcon, } from "@mui/icons-material";
+import SearchIcon from '@mui/icons-material/Search';
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
 import { useStyles } from "./style";
 // import './style.css'
@@ -21,27 +22,30 @@ const NavigationBar = () => {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-     <AppBar 
-    //sx = {{
-    //   backgroundColor: "#282828",
-    //   borderRadius: '50px',
-    //   width: "50%",
-    //   top: '.8%',
-    //   right: '50%',
-    //   display: 'flex',
-    //   transform: 'translateX(50%)',
-    // }} 
-    className={classes.navigation} >
+    <AppBar
+      //sx = {{
+      //   backgroundColor: "#282828",
+      //   borderRadius: '50px',
+      //   width: "50%",
+      //   top: '.8%',
+      //   right: '50%',
+      //   display: 'flex',
+      //   transform: 'translateX(50%)',
+      // }} 
+      className={classes.navigation} >
 
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-around' }}  >
-        <Button sx={{
-          color: '#fff',
-          border: '2px solid #fff',
+        <Button  sx={{
+          backgroundColor: '#5B5B5B',
           borderRadius: '20px',
+          fontWeight: 400,
+          color: '#fff',
           fontSize: '16px',
-          padding: '.58rem 21.5%',
-        }} aria-describedby={id} onClick={handleClick} > Source </Button>
-        
+          border: '2px solid #4E4E4E',
+          textTransform: 'none',
+          padding: '.5rem 12.6rem .5rem 1rem',
+        }} aria-describedby={id} onClick={handleClick}><SearchIcon sx={{ color: '#fff', paddingRight: '5px', }} /> Source </Button>
+
         <BoltIcon
           sx={{
             color: "yellow",
@@ -53,13 +57,16 @@ const NavigationBar = () => {
             cursor: "pointer",
           }}
         />
-        
+
         <Button sx={{
-          color: '#fff',
-          border: '2px solid #fff',
+          backgroundColor: '#4E4E4E',
           borderRadius: '20px',
+          fontWeight: 400,
+          border: '2px solid #4E4E4E',
+          color: '#fff',
           fontSize: '16px',
-          padding: '.58rem 25%',
+          textTransform: 'none',
+          padding: '.5rem 12.6rem .5rem 1rem',
         }} aria-describedby={id} onClick={handleClick}> Destination </Button>
 
         <Popover
@@ -73,7 +80,7 @@ const NavigationBar = () => {
           }} transformOrigin={{
             vertical: 'top',
             horizontal: 'center',
-          }} sx={{ top: '-18px', }}
+          }} sx={{ top: '-65px', }}
         >
           <Box sx={{
             width: '100vw',

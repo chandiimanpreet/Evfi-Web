@@ -14,7 +14,7 @@ export const useStyles = makeStyles({
     marginLeft: '2rem',
     marginTop: '4.9rem',
     borderRadius: '14px',
-    zIndex: 1100,
+    zIndex: 1000,
     position: 'fixed',
   },
   searchResultsComtainer: {

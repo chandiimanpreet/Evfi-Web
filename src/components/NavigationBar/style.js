@@ -7,7 +7,7 @@ export const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "10rem",
-    top: "3.5rem!important",
+    top: "5px !important",
     width: "46vw!important",
     left: "calc(50% - 23vw)!important",
     zIndex: 1500,

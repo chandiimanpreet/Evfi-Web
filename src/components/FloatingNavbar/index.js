@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./style";
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import { Folder, Restore, Favorite, LocationOn } from "@mui/icons-material";
+import { BottomNavigation, BottomNavigationAction, Box, Tooltip, Avatar, Menu, MenuItem, Typography, IconButton, } from "@mui/material";
+import { Restore, Favorite, LocationOn } from "@mui/icons-material";
+
 
 
 const FloatingNavbar = () => {
@@ -14,6 +15,18 @@ const FloatingNavbar = () => {
     setValue(newValue);
   };
 
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
     <BottomNavigation
       className={classes.bottomNavigation}
@@ -21,39 +34,74 @@ const FloatingNavbar = () => {
       onChange={handleChange}
     >
       <Link to="/">
-        <BottomNavigationAction
-          className={classes.bottomNavigationAction}
-          label="Recents"
-          value="recents"
-          icon={<Restore />}
-        />
+        <Tooltip title="Home" placement="top" arrow>
+          <BottomNavigationAction
+            className={classes.bottomNavigationAction}
+            label="Recents"
+            value="recents"
+            icon={<Restore />}
+          />
+        </Tooltip>
       </Link>
 
       <Link to="/About">
-        <BottomNavigationAction
-          className={classes.bottomNavigationAction}
-          label="Favorites"
-          value="favorites"
-          icon={<Favorite />}
-        />
+        <Tooltip title="Profile" placement="top" arrow>
+          <BottomNavigationAction
+            className={classes.bottomNavigationAction}
+            label="Favorites"
+            value="favorites"
+            icon={<Favorite />}
+          />
+        </Tooltip>
       </Link>
 
       <Link to="/Location">
-        <BottomNavigationAction
-          className={classes.bottomNavigationAction}
-          label="Nearby"
-          value="nearby"
-          icon={<LocationOn />}
-        />
+        <Tooltip title="Profile" placement="top" arrow>
+          <BottomNavigationAction
+            className={classes.bottomNavigationAction}
+            label="Nearby"
+            value="nearby"
+            icon={<LocationOn />}
+          />
+        </Tooltip>
       </Link>
 
-      <Link to="/Profile">
-        <BottomNavigationAction
-          className={classes.bottomNavigationAction}
-          label="Folder"
-          value="folder"
-          icon={<Folder />}
-        />
+      <Link to="/Account">
+        <Tooltip title="Profile" placement="top" arrow>
+          <BottomNavigationAction
+            label="Folder"
+            value="folder"
+          />
+        </Tooltip>
+
+        <Box sx={{ flexGrow: 0, marginBottom: '1.8rem', marginLeft: '.7rem', }}>
+          <Tooltip title="Account" placement="top" arrow>
+            <IconButton onClick={handleOpenUserMenu} >
+              <Avatar alt="Remy Sharp" src="https://unsplash.com/photos/C8Ta0gwPbQg" sx={{ width: '29px', height: '30px', }} />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => (
+              <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">{setting}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
       </Link>
     </BottomNavigation>
   );
