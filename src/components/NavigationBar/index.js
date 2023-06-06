@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Box, Button, Popover, TextField, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from "@mui/material";
 import { Bolt as BoltIcon, } from "@mui/icons-material";
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
 import { useStyles } from "./style";
 // import './style.css'
@@ -23,51 +23,19 @@ const NavigationBar = () => {
 
   return (
     <AppBar
-      //sx = {{
-      //   backgroundColor: "#282828",
-      //   borderRadius: '50px',
-      //   width: "50%",
-      //   top: '.8%',
-      //   right: '50%',
-      //   display: 'flex',
-      //   transform: 'translateX(50%)',
-      // }} 
-      className={classes.navigation} >
+      className={classes.navigation}
+    >
 
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-around' }}  >
-        <Button  sx={{
-          backgroundColor: '#5B5B5B',
-          borderRadius: '20px',
-          fontWeight: 400,
-          color: '#fff',
-          fontSize: '16px',
-          border: '2px solid #4E4E4E',
-          textTransform: 'none',
-          padding: '.5rem 12.6rem .5rem 1rem',
-        }} aria-describedby={id} onClick={handleClick}><SearchIcon sx={{ color: '#fff', paddingRight: '5px', }} /> Source </Button>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-around', width: "100%", padding: "0.1rem" }}  >
+        <Button aria-describedby={id} onClick={handleClick} className={classes.inputBtns} >
+          Source
+        </Button>
 
-        <BoltIcon
-          sx={{
-            color: "yellow",
-            fontSize: "2.5rem",
-            border: "2px solid yellow",
-            borderRadius: "100%",
-            marginLeft: "0.8rem",
-            marginRight: "0.8rem",
-            cursor: "pointer",
-          }}
-        />
+        <BoltIcon className={classes.boltIcon} />
 
-        <Button sx={{
-          backgroundColor: '#4E4E4E',
-          borderRadius: '20px',
-          fontWeight: 400,
-          border: '2px solid #4E4E4E',
-          color: '#fff',
-          fontSize: '16px',
-          textTransform: 'none',
-          padding: '.5rem 12.6rem .5rem 1rem',
-        }} aria-describedby={id} onClick={handleClick}> Destination </Button>
+        <Button aria-describedby={id} onClick={handleClick} className={classes.inputBtns}>
+          Destination
+        </Button>
 
         <Popover
           id={id}
