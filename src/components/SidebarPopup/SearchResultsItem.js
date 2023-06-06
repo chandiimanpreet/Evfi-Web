@@ -1,5 +1,5 @@
-import React, { useContext, Fragment } from 'react';
-
+import React, { Fragment } from 'react';
+import searchedData from './searchedData';
 import StarIcon from '@mui/icons-material/Star';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
@@ -7,11 +7,8 @@ import { CardContent, Typography, Card, Box, Button } from '@mui/material';
 
 import { useStyles } from './style';
 
-import SearchResultsContext from '../../context/searchResults/searchResultsContext';
 
 const SearchResultsItem = ({ result }) => {
-  const searchResultsContext = useContext(SearchResultsContext);
-  const { searchResults } = searchResultsContext;
   const { name, location, type, isAvailable, price, timeSlot, rating } = result;
   const classes = useStyles();
 
@@ -21,7 +18,7 @@ const SearchResultsItem = ({ result }) => {
         <Box
           sx={{
             minWidth: `${
-              searchResults.length > 4  ? '26rem' : '29rem'
+              searchedData.length > 4  ? '26rem' : '29rem'
             }`,
             margin: "0.8rem 0.6rem 0",
             '&:first-child': {  marginTop: '0px', },

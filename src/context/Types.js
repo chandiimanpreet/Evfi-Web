@@ -1,2 +1,0 @@
-export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
-export const SET_CURRENT = 'SET_CURRENT';

@@ -1,135 +1,111 @@
+import React, { useState } from 'react';
+import { AppBar, Toolbar, Box, Button, Popover, TextField, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from "@mui/material";
+import { Bolt as BoltIcon, } from "@mui/icons-material";
+import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
 import { useStyles } from "./style";
-import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, InputBase, Tooltip, Avatar } from "@mui/material";
-import { Adb as AdbIcon, Bolt as BoltIcon, Search as SearchIcon } from "@mui/icons-material";
-import { styled, alpha } from "@mui/material/styles";
-import { useState } from "react";
+// import './style.css'
+
 
 // for searchbar
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
-
 const NavigationBar = () => {
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const classes = useStyles();
-
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
-    <AppBar
-      className={classes.navigation}
-    >
-      <Container
-        maxWidth="xl"
-        sx={{ paddingLeft: "0px!important", paddingRight: "1rem!important" }}
-      >
-        <Toolbar disableGutters>
-          <BoltIcon
-            className={classes.boltIcon}
-          />
-          <Box sx={{ flexGrow: 1, borderRadius: "50px" }}>
-            <Search sx={{ borderRadius: "50px" }}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Source"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-          </Box>
+     <AppBar 
+    //sx = {{
+    //   backgroundColor: "#282828",
+    //   borderRadius: '50px',
+    //   width: "50%",
+    //   top: '.8%',
+    //   right: '50%',
+    //   display: 'flex',
+    //   transform: 'translateX(50%)',
+    // }} 
+    className={classes.navigation} >
 
-          <Box sx={{ flexGrow: 1 }}>
-            <Search sx={{ borderRadius: "50px" }}>
-              <SearchIconWrapper></SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Destination"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-          </Box>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-around' }}  >
+        <Button sx={{
+          color: '#fff',
+          border: '2px solid #fff',
+          borderRadius: '20px',
+          fontSize: '16px',
+          padding: '.58rem 21.5%',
+        }} aria-describedby={id} onClick={handleClick} > Source </Button>
+        
+        <BoltIcon
+          sx={{
+            color: "yellow",
+            fontSize: "2.5rem",
+            border: "2px solid yellow",
+            borderRadius: "100%",
+            marginLeft: "0.8rem",
+            marginRight: "0.8rem",
+            cursor: "pointer",
+          }}
+        />
+        
+        <Button sx={{
+          color: '#fff',
+          border: '2px solid #fff',
+          borderRadius: '20px',
+          fontSize: '16px',
+          padding: '.58rem 25%',
+        }} aria-describedby={id} onClick={handleClick}> Destination </Button>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-
-          <Box sx={{ flexGrow: 0, marginLeft: ".5rem" }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }} transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }} sx={{ top: '-18px', }}
+        >
+          <Box sx={{
+            width: '100vw',
+            height: '13rem',
+            backgroundColor: '#282828',
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+            <Box sx={{ marginTop: '20px', display: 'block', }} >
+              <TextField label="Source" inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} />
+              <SwapHorizontalCircleIcon sx={{ color: '#fff', cursor: 'pointer', marginRight: '5px', marginLeft: '5px', marginTop: '10px', }} fontSize="large" />
+              <TextField label="Destination" inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} />
+              <Button variant="contained" sx={{ marginLeft: '10px', marginTop: '11px', color: '#282828', backgroundColor: 'yellow' }}>Search</Button>
+            </Box>
+            <Box sx={{ marginTop: '20px', display: 'block', }}>
+              <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ color: '#fff' }}>Chargers Type</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                >
+                  <FormControlLabel value="Type A" control={<Radio sx={{ color: '#fff' }} />} label="Type A" sx={{ color: '#fff' }} />
+                  <FormControlLabel value="Type B" control={<Radio sx={{ color: '#fff' }} />} label="Type B" sx={{ color: '#fff' }} />
+                  <FormControlLabel value="Type C" control={<Radio sx={{ color: '#fff' }} />} label="Type C" sx={{ color: '#fff' }} />
+                </RadioGroup>
+              </FormControl>
+            </Box>
           </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+        </Popover>
+      </Toolbar>
+    </AppBar >
   );
 };
 export default NavigationBar;

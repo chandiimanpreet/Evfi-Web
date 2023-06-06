@@ -1,14 +1,10 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment } from 'react';
 import SearchResultsItem from './SearchResultsItem';
 import { useStyles } from './style';
 import { Box, Typography } from '@mui/material';
-import SearchResultsContext from '../../context/searchResults/searchResultsContext';
+import searchedData from './searchedData';
 
 const Sidebar = () => {
-  const searchResultsContext = useContext(SearchResultsContext);
-
-  const { searchResults } = searchResultsContext;
-
   const classes = useStyles();
 
   return (
@@ -28,7 +24,7 @@ const Sidebar = () => {
           </Typography>
 
           <Box className={classes.searchResultsComtainer}>
-            {searchResults.map((result) => (
+            {searchedData.map((result) => (
               <SearchResultsItem result={result} />
             ))}
           </Box>
