@@ -20,7 +20,7 @@ export default function Phoneauth(props) {
     const navigate = useNavigate();
     const configureCaptcha = () => {
         window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-            'size': "invisible",
+            'size': "normal",
             'callback': function (response) {
                 submitPhoneNumberAuth();
             },
