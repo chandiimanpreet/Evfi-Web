@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { initializeApp } from "firebase/app";
 
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
-import {  useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAM-1D3n2gZfU05D8SKpDT7WWPYQlGH5mk",
@@ -16,32 +16,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export default function Phoneauth(props) {
-    const {setNumber}=props;
-    const navigate=useNavigate();
-    useEffect(() => {
+    const { phone, setNumber } = props;
+    const navigate = useNavigate();
+    const configureCaptcha = () => {
         window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-            size: "normal",
-            callback: function (response) {
+            'size': "invisible",
+            'callback': function (response) {
                 submitPhoneNumberAuth();
+            },
+            'expired-callback':()=>{
+                console.log("response expired");
             }
         }, auth);
-        window.recaptchaVerifier.render().then((widgetId) => {
-            window.recaptchaWidgetId = widgetId;
-        });
-        // eslint-disable-next-line
-    },[])
-    
+    }
+
     const submitPhoneNumberAuth = () => {
         let phone = document.getElementById('phone').value;
         phone = "+91" + phone;
+        configureCaptcha();
         let appVerifier = window.recaptchaVerifier;
         signInWithPhoneNumber(auth, phone, appVerifier)
             .then((confirmationResult) => {
                 window.confirmationResult = confirmationResult;
-                navigate('/otpauth',{replace:true})
+                navigate('/otpauth', { replace: true })
             })
             .catch((error) => {
-                console.log("Wrong");
+                console.log(error);
             })
     }
     return (
@@ -136,6 +136,12 @@ export default function Phoneauth(props) {
                                 marginLeft: "0.75rem",
                             }} id="recaptcha-container"></div>
                             <button onClick={(e) => {
+                                if (phone.length === 10) {
+                                    submitPhoneNumberAuth()
+                                } else {
+                                    window.alert("Please enter valid number");
+                                }
+
                             }} style={{
                                 margin: "6rem",
                                 backgroundColor: "#FBBF24",

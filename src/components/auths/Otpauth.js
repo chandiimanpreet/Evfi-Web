@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 
 export default function Otpauth(props) {
     const navigate = useNavigate();
     const { phone, setData } = props;
+    useEffect(()=>{
+        if(!phone){
+           navigate('/auth',{replace:true}) 
+        }
+        // eslint-disable-next-line
+    },[])
     const submitCode = () => {
         let code = document.getElementById("codes").value;
         console.log(code);
@@ -51,7 +57,7 @@ export default function Otpauth(props) {
                         }
                     })
                     .catch((error) => {
-                        console.log(error);
+                        window.alert("Wrong OTP")
                     })
             })
             .catch((error) => {
