@@ -10,6 +10,7 @@ export default function Protector() {
         if (!localStorage.getItem('user')) {
             navigate('/auth');
         }
+        // eslint-disable-next-line
     }, [])
 
     return (

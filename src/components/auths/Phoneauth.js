@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { initializeApp } from "firebase/app";
-import { useState } from 'react';
 
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
-import { Navigate, useNavigate } from 'react-router';
+import {  useNavigate } from 'react-router';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAM-1D3n2gZfU05D8SKpDT7WWPYQlGH5mk",
@@ -17,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export default function Phoneauth(props) {
-    const {phone ,setNumber}=props;
+    const {setNumber}=props;
     const navigate=useNavigate();
     useEffect(() => {
         window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
@@ -29,6 +28,7 @@ export default function Phoneauth(props) {
         window.recaptchaVerifier.render().then((widgetId) => {
             window.recaptchaWidgetId = widgetId;
         });
+        // eslint-disable-next-line
     },[])
     
     const submitPhoneNumberAuth = () => {
@@ -68,7 +68,6 @@ export default function Phoneauth(props) {
                 }}>
                     <img alt="img.." style={{
                         padding: "0.5rem",
-                        marginLeft: "7rem",
                         marginLeft: "8rem",
                         width: "3rem",
                         height: "3rem",
@@ -119,8 +118,6 @@ export default function Phoneauth(props) {
                                     setNumber(e.target.value)
                                 }} style={{
                                     paddingLeft: "0.5rem",
-                                    fontSize: "1.125rem",
-                                    lineHeight: "1.75rem",
                                     fontSize: "1.25rem",
                                     lineHeight: "1.75rem",
                                     letterSpacing: "0.1em",
