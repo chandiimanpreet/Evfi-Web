@@ -25,7 +25,7 @@ const Sidebar = () => {
 
           <Box className={classes.searchResultsComtainer}>
             {searchedData.map((result) => (
-              <SearchResultsItem result={result} />
+              <SearchResultsItem key={result.id}  result={result} />
             ))}
           </Box>
           <br />
