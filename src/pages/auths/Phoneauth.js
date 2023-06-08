@@ -91,6 +91,8 @@ export default function Phoneauth(props) {
                                 localStorage.setItem("user", user.uid);
                                 localStorage.setItem("registered", false)
                                 setData({
+                                    "loading":false,
+                                    "flag":true,
                                     "mobile": phone,
                                     "registered": false
                                 })
@@ -102,7 +104,7 @@ export default function Phoneauth(props) {
                         } else {
                             console.log("e");
                             localStorage.setItem('user', user.uid)
-                            setData(data);
+                            setData({...data,"loading":false,"flag":true});
                             if (data.registered === true) {
                                 localStorage.setItem('registered', true)
                                 navigate('/', { replace: true })

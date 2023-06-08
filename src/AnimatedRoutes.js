@@ -7,13 +7,13 @@ import Phoneauth from './pages/auths/Phoneauth';
 import Registerauth from './pages/auths/Registerauth';
 import Protector from './pages/auths/Protector';
 import { useEffect, useState } from 'react';
-import {  Route, Routes, useLocation, useNavigate } from 'react-router';
+import {  Route, Routes, useLocation} from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
 
 
 export default function AnimatedRoutes() {
-    const navigate=useNavigate();
+
     const [user, setData] = useState({ "loading": true ,"flag":false})
     const [phone, setPhone] = useState("");
     const setNumber = (num) => {
@@ -34,19 +34,15 @@ export default function AnimatedRoutes() {
             } else {
                 setData({"loading": false ,"flag":false})
             }
-        }else{
-            if(!user.flag){
-                navigate('/auth')
-            }
         }
         //eslint-disable-next-line
-    }, [user])
+    }, [])
     const location = useLocation();
     if (!user.loading) {
         return (
             <AnimatePresence>
                 <Routes location={location} key={location.pathname}>
-                    <Route element={<Protector />}>
+                    <Route element={<Protector flag={user.flag}/>} >
                         <Route path="/" element={<Home />} />
                         <Route path="About" element={<About />} />
                         <Route path="Location" element={<Location />} />

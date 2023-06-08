@@ -1,5 +1,6 @@
 const searchedData = [
-    {
+    {   
+        id:1,
         name: 'AMG Charging Station',
         location: 'Sector 7, Karnal NH-1, GT-Road, Haryana, 137001',
         type: 'fast',
@@ -9,6 +10,7 @@ const searchedData = [
         rating: 4,
     },
     {
+        id:2,
         name: 'AMG Charging Station',
         location: 'Sector 7, Karnal NH-1, GT-Road, Haryana, 137001',
         type: 'fast',
@@ -19,6 +21,7 @@ const searchedData = [
     },
 
     {
+        id:3,
         name: 'AMG Charging Station',
         location: 'Sector 7, Karnal NH-1, GT-Road, Haryana, 137001',
         type: 'fast',
@@ -28,6 +31,7 @@ const searchedData = [
         rating: 2,
     },
     {
+        id:4,
         name: 'AMG Charging Station',
         location: 'Sector 7, Karnal NH-1, GT-Road, Haryana, 137001',
         type: 'fast',
@@ -37,6 +41,7 @@ const searchedData = [
         rating: 4,
     },
     {
+        id:5,
         name: 'AMG Charging Station',
         location: 'Sector 7, Karnal NH-1, GT-Road, Haryana, 137001',
         type: 'fast',
