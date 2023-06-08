@@ -4,6 +4,7 @@ import AnimatedRoutes from './AnimatedRoutes';
 
 
 const App = () => {
+  
   return (
     <BrowserRouter>
       <AnimatedRoutes />

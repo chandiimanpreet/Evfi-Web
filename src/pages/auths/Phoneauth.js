@@ -113,11 +113,11 @@ export default function Phoneauth(props) {
                         }
                     })
                     .catch((error) => {
-                        window.alert("Wrong OTP")
+                        console.log(error);
                     })
             })
             .catch((error) => {
-                console.log("error");
+                window.alert("Wrong OTP")
             })
     }
 
@@ -200,9 +200,7 @@ export default function Phoneauth(props) {
                                                 control={<Checkbox value="remember" sx={{ color: 'white' }} />}
                                                 label="Remember me"
                                             /> */}
-                                            <Box ml={2.75} id='recaptcha-container'>
-
-                                            </Box>
+                                            <div id='recaptcha-container'></div>
                                             <Button
                                                 style={{ backgroundColor: '#ffeb3b', color: 'black' }}
                                                 type="submit"
