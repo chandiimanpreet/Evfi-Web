@@ -7,13 +7,14 @@ import Phoneauth from './pages/auths/Phoneauth';
 import Registerauth from './pages/auths/Registerauth';
 import Protector from './pages/auths/Protector';
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router';
+import {  Route, Routes, useLocation, useNavigate } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
 
 
 export default function AnimatedRoutes() {
-    const [user, setData] = useState({ "loading": true })
+    const navigate=useNavigate();
+    const [user, setData] = useState({ "loading": true ,"flag":false})
     const [phone, setPhone] = useState("");
     const setNumber = (num) => {
         setPhone(num)
@@ -24,16 +25,21 @@ export default function AnimatedRoutes() {
     const getUserData = () => {
         fetch(`https://apifromfb.onrender.com/api/get/Users?id=${localStorage.getItem('user')}`)
             .then((response) => response.json())
-            .then((data) => { setData({ ...data, "loading": false }) });
+            .then((data) => { setData({ ...data, "loading": false ,"flag":true}) });
     }
     useEffect(() => {
         if (user.loading) {
             if (localStorage.getItem('user')) {
                 getUserData();
             } else {
-                setData({"loading": false })
+                setData({"loading": false ,"flag":false})
+            }
+        }else{
+            if(!user.flag){
+                navigate('/auth')
             }
         }
+        //eslint-disable-next-line
     }, [user])
     const location = useLocation();
     if (!user.loading) {
