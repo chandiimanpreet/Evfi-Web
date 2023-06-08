@@ -1,8 +1,7 @@
 import React from 'react'
 import { Outlet,  useLocation, Navigate } from 'react-router'
 import NavigationBar from '../../components/NavigationBar';
-
-import Sidebar from '../../components/SidebarPopup';
+// import Sidebar from '../../components/SidebarPopup';
 import FloatingNavbar from '../../components/FloatingNavbar';
 
 export default function Protector(props) {
@@ -27,7 +26,7 @@ export default function Protector(props) {
                 <>
                     <NavigationBar />
                     <Outlet />
-                    <Sidebar />
+                    {/* <Sidebar /> */}
                     <FloatingNavbar />
                 </>
             )
