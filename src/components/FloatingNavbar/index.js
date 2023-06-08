@@ -44,7 +44,7 @@ const FloatingNavbar = () => {
         </Tooltip>
       </Link>
 
-      <Link to="/About">
+      <Link to="/about">
         <Tooltip title="Profile" placement="top" arrow>
           <BottomNavigationAction
             className={classes.bottomNavigationAction}
@@ -55,7 +55,7 @@ const FloatingNavbar = () => {
         </Tooltip>
       </Link>
 
-      <Link to="/Location">
+      <Link to="/location">
         <Tooltip title="Profile" placement="top" arrow>
           <BottomNavigationAction
             className={classes.bottomNavigationAction}
@@ -66,7 +66,7 @@ const FloatingNavbar = () => {
         </Tooltip>
       </Link>
 
-      <Link to="/Account">
+      <Link to="/account">
         <Tooltip title="Profile" placement="top" arrow>
           <BottomNavigationAction
             label="Folder"
