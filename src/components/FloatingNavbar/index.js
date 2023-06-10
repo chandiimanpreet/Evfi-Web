@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 import { BottomNavigation, BottomNavigationAction, Box, Tooltip, Avatar, Menu, MenuItem, Typography, IconButton, } from "@mui/material";
 import { Restore, Favorite, LocationOn } from "@mui/icons-material";
+import HomeIcon from '@mui/icons-material/Home';
 
 
 
@@ -33,8 +34,20 @@ const FloatingNavbar = () => {
       value={value}
       onChange={handleChange}
     >
+      
       <Link to="/">
         <Tooltip title="Home" placement="top" arrow>
+          <BottomNavigationAction
+            className={classes.bottomNavigationAction}
+            label="Home"
+            value="Home"
+            icon={<HomeIcon />}
+          />
+        </Tooltip>
+      </Link>
+      
+      <Link to="/previousBooking">
+        <Tooltip title="Pevious Booking" placement="top" arrow>
           <BottomNavigationAction
             className={classes.bottomNavigationAction}
             label="Recents"

@@ -3,6 +3,7 @@ import About from '../pages/About';
 import Home from '../pages/Home';
 import Location from '../pages/Location';
 import Profile from '../pages/Profile';
+import PreviousBooking from '../pages/PreviousBooking';
 import Phoneauth from '../pages/auths/Phoneauth';
 import Registerauth from '../pages/auths/Registerauth';
 import Protector from '../pages/auths/Protector';
@@ -50,6 +51,7 @@ export default function AnimatedRoutes() {
             <Routes location={location} key={location.pathname}>
                 <Route element={<Protector flag={user.flag} />} >
                     <Route path="/" element={<Home />} />
+                    <Route path="previousBooking" element={<PreviousBooking />} />
                     <Route path="about" element={<About />} />
                     <Route path="location" element={<Location />} />
                     <Route path="profile" element={<Profile />} />
