@@ -19,5 +19,3 @@ const Ratings = ({ rating }) => {
 };
 
 export default Ratings;
-
-import React, { Fragment } from 'react';
