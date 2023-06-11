@@ -1,121 +1,27 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { BottomNavigation, Tooltip } from "@mui/material";
+import { Restore, Favorite, LocationOn, AccountCircle,Home } from "@mui/icons-material";
 import { useStyles } from "./style";
-import { BottomNavigation, BottomNavigationAction, Box, Tooltip, Avatar, Menu, MenuItem, Typography, IconButton, } from "@mui/material";
-import { Restore, Favorite, LocationOn } from "@mui/icons-material";
-import HomeIcon from '@mui/icons-material/Home';
 
 
 
-const FloatingNavbar = () => {
+const FloatingNavbar = ({setDirection}) => {
   const classes = useStyles();
 
-  const [value, setValue] = useState("recents");
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const styles = ({ isActive }) => {
+    return { color: isActive ? "yellow" : "white" }
+  }
 
   return (
     <BottomNavigation
+      showLabels={false}
       className={classes.bottomNavigation}
-      value={value}
-      onChange={handleChange}
     >
-      
-      <Link to="/">
-        <Tooltip title="Home" placement="top" arrow>
-          <BottomNavigationAction
-            className={classes.bottomNavigationAction}
-            label="Home"
-            value="Home"
-            icon={<HomeIcon />}
-          />
-        </Tooltip>
-      </Link>
-      
-      <Link to="/previousBooking">
-        <Tooltip title="Pevious Booking" placement="top" arrow>
-          <BottomNavigationAction
-            className={classes.bottomNavigationAction}
-            label="Recents"
-            value="recents"
-            icon={<Restore />}
-          />
-        </Tooltip>
-      </Link>
-
-      <Link to="/about">
-        <Tooltip title="Profile" placement="top" arrow>
-          <BottomNavigationAction
-            className={classes.bottomNavigationAction}
-            label="Favorites"
-            value="favorites"
-            icon={<Favorite />}
-          />
-        </Tooltip>
-      </Link>
-
-      <Link to="/location">
-        <Tooltip title="Profile" placement="top" arrow>
-          <BottomNavigationAction
-            className={classes.bottomNavigationAction}
-            label="Nearby"
-            value="nearby"
-            icon={<LocationOn />}
-          />
-        </Tooltip>
-      </Link>
-
-      <Link to="/account">
-        <Tooltip title="Profile" placement="top" arrow>
-          <BottomNavigationAction
-            label="Folder"
-            value="folder"
-          />
-        </Tooltip>
-
-        <Box sx={{ flexGrow: 0, marginBottom: '1.8rem', marginLeft: '.7rem', }}>
-          <Tooltip title="Account" placement="top" arrow>
-            <IconButton onClick={handleOpenUserMenu} >
-              <Avatar alt="Remy Sharp" src="https://unsplash.com/photos/C8Ta0gwPbQg" sx={{ width: '29px', height: '30px', }} />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
-      </Link>
+      <Tooltip title="Home" placement="top" arrow><NavLink style={styles} onClick={()=>setDirection(1)} to='/'><Home sx={{mx:4}}/></NavLink></Tooltip>
+      <Tooltip title="History" placement="top" arrow><NavLink style={styles} onClick={()=>setDirection(2)} to='/previousBooking'><Restore sx={{mx:4}}/></NavLink></Tooltip>
+      <Tooltip title="Favourite" placement="top" arrow><NavLink style={styles} onClick={()=>setDirection(3)} to='/about'><Favorite sx={{mx:4}}/></NavLink></Tooltip>
+      <Tooltip title="Nearby" placement="top" arrow><NavLink  style={styles} onClick={()=>setDirection(4)} to='/location'><LocationOn sx={{mx:4}}/></NavLink></Tooltip>
+      <Tooltip title="Profile" placement="top" arrow><NavLink  style={styles} onClick={()=>setDirection(5)} to='/profile'><AccountCircle sx={{mx:4}}/></NavLink></Tooltip>
     </BottomNavigation>
   );
 }

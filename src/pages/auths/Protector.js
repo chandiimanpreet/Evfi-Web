@@ -23,7 +23,7 @@ export default function Protector(props) {
             return (
                 <>
                     <Outlet />
-                    <FloatingNavbar />
+                    <FloatingNavbar setDirection={props.setDirection}/>
                 </>
             )
         }
