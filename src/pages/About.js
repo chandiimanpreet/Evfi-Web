@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
-const About = () => {
-  return (
-    <motion.div initial={{ width: 0 }}
-      animate={{ width: '100%' }}
-      exit={{ x: window.innerWidth, transition: { duration: 2 } }}>
-      <h1>About</h1>
-    </motion.div>
-  )
+const About = ({ direction }) => {
+	return (
+		<motion.div
+			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+			animate={{ x: 0 }}
+			transition={{ duration: 0.25, delay: 0 }}
+		>
+			<h1>About</h1>
+		</motion.div>
+	)
 }
 
 export default About

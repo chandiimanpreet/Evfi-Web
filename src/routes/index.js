@@ -18,6 +18,10 @@ export default function AnimatedRoutes() {
     const [phone, setPhone] = useState("");
     const location = useLocation();
 
+    const logout=()=>{
+        localStorage.clear()
+        setData({ "loading": true, "flag": false })
+    }
     const setNumber = (num) => {
         setPhone(num);
     }
@@ -31,7 +35,16 @@ export default function AnimatedRoutes() {
             .then((response) => response.json())
             .then((data) => { setData({ ...data, "loading": false, "flag": true }) });
     }
-
+    const [currentDirection,setCurrentDirection]=useState({previousDirection:location.pathname==='/'?0:location.pathname==='/previousBooking'?2:location.pathname==='/about'?3:location.pathname==='/location'?4:5,direction:1});
+    const setDirection=(val)=>{
+        if(currentDirection.previousDirection<val){
+            setCurrentDirection({previousDirection:val,direction:1})
+        }else if(currentDirection.previousDirection>val){
+            setCurrentDirection({previousDirection:val,direction:-1})
+        }
+    }
+    // 1 for right movement
+    // -1 for left movement
     useEffect(() => {
         if (user.loading) {
             if (localStorage.getItem('user')) {
@@ -47,15 +60,15 @@ export default function AnimatedRoutes() {
         
         <CircularProgress sx={{ ml: '45rem', mt: '20rem' }} /> :
 
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
             <Routes location={location} key={location.pathname}>
-                <Route element={<Protector flag={user.flag} />} >
-                    <Route path="/" element={<Home />} />
-                    <Route path="previousBooking" element={<PreviousBooking />} />
-                    <Route path="about" element={<About />} />
-                    <Route path="location" element={<Location />} />
-                    <Route path="profile" element={<Profile />} />
-                    <Route path='register' element={<Registerauth />} setData={saveUserData} />
+                <Route element={<Protector flag={user.flag} setDirection={setDirection}/>} >
+                    <Route path="/" element={<Home direction={currentDirection} />} />
+                    <Route path="previousBooking" element={<PreviousBooking direction={currentDirection}/>} />
+                    <Route path="about" element={<About direction={currentDirection}/>} />
+                    <Route path="location" element={<Location direction={currentDirection}/>} />
+                    <Route path="profile" element={<Profile direction={currentDirection} logout={logout}/>} />
+                    <Route path='register' element={<Registerauth direction={currentDirection} setData={saveUserData}/>}  />
                 </Route>
                 <Route path='auth' element={<Phoneauth setNumber={setNumber} phone={phone} setData={saveUserData} />} />
             </Routes>

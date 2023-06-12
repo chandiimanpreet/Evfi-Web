@@ -51,9 +51,9 @@ export default function Registerauth(props) {
   }
   return (
     <>
-      <motion.div initial={{ width: 0 }}
-        animate={{ width: '100%' }}
-        exit={{ x: window.innerWidth,transition:{duration:1}}}>
+      <motion.div initial={{ x: 2000, opacity: 0 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ x: -2000, transition: { duration: 0.4, delay: 0 } }} transition={{ duration: 1, delay: 0.8 }}>
         <ThemeProvider theme={defaultTheme}>
           <Grid container component="main" sx={{ height: '100vh' }}>
             <CssBaseline />

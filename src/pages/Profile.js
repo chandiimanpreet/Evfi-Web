@@ -1,14 +1,18 @@
+import { Button } from "@mui/material";
 import { motion } from "framer-motion";
 
-
-const Profile = () => {
-  return (
-    <motion.div initial={{ width: 0 }}
-      animate={{ width: '100%' }}
-      exit={{ x: window.innerWidth, transition: { duration: 0.8 } }}>
-      <h1>profile</h1>
-    </motion.div>
-  );
+const Profile = ({ logout, direction }) => {
+	return (
+		<motion.div key='pr'
+			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+			animate={{ x: 0 }}
+			transition={{ duration: 0.25, delay: 0 }}
+		>
+			<>
+				<Button variant="contained" type="button" onClick={() => { logout() }}>Logout</Button>
+			</>
+		</motion.div>
+	);
 };
 
 export default Profile;
