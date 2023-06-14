@@ -3,7 +3,6 @@ import { Box, } from "@mui/material";
 import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
-// import FloatingNavbar from '../components/FloatingNavbar';
 
 const PreviousBooking = ({ direction }) => {
 
@@ -19,7 +18,6 @@ const PreviousBooking = ({ direction }) => {
 				</Box>
 				<Box>
 					<DashboardMap />
-					{/* <FloatingNavbar /> */}
 				</Box>
 			</Box>
 		</motion.div>
