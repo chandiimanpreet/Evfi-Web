@@ -2,7 +2,7 @@ import React from 'react'
 import About from '../pages/About';
 import Home from '../pages/Home';
 import Location from '../pages/Location';
-import Profile from '../pages/Profile';
+import Profile from '../pages/Profile/index';
 import PreviousBooking from '../pages/PreviousBooking';
 import Phoneauth from '../pages/auths/Phoneauth';
 import Registerauth from '../pages/auths/Registerauth';
