@@ -13,8 +13,8 @@ import 'react-phone-input-2/lib/material.css'
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
-const images = ["first", "second", "third", "four", "five", "six", "seven"];
-const value = Math.floor(Math.random() * 7);
+const images = ["first", "second","four", "seven"];
+const value = Math.floor(Math.random() * 4);
 
 let appVerifier;
 export default function Phoneauth({ phone, setNumber, setData, flag, code }) {

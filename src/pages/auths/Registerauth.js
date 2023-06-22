@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import { useStyles } from './style';
 import {registerUser} from '../../utils/auth/user';
 
-const images = ["first", "second", "third", "four", "five", "six", "seven"];
-const value=Math.floor(Math.random() * 7);
+const images = ["first", "second",  "four", "seven"];
+const value=Math.floor(Math.random() * 4);
 
 export default function Registerauth({ setData, user }) {
 
