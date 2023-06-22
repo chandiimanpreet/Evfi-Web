@@ -11,47 +11,67 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
+import Page404 from '../pages/Page404';
+import { getUser } from '../utils/auth/user';
+import { signOut, getAuth } from 'firebase/auth';
+import { initializeApp } from 'firebase/app'
+import firebaseConfig from '../utils/config/firebaseConfig';
+import axios from 'axios';
 
 
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app);
 export default function AnimatedRoutes() {
-    const [user, setData] = useState({ "loading": true, "flag": false })
+
+    const [user, setData] = useState({ "loading": true, "flag": false });
+    const [countryCode, setCode] = useState(null);
     const [phone, setPhone] = useState("");
     const location = useLocation();
+    const [currentDirection, setCurrentDirection] = useState({ previousDirection: location.pathname === '/' ? 0 : location.pathname === '/previousBooking' ? 2 : location.pathname === '/about' ? 3 : location.pathname === '/location' ? 4 : 5, direction: 1 });
 
     const logout = () => {
-        localStorage.clear()
-        setData({ "loading": true, "flag": false })
-    }
-    const setNumber = (num) => {
-        setPhone(num);
+        signOut(auth)
+            .then(() => {
+                setData({ "loading": true, "flag": false });
+                setPhone("")
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
     }
 
     const saveUserData = (data) => {
         setData({ ...user, ...data });
     }
 
-    const getUserData = () => {
-        fetch(`https://apifromfb.onrender.com/api/get/Users?id=${localStorage.getItem('user')}`)
-            .then((response) => response.json())
-            .then((data) => { setData({ ...data, "loading": false, "flag": true }) });
+    const getUserData = async () => {
+        const temp = await axios.get('https://ipinfo.io/json?token=221f98a01ff7fd')
+            if (temp.status===200) {
+                const code=temp.data.country.toLowerCase();
+                setCode(code)
+            } else {
+                console.log(temp);
+            }   
+        const res = await getUser();
+        if (!res.user) {
+            
+            setData({ "loading": false, "flag": false });
+            return;
+        }
+        setData({ ...res.user, "loading": false, "flag": true });
     }
-    const [currentDirection, setCurrentDirection] = useState({ previousDirection: location.pathname === '/' ? 0 : location.pathname === '/previousBooking' ? 2 : location.pathname === '/about' ? 3 : location.pathname === '/location' ? 4 : 5, direction: 1 });
     const setDirection = (val) => {
         if (currentDirection.previousDirection < val) {
-            setCurrentDirection({ previousDirection: val, direction: 1 })
+            setCurrentDirection({ previousDirection: val, direction: 1 });
         } else if (currentDirection.previousDirection > val) {
-            setCurrentDirection({ previousDirection: val, direction: -1 })
+            setCurrentDirection({ previousDirection: val, direction: -1 });
         }
     }
     // 1 for right movement
     // -1 for left movement
     useEffect(() => {
         if (user.loading) {
-            if (localStorage.getItem('user')) {
-                getUserData();
-            } else {
-                setData({ "loading": false, "flag": false })
-            }
+            getUserData();
         }
     }, [user.loading]);
 
@@ -68,9 +88,10 @@ export default function AnimatedRoutes() {
                         <Route path="about" element={<About direction={currentDirection} />} />
                         <Route path="location" element={<Location direction={currentDirection} />} />
                         <Route path="profile" element={<Profile direction={currentDirection} logout={logout} />} />
-                        <Route path='register' element={<Registerauth direction={currentDirection} setData={saveUserData} />} />
+                        <Route path='register' element={<Registerauth user={user} direction={currentDirection} setData={saveUserData} />} />
                     </Route>
-                    <Route path='auth' element={<Phoneauth setNumber={setNumber} phone={phone} setData={saveUserData} />} />
+                    <Route path='auth' element={<Phoneauth code={countryCode} setNumber={setPhone} flag={user.flag} phone={phone} setData={saveUserData} />} />
+                    <Route path='*' element={<Page404 />} />
                 </Routes>
             </AnimatePresence>
     )
