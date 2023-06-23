@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
-	navigation: {
+	rdNavigation: {
 		backgroundColor: "#282828!important",
 		display: "flex",
 		justifyContent: "center",
@@ -10,15 +10,15 @@ export const useStyles = makeStyles({
 		top: "2.5rem !important",
 		width: "46vw!important",
 		left: "calc(50% - 23vw)!important",
-		zIndex: 1500,
+	},
 
+	toolbarstyle: {
+		display: 'flex!important',
+		justifyContent: 'space-around!important',
+		width: "100%!important",
+		padding: "0.1rem!important",
 	},
-	boltIcon: {
-		color: "yellow",
-		fontSize: "2.5rem!important",
-		border: "2px solid yellow",
-		borderRadius: "100%",
-	},
+
 	inputBtns: {
 		backgroundColor: '#ffffff26!important',
 		color: '#fff!important',
@@ -31,26 +31,147 @@ export const useStyles = makeStyles({
 		display: "flex",
 		justifyContent: "left!important",
 	},
+
+	boltIcon: {
+		color: "yellow",
+		fontSize: "2.5rem!important",
+		border: "2px solid yellow",
+		borderRadius: "100%",
+	},
+
+	extendnavigationroot: {
+		width: "85vw!important",
+		position: 'relative',
+		backgroundColor: "#282828!important",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: "10rem",
+		zIndex: 1500,
+	},
+
+	bigboltIconRoot: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		position: 'relative',
+		marginTop: '2rem',
+		right: '5rem',
+
+	},
+
+	bigboltIcon: {
+		top: '-2.3rem',
+		color: 'yellow',
+		border: '4px solid yellow',
+		position: 'absolute',
+		fontSize: '2.3rem!important',
+		borderRadius: '100%',
+		left: '6rem',
+		zIndex: 1500,
+	},
+
+	extendinputroot: {
+		position: 'relative',
+		display: 'flex!important',
+		justifyContent: 'space-around!important',
+		width: "100%!important",
+		padding: "0.1rem!important",
+		alignItems: 'center',
+		left: '0.7rem!important'
+	},
+
+	autocompletestyle: {
+		width: '33vw',
+		border: 'none',
+		cursor: 'pointer',
+		padding: ' 0.5rem 0.5rem ',
+		position: 'relative',
+		'& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
+			borderRadius: '2rem!important',
+		}
+
+	},
+	swapHorizontalCircleIcon: {
+		color: '#fff',
+		cursor: 'pointer',
+		marginRight: '5px',
+		marginLeft: '5px',
+		marginTop: '0px',
+		fontSize: '2.5rem!important'
+	},
+
+	travelExploreRoundedIcon: {
+		fontSize: '2.3rem',
+		color: 'yellow',
+		border: "2px solid yellow",
+		borderRadius: "100%",
+		position: 'relative',
+		right: '4rem',
+		cursor: 'pointer',
+	},
+
+	filterdesign: {
+		fontSize: '2.3rem',
+		position: 'relative',
+		right: '3.5rem',
+		color: 'white',
+		cursor: 'pointer',
+		zIndex: 1500,
+	},
+	exNavPopover: {
+		'& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
+			borderRadius: "30px!important",
+			background: "none!important",
+			boxShadow: "none!important",
+			position: "relative!important",
+			display: "flex!important",
+			marginTop: '1rem!important',
+			justifyContent: "center!important",
+			alignItems: "center!important",
+			overflowY: "unset!important",
+			overflowX: "unset!important",
+			maxWidth: "calc(100% - 0px)!important"
+		}
+	},
 	popDesign: {
 		'& label.Mui-focused': {
 			color: '#fff',
 		},
+
 		'& .MuiInput-underline:after': {
 			borderBottomColor: '#fff',
 		},
-		'& ..MuiInputLabel-root': {
+		'& .MuiInputLabel-root': {
 			color: '#fff',
+			left: '0.8rem',
+			fontSize: '1.1rem'
 		},
 		'& .MuiOutlinedInput-root': {
 			'& fieldset': {
-				borderColor: '#fff',
+				color: '#fff',
+				backgroundColor: '#ffffff26!important',
+				border: 'none',
+				cursor: 'pointer'
 			},
 			'&:hover fieldset': {
-				borderColor: '#fff',
+				color: '#fff',
+				backgroundColor: '#ffffff26!important',
+				height: '3.7rem',
+				border: 'none',
+				cursor: 'pointer'
 			},
 			'&.Mui-focused fieldset': {
-				borderColor: '#fff',
+				backgroundColor: '#ffffff26!important',
+				color: '#fff',
+				border: 'none',
+				cursor: 'pointer'
 			},
+			'& .MuiAutocomplete-input': {
+				color: "white",
+			},
+
 		},
+
 	},
 });

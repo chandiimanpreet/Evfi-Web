@@ -3,6 +3,7 @@ import { Box, } from "@mui/material";
 import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
+import searchedData from '../components/ListPreviousBooking/searchedData';
 
 const PreviousBooking = ({ direction }) => {
 
@@ -14,7 +15,7 @@ const PreviousBooking = ({ direction }) => {
 		>
 			<Box sx={{ display: 'flex', }}>
 				<Box>
-					<List />
+					<List searchedData={searchedData} />
 				</Box>
 				<Box>
 					<DashboardMap />
