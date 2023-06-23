@@ -7,24 +7,21 @@ export const useStyles = makeStyles({
 	},
 	outerBox: {
 		display: 'flex',
-		flexDirection: 'vertical',
 		maxHeight: 'calc(100vh - 1rem)',
 		backgroundColor: '#ddd',
 		color: '#fff',
 		zIndex: 1000,
 		padding: '0rem .8rem 1rem 1rem ',
-
 	},
 	searchResultsContainer: {
+		maxHeight: 'calc(100vh - 8rem)',
 		paddingTop: '6px',
 		overflowX: 'hidden',
-		overflowY: 'auto',
+		overflowY: 'auto !important',
 		position: 'relative',
 		'&::-webkit-scrollbar': {
 			width: '5px !important',
 		},
-
-
 	},
 	inputField: {
 		marginTop: '6px',
@@ -81,5 +78,13 @@ export const useStyles = makeStyles({
 		fontWeight: 'bold',
 		borderRadius: '10px',
 		padding: '1px 8px',
+	},
+
+
+	////////////////////////////////////////// 		Tabs	 	////////////////////////////////////////////////
+	tabStyle: {
+		minHeight: '35px !important',
+		'& button': { color: '#282828', padding: '0px 7rem', minHeight: '35px !important', },
+		'& button.Mui-selected': { color: 'primary',  }
 	}
 });
