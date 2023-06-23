@@ -1,120 +1,108 @@
 import React, { useState } from "react";
-import { Button, Avatar, Box } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import MyProfile from "./MyProfile";
+import MyProfile from "./My Profile/MyProfile";
 import MyChargers from "./MyChargers";
 import Payments from "./Payments";
 import Settings from "./Settings";
 import Support from "./Support";
 import Logout from "./Logout";
 import { useStyles } from "./styles";
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import DockRoundedIcon from '@mui/icons-material/DockRounded';
-import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import { Bolt as BoltIcon, } from "@mui/icons-material";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import DockRoundedIcon from "@mui/icons-material/DockRounded";
+import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 
 const Profile = ({ logout, direction }) => {
-  const [activeTab, setActiveTab] = useState("MyProfile");
+  const [activeTab, setActiveTab] = useState("My Profile");
   const classes = useStyles();
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-
   return (
-    <motion.div
+    <motion.Box
       key="pr"
       initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
       animate={{ x: 0 }}
       transition={{ duration: 0.25, delay: 0 }}
-      className={classes.container}
+      className={classes.root}
     >
-      <Box className={classes.profilePictureContainer}>
-        <Avatar
-          alt="Profile Picture"
-          src="/path/to/profile-picture.jpg"
-          className={classes.profilePicture}
-        />
-      </Box>
-      <div className={classes.outerBox}>
-        <div className={classes.buttonGroup}>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => handleTabChange("MyProfile")}
-            className={activeTab === "MyProfile" ? classes.activeButton : ""}
-            classes={{ root: classes.button }}
-            startIcon={<AccountCircleRoundedIcon />} 
-          >
-            My Profile
-          </Button>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => handleTabChange("MyChargers")}
-            className={activeTab === "MyChargers" ? classes.activeButton : ""}
-            classes={{ root: classes.button }}
-            startIcon={<DockRoundedIcon />}
-          >
-            My Chargers
-          </Button>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => handleTabChange("Payments")}
-            className={activeTab === "Payments" ? classes.activeButton : ""}
-            classes={{ root: classes.button }}
-            startIcon={<CurrencyRupeeRoundedIcon />} 
-          >
-            Payments
-          </Button>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => handleTabChange("Settings")}
-            className={activeTab === "Settings" ? classes.activeButton : ""}
-            classes={{ root: classes.button }}
-            startIcon={<SettingsRoundedIcon />}
-          >
-            Settings
-          </Button>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => handleTabChange("Support")}
-            className={activeTab === "Support" ? classes.activeButton : ""}
-            classes={{ root: classes.button }}
-            startIcon={<SupportAgentRoundedIcon />}
-          >
-            Support
-          </Button>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => handleTabChange("Logout")}
-            className={activeTab === "Logout" ? classes.activeButton : ""}
-            classes={{ root: classes.button }}
-            startIcon={<LogoutRoundedIcon />}
-          >
-            Logout
-          </Button>
-        </div>
-        <div className={classes.information}>
-          <div className={classes.tabContent}>
-            {activeTab === "MyProfile" && <MyProfile />}
-            {activeTab === "MyChargers" && <MyChargers />}
+      <Box className={classes.container}>
+        <Box className={classes.sidebox}>
+        <BoltIcon className={classes.boltIcon} />
+          <Box className={classes.profilePictureContainer}>
+            <Box className={classes.profileGreet}>
+              <Avatar
+                alt="Profile Picture"
+                src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+                className={classes.profilePicture}
+              />
+              <Box className={classes.greet}>
+                <Typography
+                  className={classes.hello}
+                  variant="h6"
+                  gutterBottom
+                >
+                  Hello,
+                </Typography>
+                <Typography
+                  className={classes.name}
+                  variant="h6"
+                  gutterBottom
+                >
+                  Virat Kohli
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box className={classes.outerBox}>
+            <Box className={classes.buttonGroup}>
+              {[
+                { tab: "My Profile", icon: <PersonRoundedIcon /> },
+                { tab: "My Chargers", icon: <DockRoundedIcon /> },
+                { tab: "Payments", icon: <AccountBalanceWalletRoundedIcon /> },
+                { tab: "Settings", icon: <SettingsRoundedIcon /> },
+                { tab: "Support", icon: <SupportAgentRoundedIcon /> },
+                { tab: "Logout", icon: <LogoutRoundedIcon /> },
+              ].map(({ tab, icon }) => (
+                <Box
+                  key={tab}
+                  className={`${classes.button} ${
+                    activeTab === tab ? classes.activeButton : ""
+                  }`}
+                  onClick={() => handleTabChange(tab)}
+                >
+                  <Typography fontWeight="bold" className={classes.buttonName}>
+                    {icon && (
+                      <Typography className={classes.buttonIcon}>{icon}</Typography>
+                    )}
+                    &nbsp; &nbsp; &nbsp; {tab}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Box>
+
+        <Box className={classes.information}>
+          <Box className={classes.tabContent}>
+            {activeTab === "My Profile" && <MyProfile />}
+            {activeTab === "My Chargers" && <MyChargers />}
             {activeTab === "Payments" && <Payments />}
             {activeTab === "Settings" && <Settings />}
             {activeTab === "Support" && <Support />}
             {activeTab === "Logout" && <Logout logout={logout} />}
-          </div>
-        </div>
-      </div>
-    </motion.div>
+          </Box>
+        </Box>
+      </Box>
+    </motion.Box>
   );
 };
 
