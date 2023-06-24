@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
 import { Navigate, useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Grid, Divider, Alert } from '@mui/material';
+import { Box, Button, Grid, Divider, Alert, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { useStyles, otpStyle } from './style';
 import OTPInput from 'react-otp-input';
 import { logInUser } from '../../utils/auth/user';
@@ -13,8 +13,6 @@ import 'react-phone-input-2/lib/material.css'
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
-const images = ["first", "second","four", "seven"];
-const value = Math.floor(Math.random() * 4);
 
 let appVerifier;
 export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
@@ -51,8 +49,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		)
 	}
 	const submitPhoneNumberAuth = () => {
-		if(phone.length<12){
-			setUtils({...util,error:"Please enter valid phone number"})
+		if (phone.length < 12) {
+			setUtils({ ...util, error: "Please enter valid phone number" })
 			return;
 		}
 		setUtils({ ...util, loading: true, enterNumberInactive: true })
@@ -120,45 +118,55 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		<>
 			<Grid container>
 
-				<Grid className={classes.mainGrid} paddingX={19} xs={5} item>
+				<Grid className={classes.mainGrid} xs={5} item>
+
 					<div ref={recaptchaWrapperRef}>
 						<div id="recaptcha-container"></div>
 					</div>
 					{util.error && <Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>}
 					{(!util.showOtpForm) ? <div>
 
-						<Box marginTop={25} component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} display='flex' flexDirection='column'>
+						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={otpStyle.phoneBox}>
 
-							<PhoneInput
-								containerStyle={{ marginBottom: '2rem' }}
-								country={(code?code:'us')}
-								value={phone}
-								inputStyle={{ width: '100%' }}
-								onChange={num => setNumber(num)}
-								inputProps={{ required: true }}								
-							/>
-
-							{(!util.loading) ? <Button className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
-								<LoadingButton variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
+							<Typography className={classes.companyText}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
+							<br /><br />
+							<Typography className={classes.headText}>Verify Your Number</Typography>
+							<div>
+								<PhoneInput
+									country={(code ? code : 'us')}
+									value={phone}
+									inputStyle={{ width: '100%' }}
+									onChange={num => setNumber(num)}
+									inputProps={{ required: true }}
+								/>
+								<FormControlLabel control={<Checkbox size="small" />} label="Remember me" />
+							</div>
+							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
+								<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
 						</Box>
-					</div> 
-					:
+					</div>
+						:
 						<div>
 
-							<Box marginTop={10} component='form' display='flex' flexDirection='column' onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
-								<p style={{ marginBottom: '4rem', paddingLeft: '3rem' }}>{`OTP sent to +91${phone}`}</p>
+							<Box component='form' sx={otpStyle.phoneBox} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
 
-								<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ marginBottom: '4rem' }} numInputs={6} value={otp}
+								<Typography className={classes.headOtp}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
+								<br />
+								<br />
+								<Typography className={classes.otpTitle}>Enter OTP Code</Typography>
+								<Typography className={classes.otpSent}>{`OTP sent to +${phone}`}</Typography>
+
+								<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center' }} numInputs={6} value={otp}
 									onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
 
-								{!util.loading ? <Button className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
-									<LoadingButton variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
+								{!util.loading ? <Button size='large' className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
+									<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
 
-								<Button disabled={!util.resendOtpActive} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
+								<Button size='large' disabled={!util.resendOtpActive} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
 									{util.resendOtpActive ? 'Resend OTP' : `Resend OTP 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
 								</Button>
 
-								<Divider sx={{ marginBottom: '1rem' }}>or</Divider>
+								<Divider>or</Divider>
 
 								<Button disabled={util.loading} className={classes.changeBtn} type='button' onClick={changePhoneHandler} variant='outlined'>Change Phone Number</Button>
 							</Box>
@@ -167,7 +175,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 				</Grid>
 
 				<Grid xs={7} item>
-					<img alt='' className={classes.imgStyle} src={`/resources/${images[value]}.jpg`} />
+					<img alt='' className={classes.imgStyle} src={`/resources/four.jpg`} />
 				</Grid>
 
 			</Grid>

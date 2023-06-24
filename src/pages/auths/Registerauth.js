@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { Grid, Box, TextField, Button, Divider } from '@mui/material';
-import { motion } from 'framer-motion';
-import { useStyles } from './style';
-import {registerUser} from '../../utils/auth/user';
-
-const images = ["first", "second",  "four", "seven"];
-const value=Math.floor(Math.random() * 4);
+import { Grid, Box, TextField, Button, Divider, Typography } from '@mui/material';
+import { useStyles, otpStyle } from './style';
+import { registerUser } from '../../utils/auth/user';
 
 export default function Registerauth({ setData, user }) {
 
@@ -18,8 +14,8 @@ export default function Registerauth({ setData, user }) {
 	}
 
 	const saveData = async () => {
-		const temp= await registerUser({...data,registered:true})
-		if(temp.error){
+		const temp = await registerUser({ ...data, registered: true })
+		if (temp.error) {
 			console.log(temp.error);
 		}
 		setData({ ...data, registered: true });
@@ -29,33 +25,30 @@ export default function Registerauth({ setData, user }) {
 	}
 	return (
 		<>
-			<motion.div initial={{ x: 2000, opacity: 0 }} animate={{ opacity: 1, x: 0 }}
-				exit={{ x: -2000, transition: { duration: 0.4, delay: 0 } }} transition={{ duration: 1, delay: 0.8 }}>
-				<Grid container>
+			<Grid container>
 
-					<Grid justifyContent='space-evenly' className={classes.registerGrid} paddingX={15} xs={5} item>
-						<p className={classes.register}>Welcome Back <span style={{ display: 'inline' }}>&#128075;</span></p>
-						<p style={{ marginLeft: '6.8rem' }}>Please enter your details.</p>
-
-						<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} display='flex' flexDirection='column' gap={4}>
-
-							<TextField onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' value={data.username} />
-							<TextField onChange={changeDataHandler} required variant='outlined' label='Email' type='email' name='email' value={data.email} />
-							<TextField onChange={changeDataHandler} variant='outlined' type='text' label='Charger Type' name='chargerType' value={data.chargerType} />
-							<Button type='submit' className={classes.btn} variant='contained'>Register</Button>
-
-						</Box>
+				<Grid className={classes.registerGrid} xs={5} item>
+					<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
+						<Typography className={classes.headOtp}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
+						<br /><br />
+						<Typography className={classes.register}>&nbsp;&nbsp;&nbsp;Welcome Back <span style={{ display: 'inline' }}>&#128075;</span></Typography>
+						<Typography style={{ textAlign: 'center' }}>Please enter your details.</Typography>
+						<TextField onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' value={data.username} />
+						<TextField onChange={changeDataHandler} required variant='outlined' label='Email' type='email' name='email' value={data.email} />
+						<TextField onChange={changeDataHandler} variant='outlined' type='text' label='Charger Type' name='chargerType' value={data.chargerType} />
+						<Button size='large' type='submit' className={classes.btn} variant='contained'>Register</Button>
 
 						<Divider>or</Divider>
-						<Link to='/'><Button className={classes.skip} variant='outlined'>Skip for later</Button></Link>
-					</Grid>
-
-					<Grid xs={7} item>
-						<img alt='' className={classes.imgStyle} src={`/resources/${images[value]}.jpg`} />
-					</Grid>
+						<Link to='/' style={{ alignSelf: 'center' }}><Button className={classes.changeBtn} variant='outlined'>Skip for later</Button></Link>
+					</Box>
 
 				</Grid>
-			</motion.div >
+
+				<Grid xs={7} item>
+					<img alt='' className={classes.imgStyle} src={`/resources/four.jpg`} />
+				</Grid>
+
+			</Grid>
 
 		</>
 	)
