@@ -45,13 +45,18 @@ export default function AnimatedRoutes() {
     }
 
     const getUserData = async () => {
-        const temp = await axios.get('https://ipinfo.io/json?token=221f98a01ff7fd')
-            if (temp.status===200) {
-                const code=temp.data.country.toLowerCase();
-                setCode(code)
-            } else {
-                console.log(temp);
-            }   
+        const temp2=await axios.get('https://1.1.1.1/cdn-cgi/trace');
+        const regex=/^loc=([A-Z]+)$/;
+        const response=temp2.data.split('\n');
+        let code;
+        for(let i=0;i<response.length;i++){
+            let matches=response[i].match(regex)
+            if(matches){
+                code=matches[1];
+            }  
+        }
+        code=code.toLowerCase();
+        setCode(code);   
         const res = await getUser();
         if (!res.user) {
             
