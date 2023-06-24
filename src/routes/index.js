@@ -45,16 +45,9 @@ export default function AnimatedRoutes() {
     }
 
     const getUserData = async () => {
-        const temp2=await axios.get('https://1.1.1.1/cdn-cgi/trace');
-        const regex=/^loc=([A-Z]+)$/;
+        const temp2=await axios.get('https://1.1.1.1/cdn-cgi/trace');        
         const response=temp2.data.split('\n');
-        let code;
-        for(let i=0;i<response.length;i++){
-            let matches=response[i].match(regex)
-            if(matches){
-                code=matches[1];
-            }  
-        }
+        let code=response[9].substring(4);
         code=code.toLowerCase();
         setCode(code);   
         const res = await getUser();

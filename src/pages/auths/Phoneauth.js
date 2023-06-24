@@ -141,8 +141,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								/>
 								<FormControlLabel control={<Checkbox size="small" />} label="Remember me" />
 							</div>
-							{(!util.loading) ? <Button className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
-								<LoadingButton variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
+							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
+								<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
 						</Box>
 					</div>
 						:
@@ -159,10 +159,10 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center' }} numInputs={6} value={otp}
 									onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
 
-								{!util.loading ? <Button className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
-									<LoadingButton variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
+								{!util.loading ? <Button size='large' className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
+									<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
 
-								<Button disabled={!util.resendOtpActive} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
+								<Button size='large' disabled={!util.resendOtpActive} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
 									{util.resendOtpActive ? 'Resend OTP' : `Resend OTP 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
 								</Button>
 

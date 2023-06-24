@@ -36,7 +36,7 @@ export default function Registerauth({ setData, user }) {
 						<TextField onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' value={data.username} />
 						<TextField onChange={changeDataHandler} required variant='outlined' label='Email' type='email' name='email' value={data.email} />
 						<TextField onChange={changeDataHandler} variant='outlined' type='text' label='Charger Type' name='chargerType' value={data.chargerType} />
-						<Button type='submit' className={classes.btn} variant='contained'>Register</Button>
+						<Button size='large' type='submit' className={classes.btn} variant='contained'>Register</Button>
 
 						<Divider>or</Divider>
 						<Link to='/' style={{ alignSelf: 'center' }}><Button className={classes.changeBtn} variant='outlined'>Skip for later</Button></Link>
