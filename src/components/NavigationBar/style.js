@@ -87,10 +87,9 @@ export const useStyles = makeStyles({
 		cursor: 'pointer',
 		padding: ' 0.5rem 0.5rem ',
 		position: 'relative',
-		'& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-			borderRadius: '2rem!important',
-		}
-
+		// '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
+		// 	borderRadius: '2rem!important',
+		// }
 	},
 	swapHorizontalCircleIcon: {
 		color: '#fff',
@@ -119,21 +118,18 @@ export const useStyles = makeStyles({
 		cursor: 'pointer',
 		zIndex: 1500,
 	},
-	exNavPopover: {
-		'& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
-			borderRadius: "30px!important",
-			background: "none!important",
-			boxShadow: "none!important",
-			position: "relative!important",
-			display: "flex!important",
-			marginTop: '1rem!important',
-			justifyContent: "center!important",
-			alignItems: "center!important",
-			overflowY: "unset!important",
-			overflowX: "unset!important",
-			maxWidth: "calc(100% - 0px)!important"
-		}
+
+	myLocationIcon: {
+		fontSize: '2rem',
+		position: 'relative',
+		color: 'white',
+		cursor: 'pointer',
+		zIndex: 1500,
+		left: '3.3rem',
 	},
+	// exNavPopover: {
+	// 	'& 
+	// },
 	popDesign: {
 		'& label.Mui-focused': {
 			color: '#fff',
@@ -170,7 +166,6 @@ export const useStyles = makeStyles({
 			'& .MuiAutocomplete-input': {
 				color: "white",
 			},
-
 		},
 
 	},

@@ -1,15 +1,21 @@
 import { motion } from "framer-motion";
 import DashboardMap from "./../components/DashboardMap";
-import NavigationBar from "../components/NavigationBar";
-const Home = ({ direction }) => {
+//import NavigationBar from "../components/NavigationBar";
+import { useState } from "react";
+const Home = () => {
+	const [show, setShow] = useState(false);
+	const [searchCoordinates, setSearchCoordinates] = useState({ source: null, destination: null })
+	const showRoute = () => {
+		setShow(true)
+	}
 	return (
-		<motion.div key="home"
-			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
-			animate={{ x: 0 }}
-			transition={{ duration: 0.25, delay: 0 }}
-		>
-			<NavigationBar />
-			<DashboardMap />
+		<motion.div initial={{ width: 0 }}
+			animate={{ width: '100%' }}
+			exit={{ x: window.innerWidth, transition: { duration: 1 } }}>
+			{/* <NavigationBar setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} searchCoordinates={searchCoordinates} /> */}
+
+			<DashboardMap show={show} searchCoordinates={searchCoordinates} setSearchCoordinates={setSearchCoordinates}
+				showRoute={showRoute} />
 		</motion.div>
 	);
 }
