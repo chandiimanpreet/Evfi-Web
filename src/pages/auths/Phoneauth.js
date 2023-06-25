@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
+import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { Navigate, useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Grid, Divider, Alert, Typography, Checkbox, FormControlLabel } from '@mui/material';
@@ -20,24 +20,28 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	const [timer, setTimer] = useState(30);
 	const [util, setUtils] = useState({ showOtpForm: false, loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
 	const [otp, setotp] = useState("")
+	const [remember, setRemember] = useState(false);
 	const recaptchaWrapperRef = useRef(null);
 
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (util.showOtpForm) {
+			console.log(timer);
 			if (timer > 0) {
 				setTimeout(() => {
 					setTimer(timer - 1);
 				}, 1000)
 			} else {
+				console.log("e");
 				setUtils({ ...util, resendOtpActive: true })
 			}
 		} else {
+			console.log("e");
 			setTimer(30);
 		}
-	}, [util, timer])
+	}, [util.showOtpForm, timer])
 	const changePhoneHandler = () => {
-		setUtils({ ...util, showOtpForm: false, error: null, enterNumberInactive: false })
+		setUtils({ ...util, showOtpForm: false, error: null, enterNumberInactive: false, resendOtpActive: false })
 	}
 	const generateRecaptcha = () => {
 		appVerifier = new RecaptchaVerifier(
@@ -47,6 +51,21 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			},
 			auth
 		)
+	}
+	const signInHandler = (resend) => {
+		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
+			.then((confirmationResult) => {
+				if (resend) {
+					setTimer(30);
+					setUtils({ ...util, resendOtpActive: false, showOtpForm: true, loading: false, error: null });
+				} else {
+					setUtils({ ...util, showOtpForm: true, loading: false, error: null });
+				}
+				window.confirmationResult = confirmationResult;
+			})
+			.catch((error) => {
+				setUtils({ ...util, error: error.message, loading: false, enterNumberInactive: false })
+			})
 	}
 	const submitPhoneNumberAuth = () => {
 		if (phone.length < 12) {
@@ -61,26 +80,33 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 
 		// Initialize new reCaptcha verifier
 		generateRecaptcha();
-		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
-			.then((confirmationResult) => {
-				setUtils({ ...util, showOtpForm: true, loading: false, error: null });
-				window.confirmationResult = confirmationResult;
-			})
-			.catch((error) => {
-				setUtils({ ...util, error: error.message })
-			})
+		if (!remember) {
+			setPersistence(auth, browserSessionPersistence)
+				.then(() => {
+					signInHandler(false);
+				})
+				.catch((error) => {
+					setUtils({ ...util, error: error.message, loading: false, enterNumberInactive: false })
+
+				})
+		} else {
+			signInHandler(false);
+		}
 	}
 
 	const resendOtp = () => {
-		setUtils({ ...util, resendOtpActive: false });
-		setTimer(30);
-		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
-			.then((confirmationResult) => {
-				window.confirmationResult = confirmationResult;
-			})
-			.catch((error) => {
-				setUtils({ ...util, error: error.message })
-			})
+		if (!remember) {
+			setPersistence(auth, browserSessionPersistence)
+				.then(() => {
+					signInHandler(true)
+				})
+				.catch((error) => {
+					setUtils({ ...util, error: error.message, loading: false })
+
+				})
+		} else {
+			signInHandler(resendOtp)
+		}
 	}
 
 	const submitCode = async () => {
@@ -139,7 +165,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 									onChange={num => setNumber(num)}
 									inputProps={{ required: true }}
 								/>
-								<FormControlLabel control={<Checkbox size="small" />} label="Remember me" />
+								<FormControlLabel control={<Checkbox onChange={(e) => setRemember(e.target.checked)} size="small" />} label="Remember me" />
 							</div>
 							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
 								<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
