@@ -18,30 +18,29 @@ let appVerifier;
 export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	const classes = useStyles();
 	const [timer, setTimer] = useState(30);
-	const [util, setUtils] = useState({ showOtpForm: false, loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
+	const [showOtpForm,setShowOtpForm]=useState(false);
+	const [util, setUtils] = useState({loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
 	const [otp, setotp] = useState("")
 	const [remember, setRemember] = useState(false);
 	const recaptchaWrapperRef = useRef(null);
 
 	const navigate = useNavigate();
 	useEffect(() => {
-		if (util.showOtpForm) {
+		if (showOtpForm) {
 			console.log(timer);
 			if (timer > 0) {
 				setTimeout(() => {
 					setTimer(timer - 1);
 				}, 1000)
-			} else {
-				console.log("e");
-				setUtils({ ...util, resendOtpActive: true })
 			}
 		} else {
 			console.log("e");
 			setTimer(30);
 		}
-	}, [util.showOtpForm, timer])
+	}, [showOtpForm, timer])
 	const changePhoneHandler = () => {
-		setUtils({ ...util, showOtpForm: false, error: null, enterNumberInactive: false, resendOtpActive: false })
+		setShowOtpForm(false);
+		setUtils({ ...util,error: null, enterNumberInactive: false, resendOtpActive: false })
 	}
 	const generateRecaptcha = () => {
 		appVerifier = new RecaptchaVerifier(
@@ -57,9 +56,11 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			.then((confirmationResult) => {
 				if (resend) {
 					setTimer(30);
-					setUtils({ ...util, resendOtpActive: false, showOtpForm: true, loading: false, error: null });
+					setShowOtpForm(true);
+					setUtils({ ...util, resendOtpActive: false, loading: false, error: null });
 				} else {
-					setUtils({ ...util, showOtpForm: true, loading: false, error: null });
+					setShowOtpForm(true);
+					setUtils({ ...util, loading: false, error: null });
 				}
 				window.confirmationResult = confirmationResult;
 			})
@@ -108,7 +109,6 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			signInHandler(resendOtp)
 		}
 	}
-
 	const submitCode = async () => {
 
 		setUtils({ ...util, loading: true, enterOtpInactive: true })
@@ -150,7 +150,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 						<div id="recaptcha-container"></div>
 					</div>
 					{util.error && <Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>}
-					{(!util.showOtpForm) ? <div>
+					{(!showOtpForm) ? <div>
 
 						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={otpStyle.phoneBox}>
 
@@ -188,8 +188,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								{!util.loading ? <Button size='large' className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
 									<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
 
-								<Button size='large' disabled={!util.resendOtpActive} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
-									{util.resendOtpActive ? 'Resend OTP' : `Resend OTP 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
+								<Button size='large' disabled={timer>0} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
+									{timer===0 ? 'Resend OTP' : `Resend OTP 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
 								</Button>
 
 								<Divider>or</Divider>
