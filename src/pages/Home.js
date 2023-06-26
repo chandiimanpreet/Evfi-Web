@@ -9,7 +9,7 @@ const Home = ({ direction }) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<NavigationBar />
-			<DashboardMap />
+			<DashboardMap card={[]} />
 		</motion.div>
 	);
 }
