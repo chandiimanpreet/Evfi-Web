@@ -79,7 +79,7 @@ const Profile = ({ logout, direction }) => {
                   }`}
                   onClick={() => handleTabChange(tab)}
                 >
-                  <Typography fontWeight="bold" className={classes.buttonName}>
+                  <Typography  className={classes.buttonName}>
                     {icon && (
                       <Typography className={classes.buttonIcon}>{icon}</Typography>
                     )}
