@@ -14,7 +14,7 @@ export const useStyles = makeStyles({
 		padding: '0rem .8rem 1rem 1rem ',
 	},
 	searchResultsContainer: {
-		maxHeight: 'calc(100vh - 8rem)',
+		maxHeight: 'calc(100vh - 5rem)',
 		paddingTop: '6px',
 		overflowX: 'hidden',
 		overflowY: 'auto !important',
@@ -61,7 +61,7 @@ export const useStyles = makeStyles({
 	/////////////////////////////////////	 ListItem 	//////////////////////////////////////
 	listItemStyle: {
 		cursor: 'pointer',
-		margin: "0.8rem 0.6rem 0",
+		margin: " 0.8rem 0.6rem 0",
 		'&:first-child': { marginTop: '0px', },
 	},
 	listItemCardStyle: {
