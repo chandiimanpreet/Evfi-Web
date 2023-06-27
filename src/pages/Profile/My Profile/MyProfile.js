@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import { Typography, Button, Grid, TextField, CardContent } from "@mui/material";
+import { Typography, Button, Grid, CardContent } from "@mui/material";
 import useStyles from "./MyProfileStyles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import RenderInformation from "./RenderInformation";
 
 const MyProfile = () => {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState(false);
-  const [firstName, setFirstName] = useState("Virat");
-  const [lastName, setLastName] = useState("Kohli");
-  const [email, setEmail] = useState("viratkohli18@gmail.com");
-  const [phoneNumber, setPhoneNumber] = useState("+91-9876543210");
-  const [country, setCountry] = useState("India");
-  const [state, setState] = useState("New Delhi");
-  const [city, setCity] = useState("New Delhi");
-  const [pinCode, setPinCode] = useState("110011");
+  const [profile, setProfile] = useState({
+    firstName: "Virat",
+    lastName: "Kohli",
+    email: "viratkohli18@gmail.com",
+    phoneNumber: "+91-9876543210",
+    country: "India",
+    state: "New Delhi",
+    city: "New Delhi",
+    pinCode: "110011",
+  });
 
   const handleEditDetails = () => {
     setIsEditing(true);
@@ -21,6 +24,13 @@ const MyProfile = () => {
 
   const handleSaveDetails = () => {
     setIsEditing(false);
+  };
+
+  const handleChange = (field, value) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [field]: value,
+    }));
   };
 
   return (
@@ -34,90 +44,35 @@ const MyProfile = () => {
           <Typography variant="h6" gutterBottom fontWeight="bold">
             Personal Information
           </Typography>
-          <Grid container spacing={2} className={classes.name}>
-            <Grid item xs={6}>
-              <Typography variant="subtitle1" fontWeight="bold">
-                First Name
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={firstName}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" gutterBottom fontWeight="bold">
-                Last Name
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={lastName}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2} className={classes.contact}>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Email Address
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={email}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Phone Number
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={phoneNumber}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
+          <Grid container spacing={2} className={classes.content}>
+            <RenderInformation
+              field="firstName"
+              label="First Name"
+              value={profile.firstName}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="lastName"
+              label="Last Name"
+              value={profile.lastName}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="email"
+              label="Email"
+              value={profile.email}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="phoneNumber"
+              label="Phone Number"
+              value={profile.phoneNumber}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
           </Grid>
         </CardContent>
 
@@ -125,112 +80,46 @@ const MyProfile = () => {
           <Typography variant="h6" gutterBottom fontWeight="bold">
             Address
           </Typography>
-          <Grid container spacing={2} className={classes.countryState}>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Country
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={country}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                State
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={state}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2} className={classes.cityPinCode}>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                City
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={city}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Pin Code
-              </Typography>
-              {isEditing ? (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={pinCode}
-                  onChange={(e) => setPinCode(e.target.value)}
-                />
-              ) : (
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  value={pinCode}
-                  disabled={!isEditing}
-                />
-              )}
-            </Grid>
+          <Grid container spacing={2} className={classes.content}>
+            <RenderInformation
+              field="country"
+              label="Country"
+              value={profile.country}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="state"
+              label="State"
+              value={profile.state}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="city"
+              label="City"
+              value={profile.city}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="pinCode"
+              label="Pin Code"
+              value={profile.pinCode}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
           </Grid>
         </CardContent>
       </Grid>
-      {isEditing ? (
-        <Button
-          className={classes.editButton}
-          variant="contained"
-          startIcon={<BorderColorIcon />}
-          onClick={handleSaveDetails}
-        >
-          Save Details
-        </Button>
-      ) : (
-        <Button
-          className={classes.editButton}
-          variant="contained"
-          startIcon={<BorderColorIcon />}
-          onClick={handleEditDetails}
-        >
-          Edit Details
-        </Button>
-      )}
+      <Button
+        className={classes.editButton}
+        variant="contained"
+        startIcon={<BorderColorIcon />}
+        onClick={isEditing ? handleSaveDetails : handleEditDetails}
+      >
+        {isEditing ? "Save Details" : "Edit Details"}
+      </Button>
     </div>
   );
 };

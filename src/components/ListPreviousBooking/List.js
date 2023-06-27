@@ -1,13 +1,11 @@
-import React, { useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, } from 'react';
 import ListItem from './ListItem';
-import FavoriteListItem from './FavouriteItem';
 import FilterGroup from '../Filters/FilterGroup';
 import { chargerTypeOptions, sortByOptions } from '../../constants';
 import {
 	FormControl, InputAdornment, Input, Accordion, AccordionDetails, Button, AccordionSummary, Box,
-	Typography, Tab
+	Typography,
 } from '@mui/material';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,7 +14,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
 
-const List = (props) => {
+const List = ({ searchedData, collectCardData }) => {
 
 	//States
 	const [showFilter, setShowFilter] = useState(false);
@@ -27,7 +25,7 @@ const List = (props) => {
 		to: null,
 	});
 
-	const [tabValue, setTabValue] = useState('1');
+	const [cardData, setCardData] = useState('');
 
 	//Styling
 	const classes = useStyles();
@@ -50,14 +48,17 @@ const List = (props) => {
 		}))
 	};
 
-	const handleChange = (event, newValue) => {
-		setTabValue(newValue);
-	};
+	const handleCardData = (result) => { setCardData(result); };
+
+	useEffect(() => {
+		collectCardData(cardData);
+		// eslint-disable-next-line
+	}, [cardData]);
 
 	return (
 		<Fragment>
 			<Box className={classes.outerBox} >
-				<Box  >
+				<Box>
 					<Box sx={{ padding: '11px 8px 2px 8px', display: 'flex', justifyContent: 'space-between', }} >
 						<FormControl variant="standard" fullWidth>
 							<Input placeholder='Search Charging Stations...' className={classes.inputField}
@@ -116,38 +117,19 @@ const List = (props) => {
 											</LocalizationProvider>
 										</Box>
 									</Box>
-
-									<Box sx={{ marginTop: '13px', }}>
-
-									</Box>
 								</Box>
 							</AccordionDetails>
 						</Accordion>
 					</Box>
 
 					<Box>
-						<TabContext value={tabValue}>
-							<Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', }}>
-								<TabList onChange={handleChange}  className={classes.tabStyle}>
-									<Tab label="Previous Booking" value="1" sx={{ textTransform: 'none', }} />
-									<Tab label="Favourites" value="2" sx={{ textTransform: 'none', }} />
-								</TabList>
-							</Box>
-							<TabPanel value="1" sx={{ padding: '0px' }}>
-								<Box className={classes.searchResultsContainer}>
-									{props.searchedData.map((result) => (
-										<ListItem key={result.id} result={result} />
-									))}
+						<Box className={classes.searchResultsContainer}>
+							{searchedData.map((result) => (
+								<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} >
+									<ListItem key={result.id} result={result} />
 								</Box>
-							</TabPanel>
-							<TabPanel value="2" sx={{ padding: '0px' }}>
-								<Box className={classes.searchResultsContainer}>
-									{props.searchedData.map((result) => (
-										<FavoriteListItem key={result.id} result={result} />
-									))}
-								</Box>
-							</TabPanel>
-						</TabContext>
+							))}
+						</Box>
 					</Box>
 				</Box>
 			</Box>

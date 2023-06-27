@@ -11,7 +11,6 @@ export const useStyles = makeStyles({
     backgroundColor: "#f1f3f6",
   },
   container: {
-
     display: "flex",
     flexDirection: "row",
   },
@@ -30,7 +29,7 @@ export const useStyles = makeStyles({
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    marginTop: "50px",
+    marginTop: "58px",
 
   },
   sidebox: { 
@@ -74,7 +73,7 @@ export const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     borderColor: "grey",
-    paddingLeft: "-20px",
+    paddingLeft: "0px",
     paddingTop: "50px",
   },
   profilePictureContainer: {
