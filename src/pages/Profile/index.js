@@ -6,9 +6,8 @@ import MyChargers from "./MyChargers";
 import Payments from "./Payments";
 import Settings from "./Settings";
 import Support from "./Support";
-import Logout from "./Logout";
 import { useStyles } from "./styles";
-import { Bolt as BoltIcon, } from "@mui/icons-material";
+import { Bolt as BoltIcon } from "@mui/icons-material";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import DockRoundedIcon from "@mui/icons-material/DockRounded";
 import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
@@ -16,13 +15,16 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
-
 const Profile = ({ logout, direction }) => {
   const [activeTab, setActiveTab] = useState("My Profile");
   const classes = useStyles();
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleLogout = () => {
+    logout(); 
   };
 
   return (
@@ -35,7 +37,7 @@ const Profile = ({ logout, direction }) => {
     >
       <Box className={classes.container}>
         <Box className={classes.sidebox}>
-        <BoltIcon className={classes.boltIcon} />
+          <BoltIcon className={classes.boltIcon} />
           <Box className={classes.profilePictureContainer}>
             <Box className={classes.profileGreet}>
               <Avatar
@@ -77,11 +79,15 @@ const Profile = ({ logout, direction }) => {
                   className={`${classes.button} ${
                     activeTab === tab ? classes.activeButton : ""
                   }`}
-                  onClick={() => handleTabChange(tab)}
+                  onClick={() =>
+                    tab === "Logout" ? handleLogout() : handleTabChange(tab)
+                  }
                 >
-                  <Typography fontWeight="bold" className={classes.buttonName}>
+                  <Typography className={classes.buttonName}>
                     {icon && (
-                      <Typography className={classes.buttonIcon}>{icon}</Typography>
+                      <Typography className={classes.buttonIcon}>
+                        {icon}
+                      </Typography>
                     )}
                     &nbsp; &nbsp; &nbsp; {tab}
                   </Typography>
@@ -98,7 +104,6 @@ const Profile = ({ logout, direction }) => {
             {activeTab === "Payments" && <Payments />}
             {activeTab === "Settings" && <Settings />}
             {activeTab === "Support" && <Support />}
-            {activeTab === "Logout" && <Logout logout={logout} />}
           </Box>
         </Box>
       </Box>
