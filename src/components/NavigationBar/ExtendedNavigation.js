@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Box, Popover, TextField, Autocomplete, InputAdornment } from "@mui/material";
+import React from "react";
+import { Box, Popover, TextField, Autocomplete } from "@mui/material";
 import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, TravelExploreRounded as TravelExploreRoundedIcon, Tune as TuneIcon, MyLocation as MyLocationIcon } from "@mui/icons-material";
 import { motion } from 'framer-motion';
 import { useStyles } from "./style";
-import { MapContainer, TileLayer } from "react-leaflet";
 import "./style.css";
-import FindCurrentLocation from "../DashboardMap/FindCurrentLocation";
+
 const ExtendedNavigation = ({ anchorEl,
 	handleClose,
 	distanceData,
@@ -15,15 +14,10 @@ const ExtendedNavigation = ({ anchorEl,
 	searchCoordinates,
 	autofocusedSource,
 	autofocusedDestination,
+	setCurrentLocation
 }) => {
 
-	const [showCurrentLocation, setShowCurrentLocation] = useState(false); // State for showing/hiding current location
-
 	const classes = useStyles();
-
-	const handleShowCurrentLocation = () => {
-		setShowCurrentLocation(true);
-	};
 
 	return (
 		<motion.div>
@@ -47,34 +41,26 @@ const ExtendedNavigation = ({ anchorEl,
 						<BoltIcon className={classes.bigboltIcon} />
 					</Box>
 					<Box className={classes.extendinputroot}>
-						<MyLocationIcon className={classes.myLocationIcon} onClick={handleShowCurrentLocation} />
+						<MyLocationIcon className={classes.myLocationIcon} onClick={() => setCurrentLocation(true)} />
 						<Autocomplete
 							disablePortal
 							id="combo-box-demo"
 							options={distanceData}
+							value={searchCoordinates.source.label}
 							className={classes.autocompletestyle}
 							sx={{ left: '2.3rem' }}
 							renderInput={(params) =>
-
 								<TextField
 									{...(autofocusedSource) ? { autoFocus: true } : { autoFocus: false }}
 									onChange={onChangeRoute} inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params}
 									id="destination-textfield"
 									placeholder='Source'
-								// InputProps={{
-								// 	sx: { color: '#fff' },
-								// 	startAdornment: (
-								// 		<InputAdornment position="start">
-								// 			<MyLocationIcon className={classes.myLocationIcon} onClick={handleShowCurrentLocation} />
-								// 		</InputAdornment>
-								// 	),
-								// }}
+
 								/>}
 							onChange={(event, newValue) => {
 								if (newValue) {
-									setSearchCoordinates({ ...searchCoordinates, source: newValue.coordinates })
-									console.log(event.coordinates);
-									console.log(newValue.coordinates);
+									console.log(newValue);
+									setSearchCoordinates({ ...searchCoordinates, source: { coordinates: newValue.coordinates, label: newValue.label } })
 								}
 
 							}}
@@ -83,13 +69,14 @@ const ExtendedNavigation = ({ anchorEl,
 						<Autocomplete
 							disablePortal
 							id="combo-box-demo"
-
+							value={searchCoordinates.destination.label}
 							options={distanceData}
 							data-shrink="false!important"
 							className={classes.autocompletestyle}
 							sx={{ right: '2.3rem' }}
 							renderInput={(params) =>
 								<TextField
+									value={searchCoordinates.destination.label}
 									{...(autofocusedDestination) ? { autoFocus: true } : { autoFocus: false }}
 									onChange={onChangeRoute}
 									inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params}
@@ -99,7 +86,7 @@ const ExtendedNavigation = ({ anchorEl,
 							}
 							onChange={(event, newValue) => {
 								if (newValue) {
-									setSearchCoordinates({ ...searchCoordinates, destination: newValue.coordinates })
+									setSearchCoordinates({ ...searchCoordinates, destination: { coordinates: newValue.coordinates, label: newValue.label } })
 								}
 							}}
 						/>
@@ -108,18 +95,7 @@ const ExtendedNavigation = ({ anchorEl,
 				</Box>
 				<TuneIcon className={classes.filterdesign} />
 			</Popover>
-			{showCurrentLocation && <MapContainer center={[29.9695, 76.8783]} zoom={13} scrollWheelZoom={false}>
-
-				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				/>
-				<FindCurrentLocation />
-
-			</MapContainer>}
 		</motion.div>
 	)
 }
 export default ExtendedNavigation
-
-

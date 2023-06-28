@@ -5,11 +5,11 @@ const createRoutineMachineLayer = ({ searchCoordinates }) => {
     const { source, destination } = searchCoordinates
     const instance = L.Routing.control({
         waypoints: [
-            L.latLng(source[1], source[0]),
-            L.latLng(destination[1], destination[0])
+            L.latLng(source.coordinates[1], source.coordinates[0]),
+            L.latLng(destination.coordinates[1], destination.coordinates[0])
         ],
         lineOptions: {
-            styles: [{ color: "red", weight: 5 }]
+            styles: [{ color: "#0047AB", weight: 4 }]
         },
         fitSelectedRoutes: true,
         showAlternatives: true,

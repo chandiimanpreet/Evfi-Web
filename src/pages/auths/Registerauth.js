@@ -1,169 +1,55 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Paper } from '@mui/material';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { Grid, Box, TextField, Button, Divider, Typography } from '@mui/material';
+import { useStyles, otpStyle } from './style';
+import { registerUser } from '../../utils/auth/user';
 
-const defaultTheme = createTheme();
-export default function Registerauth(props) {
-	const navigate = useNavigate();
-	const { setData } = props;
-	const [data, setUserData] = useState(null);
-	const onChange = (e) => {
+export default function Registerauth({ setData, user }) {
+
+	const classes = useStyles();
+	const [data, setUserData] = useState({ username: "", email: "", chargerType: "" });
+
+	const changeDataHandler = (e) => {
 		setUserData({ ...data, [e.target.name]: e.target.value })
 	}
-	useEffect(() => {
-		if (localStorage.getItem('registered') === 'true') {
-			navigate('/');
+
+	const saveData = async () => {
+		const temp = await registerUser({ ...data, registered: true })
+		if (temp.error) {
+			console.log(temp.error);
 		}
-	})
-	const saveData = () => {
-		if (localStorage.getItem('user')) {
-			fetch(`https://apifromfb.onrender.com/api/update/Users?id=${localStorage.getItem('user')}`, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					...data, registered: true
-				})
-			})
-				.then(() => {
-					localStorage.setItem('registered', true)
-					navigate('/', { replace: true })
-					setData({ ...data, registered: true })
-				})
-				.catch((error) => {
-					console.log(error);
-				})
-		} else {
-			navigate('/auth');
-		}
+		setData({ ...data, registered: true });
+	}
+	if (user.registered === true) {
+		return <Navigate to={'/'} />
 	}
 	return (
 		<>
-			<motion.div initial={{ x: 2000, opacity: 0 }}
-				animate={{ opacity: 1, x: 0 }}
-				exit={{ x: -2000, transition: { duration: 0.4, delay: 0 } }} transition={{ duration: 1, delay: 0.8 }}>
-				<ThemeProvider theme={defaultTheme}>
-					<Grid container component="main" sx={{ height: '100vh' }}>
-						<CssBaseline />
-						<Grid
-							item
-							xs={false}
-							sm={4}
-							md={7}
-							sx={{
-								backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-								backgroundRepeat: 'no-repeat',
-								backgroundColor: (t) =>
-									t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-								backgroundSize: 'cover',
-								backgroundPosition: 'center',
-							}}
-						/>
+			<Grid container>
 
-						<Grid item xs={12} sm={8} md={5} sx={{ backgroundColor: "#212121" }} component={Paper} elevation={6} square>
-							<Box
-								sx={{
-									my: 8,
-									mx: 4,
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-							>
-								<Box sx={{ mb: 4, border: 1, borderRadius: 1, p: 1, borderColor: '#ffeb3b', borderWidth: 3 }}>
-									<img style={{ height: '30px', width: '30px' }} alt='' src="/resources/light.png" />
-								</Box>
-								<Box sx={{ mb: 6 }}>
-									<Typography component="h1" variant='h5' style={{ color: 'white', fontWeight: 'bold' }}>Start Your Journey With <span style={{ color: '#ffeb3b' }}>EVFI</span></Typography>
-								</Box>
-								<Avatar sx={{ m: 1, bgcolor: '#ffeb3b', color: "black" }}>
-									<AccountCircleIcon fontSize='large' />
-								</Avatar>
+				<Grid className={classes.registerGrid} xs={5} item>
+					<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
+						<Typography className={classes.headOtp}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
+						<br /><br />
+						<Typography className={classes.register}>&nbsp;&nbsp;&nbsp;Welcome Back <span style={{ display: 'inline' }}>&#128075;</span></Typography>
+						<Typography style={{ textAlign: 'center' }}>Please enter your details.</Typography>
+						<TextField onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' value={data.username} />
+						<TextField onChange={changeDataHandler} required variant='outlined' label='Email' type='email' name='email' value={data.email} />
+						<TextField onChange={changeDataHandler} variant='outlined' type='text' label='Charger Type' name='chargerType' value={data.chargerType} />
+						<Button size='large' type='submit' className={classes.btn} variant='contained'>Register</Button>
 
-								<Box sx={{
-									mx: 4,
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}>
-									<Typography color='white' component="h1" variant="h5">
-										Register
-									</Typography>
-									<Box component="form" onSubmit={() => saveData()} sx={{ mt: 2 }}>
-										<TextField onChange={(e) => onChange()}
-											sx={{
-												backgroundColor: 'white', color: 'black'
-											}}
-											margin="normal"
-											required={true}
-											fullWidth
-											id="name"
-											label="username"
-											name="name"
-											type='text'
-											variant="filled"
-											autoFocus
+						<Divider>or</Divider>
+						<Link to='/' style={{ alignSelf: 'center' }}><Button className={classes.changeBtn} variant='outlined'>Skip for later</Button></Link>
+					</Box>
 
-										/>
-										<TextField onChange={(e) => onChange()}
-											sx={{
-												backgroundColor: 'white', color: 'black'
-											}}
-											margin="normal"
-											required={true}
-											fullWidth
-											id="email"
-											label="Email"
-											name="email"
-											type='email'
-											variant="filled"
-											autoFocus
+				</Grid>
 
-										/>
-										<TextField onChange={(e) => onChange()}
-											sx={{
-												backgroundColor: 'white', color: 'black'
-											}}
-											margin="normal"
-											fullWidth
-											id="charger"
-											label="Charger Type"
-											name="charger"
-											type='text'
-											variant="filled"
-											autoFocus
+				<Grid xs={7} item>
+					<img alt='' className={classes.imgStyle} src={`/resources/four.jpg`} />
+				</Grid>
 
-										/>
+			</Grid>
 
-										<Button
-											style={{ backgroundColor: '#ffeb3b', color: 'black' }}
-											type="submit"
-											fullWidth
-											variant="contained"
-											sx={{ mt: 3, mb: 2 }}
-										>
-											Register
-										</Button>
-										<Link to={'/'} style={{ color: 'white', fontWeight: 'normal', fontSize: '1rem' }}>Skip For Now</Link>
-									</Box>
-								</Box>
-							</Box>
-						</Grid>
-					</Grid>
-				</ThemeProvider>
-			</motion.div>
 		</>
 	)
 }

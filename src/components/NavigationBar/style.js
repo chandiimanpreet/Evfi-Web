@@ -87,9 +87,7 @@ export const useStyles = makeStyles({
 		cursor: 'pointer',
 		padding: ' 0.5rem 0.5rem ',
 		position: 'relative',
-		// '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-		// 	borderRadius: '2rem!important',
-		// }
+
 	},
 	swapHorizontalCircleIcon: {
 		color: '#fff',
@@ -127,9 +125,7 @@ export const useStyles = makeStyles({
 		zIndex: 1500,
 		left: '3.3rem',
 	},
-	// exNavPopover: {
-	// 	'& 
-	// },
+
 	popDesign: {
 		'& label.Mui-focused': {
 			color: '#fff',

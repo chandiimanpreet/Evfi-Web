@@ -2,10 +2,10 @@ import { AppBar, Toolbar, Button } from "@mui/material";
 import { Bolt as BoltIcon } from "@mui/icons-material";
 import { useStyles } from "./style";
 import { motion } from 'framer-motion';
-import "./style.css";
-const ReduceNavigation = ({ handleOnclickSource, handleOnclickDestination, selectedValue, textFieldfill }) => {
+// import "./style.css";
+const ReduceNavigation = ({ handleOnclickSource, searchCoordinates, handleOnclickDestination }) => {
     const classes = useStyles();
-    console.log(selectedValue);
+
     return (
         <motion.div>
             <AppBar className={classes.rdNavigation}>
@@ -15,9 +15,8 @@ const ReduceNavigation = ({ handleOnclickSource, handleOnclickDestination, selec
                         aria-describedby='simple-popover'
                         onClick={handleOnclickSource}
                         className={classes.inputBtns}
-                        value={selectedValue}
                     >
-                        {textFieldfill ? selectedValue : 'Source'}
+                        {searchCoordinates && searchCoordinates.source.label !== '' ? searchCoordinates.source.label : 'Source'}
 
                     </Button>
                     <BoltIcon className={classes.boltIcon} />
@@ -26,10 +25,8 @@ const ReduceNavigation = ({ handleOnclickSource, handleOnclickDestination, selec
                         aria-describedby='simple-popover'
                         onClick={handleOnclickDestination}
                         className={classes.inputBtns}
-                        value={selectedValue}
                     >
-                        {textFieldfill ? selectedValue : 'Destination'}
-
+                        {searchCoordinates && searchCoordinates.destination.label !== '' ? searchCoordinates.destination.label : 'Destination'}
                     </Button>
                 </Toolbar>
             </AppBar >

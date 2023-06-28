@@ -1,10 +1,13 @@
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import "./style.css";
+// import "./style.css";
 import RoutingMachine from "./RoutingMachine";
 import { Icon } from 'leaflet'
 import NavigationBar from "../NavigationBar";
-const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute }) => {
-	const { source, destination } = searchCoordinates;
+import FindCurrentLocation from "./FindCurrentLocation";
+import { useLocation } from "react-router";
+
+const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation }) => {
+	const location = useLocation();
 	return (
 		<div>
 			<MapContainer center={[29.9695, 76.8783]} zoom={13} scrollWheelZoom={false}>
@@ -14,19 +17,25 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 				/>
 				{show &&
 					<div>
-						<Marker position={[source[1], source[0]]} icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}
+						<Marker position={[searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]]} icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}
 						/>
-						<Marker position={[destination[1], destination[0]]}
+						<Marker position={[searchCoordinates.destination.coordinates[1], searchCoordinates.destination.coordinates[0]]}
 							icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}
 						/>
 						<RoutingMachine searchCoordinates={searchCoordinates} />
 					</div>
 				}
+				{showCurrentLocation &&
+					<FindCurrentLocation />
+				}
 			</MapContainer>
-			<NavigationBar setSearchCoordinates={setSearchCoordinates}
-				searchCoordinates={searchCoordinates}
-				showRoute={showRoute}
-			/>
+			{location.pathname === '/' &&
+				<NavigationBar setSearchCoordinates={setSearchCoordinates}
+					searchCoordinates={searchCoordinates}
+					showRoute={showRoute}
+					setCurrentLocation={setCurrentLocation}
+				/>
+			}
 		</div>
 	);
 };

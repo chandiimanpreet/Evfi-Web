@@ -1,285 +1,184 @@
-import React, { useEffect, useState } from 'react'
-import { initializeApp } from "firebase/app";
+import React, { useEffect, useRef, useState } from 'react'
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, Box, Button, CssBaseline, Grid, Paper, Slide, TextField, Typography } from '@mui/material';
-import { motion } from 'framer-motion';
+import { Box, Button, Grid, Divider, Alert, Typography, Checkbox, FormControlLabel } from '@mui/material';
+import { useStyles, otpStyle } from './style';
+import OTPInput from 'react-otp-input';
+import { logInUser } from '../../utils/auth/user';
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from '../../utils/config/firebaseConfig';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/material.css'
 
-const firebaseConfig = {
-	apiKey: "AIzaSyAM-1D3n2gZfU05D8SKpDT7WWPYQlGH5mk",
-	authDomain: "evfi-prod.firebaseapp.com",
-	databaseURL: "https://evfi-prod-default-rtdb.asia-southeast1.firebasedatabase.app",
-	projectId: "evfi-prod",
-	storageBucket: "evfi-prod.appspot.com",
-	messagingSenderId: "758735537136",
-	appId: "1:758735537136:web:f0cec73edea6123e55d335"
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
-const defaultTheme = createTheme({});
 
-export default function Phoneauth(props) {
-	const [submitOtp, setSubmitOtp] = useState(false)
-	const { phone, setNumber, setData } = props;
-	const [showOTP, setShow] = useState({ clicked: false, showotp: false })
+let appVerifier;
+export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
+	const classes = useStyles();
+	const [timer, setTimer] = useState(30);
+	const [util, setUtils] = useState({ showOtpForm: false, loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
+	const [otp, setotp] = useState("")
+	const recaptchaWrapperRef = useRef(null);
+
 	const navigate = useNavigate();
 	useEffect(() => {
-		if (localStorage.getItem('user')) {
-			navigate('/')
+		if (util.showOtpForm) {
+			if (timer > 0) {
+				setTimeout(() => {
+					setTimer(timer - 1);
+				}, 1000)
+			} else {
+				setUtils({ ...util, resendOtpActive: true })
+			}
+		} else {
+			setTimer(30);
+		}
+	}, [util, timer])
+	const changePhoneHandler = () => {
+		setUtils({ ...util, showOtpForm: false, error: null, enterNumberInactive: false })
+	}
+	const generateRecaptcha = () => {
+		appVerifier = new RecaptchaVerifier(
+			"recaptcha-container",
+			{
+				size: "invisible",
+			},
+			auth
+		)
+	}
+	const submitPhoneNumberAuth = () => {
+		if (phone.length < 12) {
+			setUtils({ ...util, error: "Please enter valid phone number" })
+			return;
+		}
+		setUtils({ ...util, loading: true, enterNumberInactive: true })
+		if (appVerifier && recaptchaWrapperRef.current) {
+			appVerifier.clear();
+			recaptchaWrapperRef.current.innerHTML = `<div id="recaptcha-container"></div>`;
 		}
 
-		return () => {
-			setSubmitOtp(false)
-		}
-		//eslint-disable-next-line
-	}, [])
-	const configureCaptcha = () => {
-		window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-			'size': "normal",
-			'callback': function (response) {
-				submitPhoneNumberAuth();
-			},
-			'expired-callback': () => {
-				console.log("response expired");
-			}
-		}, auth);
+		// Initialize new reCaptcha verifier
+		generateRecaptcha();
+		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
+			.then((confirmationResult) => {
+				setUtils({ ...util, showOtpForm: true, loading: false, error: null });
+				window.confirmationResult = confirmationResult;
+			})
+			.catch((error) => {
+				setUtils({ ...util, error: error.message })
+			})
 	}
 
-	const submitPhoneNumberAuth = () => {
-		setShow({ ...showOTP, clicked: true })
-		let phone = document.getElementById('phone').value;
-		phone = "+91" + phone;
-		configureCaptcha();
-		let appVerifier = window.recaptchaVerifier;
-		signInWithPhoneNumber(auth, phone, appVerifier)
+	const resendOtp = () => {
+		setUtils({ ...util, resendOtpActive: false });
+		setTimer(30);
+		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
 			.then((confirmationResult) => {
 				window.confirmationResult = confirmationResult;
-				setShow({ ...showOTP, showotp: true })
 			})
 			.catch((error) => {
-				console.log("error");
-			})
-	}
-	const submitCode = () => {
-		setSubmitOtp(true)
-		let code = document.getElementById("otp").value;
-		console.log(code);
-		window.confirmationResult.confirm(code)
-			.then((result) => {
-				let user = result.user;
-				setNumber("")
-				console.log(user.uid);
-				fetch(`https://apifromfb.onrender.com/api/get/Users?id=${user.uid}`)
-					.then((response) => response.json())
-					.then((data) => {
-						if (data.msg) {
-							fetch(`https://apifromfb.onrender.com/api/Users?id=${user.uid}`, {
-								method: "POST",
-								headers: {
-									"Content-Type": "application/json",
-								},
-								body: JSON.stringify({
-									"mobile": phone,
-									"registered": false
-								})
-							}).then(() => {
-								localStorage.setItem("user", user.uid);
-								localStorage.setItem("registered", false)
-								setData({
-									"loading": false,
-									"flag": true,
-									"mobile": phone,
-									"registered": false
-								})
-								navigate('/register', { replace: true })
-							})
-								.catch((error) => {
-									console.log(error);
-								})
-						} else {
-							console.log("e");
-							localStorage.setItem('user', user.uid)
-							setData({ ...data, "loading": false, "flag": true });
-							if (data.registered === true) {
-								localStorage.setItem('registered', true)
-								navigate('/', { replace: true })
-							} else {
-								localStorage.setItem('registered', false)
-								navigate('/register');
-							}
-						}
-					})
-					.catch((error) => {
-						console.log(error);
-					})
-			})
-			.catch((error) => {
-				window.alert("Wrong OTP")
-				setSubmitOtp(false)
+				setUtils({ ...util, error: error.message })
 			})
 	}
 
+	const submitCode = async () => {
+
+		setUtils({ ...util, loading: true, enterOtpInactive: true })
+		if (otp.length < 6) {
+			setUtils({ ...util, enterOtpInactive: false, loading: false, error: "Wrong OTP" })
+			return;
+		}
+		window.confirmationResult.confirm(otp)
+			.then(async () => {
+				const res = await logInUser(phone);
+				console.log("e");
+				if (res.registered === false) {
+					setData({ "loading": false, "flag": true, ...res });
+					navigate('/register', { replace: true });
+				}
+
+				else if (res.registered === true) {
+					setData({ ...res, "loading": false, "flag": true });
+					navigate('/', { replace: true })
+				} else {
+					setUtils({ ...util, ...res, loading: false, enterOtpInactive: false })
+				}
+			})
+
+			.catch((error) => {
+				setUtils({ ...util, enterOtpInactive: false, loading: false, error: error.message })
+			})
+	}
+	if (flag) {
+		return <Navigate to='/' />
+	}
 	return (
 		<>
-			<motion.div initial={{ x: 2000, opacity: 0 }}
-				animate={{ opacity: 1, x: 0 }}
-				exit={{ x: -2000, opacity: 0, transition: { duration: 0.5, delay: 0 } }} transition={{ duration: 1, delay: 0.1 }}>
-				<ThemeProvider theme={defaultTheme}>
-					<Grid container component="main" sx={{ height: '100vh' }}>
-						<CssBaseline />
-						<Grid item xs={false} sm={4} md={7}
-							sx={{
-								backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-								backgroundRepeat: 'no-repeat',
-								backgroundColor: (t) =>
-									t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-								backgroundSize: 'cover',
-								backgroundPosition: 'center',
-							}}
-						/>
+			<Grid container>
 
-						<Grid item xs={12} sm={8} md={5} sx={{ backgroundColor: "#212121" }} component={Paper} elevation={6} square>
-							<Slide direction='left' in mountOnEnter unmountOnExit timeout={{ enter: 800 }}>
-								<Box
-									sx={{
-										my: 8,
-										mx: 4,
-										display: 'flex',
-										flexDirection: 'column',
-										alignItems: 'center',
-									}}
-								>
-									<Box sx={{ mb: 4, border: 1, borderRadius: 1, p: 1, borderColor: '#ffeb3b', borderWidth: 3 }}>
-										<img style={{ height: '30px', width: '30px' }} alt='' src="/resources/light.png" />
-									</Box>
-									<Box sx={{ mb: 10 }}>
-										<Typography component="h1" variant='h5' style={{ color: 'white', fontWeight: 'bold' }}>Start Your Journey With <span style={{ color: '#ffeb3b' }}>EVFI</span></Typography>
-									</Box>
-									<Avatar sx={{ m: 1, bgcolor: '#ffeb3b', color: "black" }}>
-										<LockOutlinedIcon />
-									</Avatar>
-									<Slide direction='left' in={!showOTP.showotp} mountOnEnter unmountOnExit timeout={{ enter: 800, exit: 0 }}>
-										<Box sx={{
-											mx: 4,
-											display: 'flex',
-											flexDirection: 'column',
-											alignItems: 'center',
-										}}>
-											<Typography color='white' component="h1" variant="h5">
-												Verify Phone Number
-											</Typography>
-											<Box component="form" onSubmit={(e) => {
-												e.preventDefault()
-												if (!showOTP.clicked) {
-													submitPhoneNumberAuth()
-												}
-											}} sx={{ mt: 2 }}>
-												<TextField value={phone} onChange={(e) => setNumber(e.target.value)}
-													sx={{
-														width: '19rem', backgroundColor: 'white', color: 'black'
-													}}
-													margin="normal"
-													required={true}
-													fullWidth
-													id="phone"
-													label="Phone Number"
-													name="phone"
-													inputProps={{
-														maxLength: 10, minLength: 10
-													}}
-													variant="filled"
-													autoFocus
+				<Grid className={classes.mainGrid} xs={5} item>
 
-												/>
+					<div ref={recaptchaWrapperRef}>
+						<div id="recaptcha-container"></div>
+					</div>
+					{util.error && <Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>}
+					{(!util.showOtpForm) ? <div>
 
-												<div id='recaptcha-container'></div>
+						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={otpStyle.phoneBox}>
 
-												<Button
-													style={{ backgroundColor: '#ffeb3b', color: 'black' }}
-													type="submit"
-													fullWidth
-													variant="contained"
-													sx={{ mt: 3, mb: 2 }}
-												>
-													Get OTP
-												</Button>
+							<Typography className={classes.companyText}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
+							<br /><br />
+							<Typography className={classes.headText}>Verify Your Number</Typography>
+							<div>
+								<PhoneInput
+									country={(code ? code : 'us')}
+									value={phone}
+									inputStyle={{ width: '100%' }}
+									onChange={num => setNumber(num)}
+									inputProps={{ required: true }}
+								/>
+								<FormControlLabel control={<Checkbox size="small" />} label="Remember me" />
+							</div>
+							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
+								<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
+						</Box>
+					</div>
+						:
+						<div>
 
-											</Box>
-										</Box>
-									</Slide>
-									<Slide direction='left' in={showOTP.showotp} mountOnEnter unmountOnExit timeout={{ enter: 800, exit: 0 }}>
-										<Box sx={{
-											mx: 4,
-											display: 'flex',
-											flexDirection: 'column',
-											alignItems: 'center',
-										}}>
-											<Typography color='white' component="h1" variant="h5">
-												OTP Verification
-											</Typography>
-											<Box component="form" onSubmit={(e) => {
-												e.preventDefault()
-												submitCode()
-											}} sx={{ mt: 2, mx: 10 }}>
-												<TextField
+							<Box component='form' sx={otpStyle.phoneBox} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
 
-													sx={{
-														backgroundColor: 'white', color: 'black'
-													}}
-													margin="normal"
-													required
-													fullWidth
-													id="otp"
-													label="Enter 6-digit OTP"
-													name="otp"
-													variant="filled"
-													inputProps={{ minLength: 6, maxLength: 6 }}
-													autoFocus
-												/>
+								<Typography className={classes.headOtp}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
+								<br />
+								<br />
+								<Typography className={classes.otpTitle}>Enter OTP Code</Typography>
+								<Typography className={classes.otpSent}>{`OTP sent to +${phone}`}</Typography>
 
-												{!submitOtp && <Button
-													style={{ backgroundColor: '#ffeb3b', color: 'black' }}
-													type="submit"
-													fullWidth
-													variant="contained"
-													sx={{ mt: 3, mb: 2 }}
-												>
-													Submit OTP
-												</Button>}
-												{submitOtp && <LoadingButton fullWidth
-													style={{ backgroundColor: '#ffeb3b', color: 'black' }}
-													variant="contained"
-													sx={{ mt: 3, mb: 2 }} loading loadingPosition="end">
-													Submit OTP
-												</LoadingButton>}
-												<Button
-													onClick={() => {
-														if (!submitOtp) {
-															setShow({ clicked: false, showotp: false })
-														}
-													}
-													}
-													style={{ backgroundColor: '#ffeb3b', color: 'black' }}
-													type="button"
-													fullWidth
-													variant="contained"
-													sx={{ mt: 3, mb: 2 }}
-												>
-													Change Phone Number
-												</Button>
-											</Box>
-										</Box>
-									</Slide>
-								</Box>
-							</Slide>
-						</Grid>
-					</Grid>
-				</ThemeProvider>
-			</motion.div>
+								<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center' }} numInputs={6} value={otp}
+									onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
+
+								{!util.loading ? <Button size='large' className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
+									<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
+
+								<Button size='large' disabled={!util.resendOtpActive} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
+									{util.resendOtpActive ? 'Resend OTP' : `Resend OTP 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
+								</Button>
+
+								<Divider>or</Divider>
+
+								<Button disabled={util.loading} className={classes.changeBtn} type='button' onClick={changePhoneHandler} variant='outlined'>Change Phone Number</Button>
+							</Box>
+
+						</div>}
+				</Grid>
+
+				<Grid xs={7} item>
+					<img alt='' className={classes.imgStyle} src={`/resources/four.jpg`} />
+				</Grid>
+
+			</Grid>
 		</>
 	)
 }

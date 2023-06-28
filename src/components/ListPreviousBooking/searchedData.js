@@ -17,7 +17,7 @@ const searchedData = [
 		isAvailable: true,
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
-		rating: 4,
+		rating: 2,
 	},
 
 	{
@@ -28,7 +28,7 @@ const searchedData = [
 		isAvailable: true,
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
-		rating: 4,
+		rating: 5,
 	},
 	{
 		id: 4,
@@ -49,6 +49,16 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 4,
+	},
+	{
+		id: 6,
+		name: 'AMG Charging Station',
+		location: 'Sector 7, Karnal NH-1, GT-Road, Haryana, 137001',
+		type: 'fast',
+		isAvailable: true,
+		timeSlot: '8:00 - 9:00 AM',
+		price: '999',
+		rating: 2,
 	},
 ]
 
