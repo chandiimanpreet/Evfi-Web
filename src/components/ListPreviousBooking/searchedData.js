@@ -8,6 +8,11 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 4,
+		img: 'https://media.istockphoto.com/id/1387159450/photo/electric-vehicle-charging-station.jpg?s=2048x2048&w=is&k=20&c=10zLHN4WI52eI27_Ha-zL_DKegExVjcdwNWOtjw-XdA=',
+		coordinates: {
+			latitude: 29.9695,
+			longitude: 76.8783,
+		},
 	},
 	{
 		id: 2,
@@ -18,8 +23,12 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 2,
+		img: 'https://media.istockphoto.com/id/1387159450/photo/electric-vehicle-charging-station.jpg?s=2048x2048&w=is&k=20&c=10zLHN4WI52eI27_Ha-zL_DKegExVjcdwNWOtjw-XdA=',
+		coordinates: {
+			latitude: 29.9456,
+			longitude: 76.23424,
+		},
 	},
-
 	{
 		id: 3,
 		name: 'AMG Charging Station',
@@ -29,6 +38,11 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 5,
+		img: 'https://media.istockphoto.com/id/1387159450/photo/electric-vehicle-charging-station.jpg?s=2048x2048&w=is&k=20&c=10zLHN4WI52eI27_Ha-zL_DKegExVjcdwNWOtjw-XdA=',
+		coordinates: {
+			latitude: 29.94324,
+			longitude: 76.74324,
+		},
 	},
 	{
 		id: 4,
@@ -39,6 +53,11 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 4,
+		img: 'https://media.istockphoto.com/id/1387159450/photo/electric-vehicle-charging-station.jpg?s=2048x2048&w=is&k=20&c=10zLHN4WI52eI27_Ha-zL_DKegExVjcdwNWOtjw-XdA=',
+		coordinates: {
+			latitude: 24.9695,
+			longitude: 76.8783,
+		},
 	},
 	{
 		id: 5,
@@ -49,6 +68,11 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 4,
+		img: 'https://media.istockphoto.com/id/1387159450/photo/electric-vehicle-charging-station.jpg?s=2048x2048&w=is&k=20&c=10zLHN4WI52eI27_Ha-zL_DKegExVjcdwNWOtjw-XdA=',
+		coordinates: {
+			latitude: 49.262187,
+			longitude: -123.152746,
+		},
 	},
 	{
 		id: 6,
@@ -59,6 +83,11 @@ const searchedData = [
 		timeSlot: '8:00 - 9:00 AM',
 		price: '999',
 		rating: 2,
+		img: 'https://media.istockphoto.com/id/1387159450/photo/electric-vehicle-charging-station.jpg?s=2048x2048&w=is&k=20&c=10zLHN4WI52eI27_Ha-zL_DKegExVjcdwNWOtjw-XdA=',
+		coordinates: {
+			latitude: 30.351370, 
+			longitude: 76.404930,
+		},
 	},
 ]
 

@@ -1,100 +1,126 @@
-import React from "react";
-import { Typography, Button, Grid, Card } from "@mui/material";
+import React, { useState } from "react";
+import { Typography, Button, Grid, CardContent } from "@mui/material";
 import useStyles from "./MyProfileStyles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import RenderInformation from "./RenderInformation";
 
 const MyProfile = () => {
   const classes = useStyles();
+  const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState({
+    firstName: "Virat",
+    lastName: "Kohli",
+    email: "viratkohli18@gmail.com",
+    phoneNumber: "+91-9876543210",
+    country: "India",
+    state: "New Delhi",
+    city: "New Delhi",
+    pinCode: "110011",
+  });
 
-  const handleEditDetails = () => {};
+  const handleEditDetails = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveDetails = () => {
+    setIsEditing(false);
+  };
+
+  const handleChange = (field, value) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [field]: value,
+    }));
+  };
 
   return (
-    <container className={classes.root}>
-      <Typography variant="h6" gutterBottom fontWeight="bold" fontSize="25px">
+    <div className={classes.root}>
+      <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px">
         My Profile
       </Typography>
+      <br />
       <Grid className={classes.information} container spacing={2}>
-        <Card className={classes.personalInfo}>
+        <CardContent className={classes.personalInfo}>
           <Typography variant="h6" gutterBottom fontWeight="bold">
             Personal Information
           </Typography>
-          <Grid container spacing={2} className={classes.name}>
-            <Grid item xs={6}>
-              <Typography variant="subtitle1" fontWeight="bold">
-                First Name
-              </Typography>
-              <Typography variant="body1">Virat</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" gutterBottom fontWeight="bold">
-                Last Name
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                Kohli
-              </Typography>
-            </Grid>
+          <Grid container spacing={2} className={classes.content}>
+            <RenderInformation
+              field="firstName"
+              label="First Name"
+              value={profile.firstName}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="lastName"
+              label="Last Name"
+              value={profile.lastName}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="email"
+              label="Email"
+              value={profile.email}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="phoneNumber"
+              label="Phone Number"
+              value={profile.phoneNumber}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
           </Grid>
+        </CardContent>
 
-          <Grid container spacing={2} className={classes.contact}>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Email Address
-              </Typography>
-              <Typography variant="body1">viratkohli18@gmail.com</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Phone Number
-              </Typography>
-              <Typography variant="body1">+91-9876543210</Typography>
-            </Grid>
-          </Grid>
-        </Card>
-
-        <Card className={classes.addressInfo}>
+        <CardContent className={classes.addressInfo}>
           <Typography variant="h6" gutterBottom fontWeight="bold">
             Address
           </Typography>
-          <Grid container spacing={2} className={classes.countryState}>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Country
-              </Typography>
-              <Typography variant="body1">India</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                State
-              </Typography>
-              <Typography variant="body1">New Delhi</Typography>
-            </Grid>
+          <Grid container spacing={2} className={classes.content}>
+            <RenderInformation
+              field="country"
+              label="Country"
+              value={profile.country}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="state"
+              label="State"
+              value={profile.state}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="city"
+              label="City"
+              value={profile.city}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
+            <RenderInformation
+              field="pinCode"
+              label="Pin Code"
+              value={profile.pinCode}
+              isEditing={isEditing}
+              handleChange={handleChange}
+            />
           </Grid>
-
-          <Grid container spacing={2} className={classes.cityPinCode}>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                City
-              </Typography>
-              <Typography variant="body1">New Delhi</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1" fontWeight="bold">
-                Pin Code
-              </Typography>
-              <Typography variant="body1">110011</Typography>
-            </Grid>
-          </Grid>
-        </Card>
+        </CardContent>
       </Grid>
       <Button
         className={classes.editButton}
         variant="contained"
         startIcon={<BorderColorIcon />}
-        onClick={handleEditDetails}
+        onClick={isEditing ? handleSaveDetails : handleEditDetails}
       >
-        Edit Details
+        {isEditing ? "Save Details" : "Edit Details"}
       </Button>
-    </container>
+    </div>
   );
 };
 

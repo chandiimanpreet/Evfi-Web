@@ -18,16 +18,28 @@ const Home = () => {
 		setShow(false);
 		setShowCurrentLocation(true)
 	}
+	const direction = {
+		direction: 1
+	};
+
 	return (
-		<motion.div initial={{ width: 0 }}
+
+		<motion.div
 			animate={{ width: '100%' }}
-			exit={{ x: window.innerWidth, transition: { duration: 1 } }}>
+			exit={{ x: window.innerWidth, transition: { duration: 1 } }}
+			key="home"
+			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+
+			transition={{ duration: 0.25, delay: 0 }}
+		>
 			{/* <NavigationBar setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} searchCoordinates={searchCoordinates} /> */}
 
 			<DashboardMap show={show} showCurrentLocation={showCurrentLocation} setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates} setSearchCoordinates={setSearchCoordinates}
-				showRoute={showRoute} />
+				showRoute={showRoute} card={[]} />
+
 		</motion.div>
 	);
 }
 
 export default Home;
+
