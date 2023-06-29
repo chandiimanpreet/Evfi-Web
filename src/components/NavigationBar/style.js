@@ -126,6 +126,22 @@ export const useStyles = makeStyles({
 		left: '3.3rem',
 	},
 
+	exNavPopover: {
+		'& .MuiPopover-paper': {
+			display: 'flex!important',
+			position: 'relative!important',
+			maxWidth: 'calc(100% - 0px)!important',
+			background: 'none!important',
+			boxShadow: 'none!important',
+			marginTop: '1rem!important',
+			overflowX: 'unset!important',
+			overflowY: 'unset!important',
+			alignItems: 'center!important',
+			borderRadius: '30px!important',
+			justifyContent: 'center!important',
+		}
+	},
+
 	popDesign: {
 		'& label.Mui-focused': {
 			color: '#fff',
@@ -144,7 +160,8 @@ export const useStyles = makeStyles({
 				color: '#fff',
 				backgroundColor: '#ffffff26!important',
 				border: 'none',
-				cursor: 'pointer'
+				cursor: 'pointer',
+				borderRadius: '2rem'
 			},
 			'&:hover fieldset': {
 				color: '#fff',

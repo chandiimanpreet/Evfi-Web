@@ -3,7 +3,6 @@ import { Box, Popover, TextField, Autocomplete } from "@mui/material";
 import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, TravelExploreRounded as TravelExploreRoundedIcon, Tune as TuneIcon, MyLocation as MyLocationIcon } from "@mui/icons-material";
 import { motion } from 'framer-motion';
 import { useStyles } from "./style";
-import "./style.css";
 
 const ExtendedNavigation = ({ anchorEl,
 	handleClose,
@@ -95,7 +94,10 @@ const ExtendedNavigation = ({ anchorEl,
 				</Box>
 				<TuneIcon className={classes.filterdesign} />
 			</Popover>
+
 		</motion.div>
 	)
 }
 export default ExtendedNavigation
+
+

@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Button } from "@mui/material";
 import { Bolt as BoltIcon } from "@mui/icons-material";
 import { useStyles } from "./style";
 import { motion } from 'framer-motion';
-// import "./style.css";
+
 const ReduceNavigation = ({ handleOnclickSource, searchCoordinates, handleOnclickDestination }) => {
     const classes = useStyles();
 
