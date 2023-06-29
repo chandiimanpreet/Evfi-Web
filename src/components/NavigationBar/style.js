@@ -87,9 +87,6 @@ export const useStyles = makeStyles({
 		cursor: 'pointer',
 		padding: ' 0.5rem 0.5rem ',
 		position: 'relative',
-		'& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-			borderRadius: '2rem!important',
-		}
 
 	},
 	swapHorizontalCircleIcon: {
@@ -119,21 +116,32 @@ export const useStyles = makeStyles({
 		cursor: 'pointer',
 		zIndex: 1500,
 	},
+
+	myLocationIcon: {
+		fontSize: '2rem',
+		position: 'relative',
+		color: 'white',
+		cursor: 'pointer',
+		zIndex: 1500,
+		left: '3.3rem',
+	},
+
 	exNavPopover: {
-		'& .css-3bmhjh-MuiPaper-root-MuiPopover-paper': {
-			borderRadius: "30px!important",
-			background: "none!important",
-			boxShadow: "none!important",
-			position: "relative!important",
-			display: "flex!important",
+		'& .MuiPopover-paper': {
+			display: 'flex!important',
+			position: 'relative!important',
+			maxWidth: 'calc(100% - 0px)!important',
+			background: 'none!important',
+			boxShadow: 'none!important',
 			marginTop: '1rem!important',
-			justifyContent: "center!important",
-			alignItems: "center!important",
-			overflowY: "unset!important",
-			overflowX: "unset!important",
-			maxWidth: "calc(100% - 0px)!important"
+			overflowX: 'unset!important',
+			overflowY: 'unset!important',
+			alignItems: 'center!important',
+			borderRadius: '30px!important',
+			justifyContent: 'center!important',
 		}
 	},
+
 	popDesign: {
 		'& label.Mui-focused': {
 			color: '#fff',
@@ -152,7 +160,8 @@ export const useStyles = makeStyles({
 				color: '#fff',
 				backgroundColor: '#ffffff26!important',
 				border: 'none',
-				cursor: 'pointer'
+				cursor: 'pointer',
+				borderRadius: '2rem'
 			},
 			'&:hover fieldset': {
 				color: '#fff',
@@ -170,7 +179,6 @@ export const useStyles = makeStyles({
 			'& .MuiAutocomplete-input': {
 				color: "white",
 			},
-
 		},
 
 	},

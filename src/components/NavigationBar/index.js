@@ -4,11 +4,14 @@ import axios from 'axios';
 import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
 
-const NavigationBar = ({ searchCoordinates, setSearchCoordinates, showRoute }) => {
+const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
+	showRoute }) => {
+
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);
-
+	const [autofocusedSource, setAutofocusedSource] = useState(false);
+	const [autofocusedDestination, setAutofocusedDestination] = useState(false);
 	const onChangeRoute = async (e) => {
 		// if  exitst searchTimeout
 		clearTimeout(searchTimeoutRef.current);
@@ -22,30 +25,39 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, showRoute }) =
 					label: ele.properties.display_name
 				}));
 				setdistanceData(results);
+
 			} catch (error) {
 				console.error(error);
 			}
 		}, 500);
 	};
-
 	const handleClose = () => {
 		setAnchorEl(null);
+
 	};
 
-	const onchangeDistance = (event) => {
+	const handleOnclickSource = (event) => {
 		setAnchorEl(event.currentTarget);
-	};
-
-	const setPolyline = () => {
-		// 	if (searchCoordinates.source && searchCoordinates.distance) {
-		// 		showRoute();
-		// 		handleClose()
-		// 	}
-		// 	else {
-		// 		window.alert("please fill the source and destination");
-		// 	}
+		setAutofocusedSource(true);
+		setAutofocusedDestination(false);
 	}
 
+	const handleOnclickDestination = (event) => {
+		setAnchorEl(event.currentTarget);
+		setAutofocusedSource(false);
+		setAutofocusedDestination(true);
+	}
+
+	const setPolyline = () => {
+		if (searchCoordinates.source && searchCoordinates.destination) {
+			showRoute();
+			handleClose();
+
+		}
+		else {
+			window.alert("please fill the source and destination");
+		}
+	}
 	return (
 		<motion.div>
 			{
@@ -58,14 +70,18 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, showRoute }) =
 						setPolyline={setPolyline}
 						setSearchCoordinates={setSearchCoordinates}
 						searchCoordinates={searchCoordinates}
+						autofocusedSource={autofocusedSource}
+						autofocusedDestination={autofocusedDestination}
+						setCurrentLocation={setCurrentLocation}
 					/> :
 					<ReduceNavigation
-						onchangeDistance={onchangeDistance}
+						handleOnclickSource={handleOnclickSource}
+						handleOnclickDestination={handleOnclickDestination}
+						setPolyline={setPolyline}
+						searchCoordinates={searchCoordinates}
 					/>
 			}
 		</motion.div>
 	);
 };
 export default NavigationBar;
-
-

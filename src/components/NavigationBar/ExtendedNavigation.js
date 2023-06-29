@@ -1,10 +1,23 @@
-import React from 'react'
+import React from "react";
 import { Box, Popover, TextField, Autocomplete } from "@mui/material";
-import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, TravelExploreRounded as TravelExploreRoundedIcon, Tune as TuneIcon } from "@mui/icons-material";
+import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, TravelExploreRounded as TravelExploreRoundedIcon, Tune as TuneIcon, MyLocation as MyLocationIcon } from "@mui/icons-material";
 import { motion } from 'framer-motion';
 import { useStyles } from "./style";
-const ExtendedNavigation = ({ anchorEl, handleClose, distanceData, onChangeRoute, setPolyline, setSearchCoordinates, searchCoordinates }) => {
+
+const ExtendedNavigation = ({ anchorEl,
+	handleClose,
+	distanceData,
+	onChangeRoute,
+	setPolyline,
+	setSearchCoordinates,
+	searchCoordinates,
+	autofocusedSource,
+	autofocusedDestination,
+	setCurrentLocation
+}) => {
+
 	const classes = useStyles();
+
 	return (
 		<motion.div>
 			<Popover
@@ -16,7 +29,8 @@ const ExtendedNavigation = ({ anchorEl, handleClose, distanceData, onChangeRoute
 				anchorOrigin={{
 					vertical: 'center',
 					horizontal: 'center',
-				}} transformOrigin={{
+				}}
+				transformOrigin={{
 					vertical: 'center',
 					horizontal: 'center',
 				}}
@@ -26,34 +40,53 @@ const ExtendedNavigation = ({ anchorEl, handleClose, distanceData, onChangeRoute
 						<BoltIcon className={classes.bigboltIcon} />
 					</Box>
 					<Box className={classes.extendinputroot}>
+						<MyLocationIcon className={classes.myLocationIcon} onClick={() => setCurrentLocation(true)} />
 						<Autocomplete
 							disablePortal
 							id="combo-box-demo"
 							options={distanceData}
+							value={searchCoordinates.source.label}
 							className={classes.autocompletestyle}
 							sx={{ left: '2.3rem' }}
-							renderInput={(params) => <TextField onChange={onChangeRoute} inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params} label="Source" />}
+							renderInput={(params) =>
+								<TextField
+									{...(autofocusedSource) ? { autoFocus: true } : { autoFocus: false }}
+									onChange={onChangeRoute} inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params}
+									id="destination-textfield"
+									placeholder='Source'
+
+								/>}
 							onChange={(event, newValue) => {
-								setSearchCoordinates({ ...searchCoordinates, source: newValue.coordinates })
-								console.log(event.coordinates);
-								console.log(newValue.coordinates);
+								if (newValue) {
+									console.log(newValue);
+									setSearchCoordinates({ ...searchCoordinates, source: { coordinates: newValue.coordinates, label: newValue.label } })
+								}
+
 							}}
 						/>
 						<SwapHorizontalCircleIcon className={classes.swapHorizontalCircleIcon} fontSize="large" />
 						<Autocomplete
 							disablePortal
 							id="combo-box-demo"
+							value={searchCoordinates.destination.label}
 							options={distanceData}
 							data-shrink="false!important"
 							className={classes.autocompletestyle}
 							sx={{ right: '2.3rem' }}
 							renderInput={(params) =>
-								<TextField onChange={onChangeRoute}
-									inputProps={{ sx: { color: 'white' }, }} className={classes.popDesign} {...params} label="Destination"
+								<TextField
+									value={searchCoordinates.destination.label}
+									{...(autofocusedDestination) ? { autoFocus: true } : { autoFocus: false }}
+									onChange={onChangeRoute}
+									inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params}
+									id="destination-textfield"
+									placeholder="Destination"
 								/>
 							}
 							onChange={(event, newValue) => {
-								setSearchCoordinates({ ...searchCoordinates, destination: newValue.coordinates })
+								if (newValue) {
+									setSearchCoordinates({ ...searchCoordinates, destination: { coordinates: newValue.coordinates, label: newValue.label } })
+								}
 							}}
 						/>
 						<TravelExploreRoundedIcon onClick={setPolyline} className={classes.travelExploreRoundedIcon} />
@@ -61,7 +94,10 @@ const ExtendedNavigation = ({ anchorEl, handleClose, distanceData, onChangeRoute
 				</Box>
 				<TuneIcon className={classes.filterdesign} />
 			</Popover>
+
 		</motion.div>
 	)
 }
 export default ExtendedNavigation
+
+
