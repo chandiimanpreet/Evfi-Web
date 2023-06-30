@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Box, } from "@mui/material";
 import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
@@ -14,7 +14,7 @@ const PreviousBooking = ({ direction }) => {
 	const getData = (data) => {
 		setNewCard(data);
 	};
-	
+
 	return (
 		<motion.div key="pb"
 			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
