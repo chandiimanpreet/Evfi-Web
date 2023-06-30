@@ -14,14 +14,6 @@ const Home = () => {
 			setShowCurrentLocation(false)
 			setShow(true)
 		}
-		else if (searchCoordinates.current.coordinates && searchCoordinates.destination.coordinates) {
-			setShowCurrentLocation(false)
-			setShow(true)
-		}
-		else if (searchCoordinates.current.coordinates && searchCoordinates.destination.coordinates) {
-			setShow(false);
-			setShowCurrentLocation(true);
-		}
 		else {
 			window.alert("Please enter values")
 		}
@@ -53,6 +45,7 @@ const Home = () => {
 				showRoute={showRoute}
 				card={[]}
 			/>
+
 
 		</motion.div>
 	);

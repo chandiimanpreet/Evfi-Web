@@ -6,7 +6,7 @@ import ExtendedNavigation from './ExtendedNavigation';
 
 const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
 	showRoute }) => {
-
+	//const [inputsCleared, setInputsCleared] = React.useState(false);
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);
@@ -30,7 +30,23 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 				console.error(error);
 			}
 		}, 500);
+
+		// const { value } = e.target;
+		// if (value === "") {
+		// 	setInputsCleared(true);
+		// 	setSearchCoordinates({
+		// 		source: { coordinates: [], label: "" },
+		// 		destination: { coordinates: [], label: "" },
+		// 	});
+		// }
+		// else {
+		// 	setInputsCleared(false);
+		// }
+
 	};
+
+
+
 	const handleClose = () => {
 		setAnchorEl(null);
 
@@ -49,7 +65,7 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	}
 
 	const setPolyline = () => {
-		if (searchCoordinates.source && searchCoordinates.destination) {
+		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
 			showRoute();
 			handleClose();
 
@@ -73,6 +89,7 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 						autofocusedSource={autofocusedSource}
 						autofocusedDestination={autofocusedDestination}
 						setCurrentLocation={setCurrentLocation}
+					// inputsCleared={inputsCleared}
 					/> :
 					<ReduceNavigation
 						handleOnclickSource={handleOnclickSource}

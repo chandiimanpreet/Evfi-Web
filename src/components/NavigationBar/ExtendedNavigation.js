@@ -13,13 +13,17 @@ const ExtendedNavigation = ({ anchorEl,
 	searchCoordinates,
 	autofocusedSource,
 	autofocusedDestination,
-	setCurrentLocation
+	setCurrentLocation,
+	inputsCleared
 }) => {
 
 	const classes = useStyles();
+	//const [inputsCleared, setInputsCleared] = React.useState(false);
+
 
 	return (
 		<motion.div>
+
 			<Popover
 				id='simple-popover'
 				open={true}
