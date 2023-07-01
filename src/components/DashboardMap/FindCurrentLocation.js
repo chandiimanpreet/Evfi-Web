@@ -4,9 +4,11 @@ import "./style.css";
 import { Icon } from 'leaflet'
 
 const FindCurrentLocation = () => {
+
     const [position, setPosition] = useState(null);
     const [bbox, setBbox] = useState([]);
     const map = useMap();
+
     useEffect(() => {
         map.locate().on("locationfound", function (e) {
             setPosition(e.latlng);
@@ -14,7 +16,9 @@ const FindCurrentLocation = () => {
             setBbox(e.bounds.toBBoxString().split(","));
         });
     }, [map]);
+    
     console.log(position);
+
     return (
         position === null ? null : (
             <Marker position={position} icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}>
