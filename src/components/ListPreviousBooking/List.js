@@ -63,7 +63,7 @@ const List = ({ searchedData, collectCardData }) => {
 						<FormControl variant="standard" fullWidth>
 							<Input placeholder='Search Charging Stations...' className={classes.inputField}
 								startAdornment={<InputAdornment position="start" >
-									<Search sx={{ paddingLeft: '10px', color: '#282828' }} /></InputAdornment>}
+									<Search sx={{ paddingLeft: '10px', color: '#fff' }} /></InputAdornment>}
 							/>
 						</FormControl>
 						<Box sx={{ display: 'flex', cursor: 'pointer', paddingTop: '5px', }} onClick={toggleFilter}>
@@ -122,14 +122,12 @@ const List = ({ searchedData, collectCardData }) => {
 						</Accordion>
 					</Box>
 
-					<Box>
-						<Box className={classes.searchResultsContainer}>
-							{searchedData.map((result) => (
-								<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} >
-									<ListItem key={result.id} result={result} />
-								</Box>
-							))}
-						</Box>
+					<Box className={classes.searchResultsContainer}>
+						{searchedData.map((result) => (
+							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} >
+								<ListItem key={result.id} result={result} />
+							</Box>
+						))}
 					</Box>
 				</Box>
 			</Box>

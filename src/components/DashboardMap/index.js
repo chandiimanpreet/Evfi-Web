@@ -16,7 +16,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 
 	return (
 		<div>
-			<MapContainer center={[29.972101, 76.904388]} zoom={13} scrollWheelZoom={false} style={{ position: 'relative', paddingRight: '27rem', }} >
+			<MapContainer center={[29.972101, 76.904388]} zoom={13} scrollWheelZoom={false} style={{}} >
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -39,7 +39,6 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 						<Mark cardDetails={card} />
 					)
 				}
-
 			</MapContainer>
 			{
 				location.pathname === '/' &&
@@ -72,16 +71,20 @@ const Mark = ({ cardDetails }) => {
 	useEffect(() => {				// this is used for first time showing the popup automatically	AND this executed only once.
 		setTimeout(() => {			// then afterwards 2nd setTimeout will run
 			markerRef.current.openPopup();
-		}, 2000);
+		}, 1000);
 	}, [markerRef]);
 
 	if (coordinates !== undefined) {
-		map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 2 });
+		
+		map.setView([coordinates.latitude, coordinates.longitude], 13);
+		setTimeout(() => {
+			map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 2 });
+		}, 2000);
 
 		if (markerRef.current !== undefined && markerRef.current.openPopup() === null) {
 			setTimeout(() => {
 				markerRef.current.openPopup();		// Here
-			}, 2000);
+			}, 1000);
 		}
 	}
 
