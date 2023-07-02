@@ -12,7 +12,7 @@ export const useStyles = makeStyles({
     },
     loginCard: {
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
-        backdropFilter: 'blur(50px) ',
+        backdropFilter: 'blur(50px)',
         '&::-webkit-backdrop-filter': 'blur(25px) ',
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
@@ -144,7 +144,13 @@ export const useStyles = makeStyles({
             color: '#aaa',
         }
     },
-
+    boxBehindImgStyle: {
+        width: '30rem',
+        height: '36rem',
+        position: 'absolute',
+        top: '-300px',
+        left: '5px',
+    },
 })
 export const otpStyle = {
     inputStyle: {

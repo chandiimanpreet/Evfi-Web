@@ -145,14 +145,9 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			<div ref={recaptchaWrapperRef}>
 				<div id="recaptcha-container"></div>
 			</div>
-			<Box sx={{
-				height: '4rem',
-				width: '44rem',
-				position: 'fixed',
-				backgroundColor: 'rgba(226, 183, 20, 0.4)',
-				transform: 'rotate(145deg)',
-				borderRadius: '35px',
-			}}></Box>
+			<Box sx={{ position: 'relative' }}>
+				<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
+			</Box>
 			<Box className={classes.loginCard}>
 				{
 					util.error && (
@@ -203,7 +198,11 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 							<Divider className={classes.dividerStyle}>or</Divider>
 
 							<Button size='large' disabled={util.loading} sx={{
-								color: '#fff', textTransform: 'capitalize',
+								color: '#fff',
+								textTransform: 'capitalize',
+								'&:disabled': {
+									color: '#aaa',
+								}
 							}} type='button' onClick={changePhoneHandler} variant='text'>Change Phone Number</Button>
 						</Box>
 					</div>
