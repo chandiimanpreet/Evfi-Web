@@ -6,6 +6,7 @@ import { Icon } from 'leaflet'
 const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
     const [position, setPosition] = useState(null);
     const map = useMap();
+
     useEffect(() => {
         map.locate().on("locationfound", function (e) {
             setPosition(e.latlng);
@@ -14,6 +15,7 @@ const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
         });
     }, [map, searchCoordinates, setSearchCoordinates]);
     console.log(position);
+
     return (
         position === null ? null : (
             <Marker position={position} icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}>

@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { Navigate, useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Grid, Divider, Alert, Typography, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { useStyles, otpStyle } from './style';
 import OTPInput from 'react-otp-input';
 import { logInUser } from '../../utils/auth/user';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../utils/config/firebaseConfig';
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/material.css'
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/material.css';
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
@@ -18,8 +18,8 @@ let appVerifier;
 export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	const classes = useStyles();
 	const [timer, setTimer] = useState(30);
-	const [showOtpForm,setShowOtpForm]=useState(false);
-	const [util, setUtils] = useState({loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
+	const [showOtpForm, setShowOtpForm] = useState(false);
+	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
 	const [otp, setotp] = useState("")
 	const [remember, setRemember] = useState(false);
 	const recaptchaWrapperRef = useRef(null);
@@ -40,7 +40,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	}, [showOtpForm, timer])
 	const changePhoneHandler = () => {
 		setShowOtpForm(false);
-		setUtils({ ...util,error: null, enterNumberInactive: false, resendOtpActive: false })
+		setUtils({ ...util, error: null, enterNumberInactive: false, resendOtpActive: false })
 	}
 	const generateRecaptcha = () => {
 		appVerifier = new RecaptchaVerifier(
@@ -141,70 +141,73 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		return <Navigate to='/' />
 	}
 	return (
-		<>
-			<Grid container>
-
-				<Grid className={classes.mainGrid} xs={5} item>
-
-					<div ref={recaptchaWrapperRef}>
-						<div id="recaptcha-container"></div>
-					</div>
-					{util.error && <Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>}
-					{(!showOtpForm) ? <div>
-
+		<Box className={classes.bodyPage} >
+			<div ref={recaptchaWrapperRef}>
+				<div id="recaptcha-container"></div>
+			</div>
+			<Box sx={{ position: 'relative' }}>
+				<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
+			</Box>
+			<Box className={classes.loginCard}>
+				{
+					util.error && (
+						<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
+					)
+				}
+				{(!showOtpForm) ?
+					<div>
 						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={otpStyle.phoneBox}>
-
-							<Typography className={classes.companyText}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
-							<br /><br />
+							<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+							<Typography className={classes.companyText}>EVFI</Typography>
 							<Typography className={classes.headText}>Verify Your Number</Typography>
 							<div>
-								<PhoneInput
+								<PhoneInput sx={{ backgroundColor: '#ffffff26 !important' }}
 									country={(code ? code : 'us')}
 									value={phone}
-									inputStyle={{ width: '100%' }}
+									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff' }}
 									onChange={num => setNumber(num)}
 									inputProps={{ required: true }}
 								/>
-								<FormControlLabel control={<Checkbox onChange={(e) => setRemember(e.target.checked)} size="small" />} label="Remember me" />
+								<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} size="small" sx={{ color: '#fff' }} />} label="Remember me" sx={{ color: '#fff', fontFamily: "inter", }} />
 							</div>
-							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' on variant='contained'>Get OTP</Button> :
-								<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
+							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Get OTP</Button> :
+								<LoadingButton size='large' variant='contained' style={{ backgroundColor: '#282828', color: 'white' }} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
 						</Box>
 					</div>
-						:
-						<div>
+					:
+					<div>
+						<Box component='form' sx={otpStyle.phoneBoxNext} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
+							<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+							<Typography className={classes.headOtp}>EVFI</Typography>
+							<Typography className={classes.otpTitle}>Enter OTP Code</Typography>
+							<Typography className={classes.otpSent}>{`OTP sent to +${phone}`}</Typography>
 
-							<Box component='form' sx={otpStyle.phoneBox} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
+							<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center', color: '#fff', }} numInputs={6} value={otp}
+								onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
 
-								<Typography className={classes.headOtp}><img style={otpStyle.companylogo} src='/resources/light.png' alt='' />&nbsp;&nbsp; EVFI</Typography>
-								<br />
-								<br />
-								<Typography className={classes.otpTitle}>Enter OTP Code</Typography>
-								<Typography className={classes.otpSent}>{`OTP sent to +${phone}`}</Typography>
+							{!util.loading ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Submit OTP</Button> :
+								<LoadingButton size='large' variant='contained' style={{ backgroundColor: '#282828', color: 'white' }} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
 
-								<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center' }} numInputs={6} value={otp}
-									onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
-
-								{!util.loading ? <Button size='large' className={classes.btn} type='submit' variant='contained'>Submit OTP</Button> :
-									<LoadingButton size='large' variant='contained' className={classes.btn} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
-
-								<Button size='large' disabled={timer>0} onClick={resendOtp} className={classes.newBtn} variant='outlined'>
-									{timer===0 ? 'Resend OTP' : `Resend OTP 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
-								</Button>
-
-								<Divider>or</Divider>
-
-								<Button disabled={util.loading} className={classes.changeBtn} type='button' onClick={changePhoneHandler} variant='outlined'>Change Phone Number</Button>
+							<Box sx={{ display: 'flex', }}>
+								<Button size='large' disabled={timer > 0} onClick={resendOtp} variant='text' className={classes.disabledBtn}>Resend OTP</Button>
+								<Typography sx={{ color: '#aaa', marginTop: '6px' }}>
+									{timer === 0 ? '' : `:  00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
+								</Typography>
 							</Box>
 
-						</div>}
-				</Grid>
+							<Divider className={classes.dividerStyle}>or</Divider>
 
-				<Grid xs={7} item>
-					<img alt='' className={classes.imgStyle} src={`/resources/four.jpg`} />
-				</Grid>
-
-			</Grid>
-		</>
+							<Button size='large' disabled={util.loading} sx={{
+								color: '#fff',
+								textTransform: 'capitalize',
+								'&:disabled': {
+									color: '#aaa',
+								}
+							}} type='button' onClick={changePhoneHandler} variant='text'>Change Phone Number</Button>
+						</Box>
+					</div>
+				}
+			</Box>
+		</Box>
 	)
 }

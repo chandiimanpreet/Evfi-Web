@@ -1,7 +1,7 @@
 import React from 'react'
 import About from '../pages/About';
 import Home from '../pages/Home';
-import Location from '../pages/Location';
+import Request from '../pages/Location';
 import Profile from '../pages/Profile/index';
 import PreviousBooking from '../pages/PreviousBooking';
 import Phoneauth from '../pages/auths/Phoneauth';
@@ -84,7 +84,7 @@ export default function AnimatedRoutes() {
                         <Route path="/" element={<Home direction={currentDirection} />} />
                         <Route path="previousBooking" element={<PreviousBooking direction={currentDirection} />} />
                         <Route path="about" element={<About direction={currentDirection} />} />
-                        <Route path="location" element={<Location direction={currentDirection} />} />
+                        <Route path="requests" element={<Request direction={currentDirection} />} />
                         <Route path="profile" element={<Profile direction={currentDirection} logout={logout} />} />
                         <Route path='register' element={<Registerauth user={user} direction={currentDirection} setData={saveUserData} />} />
                     </Route>
