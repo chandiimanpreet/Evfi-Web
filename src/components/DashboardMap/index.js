@@ -4,35 +4,50 @@ import { Typography, Box, } from '@mui/material';
 import Ratings from '../../components/Rating';
 import RoutingMachine from "./RoutingMachine";
 import L from 'leaflet';
-import { Icon } from 'leaflet'
 import NavigationBar from "../NavigationBar";
 import FindCurrentLocation from "./FindCurrentLocation";
 import { useLocation } from "react-router";
 
 const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card }) => {
+	const markerIcon = new L.icon({
+		iconUrl: require("./locationmarker.png"),
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		focus: true,
+		draggable: false,
+	});
+	let config = {
+		minZoom: 2,
+		maxZoom: 18,
+	};
 
 	const location = useLocation();
 	// let center = card.coordinates !== undefined ? [card.coordinates.latitude, card.coordinates.longitude] : [29.972101, 76.904388];
 
 	return (
 		<div>
-			<MapContainer center={[29.972101, 76.904388]} zoom={13} scrollWheelZoom={false} style={{}} >
+			<MapContainer map={config} center={[29.9695, 76.8783]} zoom={7} scrollWheelZoom={false}
+			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 				{show &&
 					<div>
-						<Marker position={[searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]]} icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}
-						/>
-						<Marker position={[searchCoordinates.destination.coordinates[1], searchCoordinates.destination.coordinates[0]]}
-							icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}
-						/>
-						<RoutingMachine searchCoordinates={searchCoordinates} />
+						<Marker position={[searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]]} icon={markerIcon} draggable={false}>
+						</Marker>
+
+						<Marker position={[searchCoordinates.destination.coordinates[1], searchCoordinates.destination.coordinates[0]]} icon={markerIcon} draggable={false}>
+						</Marker>
+						<RoutingMachine searchCoordinates={searchCoordinates} key={searchCoordinates.source.label + searchCoordinates.destination.label} />
 					</div>
 				}
 				{
-					showCurrentLocation && <FindCurrentLocation />
+					showCurrentLocation &&
+					<FindCurrentLocation
+						setSearchCoordinates={setSearchCoordinates}
+						searchCoordinates={searchCoordinates}
+					/>
 				}
 				{
 					card.coordinates !== undefined && (
@@ -75,7 +90,7 @@ const Mark = ({ cardDetails }) => {
 	}, [markerRef]);
 
 	if (coordinates !== undefined) {
-		
+
 		map.setView([coordinates.latitude, coordinates.longitude], 13);
 		setTimeout(() => {
 			map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 2 });

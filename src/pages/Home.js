@@ -10,20 +10,12 @@ const Home = () => {
 		source: { coordinates: null, label: '' },
 		destination: { coordinates: null, label: '' }
 	})
-	
+
 	// Handlers
 	const showRoute = () => {
 		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
 			setShowCurrentLocation(false)
 			setShow(true)
-		}
-		else if (searchCoordinates.current.coordinates && searchCoordinates.destination.coordinates) {
-			setShowCurrentLocation(false)
-			setShow(true)
-		}
-		else if (searchCoordinates.current.coordinates && searchCoordinates.destination.coordinates) {
-			setShow(false);
-			setShowCurrentLocation(true);
 		}
 		else {
 			window.alert("Please enter values")
