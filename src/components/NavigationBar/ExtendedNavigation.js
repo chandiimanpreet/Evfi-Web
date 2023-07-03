@@ -18,9 +18,6 @@ const ExtendedNavigation = ({ anchorEl,
 }) => {
 
 	const classes = useStyles();
-	//const [inputsCleared, setInputsCleared] = React.useState(false);
-
-
 	return (
 		<motion.div>
 
@@ -55,10 +52,9 @@ const ExtendedNavigation = ({ anchorEl,
 							renderInput={(params) =>
 								<TextField
 									{...(autofocusedSource) ? { autoFocus: true } : { autoFocus: false }}
-									onChange={onChangeRoute} inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params}
+									onChange={onChangeRoute} inputProps={{ sx: { color: '#fff' }, maxLength: 12 }} className={classes.popDesign} {...params}
 									id="destination-textfield"
 									placeholder='Source'
-
 								/>}
 							onChange={(event, newValue) => {
 								if (newValue) {
@@ -82,9 +78,12 @@ const ExtendedNavigation = ({ anchorEl,
 									value={searchCoordinates.destination.label}
 									{...(autofocusedDestination) ? { autoFocus: true } : { autoFocus: false }}
 									onChange={onChangeRoute}
-									inputProps={{ sx: { color: '#fff' }, }} className={classes.popDesign} {...params}
+									inputProps={{ sx: { color: '#fff' }, maxLength: 12 }}
+
+									className={classes.popDesign} {...params}
 									id="destination-textfield"
 									placeholder="Destination"
+
 								/>
 							}
 							onChange={(event, newValue) => {
