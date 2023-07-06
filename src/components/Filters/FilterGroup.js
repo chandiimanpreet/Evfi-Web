@@ -40,9 +40,8 @@ const FilterGroup = ({ options, type, selected, setSelected, property }) => {
             {
                 options.map((option) => {
                     return (
-                        <Chip label={option.label} variant='outlined'
-                            className={isActive(option.value) ? classes.filterStyleActive :
-                                classes.filterStyleInActive}
+                        <Chip label={option.label} variant='outlined' key={option.value}
+                            className={isActive(option.value) ? classes.filterStyleActive : classes.filterStyleInActive}
                             onClick={() => { changeHandler(option.value) }}
                         />)
                 })

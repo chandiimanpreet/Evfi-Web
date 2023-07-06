@@ -22,10 +22,9 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 	};
 
 	const location = useLocation();
-	// let center = card.coordinates !== undefined ? [card.coordinates.latitude, card.coordinates.longitude] : [29.972101, 76.904388];
 
 	return (
-		<div>
+		<>
 			<MapContainer map={config} center={[29.9695, 76.8783]} zoom={7} scrollWheelZoom={false}
 			>
 				<TileLayer
@@ -63,17 +62,16 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 					setCurrentLocation={setCurrentLocation}
 				/>
 			}
-		</div>
+		</>
 	)
 }
 
 const Mark = ({ cardDetails }) => {
-
 	const { name, location, type, rating, img, coordinates } = cardDetails;
 
 	// States
 	const map = useMap();
-	const markerRef = useRef();
+	const markerRef = useRef(null);
 
 	const markerIcon = new L.icon({
 		iconUrl: require("./marker.png"),
@@ -83,25 +81,17 @@ const Mark = ({ cardDetails }) => {
 
 	// Handlers
 
-	useEffect(() => {				// this is used for first time showing the popup automatically	AND this executed only once.
-		setTimeout(() => {			// then afterwards 2nd setTimeout will run
+	useEffect(() => {
+		if (markerRef.current) {
 			markerRef.current.openPopup();
-		}, 1000);
+		}
 	}, [markerRef]);
 
-	if (coordinates !== undefined) {
-
-		map.setView([coordinates.latitude, coordinates.longitude], 13);
-		setTimeout(() => {
-			map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 2 });
-		}, 2000);
-
-		if (markerRef.current !== undefined && markerRef.current.openPopup() === null) {
-			setTimeout(() => {
-				markerRef.current.openPopup();		// Here
-			}, 1000);
+	useEffect(() => {
+		if (coordinates !== undefined) {
+			map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 1 });
 		}
-	}
+	}, [coordinates, map]);
 
 	return (
 		<Marker position={[coordinates.latitude, coordinates.longitude]} icon={markerIcon} ref={markerRef}>
