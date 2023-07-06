@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Typography, Button, Grid, CardContent } from "@mui/material";
-import useStyles from "./MyProfileStyles";
+import { Typography, Button, Grid, Card, CardContent } from "@mui/material";
+import useStyles from "./styles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import RenderInformation from "./RenderInformation";
 
@@ -35,83 +35,94 @@ const MyProfile = () => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px">
+      <Typography
+        variant="h5"
+        gutterBottom
+        fontWeight="bold"
+        fontSize="25px"
+        color={"white"}
+      >
         My Profile
       </Typography>
       <br />
-      <Grid className={classes.information} container spacing={2}>
-        <CardContent className={classes.personalInfo}>
-          <Typography variant="h6" gutterBottom fontWeight="bold">
-            Personal Information
-          </Typography>
-          <Grid container spacing={2} className={classes.content}>
-            <RenderInformation
-              field="firstName"
-              label="First Name"
-              value={profile.firstName}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-            <RenderInformation
-              field="lastName"
-              label="Last Name"
-              value={profile.lastName}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-            <RenderInformation
-              field="email"
-              label="Email"
-              value={profile.email}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-            <RenderInformation
-              field="phoneNumber"
-              label="Phone Number"
-              value={profile.phoneNumber}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-          </Grid>
-        </CardContent>
+      <Grid className={classes.container} container spacing={2}>
+        <Card className={classes.infoCard}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Personal Information
+            </Typography>
+            <br />
+            <Grid container spacing={2}>
+              <RenderInformation
+                field="firstName"
+                label="First Name"
+                value={profile.firstName}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+              <RenderInformation
+                field="lastName"
+                label="Last Name"
+                value={profile.lastName}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+              <RenderInformation
+                field="email"
+                label="Email"
+                value={profile.email}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+              <RenderInformation
+                field="phoneNumber"
+                label="Phone Number"
+                value={profile.phoneNumber}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+            </Grid>
+          </CardContent>
+        </Card>
 
-        <CardContent className={classes.addressInfo}>
-          <Typography variant="h6" gutterBottom fontWeight="bold">
-            Address
-          </Typography>
-          <Grid container spacing={2} className={classes.content}>
-            <RenderInformation
-              field="country"
-              label="Country"
-              value={profile.country}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-            <RenderInformation
-              field="state"
-              label="State"
-              value={profile.state}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-            <RenderInformation
-              field="city"
-              label="City"
-              value={profile.city}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-            <RenderInformation
-              field="pinCode"
-              label="Pin Code"
-              value={profile.pinCode}
-              isEditing={isEditing}
-              handleChange={handleChange}
-            />
-          </Grid>
-        </CardContent>
-      </Grid>
+        <Card className={classes.infoCard}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom fontWeight="bold">
+              Address
+            </Typography>
+            <br />
+            <Grid container spacing={2} className={classes.content}>
+              <RenderInformation
+                field="country"
+                label="Country"
+                value={profile.country}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+              <RenderInformation
+                field="state"
+                label="State"
+                value={profile.state}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+              <RenderInformation
+                field="city"
+                label="City"
+                value={profile.city}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+              <RenderInformation
+                field="pinCode"
+                label="Pin Code"
+                value={profile.pinCode}
+                isEditing={isEditing}
+                handleChange={handleChange}
+              />
+            </Grid>
+          </CardContent>
+        </Card>
       <Button
         className={classes.editButton}
         variant="contained"
@@ -120,6 +131,7 @@ const MyProfile = () => {
       >
         {isEditing ? "Save Details" : "Edit Details"}
       </Button>
+      </Grid>
     </div>
   );
 };

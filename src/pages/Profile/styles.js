@@ -5,14 +5,16 @@ export const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
+    padding: "50px 0px 0px 100px",
     height: "100vh",
-    paddingLeft: "100px",
-    paddingTop: "50px",
-    backgroundColor: "#f1f3f6",
+    backgroundColor: "#000",
+    backgroundImage:
+      "radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)",
   },
   container: {
     display: "flex",
     flexDirection: "row",
+    columnGap: "120px",
   },
   boltIcon: {
     position: "fixed",
@@ -24,15 +26,12 @@ export const useStyles = makeStyles({
     fontSize: "3rem!important",
   },
   outerBox: {
-    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.15)",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
     marginTop: "58px",
-
+    borderRadius: "10px",
+    backdropFilter: "blur(10px)",
+    backgroundColor: " rgba(200, 200, 200, 0.2)",
   },
-  sidebox: { 
+  sidebox: {
     width: "230px",
     height: "600px",
     display: "flex",
@@ -40,17 +39,10 @@ export const useStyles = makeStyles({
     paddingLeft: "20px",
   },
   buttonGroup: {
-    backgroundColor: "#ffffff",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    fontSize: "15px",
-    width: "100%",
+    color: "white",
   },
   button: {
-    width: "100%",
     height: "4rem",
-    fontSize: "18px",
   },
   buttonName: {
     marginLeft: "25px",
@@ -61,25 +53,13 @@ export const useStyles = makeStyles({
     alignItems: "center",
   },
   activeButton: {
-    backgroundColor: "#f5faff",
-    color: "#2874f0",
+    backgroundColor: "#181818!important",
     boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.15)",
-  },
-  tabContent: {
-    marginTop: "-50px",
-    paddingLeft: "120px",
-  },
-  information: {
-    display: "flex",
-    flexDirection: "column",
-    borderColor: "grey",
-    paddingLeft: "0px",
-    paddingTop: "50px",
   },
   profilePictureContainer: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.15)",
+    borderRadius: "10px",
+    backdropFilter: "blur(10px)",
+    backgroundColor: " rgba(200, 200, 200, 0.2)",
   },
   profileGreet: {
     display: "flex",
@@ -88,14 +68,11 @@ export const useStyles = makeStyles({
     padding: "8px",
   },
   profilePicture: {
-    display: "flex",
+    margin: "2px",
     width: "100px",
     height: "100px",
   },
   greet: {
-    display: "flex",
-    alignItems: "flex-start",
-    flexDirection: "column",
     justifyContent: "center",
     paddingTop: "20px",
   },
@@ -107,5 +84,7 @@ export const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: "17px",
     paddingLeft: "20px",
-  }
+    color: "white",
+  },
+  
 });

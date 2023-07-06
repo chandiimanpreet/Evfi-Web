@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Card, Typography} from "@mui/material";
 import { motion } from "framer-motion";
 import MyProfile from "./My Profile/MyProfile";
 import MyChargers from "./MyChargers";
-import Payments from "./Payments";
-import Settings from "./Settings";
+import Payments from "./Payments/Payments";
+import Settings from "./Settings/Settings";
 import Support from "./Support";
 import { useStyles } from "./styles";
 import { Bolt as BoltIcon } from "@mui/icons-material";
@@ -38,7 +38,7 @@ const Profile = ({ logout, direction }) => {
       <Box className={classes.container}>
         <Box className={classes.sidebox}>
           <BoltIcon className={classes.boltIcon} />
-          <Box className={classes.profilePictureContainer}>
+          <Card className={classes.profilePictureContainer}>
             <Box className={classes.profileGreet}>
               <Avatar
                 alt="Profile Picture"
@@ -50,6 +50,7 @@ const Profile = ({ logout, direction }) => {
                   className={classes.hello}
                   variant="h6"
                   gutterBottom
+                  color={"#ffffff"}
                 >
                   Hello,
                 </Typography>
@@ -62,9 +63,9 @@ const Profile = ({ logout, direction }) => {
                 </Typography>
               </Box>
             </Box>
-          </Box>
+          </Card>
 
-          <Box className={classes.outerBox}>
+          <Card className={classes.outerBox}>
             <Box className={classes.buttonGroup}>
               {[
                 { tab: "My Profile", icon: <PersonRoundedIcon /> },
@@ -94,10 +95,9 @@ const Profile = ({ logout, direction }) => {
                 </Box>
               ))}
             </Box>
-          </Box>
+          </Card>
         </Box>
 
-        <Box className={classes.information}>
           <Box className={classes.tabContent}>
             {activeTab === "My Profile" && <MyProfile />}
             {activeTab === "My Chargers" && <MyChargers />}
@@ -105,7 +105,6 @@ const Profile = ({ logout, direction }) => {
             {activeTab === "Settings" && <Settings />}
             {activeTab === "Support" && <Support />}
           </Box>
-        </Box>
       </Box>
     </motion.Box>
   );
