@@ -21,11 +21,9 @@ const PreviousBooking = ({ direction }) => {
 			animate={{ x: 0 }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
-			<Box sx={{ display: 'flex', }}>
-				<Box>
-					<List searchedData={searchedData} collectCardData={getData} />
-				</Box>
-				<Box>
+			<Box sx={{ display: 'flex', width: "100%" }}>
+				<List searchedData={searchedData} collectCardData={getData} />
+				<Box width="100%" position="relative" className="previousBookingPage">
 					<DashboardMap card={newCard} />
 				</Box>
 			</Box>

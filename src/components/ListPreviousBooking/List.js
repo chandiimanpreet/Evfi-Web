@@ -124,8 +124,8 @@ const List = ({ searchedData, collectCardData }) => {
 
 					<Box className={classes.searchResultsContainer}>
 						{searchedData.map((result) => (
-							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} >
-								<ListItem key={result.id} result={result} />
+							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }}  key={result.id}>
+								<ListItem result={result} />
 							</Box>
 						))}
 					</Box>
