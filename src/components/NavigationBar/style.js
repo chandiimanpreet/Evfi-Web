@@ -24,6 +24,7 @@ export const useStyles = makeStyles({
 		color: '#fff!important',
 		borderRadius: '10rem!important',
 		fontSize: '16px!important',
+		fontFamily: 'Manrope',
 		textTransform: 'none!important',
 		padding: '0.5rem 1.5rem!important',
 		width: "calc(50% - 3.5rem)!important",
@@ -153,7 +154,8 @@ export const useStyles = makeStyles({
 		'& .MuiInputLabel-root': {
 			color: '#fff',
 			left: '0.8rem',
-			fontSize: '1.1rem'
+			fontSize: '1.1rem',
+			fontFamily: 'Manrope',
 		},
 		'& .MuiOutlinedInput-root': {
 			'& fieldset': {
@@ -161,7 +163,7 @@ export const useStyles = makeStyles({
 				backgroundColor: '#ffffff26!important',
 				border: 'none',
 				cursor: 'pointer',
-				borderRadius: '2rem'
+				borderRadius: '2rem',
 			},
 			'&:hover fieldset': {
 				color: '#fff',
@@ -177,7 +179,8 @@ export const useStyles = makeStyles({
 				cursor: 'pointer'
 			},
 			'& .MuiAutocomplete-input': {
-				color: "white",
+				color: '#fff ',
+				fontFamily: 'Manrope',
 			},
 		},
 

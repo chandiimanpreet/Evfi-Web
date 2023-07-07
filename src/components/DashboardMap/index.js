@@ -24,8 +24,8 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 	const location = useLocation();
 
 	return (
-		<>
-			<MapContainer map={config} center={[29.9695, 76.8783]} zoom={7} scrollWheelZoom={false}
+		<Box>
+			<MapContainer map={config} center={[29.9695, 76.8783]} zoom={12} scrollWheelZoom={false}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -62,11 +62,12 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 					setCurrentLocation={setCurrentLocation}
 				/>
 			}
-		</>
+		</Box>
 	)
 }
 
 const Mark = ({ cardDetails }) => {
+
 	const { name, location, type, rating, img, coordinates } = cardDetails;
 
 	// States
@@ -91,6 +92,7 @@ const Mark = ({ cardDetails }) => {
 		if (coordinates !== undefined) {
 			map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 1 });
 		}
+		markerRef.current.openPopup();
 	}, [coordinates, map]);
 
 	return (

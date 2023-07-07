@@ -16,11 +16,11 @@ const Request = ({ direction }) => {
 				overflowY: 'auto', height: '100vh', width: '100%', backgroundColor: '#000',
 				backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)'
 			}}>
-				<Typography paddingTop={4} textAlign={'center'} color={'antiquewhite'} variant="h5">Booking Requests</Typography>
+				<Typography paddingTop={4} textAlign={'center'} color={'antiquewhite'} variant="h5" sx={{ fontFamily: 'Manrope', fontSize: '25px', fontWeight: 'bold' }}>Booking Requests</Typography>
 				<Box marginX={8} paddingY={4} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 					<Box sx={{ display: 'flex', gap: '2rem' }} >
-						<Link style={{ textDecoration: show === 'pending' ? 'underline' : 'none', fontSize: '1.6rem', textUnderlineOffset: '8px', color: 'antiquewhite' }} onClick={() => setShow("pending")}>Pending</Link>
-						<Link style={{ textDecoration: show === 'recent' ? 'underline' : 'none', fontSize: '1.6rem', textUnderlineOffset: '8px', color: 'antiquewhite' }} onClick={() => setShow("recent")}>Recent</Link>
+						<Link style={{ textDecoration: show === 'pending' ? 'underline' : 'none', fontSize: '1.4rem', textUnderlineOffset: '8px', color: 'antiquewhite', fontFamily: 'inter', }} onClick={() => setShow("pending")}>Pending</Link>
+						<Link style={{ textDecoration: show === 'recent' ? 'underline' : 'none', fontSize: '1.4rem', textUnderlineOffset: '8px', color: 'antiquewhite', fontFamily: 'inter', }} onClick={() => setShow("recent")}>Recent</Link>
 					</Box>
 					<Divider sx={{ backgroundColor: 'antiquewhite' }} />
 					<Grid justifyContent={'center'} container columns={3} gap={2}>

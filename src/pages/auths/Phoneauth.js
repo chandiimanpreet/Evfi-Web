@@ -164,14 +164,14 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								<PhoneInput sx={{ backgroundColor: '#ffffff26 !important' }}
 									country={(code ? code : 'us')}
 									value={phone}
-									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff' }}
+									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', fontFamily: 'inter' }}
 									onChange={num => setNumber(num)}
 									inputProps={{ required: true }}
 								/>
 								<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} size="small" sx={{ color: '#fff' }} />} label="Remember me" sx={{ color: '#fff', fontFamily: "inter", }} />
 							</div>
 							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Get OTP</Button> :
-								<LoadingButton size='large' variant='contained' style={{ backgroundColor: '#282828', color: 'white' }} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
+								<LoadingButton size='large' variant='contained' style={{ backgroundColor: '#282828', color: 'white', fontFamily: 'Manrope', fontWeight: '600', }} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
 						</Box>
 					</div>
 					:
@@ -186,12 +186,14 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
 
 							{!util.loading ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Submit OTP</Button> :
-								<LoadingButton size='large' variant='contained' style={{ backgroundColor: '#282828', color: 'white' }} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
+								<LoadingButton size='large' variant='contained' style={{
+									backgroundColor: '#282828', color: 'white', fontFamily: "Manrope", fontWeight: '600',
+								}} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
 
 							<Box sx={{ display: 'flex', }}>
 								<Button size='large' disabled={timer > 0} onClick={resendOtp} variant='text' className={classes.disabledBtn}>Resend OTP</Button>
 								<Typography sx={{ color: '#aaa', marginTop: '6px' }}>
-									{timer === 0 ? '' : `:  00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
+									{timer === 0 ? '' : `: 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
 								</Typography>
 							</Box>
 
@@ -200,6 +202,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 							<Button size='large' disabled={util.loading} sx={{
 								color: '#fff',
 								textTransform: 'capitalize',
+								fontFamily: 'inter',
+								fontWeight: '500',
 								'&:disabled': {
 									color: '#aaa',
 								}
