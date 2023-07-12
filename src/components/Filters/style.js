@@ -2,8 +2,9 @@ import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles({
     filterStyleActive: {
+        fontFamily: 'inter',
         fontSize: '.8rem',
-        fontWeight: '400',
+        fontWeight: '500',
         backgroundColor: '#282828',
         borderColor: '#282828',
         color: '#eee',
@@ -12,8 +13,9 @@ export const useStyles = makeStyles({
         },
     },
     filterStyleInActive: {
+        fontFamily: 'inter',
         fontSize: '.8rem',
-        fontWeight: '400',
+        fontWeight: '500',
         backgroundColor: '',
         color: '#282828',
         borderColor: '#282828',

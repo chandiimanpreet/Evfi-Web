@@ -38,7 +38,8 @@ export const useStyles = makeStyles({
     },
     sbmtOtp: {
         backgroundColor: "#282828",
-        fontFamily: "Manrope 27px",
+        fontFamily: "Manrope",
+        fontWeight: '600',
         color: 'white',
         "&:hover": {
             backgroundColor: 'black',
@@ -65,9 +66,10 @@ export const useStyles = makeStyles({
     },
     register: {
         textAlign: 'center',
-        fontSize: '2rem',
+        fontSize: '1.7rem',
         color: '#fff',
         fontFamily: 'inter',
+        fontWeight: '500',
     },
     skip: {
         color: '#282828',
@@ -94,10 +96,10 @@ export const useStyles = makeStyles({
         }
     },
     companyText: {
-        postion: 'absolute',
         color: '#fff',
         textAlign: 'center',
-        fontFamily: "Manrope 27px",
+        fontFamily: "Manrope",
+        fontWeight: 'bold',
         fontSize: '1.8rem',
     },
     headText: {
@@ -105,21 +107,22 @@ export const useStyles = makeStyles({
         color: '#fff',
         fontFamily: "inter",
         fontSize: '1.4rem',
-        fontWeight: 'bold',
+        fontWeight: '500',
         marginBottom: '1.5rem',
     },
     headOtp: {
         color: '#fff',
-        postion: 'absolute',
         textAlign: 'center',
-        fontFamily: 'Manrope 27px',
+        fontFamily: 'Manrope',
+        fontWeight: 'bold',
         fontSize: '1.8rem'
     },
     otpTitle: {
         color: '#fff',
         textAlign: 'center',
         fontFamily: 'inter',
-        fontSize: '1.4rem',
+        fontSize: '1.5rem',
+        fontWeight: '500',
     },
     otpSent: {
         color: '#fff',
@@ -128,6 +131,7 @@ export const useStyles = makeStyles({
     },
     dividerStyle: {
         color: '#ddd',
+        fontFamily: 'inter',
         '&.MuiDivider-root': {
             '&::before': {
                 borderTop: 'thin solid #ddd'
@@ -139,6 +143,8 @@ export const useStyles = makeStyles({
     },
     disabledBtn: {
         color: '#fff',
+        fontWeight: '400',
+        padding: '8px 4px 8px 11px',
         textTransform: 'capitalize',
         '&:disabled': {
             color: '#aaa',
@@ -162,7 +168,8 @@ export const otpStyle = {
         marginRight: '8px',
         backgroundColor: '#ffffff30',
         color: '#fff',
-        fontSize: '20px'
+        fontSize: '20px',
+        fontFamily: 'inter',
     },
     phoneBox: {
         display: 'flex',
@@ -205,6 +212,8 @@ export const otpStyle = {
     registerTextfieldStyle: {
         backgroundColor: ' #ffffff26',
         borderRadius: '5px',
+        fontFamily: 'inter',
+        fontWeight: '500',
         'input': {
             color: '#fff',
         },
@@ -212,4 +221,10 @@ export const otpStyle = {
             color: '#fff !important',
         }
     },
+    getOtpStyle: {
+        backgroundColor: '#282828',
+        color: 'white',
+        fontFamily: 'Manrope !important',
+        fontWeight: '600',
+    }
 } 

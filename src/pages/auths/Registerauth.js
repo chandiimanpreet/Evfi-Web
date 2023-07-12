@@ -32,7 +32,7 @@ export default function Registerauth({ setData, user }) {
 				<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 				<Typography className={classes.headOtp}>EVFI</Typography>
 				<Typography className={classes.register}>Welcome Back</Typography>
-				<Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
+				<Typography style={{ textAlign: 'center', color: '#fff', fontFamily: 'inter', fontWeight: '500', }}>Please enter your details.</Typography>
 
 
 				<TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' value={data.username} />
@@ -44,7 +44,7 @@ export default function Registerauth({ setData, user }) {
 				<Button size='large' type='submit' className={classes.sbmtOtp} variant='contained'>Register</Button>
 
 				<Divider className={classes.dividerStyle}>or</Divider>
-				<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontFamily: 'inter' }}>Skip for later</Link>
+				<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontFamily: 'inter', fontWeight: '500', }}>Skip for later</Link>
 			</Box>
 		</Box>
 	)

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { BottomNavigation, Tooltip } from "@mui/material";
-import { Restore, LocationOn, AccountCircle, Home } from "@mui/icons-material";
+import { Restore, AccountCircle, Home } from "@mui/icons-material";
 import { useStyles } from "./style";
 
 const FloatingNavbar = ({ setDirection }) => {
@@ -12,10 +12,19 @@ const FloatingNavbar = ({ setDirection }) => {
 
 	return (
 		<BottomNavigation showLabels={false} className={classes.bottomNavigation}>
-			<Tooltip title="Home" placement="top" arrow><NavLink style={styles} onClick={() => setDirection(1)} to='/'><Home sx={{ mx: 4 }} /></NavLink></Tooltip>
-			<Tooltip title="History" placement="top" arrow><NavLink style={styles} onClick={() => setDirection(2)} to='/previousBooking'><Restore sx={{ mx: 4 }} /></NavLink></Tooltip>
-			<Tooltip title="Nearby" placement="top" arrow><NavLink style={styles} onClick={() => setDirection(4)} to='/requests'><LocationOn sx={{ mx: 4 }} /></NavLink></Tooltip>
-			<Tooltip title="Profile" placement="top" arrow><NavLink style={styles} onClick={() => setDirection(5)} to='/profile'><AccountCircle sx={{ mx: 4 }} /></NavLink></Tooltip>
+			<Tooltip title="Home" placement="top" arrow><NavLink style={styles}
+				onClick={() => setDirection(1)} to='/'><Home sx={{ mx: 4 }} /></NavLink>
+			</Tooltip>
+			<Tooltip title="History" placement="top" arrow><NavLink style={styles}
+				onClick={() => setDirection(2)} to='/previousBooking'><Restore sx={{ mx: 4 }} /></NavLink>
+			</Tooltip>
+			<Tooltip title="Booking Requests" placement="top" arrow><NavLink style={styles}
+				onClick={() => setDirection(4)} to='/requests'>
+				<img style={{ margin: '0 32px' }} src='/resources/bookings_icon.png' alt='' width='40px' height='25px' /> </NavLink>
+			</Tooltip>
+			<Tooltip title="Profile" placement="top" arrow><NavLink style={styles}
+				onClick={() => setDirection(5)} to='/profile'><AccountCircle sx={{ mx: 4 }} /></NavLink>
+			</Tooltip>
 		</BottomNavigation>
 	);
 }

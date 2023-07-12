@@ -31,6 +31,7 @@ export const useStyles = makeStyles({
 		color: '#fff',
 		backgroundColor: 'rgba(255, 255, 255, 0.15)',
 		borderRadius: '4px',
+		fontFamily: 'inter !important',
 		'&::placeholder': {
 			color: '#fff !important',
 		}
@@ -55,7 +56,8 @@ export const useStyles = makeStyles({
 		},
 	},
 	filterHeadersStyle: {
-		fontWeight: '500',
+		fontFamily: 'Manrope !important',
+		fontWeight: '600',
 		color: '#444',
 	},
 
@@ -70,7 +72,7 @@ export const useStyles = makeStyles({
 		backdropFilter: 'blur(10px)',
 		'&::-webkit-backdrop-filter': 'blur(10px) ',
 		backgroundColor: 'rgba(200, 200, 200, 0.2)',
-		borderRadius: '0px 10px 10px 0px',
+		borderRadius: '0px 12px 12px 0px',
 		border: '1px solid rgba(255, 255, 255, 0.125)',
 		padding: '10px',
 		flexGrow: 1,
@@ -82,16 +84,20 @@ export const useStyles = makeStyles({
 		backgroundColor: '#FCDD13',
 		color: '#292929',
 		fontSize: '12px',
+		fontFamily: 'Manrope !important',
 		fontWeight: 'bold',
 		borderRadius: '10px',
 		padding: '1px 8px',
 	},
-
-
-	////////////////////////////////////////// 		Tabs	 	////////////////////////////////////////////////
-	tabStyle: {
-		minHeight: '35px !important',
-		'& button': { color: '#282828', padding: '0px 7rem', minHeight: '35px !important', },
-		'& button.Mui-selected': { color: 'primary', }
-	}
+	cardTextStyle: {
+		fontSize: '.75rem',
+		color: '#eee',
+	},
+	clearAllBtnStyle: {
+		color: 'red',
+		textTransform: 'capitalize',
+		fontSize: '16px',
+		fontFamily: 'Manrope !important',
+		fontWeight: '600'
+	},
 });
