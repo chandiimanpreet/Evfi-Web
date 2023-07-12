@@ -143,7 +143,6 @@ export const useStyles = makeStyles({
     },
     disabledBtn: {
         color: '#fff',
-        fontFamily: 'inter',
         fontWeight: '400',
         padding: '8px 4px 8px 11px',
         textTransform: 'capitalize',
@@ -222,4 +221,10 @@ export const otpStyle = {
             color: '#fff !important',
         }
     },
+    getOtpStyle: {
+        backgroundColor: '#282828',
+        color: 'white',
+        fontFamily: 'Manrope !important',
+        fontWeight: '600',
+    }
 } 

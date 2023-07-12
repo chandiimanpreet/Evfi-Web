@@ -22,8 +22,8 @@ const ListItem = ({ result }) => {
 							alt='Charging Station' src={img}>
 						</Box>
 						<Box className={classes.listItemCardStyle}>
-							<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#fff', fontFamily: 'Manrope' }}>{name}</Typography>
-							<Typography sx={{ fontSize: 13, color: '#bbb', padding: '4px 0px', fontFamily: "inter" }}>
+							<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#fff', fontFamily: 'Manrope !important' }}>{name}</Typography>
+							<Typography sx={{ fontSize: 13, color: '#bbb', padding: '4px 0px', }}>
 								{location}
 							</Typography>
 							<Box className={classes.card} sx={{ marginTop: '5px' }}>
@@ -42,7 +42,7 @@ const ListItem = ({ result }) => {
 								</Box>
 								<Box className={classes.card}>
 									<CurrencyRupee sx={{ paddingTop: '2px' }} />
-									<Typography fontSize={19} sx={{ fontFamily: 'Manrope', fontWeight: '500', }}>{price}</Typography>
+									<Typography fontSize={19} sx={{ fontFamily: 'Manrope !important', fontWeight: '500', }}>{price}</Typography>
 								</Box>
 							</Box>
 						</Box>

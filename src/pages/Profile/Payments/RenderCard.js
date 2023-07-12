@@ -83,7 +83,7 @@ const RenderCard = () => {
 
     return (
         <Card className={classes.paymentCard}>
-            <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope'>
+            <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope !important'>
                 {cards.length === 0 ? "No Cards saved to be shown" : "Saved Cards"}
             </Typography>
             <br />
@@ -131,7 +131,7 @@ const RenderCard = () => {
             <Dialog open={dialogOpen} onClose={() => handleToggleDialog(false)}
                 PaperProps={{ style: { width: "400px", height: "350px", }, }}
             >
-                <DialogTitle fontFamily='Manrope' fontWeight='600' >Add Card</DialogTitle>
+                <DialogTitle fontFamily='Manrope !important' fontWeight='600' >Add Card</DialogTitle>
                 <DialogContent>
                     <TextField label="Card Number" name="cardNumberValue" value={cardNumberValue}
                         onChange={handleChange} fullWidth margin="normal" className={classes.textField}

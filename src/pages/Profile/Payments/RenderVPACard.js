@@ -6,8 +6,8 @@ import PaidIcon from "@mui/icons-material/Paid";
 import useStyles from "./styles";
 
 const SaveVPACard = () => {
-    const classes = useStyles();
 
+    //States
     const [paymentData, setPaymentData] = useState({
         upiIds: [],
         dialogOpen: false,
@@ -15,7 +15,12 @@ const SaveVPACard = () => {
         nameValue: "",
         errorMessage: "",
     });
+    const { upiIds, dialogOpen, upiIdValue, nameValue, errorMessage } = paymentData;
 
+    //Styles
+    const classes = useStyles();
+
+    //Handlers
     const handleAddUpiId = () => {
         setPaymentData((prevState) => ({
             ...prevState,
@@ -56,8 +61,6 @@ const SaveVPACard = () => {
             [name]: value,
         }));
     };
-
-    const { upiIds, dialogOpen, upiIdValue, nameValue, errorMessage } = paymentData;
 
     return (
         <Card className={classes.paymentCard}>
@@ -100,7 +103,7 @@ const SaveVPACard = () => {
             <Dialog
                 open={dialogOpen} onClose={() => setPaymentData((prevState) => ({ ...prevState, dialogOpen: false }))}
             >
-                <DialogTitle sx={{ fontFamily: 'Manrope', fontWeight: '600' }} >Add UPI ID</DialogTitle>
+                <DialogTitle sx={{ fontFamily: 'Manrope !important', fontWeight: '600' }} >Add UPI ID</DialogTitle>
                 <DialogContent>
                     <TextField label="UPI ID" name="upiIdValue" value={upiIdValue} onChange={handleChange} fullWidth
                         margin="normal" className={classes.textField}

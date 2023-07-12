@@ -28,13 +28,13 @@ const Settings = () => {
 
     return (
         <Box className={classes.root}>
-            <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" color="white" fontFamily='Manrope'>
+            <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" color="white" fontFamily='Manrope !important'>
                 Settings
             </Typography>
             <Grid>
                 <Grid item xs={12} className={classes.container}>
                     <Card className={classes.settingsCard}>
-                        <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope'>
+                        <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope !important'>
                             Social Account
                         </Typography>
                         <List>
@@ -43,9 +43,7 @@ const Settings = () => {
                                     <Box className={classes.platformName}>
                                         {account.icon}
                                         &nbsp;&nbsp;
-                                        <ListItemText primaryTypographyProps={{ style: { fontFamily: 'inter !important', } }}
-                                            primary={account.platform}
-                                        />
+                                        <ListItemText primary={account.platform} />
                                     </Box>
                                     <Box className={classes.connectButtonContainer}>
                                         <Button variant="text" className={classes.Button}
@@ -60,7 +58,7 @@ const Settings = () => {
                     </Card>
 
                     <Card className={classes.settingsCard}>
-                        <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope'>
+                        <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope !important'>
                             Notifications
                         </Typography>
                         <List>
@@ -68,9 +66,7 @@ const Settings = () => {
                                 .map(
                                     (notification) => (
                                         <ListItem key={notification}>
-                                            <ListItemText primary={notification} primaryTypographyProps={{
-                                                style: { fontFamily: 'inter !important', }
-                                            }} />
+                                            <ListItemText primary={notification} />
                                             <Switch color="primary" />
                                         </ListItem>
                                     )
@@ -79,18 +75,18 @@ const Settings = () => {
                     </Card>
 
                     <Card className={classes.settingsCard}>
-                        <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope'>
+                        <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope !important'>
                             Privacy and Security
                         </Typography>
                         <List>
                             <ListItem>
-                                <ListItemText primary="Change Password" primaryTypographyProps={{ style: { fontFamily: 'inter !important', } }} />
+                                <ListItemText primary="Change Password" />
                                 <Button variant="text" color="primary" onClick={handlePasswordChange} className={classes.Button}>
                                     Change Password
                                 </Button>
                             </ListItem>
                             <ListItem>
-                                <ListItemText primary="Privacy Policy" primaryTypographyProps={{ style: { fontFamily: 'inter !important', } }} />
+                                <ListItemText primary="Privacy Policy" />
                                 <Button className={classes.Button}>
                                     <CallMade />
                                 </Button>

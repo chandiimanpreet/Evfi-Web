@@ -70,7 +70,7 @@ const List = ({ searchedData, collectCardData }) => {
 						</Box>
 					</Box>
 
-					<Box sx={{ marginLeft: '8px', marginTop: '5px', marginBottom: showFilter ? '9px' : '0px', }}>
+					<Box sx={{ marginLeft: '8px', marginTop: '6px', marginBottom: showFilter ? '4px' : '0px', }}>
 						<Accordion expanded={showFilter} sx={{ width: '98%' }}>
 							<AccordionSummary sx={{ display: 'none' }}>
 							</AccordionSummary>
@@ -108,7 +108,7 @@ const List = ({ searchedData, collectCardData }) => {
 											</LocalizationProvider>
 
 											<LocalizationProvider dateAdapter={AdapterDayjs}>
-												<DemoContainer components={['DatePicker']} sx={{ borderColor: 'red !important' }} >
+												<DemoContainer components={['DatePicker']}>
 													<DatePicker label="End" value={selectedFilters.from}
 														onChange={(newValue) => filterHandler('from', newValue)} />
 												</DemoContainer>
@@ -122,8 +122,8 @@ const List = ({ searchedData, collectCardData }) => {
 
 					<Box className={classes.searchResultsContainer}>
 						{searchedData.map((result) => (
-							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} >
-								<ListItem key={result.id} result={result} />
+							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} key={result.id}>
+								<ListItem result={result} />
 							</Box>
 						))}
 					</Box>

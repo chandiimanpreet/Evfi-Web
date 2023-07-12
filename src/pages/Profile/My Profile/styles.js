@@ -18,7 +18,6 @@ const useStyles = makeStyles({
         backdropFilter: "blur(10px)",
         backgroundColor: "rgba(200, 200, 200, 0.2)",
         boxShadow: "0 0 1.5rem 0 rgba(0,0,0,0.75)",
-        fontFamily: 'inter !important',
     },
     editButton: {
         marginTop: "10px",
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
         backgroundColor: "#181818",
         boxShadow: "0 0 1.5rem 0 rgba(0,0,0,0.75)",
         color: "white",
-        fontFamily: 'Manrope',
+        fontFamily: 'Manrope Important',
         fontWeight: '600',
         "&:hover": {
             backgroundColor: "black",
@@ -40,18 +39,15 @@ const useStyles = makeStyles({
         },
         '& .MuiInputLabel-root': {
             color: "#fff !important",
-            fontFamily: 'inter',
         },
         '& .MuiInputBase-input.Mui-disabled': {
             WebkitTextFillColor: "#fff",
-            fontFamily: 'inter',
         },
         '& .MuiOutlinedInput-notchedOutline': {
             borderColor: "#fff !important",
         },
         "& input": {
             color: '#fff',
-            fontFamily: 'inter',
         }
     },
 });

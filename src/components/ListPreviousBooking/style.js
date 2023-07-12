@@ -34,7 +34,6 @@ export const useStyles = makeStyles({
 		fontFamily: 'inter !important',
 		'&::placeholder': {
 			color: '#fff !important',
-			fontFamily: 'inter !important',
 		}
 	},
 	filterIconStyle: {
@@ -57,7 +56,7 @@ export const useStyles = makeStyles({
 		},
 	},
 	filterHeadersStyle: {
-		fontFamily: 'Manrope',
+		fontFamily: 'Manrope !important',
 		fontWeight: '600',
 		color: '#444',
 	},
@@ -85,7 +84,7 @@ export const useStyles = makeStyles({
 		backgroundColor: '#FCDD13',
 		color: '#292929',
 		fontSize: '12px',
-		fontFamily: 'Manrope',
+		fontFamily: 'Manrope !important',
 		fontWeight: 'bold',
 		borderRadius: '10px',
 		padding: '1px 8px',
@@ -93,13 +92,12 @@ export const useStyles = makeStyles({
 	cardTextStyle: {
 		fontSize: '.75rem',
 		color: '#eee',
-		fontFamily: 'inter',
 	},
 	clearAllBtnStyle: {
 		color: 'red',
 		textTransform: 'capitalize',
 		fontSize: '16px',
-		fontFamily: 'Manrope',
+		fontFamily: 'Manrope !important',
 		fontWeight: '600'
 	},
 });

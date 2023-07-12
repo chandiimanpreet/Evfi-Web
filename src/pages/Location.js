@@ -4,23 +4,32 @@ import List from '../components/Request/List';
 import { request, recent } from "../components/Request/request";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useStyles } from "./style";
 
 const Request = ({ direction }) => {
-	const [show, setShow] = useState("pending")
+
+	//States
+	const [show, setShow] = useState("pending");
+
+	//Styles
+	const classes = useStyles();
 	return (
 		<motion.div key="lo"
 			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
 			animate={{ x: 0 }}
 			transition={{ duration: 0.25, delay: 0 }}>
-			<Box sx={{
-				overflowY: 'auto', height: '100vh', width: '100%', backgroundColor: '#000',
-				backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)'
-			}}>
-				<Typography paddingTop={4} textAlign={'center'} color={'antiquewhite'} variant="h5" sx={{ fontFamily: 'Manrope', fontSize: '25px', fontWeight: 'bold' }}>Booking Requests</Typography>
+			<Box className={classes.bodyPage}>
+				<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
 				<Box marginX={8} paddingY={4} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 					<Box sx={{ display: 'flex', gap: '2rem' }} >
-						<Link style={{ textDecoration: show === 'pending' ? 'underline' : 'none', fontSize: '1.4rem', textUnderlineOffset: '8px', color: 'antiquewhite', fontFamily: 'inter', }} onClick={() => setShow("pending")}>Pending</Link>
-						<Link style={{ textDecoration: show === 'recent' ? 'underline' : 'none', fontSize: '1.4rem', textUnderlineOffset: '8px', color: 'antiquewhite', fontFamily: 'inter', }} onClick={() => setShow("recent")}>Recent</Link>
+						<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
+							onClick={() => setShow("pending")}>
+							Pending
+						</Link>
+						<Link className={classes.links} style={{ textDecoration: show === 'recent' ? 'underline' : 'none', }}
+							onClick={() => setShow("recent")}>
+							Recent
+						</Link>
 					</Box>
 					<Divider sx={{ backgroundColor: 'antiquewhite' }} />
 					<Grid justifyContent={'center'} container columns={3} gap={2}>

@@ -16,15 +16,21 @@ const auth = getAuth(app);
 
 let appVerifier;
 export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
-	const classes = useStyles();
+
+	//States
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
 	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
 	const [otp, setotp] = useState("")
 	const [remember, setRemember] = useState(false);
 	const recaptchaWrapperRef = useRef(null);
+	
+	//Styles
+	const classes = useStyles();
 
+	//Handlers
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (showOtpForm) {
 			console.log(timer);
@@ -38,10 +44,12 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			setTimer(30);
 		}
 	}, [showOtpForm, timer])
+
 	const changePhoneHandler = () => {
 		setShowOtpForm(false);
 		setUtils({ ...util, error: null, enterNumberInactive: false, resendOtpActive: false })
-	}
+	};
+
 	const generateRecaptcha = () => {
 		appVerifier = new RecaptchaVerifier(
 			"recaptcha-container",
@@ -50,7 +58,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			},
 			auth
 		)
-	}
+	};
+
 	const signInHandler = (resend) => {
 		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
 			.then((confirmationResult) => {
@@ -67,7 +76,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			.catch((error) => {
 				setUtils({ ...util, error: error.message, loading: false, enterNumberInactive: false })
 			})
-	}
+	};
+
 	const submitPhoneNumberAuth = () => {
 		if (phone.length < 12) {
 			setUtils({ ...util, error: "Please enter valid phone number" })
@@ -93,7 +103,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		} else {
 			signInHandler(false);
 		}
-	}
+	};
 
 	const resendOtp = () => {
 		if (!remember) {
@@ -108,7 +118,8 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		} else {
 			signInHandler(resendOtp)
 		}
-	}
+	};
+
 	const submitCode = async () => {
 
 		setUtils({ ...util, loading: true, enterOtpInactive: true })
@@ -136,10 +147,12 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			.catch((error) => {
 				setUtils({ ...util, enterOtpInactive: false, loading: false, error: error.message })
 			})
-	}
+	};
+
 	if (flag) {
 		return <Navigate to='/' />
 	}
+
 	return (
 		<Box className={classes.bodyPage} >
 			<div ref={recaptchaWrapperRef}>
@@ -164,14 +177,14 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								<PhoneInput sx={{ backgroundColor: '#ffffff26 !important' }}
 									country={(code ? code : 'us')}
 									value={phone}
-									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', fontFamily: 'inter' }}
+									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff',}}
 									onChange={num => setNumber(num)}
 									inputProps={{ required: true }}
 								/>
 								<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} size="small" sx={{ color: '#fff' }} />} label="Remember me" sx={{ color: '#fff', fontFamily: "inter", }} />
 							</div>
 							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Get OTP</Button> :
-								<LoadingButton size='large' variant='contained' style={{ backgroundColor: '#282828', color: 'white', fontFamily: 'Manrope', fontWeight: '600', }} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
+								<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
 						</Box>
 					</div>
 					:
@@ -199,15 +212,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 
 							<Divider className={classes.dividerStyle}>or</Divider>
 
-							<Button size='large' disabled={util.loading} sx={{
-								color: '#fff',
-								textTransform: 'capitalize',
-								fontFamily: 'inter',
-								fontWeight: '500',
-								'&:disabled': {
-									color: '#aaa',
-								}
-							}} type='button' onClick={changePhoneHandler} variant='text'>Change Phone Number</Button>
+							<Button size='large' disabled={util.loading} className={classes.disabledBtn} type='button' onClick={changePhoneHandler} variant='text'>Change Phone Number</Button>
 						</Box>
 					</div>
 				}

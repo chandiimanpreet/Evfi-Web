@@ -9,6 +9,7 @@ import FindCurrentLocation from "./FindCurrentLocation";
 import { useLocation } from "react-router";
 
 const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card }) => {
+
 	const markerIcon = new L.icon({
 		iconUrl: require("./locationmarker.png"),
 		iconSize: [25, 41],
@@ -74,6 +75,7 @@ const Mark = ({ cardDetails }) => {
 	const map = useMap();
 	const markerRef = useRef(null);
 
+	//Styles
 	const markerIcon = new L.icon({
 		iconUrl: require("./marker.png"),
 		iconSize: [30, 30],
@@ -81,18 +83,11 @@ const Mark = ({ cardDetails }) => {
 	});
 
 	// Handlers
-
-	useEffect(() => {
-		if (markerRef.current) {
-			markerRef.current.openPopup();
-		}
-	}, [markerRef]);
-
 	useEffect(() => {
 		if (coordinates !== undefined) {
 			map.flyTo([coordinates.latitude, coordinates.longitude], 13, { duration: 1 });
+			markerRef.current.openPopup();
 		}
-		markerRef.current.openPopup();
 	}, [coordinates, map]);
 
 	return (
@@ -100,10 +95,10 @@ const Mark = ({ cardDetails }) => {
 			<Popup>
 				<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={img}></Box>
 				<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{name}</Typography>
-				<Typography sx={{ fontSize: 13, color: '#797575', margin: '0px !important' }}>{location}</Typography>
+				<Typography sx={{ fontSize: 12, color: '#797575', margin: '0px !important' }}>{location}</Typography>
 				<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 					<Box sx={{ display: 'flex' }}>
-						<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
+						<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{'  '}</Typography>
 						<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{type}</Typography>
 					</Box>
 					<Box sx={{ display: 'flex' }} >

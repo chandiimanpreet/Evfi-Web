@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         width: "800px",
         padding: "30px",
         color: "white",
-        fontFamily: 'Manrope',
+        fontFamily: 'Manrope !important',
 
         borderRadius: "10px",
         backdropFilter: "blur(10px)",
@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     Button: {
         backgroundColor: "#000000",
         color: "white",
-        fontFamily: 'Manrope',
+        fontFamily: 'Manrope !important',
         fontWeight: '600',
         borderRadius: '0px',
         "&:hover": {
@@ -56,12 +56,10 @@ const useStyles = makeStyles({
     },
     textField: {
         '& .MuiInputLabel-root': {
-            fontFamily: 'inter',
             color: '#000',
         },
         "& input": {
             color: '#000',
-            fontFamily: 'inter',
         }
     },
 });

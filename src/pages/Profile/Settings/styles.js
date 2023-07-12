@@ -21,7 +21,6 @@ const useStyles = makeStyles({
     },
     Button: {
         color: "white",
-        fontFamily: 'inter',
         fontWeight: '500',
     },
     connectButtonContainer: {
@@ -37,7 +36,6 @@ const useStyles = makeStyles({
         display: "flex",
         alignItems: "center",
         width: "120px",
-        fontFamily: 'inter',
     },
 });
 

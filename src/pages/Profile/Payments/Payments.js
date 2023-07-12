@@ -11,7 +11,8 @@ const Payments = () => {
 
     return (
         <Box className={classes.root}>
-            <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" fontFamily="Manrope" color={"white"}>
+            <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" fontFamily="Manrope"
+                color={"white"}>
                 Payments
             </Typography>
             <br />
