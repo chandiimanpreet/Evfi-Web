@@ -25,10 +25,8 @@ export default function Registerauth({ setData, user }) {
 	}
 	return (
 		<Box className={classes.bodyPage}>
-			<Box sx={{ position: 'relative' }}>
 				<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
-			</Box>
-			<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
+			<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox }>
 				<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 				<Typography className={classes.headOtp}>EVFI</Typography>
 				<Typography className={classes.register}>Welcome Back</Typography>

@@ -10,7 +10,7 @@ export const useStyles = makeStyles({
     },
     heading: {
         fontFamily: 'Manrope',
-        fontSize: '25px',
+        fontSize: '1.5rem',
         fontWeight: 'bold',
         textAlign: 'center',
         color: 'antiquewhite',
@@ -21,5 +21,4 @@ export const useStyles = makeStyles({
         textUnderlineOffset: '8px',
         color: 'antiquewhite',
     },
-
 });

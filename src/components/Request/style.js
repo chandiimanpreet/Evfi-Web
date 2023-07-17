@@ -2,8 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
     cardStyle: {
-        paddingX: '0.4rem',
-        minWidth: 438,
+        width: 'fit-content',
         display: 'flex',
         boxShadow: '5px 0 5px 0 rgba(0,0,0,0.5)',
         "backdropFilter": "blur(19px) saturate(132%)",
@@ -13,30 +12,30 @@ export const useStyles = makeStyles({
         "border": "1px solid rgba(209, 213, 219, 0.3)"
     },
     cardName: {
-        width: '85%',
         color: 'antiquewhite',
         fontFamily: 'Manrope !important',
         fontWeight: 'bold',
+        fontSize: '1rem',
     },
     cardChip: {
-        alignSelf: 'center',
-        backgroundColor: "white",
-        filter: "opacity(95%)",
+        backgroundColor: 'white',
+        opacity: '0.95',
         color: 'black',
-        fontFamily: 'Manrope !important',
+        fontFamily: 'Manrope',
         fontWeight: 'bold',
-    },
+      },
+      
     charger: {
         fontSize: 14,
-        
+        width: 'fit-content',
         marginBottom: '0.3rem',
         color: 'antiquewhite',
     },
     phone: {
-        width: '80%',
+        width: 'fit-content',
         color: 'antiquewhite',
         fontSize: 13,
-        marginBottom: '1.6rem',
+        marginBottom: '1rem',
     },
     chipGreen: {
         marginRight: '1rem',
@@ -57,5 +56,9 @@ export const useStyles = makeStyles({
             backgroundColor: '#cf352e'
         } 
     },
+    buttons: {
+        display: 'flex',
+        flexDirection: 'row',
+    }
 
 });

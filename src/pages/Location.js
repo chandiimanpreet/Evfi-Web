@@ -21,7 +21,7 @@ const Request = ({ direction }) => {
 			<Box className={classes.bodyPage}>
 				<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
 				<Box marginX={8} paddingY={4} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-					<Box sx={{ display: 'flex', gap: '2rem' }} >
+					<Box sx={{ display: 'flex', gap: '2rem', marginTop: { xs: '-1rem'} }} >
 						<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
 							onClick={() => setShow("pending")}>
 							Pending
@@ -31,7 +31,7 @@ const Request = ({ direction }) => {
 							Recent
 						</Link>
 					</Box>
-					<Divider sx={{ backgroundColor: 'antiquewhite' }} />
+					<Divider sx={{ backgroundColor: 'antiquewhite',display: {sm: 'none'}}} />
 					<Grid justifyContent={'center'} container columns={3} gap={2}>
 						{show === "pending" ?
 							request.map((ele) => {

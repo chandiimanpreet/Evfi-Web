@@ -24,7 +24,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	const [otp, setotp] = useState("")
 	const [remember, setRemember] = useState(false);
 	const recaptchaWrapperRef = useRef(null);
-	
+
 	//Styles
 	const classes = useStyles();
 
@@ -158,18 +158,23 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			<div ref={recaptchaWrapperRef}>
 				<div id="recaptcha-container"></div>
 			</div>
-			<Box sx={{ position: 'relative' }}>
-				<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
-			</Box>
+			<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
 			<Box className={classes.loginCard}>
 				{
 					util.error && (
 						<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
 					)
 				}
+				{/* otpStyle.phoneBox */}
 				{(!showOtpForm) ?
 					<div>
-						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={otpStyle.phoneBox}>
+						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={{
+							width: { xs: '15rem', md: '20rem', lg: '20rem' }, display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							gap: '2rem',
+							padding: { xs: '1rem', md: '3rem', lg: '2rem' }
+						}}>
 							<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 							<Typography className={classes.companyText}>EVFI</Typography>
 							<Typography className={classes.headText}>Verify Your Number</Typography>
@@ -177,7 +182,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 								<PhoneInput sx={{ backgroundColor: '#ffffff26 !important' }}
 									country={(code ? code : 'us')}
 									value={phone}
-									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff',}}
+									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
 									onChange={num => setNumber(num)}
 									inputProps={{ required: true }}
 								/>
@@ -189,13 +194,20 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 					</div>
 					:
 					<div>
-						<Box component='form' sx={otpStyle.phoneBoxNext} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
+						<Box component='form' sx={{
+							width: { xs: '15rem', md: '20rem', lg: '20rem' }, display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							gap: '2rem',
+							padding: { xs: '1rem', sm: '2rem', lg: '2rem' },
+							margin: { xs: '0rem' }
+						}} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
 							<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 							<Typography className={classes.headOtp}>EVFI</Typography>
 							<Typography className={classes.otpTitle}>Enter OTP Code</Typography>
 							<Typography className={classes.otpSent}>{`OTP sent to +${phone}`}</Typography>
 
-							<OTPInput inputType='tel' inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center', color: '#fff', }} numInputs={6} value={otp}
+							<OTPInput inputType='tel'  inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center', color: '#fff', }} numInputs={6} value={otp}
 								onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
 
 							{!util.loading ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Submit OTP</Button> :

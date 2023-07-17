@@ -1,6 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
+    
     bodyPage: {
         width: '100vw',
         height: '100vh',
@@ -13,11 +14,17 @@ export const useStyles = makeStyles({
     loginCard: {
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
         backdropFilter: 'blur(50px)',
-        '&::-webkit-backdrop-filter': 'blur(25px) ',
+        '&::-webkit-backdrop-filter': 'blur(25px)',
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
-    },
+        position: 'absolute',
+        height: 'fit-content',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     welcome: {
         marginLeft: '5rem',
         fontSize: '2rem',
@@ -104,6 +111,7 @@ export const useStyles = makeStyles({
     },
     headText: {
         textAlign: 'center',
+        wrap: 'nowrap',
         color: '#fff',
         fontFamily: "inter",
         fontSize: '1.4rem',
@@ -151,21 +159,24 @@ export const useStyles = makeStyles({
         }
     },
     boxBehindImgStyle: {
-        width: '30rem',
-        height: '36rem',
+        width: '20rem',
+        height: '26rem',
         position: 'absolute',
-        top: '-300px',
-        left: '5px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: '0',
     },
 })
+
 export const otpStyle = {
     inputStyle: {
-        width: '35px',
-        height: '45px',
+        width: '100%',
+        height: '2.5rem',
         borderRadius: '7px',
         border: '0px',
-        marginLeft: '8px',
-        marginRight: '8px',
+        marginLeft: '5px',
+        marginRight: '5px',
         backgroundColor: '#ffffff30',
         color: '#fff',
         fontSize: '20px',
@@ -176,8 +187,7 @@ export const otpStyle = {
         flexDirection: 'column',
         justifyContent: 'center',
         gap: '2rem',
-        paddingX: '4rem',
-        paddingY: '4rem',
+        padding: '4rem',
         width: '20rem',
     },
     phoneBoxNext: {
@@ -185,8 +195,6 @@ export const otpStyle = {
         flexDirection: 'column',
         justifyContent: 'center',
         gap: '1.5rem',
-        paddingX: '4rem',
-        paddingY: '3rem',
         width: '20rem',
     },
     registerBox: {
@@ -195,7 +203,8 @@ export const otpStyle = {
         flexDirection: 'column',
         justifyContent: 'center',
         gap: '1.1rem',
-        paddingX: '4rem',
+        margin: '1rem',
+        paddingX: '2rem',
         paddingY: '2rem',
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
         backdropFilter: 'blur(50px) ',
