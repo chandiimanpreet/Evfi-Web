@@ -28,7 +28,7 @@ export default function Registerauth({ setData, user }) {
 			<Box sx={{ position: 'relative' }}>
 				<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
 			</Box>
-			<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
+			<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }}  sx={otpStyle.registerBox1}>
 				<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 				<Typography className={classes.headOtp}>EVFI</Typography>
 				<Typography className={classes.register}>Welcome Back</Typography>
@@ -44,7 +44,7 @@ export default function Registerauth({ setData, user }) {
 				<Button size='large' type='submit' className={classes.sbmtOtp} variant='contained'>Register</Button>
 
 				<Divider className={classes.dividerStyle}>or</Divider>
-				<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontFamily: 'inter', fontWeight: '500', }}>Skip for later</Link>
+				<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontWeight: '500', }}>Skip for later</Link>
 			</Box>
 		</Box>
 	)

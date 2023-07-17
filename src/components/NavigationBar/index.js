@@ -4,8 +4,10 @@ import axios from 'axios';
 import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
 import { saveQuery } from '../../utils/queries/searchQueries';
+
 const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
 	showRoute }) => {
+
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);

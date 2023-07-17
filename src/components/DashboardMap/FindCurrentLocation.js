@@ -8,7 +8,11 @@ const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
     const map = useMap();
 
     useEffect(() => {
-        map.locate().on("locationfound", function (e) {
+        map.locate({
+            // setView: true,
+            enableHighAccuracy: true,
+        }).on("locationfound", function (e) {
+
             setPosition(e.latlng);
             setSearchCoordinates({ ...searchCoordinates, source: { coordinates: [e.latlng.lng, e.latlng.lat], label: `${e.latlng.lat}+${e.latlng.lng}` } }) // if click current location overwrite and set the label
             map.flyTo(e.latlng, map.getZoom());

@@ -9,7 +9,7 @@ export const useStyles = makeStyles({
         backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)'
     },
     heading: {
-        fontFamily: 'Manrope',
+        fontFamily: 'Manrope !important',
         fontSize: '25px',
         fontWeight: 'bold',
         textAlign: 'center',

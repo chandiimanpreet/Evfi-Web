@@ -6,6 +6,7 @@ import Profile from '../pages/Profile/index';
 import PreviousBooking from '../pages/PreviousBooking';
 import Phoneauth from '../pages/auths/Phoneauth';
 import Registerauth from '../pages/auths/Registerauth';
+import Provider from '../pages/auths/Provider';
 import Protector from '../pages/auths/Protector';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
@@ -45,14 +46,14 @@ export default function AnimatedRoutes() {
     }
 
     const getUserData = async () => {
-        const temp2=await axios.get('https://1.1.1.1/cdn-cgi/trace');        
-        const response=temp2.data.split('\n');
-        let code=response[9].substring(4);
-        code=code.toLowerCase();
-        setCode(code);   
+        const temp2 = await axios.get('https://1.1.1.1/cdn-cgi/trace');
+        const response = temp2.data.split('\n');
+        let code = response[9].substring(4);
+        code = code.toLowerCase();
+        setCode(code);
         const res = await getUser();
         if (!res.user) {
-            
+
             setData({ "loading": false, "flag": false });
             return;
         }
@@ -72,6 +73,7 @@ export default function AnimatedRoutes() {
             getUserData();
         }
     }, [user.loading]);
+    // <Route path="/" element={<Home direction={currentDirection} />} />
 
     return (
         user.loading ?
