@@ -5,7 +5,6 @@ import { useStyles } from './style'
 
 
 export default function List({ data, show }) {
-
     //Styles
     const classes = useStyles();
 

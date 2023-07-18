@@ -3,15 +3,20 @@ import searchedData from './searchedData';
 import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button } from '@mui/material';
+import {useNavigate} from 'react-router-dom';
+
 
 import { useStyles } from './style';
 
-const ListItem = ({ result }) => {
+const ListItem = ({ result ,user}) => {
 	const { name, location, type, isAvailable, price, rating, img } = result;
-
-	// Styling
 	const classes = useStyles();
-
+	const navigate=useNavigate();
+	const bookingHandler=()=>{
+		if(!user.registeredLevel2){
+			navigate('/register?redirectTo=previousBooking');
+		}
+	}
 	return (
 		<Fragment>
 			{
@@ -38,7 +43,7 @@ const ListItem = ({ result }) => {
 							</Box>
 							<Box className={classes.card} sx={{ marginTop: '.8rem', padding: '4px 0px', }}>
 								<Box>
-									<Button variant="contained" className={classes.bookAgainBtn}>Book Again</Button>
+									<Button onClick={bookingHandler} variant="contained" className={classes.bookAgainBtn}>Book Again</Button>
 								</Box>
 								<Box className={classes.card}>
 									<CurrencyRupee sx={{ paddingTop: '2px' }} />

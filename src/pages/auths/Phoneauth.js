@@ -22,7 +22,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	const [showOtpForm, setShowOtpForm] = useState(false);
 	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
 	const [otp, setotp] = useState("")
-	const [remember, setRemember] = useState(false);
+	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 	
 	//Styles
@@ -33,14 +33,12 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 
 	useEffect(() => {
 		if (showOtpForm) {
-			console.log(timer);
 			if (timer > 0) {
 				setTimeout(() => {
 					setTimer(timer - 1);
 				}, 1000)
 			}
 		} else {
-			console.log("e");
 			setTimer(30);
 		}
 	}, [showOtpForm, timer])
@@ -130,15 +128,13 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		window.confirmationResult.confirm(otp)
 			.then(async () => {
 				const res = await logInUser(phone);
-				console.log("e");
-				if (res.registered === false) {
+				if (res.registeredLevel2 === false) {
 					setData({ "loading": false, "flag": true, ...res });
 					navigate('/register', { replace: true });
 				}
-
-				else if (res.registered === true) {
+				else if (res.registeredLevel2 === true) {
 					setData({ ...res, "loading": false, "flag": true });
-					navigate('/', { replace: true })
+					navigate('/register-provider', { replace: true })
 				} else {
 					setUtils({ ...util, ...res, loading: false, enterOtpInactive: false })
 				}

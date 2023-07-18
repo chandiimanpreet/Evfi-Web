@@ -14,7 +14,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
 
-const List = ({ searchedData, collectCardData }) => {
+const List = ({ searchedData, collectCardData ,user}) => {
 
 	//States
 	const [showFilter, setShowFilter] = useState(false);
@@ -47,7 +47,10 @@ const List = ({ searchedData, collectCardData }) => {
 		}))
 	};
 
-	const handleCardData = (result) => { setCardData(result); };
+	const handleCardData = (result) => { 
+		console.log("clicked");	
+		setCardData(result); 
+	};
 
 	useEffect(() => {
 		collectCardData(cardData);
@@ -122,8 +125,8 @@ const List = ({ searchedData, collectCardData }) => {
 
 					<Box className={classes.searchResultsContainer}>
 						{searchedData.map((result) => (
-							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} key={result.id}>
-								<ListItem result={result} />
+							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }}  key={result.id}>
+								<ListItem user={user} result={result} />
 							</Box>
 						))}
 					</Box>
