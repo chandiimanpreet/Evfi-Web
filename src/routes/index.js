@@ -45,14 +45,14 @@ export default function AnimatedRoutes() {
     }
 
     const getUserData = async () => {
-        const temp2=await axios.get('https://1.1.1.1/cdn-cgi/trace');        
-        const response=temp2.data.split('\n');
-        let code=response[9].substring(4);
-        code=code.toLowerCase();
-        setCode(code);   
+        const temp2 = await axios.get('https://1.1.1.1/cdn-cgi/trace');
+        const response = temp2.data.split('\n');
+        let code = response[9].substring(4);
+        code = code.toLowerCase();
+        setCode(code);
         const res = await getUser();
         if (!res.user) {
-            
+
             setData({ "loading": false, "flag": false });
             return;
         }
@@ -72,6 +72,7 @@ export default function AnimatedRoutes() {
             getUserData();
         }
     }, [user.loading]);
+    // <Route path="/" element={<Home direction={currentDirection} />} />
 
     return (
         user.loading ?
