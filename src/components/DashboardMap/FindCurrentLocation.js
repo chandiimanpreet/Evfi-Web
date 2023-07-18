@@ -14,7 +14,17 @@ const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
         }).on("locationfound", function (e) {
 
             setPosition(e.latlng);
-            setSearchCoordinates({ ...searchCoordinates, source: { coordinates: [e.latlng.lng, e.latlng.lat], label: `${e.latlng.lat}+${e.latlng.lng}` } }) // if click current location overwrite and set the label
+            setSearchCoordinates((prevSearchCoordinates) => ({
+                ...prevSearchCoordinates,
+                source: {
+                    coordinates: [e.latlng.lng, e.latlng.lat],
+                    label: `${e.latlng.lat}+${e.latlng.lng}`,
+                },
+                destination: {
+                    coordinates: prevSearchCoordinates.destination.coordinates,
+                    label: prevSearchCoordinates.destination.label,
+                },
+            })); // if click current location overwrite and set the label
             map.flyTo(e.latlng, map.getZoom());
         });
     }, [map, searchCoordinates, setSearchCoordinates]);
@@ -27,6 +37,4 @@ const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
         )
     )
 }
-
 export default FindCurrentLocation
-

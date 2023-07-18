@@ -20,30 +20,29 @@ export const useStyles = makeStyles({
 	},
 
 	inputBtns: {
-		backgroundColor: '#ffffff26 !important',
-		color: '#fff !important',
-		borderRadius: '10rem !important',
-		fontSize: '16px !important',
-		fontFamily: 'Manrope !important',
-		textTransform: 'none !important',
-		padding: '0.5rem 1.5rem !important',
-		width: "calc(50% - 3.5rem) !important",
-		cursor: "text !important",
+		backgroundColor: '#ffffff26!important',
+		color: '#fff!important',
+		borderRadius: '10rem!important',
+		fontSize: '16px!important',
+		textTransform: 'none!important',
+		padding: '0.5rem 1.5rem!important',
+		width: "calc(50% - 3.5rem)!important",
+		cursor: "text!important",
 		display: "flex",
-		justifyContent: "left !important",
+		justifyContent: "left!important",
 	},
 
 	boltIcon: {
 		color: "yellow",
-		fontSize: "2.5rem !important",
+		fontSize: "2.5rem!important",
 		border: "2px solid yellow",
 		borderRadius: "100%",
 	},
 
 	extendnavigationroot: {
-		width: "85vw !important",
+		width: "85vw!important",
 		position: 'relative',
-		backgroundColor: "#282828 !important",
+		backgroundColor: "#282828!important",
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
@@ -66,7 +65,7 @@ export const useStyles = makeStyles({
 		color: 'yellow',
 		border: '4px solid yellow',
 		position: 'absolute',
-		fontSize: '2.3rem !important',
+		fontSize: '2.3rem!important',
 		borderRadius: '100%',
 		left: '6rem',
 		zIndex: 1500,
@@ -74,12 +73,12 @@ export const useStyles = makeStyles({
 
 	extendinputroot: {
 		position: 'relative',
-		display: 'flex !important',
-		justifyContent: 'space-around !important',
-		width: "100% !important",
-		padding: "0.1rem !important",
+		display: 'flex!important',
+		justifyContent: 'space-around!important',
+		width: "100%!important",
+		padding: "0.1rem!important",
 		alignItems: 'center',
-		left: '0.7rem !important'
+		left: '0.7rem!important'
 	},
 
 	autocompletestyle: {
@@ -96,7 +95,7 @@ export const useStyles = makeStyles({
 		marginRight: '5px',
 		marginLeft: '5px',
 		marginTop: '0px',
-		fontSize: '2.5rem !important'
+		fontSize: '2.5rem!important'
 	},
 
 	travelExploreRoundedIcon: {
@@ -129,17 +128,17 @@ export const useStyles = makeStyles({
 
 	exNavPopover: {
 		'& .MuiPopover-paper': {
-			display: 'flex !important',
-			position: 'relative !important',
-			maxWidth: 'calc(100% - 0px) !important',
-			background: 'none !important',
-			boxShadow: 'none !important',
-			marginTop: '1rem !important',
-			overflowX: 'unset !important',
-			overflowY: 'unset !important',
-			alignItems: 'center !important',
-			borderRadius: '30px !important',
-			justifyContent: 'center !important',
+			display: 'flex!important',
+			position: 'relative!important',
+			maxWidth: 'calc(100% - 0px)!important',
+			background: 'none!important',
+			boxShadow: 'none!important',
+			marginTop: '1rem!important',
+			overflowX: 'unset!important',
+			overflowY: 'unset!important',
+			alignItems: 'center!important',
+			borderRadius: '30px!important',
+			justifyContent: 'center!important',
 		}
 	},
 
@@ -147,41 +146,40 @@ export const useStyles = makeStyles({
 		'& label.Mui-focused': {
 			color: '#fff',
 		},
+
 		'& .MuiInput-underline:after': {
 			borderBottomColor: '#fff',
 		},
 		'& .MuiInputLabel-root': {
 			color: '#fff',
 			left: '0.8rem',
-			fontSize: '1.1rem',
-			fontFamily: 'Manrope !important',
+			fontSize: '1.1rem'
 		},
 		'& .MuiOutlinedInput-root': {
 			'& fieldset': {
 				color: '#fff',
-				backgroundColor: '#ffffff26 !important',
+				backgroundColor: '#ffffff26!important',
 				border: 'none',
 				cursor: 'pointer',
-				borderRadius: '2rem',
+				borderRadius: '2rem'
 			},
 			'&:hover fieldset': {
 				color: '#fff',
-				backgroundColor: '#ffffff26 !important',
+				backgroundColor: '#ffffff26!important',
 				height: '3.7rem',
 				border: 'none',
 				cursor: 'pointer'
 			},
 			'&.Mui-focused fieldset': {
-				backgroundColor: '#ffffff26 !important',
+				backgroundColor: '#ffffff26!important',
 				color: '#fff',
 				border: 'none',
 				cursor: 'pointer'
 			},
 			'& .MuiAutocomplete-input': {
-				color: '#fff ',
-				fontFamily: 'Manrope !important',
+				color: "white",
 			},
 		},
 
-	}, 
+	},
 });

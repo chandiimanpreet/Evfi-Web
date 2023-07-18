@@ -97,7 +97,10 @@ const ExtendedNavigation = ({ anchorEl,
 				</Box>
 				<TuneIcon className={classes.filterdesign} />
 			</Popover>
+
 		</motion.div>
 	)
 }
 export default ExtendedNavigation
+
+

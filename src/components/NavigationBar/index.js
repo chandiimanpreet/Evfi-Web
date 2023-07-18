@@ -4,10 +4,8 @@ import axios from 'axios';
 import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
 import { saveQuery } from '../../utils/queries/searchQueries';
-
 const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
 	showRoute }) => {
-
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);
@@ -50,15 +48,13 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	}
 
 	const setPolyline = async () => {
-		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
+		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
 			await saveQuery({ start: searchCoordinates.source.coordinates, end: searchCoordinates.destination.coordinates });
 			showRoute();
 			handleClose();
 
 		}
-		else {
-			window.alert("please fill the source and destination");
-		}
+
 	}
 	return (
 		<motion.div>
