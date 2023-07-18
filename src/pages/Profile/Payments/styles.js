@@ -19,7 +19,6 @@ const useStyles = makeStyles({
         borderRadius: "10px",
         backdropFilter: "blur(10px)",
         backgroundColor: " rgba(200, 200, 200, 0.2)",
-        WebkitBackdropFilter: "blur( 6px )",
     },
     card: {
         display: "flex",

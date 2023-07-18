@@ -6,7 +6,6 @@ import Profile from '../pages/Profile/index';
 import PreviousBooking from '../pages/PreviousBooking';
 import Phoneauth from '../pages/auths/Phoneauth';
 import Registerauth from '../pages/auths/Registerauth';
-import Provider from '../pages/auths/Provider';
 import Protector from '../pages/auths/Protector';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router';

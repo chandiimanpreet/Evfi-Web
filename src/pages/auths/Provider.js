@@ -93,7 +93,7 @@ const Provider = ({ user, setData }) => {
 
 	const saveData = async () => {
 		setShow("Uploading images...")
-		
+
 		const chargersImageURL = [];
 
 		for (const img of chargerArea) {
@@ -113,7 +113,7 @@ const Provider = ({ user, setData }) => {
 		setShow("Uploading Data...")
 
 		const temp = await registerUser({ ...data, isProvider: true, aadharImagesUrl, chargersImageURL })
-		
+
 		if (temp.error) {
 			console.log(temp.error);
 		}
@@ -122,182 +122,182 @@ const Provider = ({ user, setData }) => {
 	};
 
 	if (user.isProvider) {
-	return <Navigate to={'/'} />
+		return <Navigate to={'/'} />
 	} else {
 
-	return (
-		<Box className={classes.bodyPage}>
-			<Box sx={{ position: 'relative' }}>
-				<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
-			</Box>
-			<Box component='form' onSubmit={(e) => { e.preventDefault(); }} sx={otpStyle.registerBox2}>
-				<Box sx={{ display: 'flex', flexDirection: 'column', }}>
-					<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-					<Typography className={classes.headOtp}>EVFI</Typography>
-					<Typography className={classes.register}>Become a Provider</Typography>
+		return (
+			<Box className={classes.bodyPage}>
+				<Box sx={{ position: 'relative' }}>
+					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
 				</Box>
+				<Box component='form' onSubmit={(e) => { e.preventDefault(); }} sx={otpStyle.registerBox2}>
+					<Box sx={{ display: 'flex', flexDirection: 'column', }}>
+						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+						<Typography className={classes.headOtp}>EVFI</Typography>
+						<Typography className={classes.register}>Become a Provider</Typography>
+					</Box>
 
-				<Box sx={{ flexGrow: 1 }}>
-					<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-						<Grid item xs={4}>
-							<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-								type='text' label='Charger Name' name='chargerName' value={data.chargerName} />
+					<Box sx={{ flexGrow: 1 }}>
+						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
+							<Grid item xs={4}>
+								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
+									type='text' label='Charger Name' name='chargerName' value={data.chargerName} />
+							</Grid>
+							<Grid item xs={4}>
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+									<InputLabel id="types">Charger Type</InputLabel>
+									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
+										label="Charger Type" onChange={changeDataHandler}>
+										<MenuItem value={'a'}>Type A</MenuItem>
+										<MenuItem value={'b'}>Type B</MenuItem>
+										<MenuItem value={'c'}>Type C</MenuItem>
+									</Select>
+								</FormControl>
+							</Grid>
+							<Grid item xs={4}>
+								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
+									type='number' label='Expected price per hour' name='expectedPrice' value={data.expectedPrice} />
+							</Grid>
 						</Grid>
-						<Grid item xs={4}>
-							<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
-								<InputLabel id="types">Charger Type</InputLabel>
-								<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
-									label="Charger Type" onChange={changeDataHandler}>
-									<MenuItem value={'a'}>Type A</MenuItem>
-									<MenuItem value={'b'}>Type B</MenuItem>
-									<MenuItem value={'c'}>Type C</MenuItem>
-								</Select>
-							</FormControl>
+						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
+							<Grid item xs={3}>
+								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='text' label='Address' name='address' value={data.address} />
+							</Grid>
+							<Grid item xs={3} >
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+									<InputLabel id="country">Country</InputLabel>
+									<Select sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
+										label="Country" onChange={changeDataHandler}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+									>
+										{
+											countriesData && countriesData.length > 0 &&
+											countriesData.map((item, idx) => (
+												<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
+											))
+										}
+									</Select>
+								</FormControl>
+							</Grid>
+							<Grid item xs={3} >
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+									<InputLabel id="state">State</InputLabel>
+									<Select sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
+										label="State" onChange={changeDataHandler}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+									>
+										{
+											ownStates !== undefined && ownStates.length > 0 && ownStates.map((item, idx) => (
+												<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
+											))
+										}
+									</Select>
+								</FormControl>
+							</Grid>
+							<Grid item xs={3} >
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+									<InputLabel id="city">City</InputLabel>
+									<Select sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
+										label="City" onChange={changeDataHandler}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+									>
+										{
+											ownCities !== undefined && ownCities.length > 0 && ownCities.map((item, idx) => (
+												<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
+											))
+										}
+									</Select>
+								</FormControl>
+							</Grid>
 						</Grid>
-						<Grid item xs={4}>
-							<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-								type='number' label='Expected price per hour' name='expectedPrice' value={data.expectedPrice} />
-						</Grid>
-					</Grid>
-					<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-						<Grid item xs={3}>
-							<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-								variant='outlined' type='text' label='Address' name='address' value={data.address} />
-						</Grid>
-						<Grid item xs={3} >
-							<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
-								<InputLabel id="country">Country</InputLabel>
-								<Select sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
-									label="Country" onChange={changeDataHandler}
-									MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+						<Grid container spacing={2}>
+							<Grid item xs={3} >
+								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode} />
+							</Grid>
+							<Grid item xs={3}  >
+								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='text' label='Host Name' name='hostNames' value={data.hostNames} />
+							</Grid>
+							<Grid item xs={3}  >
+								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='text' label='Availability' name='availability' value={data.availability} />
+							</Grid>
+							<Grid item xs={3}  >
+								<Button fullWidth className={classes.setChargerLocationBtn} onClick={handleOpen}
+									name='chargerLocation' value={data.chargerLocation}
 								>
-									{
-										countriesData && countriesData.length > 0 &&
-										countriesData.map((item, idx) => (
-											<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
-										))
-									}
-								</Select>
-							</FormControl>
+									{data.chargerLocation && <CheckCircleOutlineIcon sx={{ marginRight: '5px', fontSize: '26px', color: 'green' }} />}
+									{data.chargerLocation === null ? 'Set Charger Location' : 'Location captured'}
+								</Button>
+								<Modal open={open} onClose={handleClose} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, }, }}>
+									<Fade in={open}>
+										<Box sx={{
+											position: 'absolute', top: '10%', left: '25%', border: '2px solid #000', boxShadow: 24, p: 4,
+										}} className='modalMap'>
+											<ModalMap data={data} setUserData={setUserData} handleClose={handleClose} />
+										</Box>
+									</Fade>
+								</Modal>
+							</Grid>
 						</Grid>
-						<Grid item xs={3} >
-							<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
-								<InputLabel id="state">State</InputLabel>
-								<Select sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
-									label="State" onChange={changeDataHandler}
-									MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
-								>
-									{
-										ownStates !== undefined && ownStates.length > 0 && ownStates.map((item, idx) => (
-											<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
-										))
-									}
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={3} >
-							<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
-								<InputLabel id="city">City</InputLabel>
-								<Select sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
-									label="City" onChange={changeDataHandler}
-									MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
-								>
-									{
-										ownCities !== undefined && ownCities.length > 0 && ownCities.map((item, idx) => (
-											<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
-										))
-									}
-								</Select>
-							</FormControl>
-						</Grid>
-					</Grid>
-					<Grid container spacing={2}>
-						<Grid item xs={3} >
-							<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-								variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode} />
-						</Grid>
-						<Grid item xs={3}  >
-							<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-								variant='outlined' type='text' label='Host Name' name='hostNames' value={data.hostNames} />
-						</Grid>
-						<Grid item xs={3}  >
-							<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-								variant='outlined' type='text' label='Availability' name='availability' value={data.availability} />
-						</Grid>
-						<Grid item xs={3}  >
-							<Button fullWidth className={classes.setChargerLocationBtn} onClick={handleOpen}
-								name='chargerLocation' value={data.chargerLocation}
-							>
-								{data.chargerLocation && <CheckCircleOutlineIcon sx={{ marginRight: '5px', fontSize: '26px', color: 'green' }} />}
-								{data.chargerLocation === null ? 'Set Charger Location' : 'Location captured'}
-							</Button>
-							<Modal open={open} onClose={handleClose} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, }, }}>
-								<Fade in={open}>
-									<Box sx={{
-										position: 'absolute', top: '10%', left: '25%', border: '2px solid #000', boxShadow: 24, p: 4,
-									}} className='modalMap'>
-										<ModalMap data={data} setUserData={setUserData} handleClose={handleClose} />
+						<Grid container spacing={1}>
+							<Grid item xs={12} >
+								<div style={{ display: 'flex', columnGap: '12px' }}>
+									<input multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
+										type="file"
+									/>
+									<label htmlFor="raised-button-file">
+										<Button variant="raised" component="span" className={classes.upLoadBtns} >
+											Upload Aadhaar Card
+										</Button>
+									</label>
+									<Box>
+										{aadhaarCard.length > 0 &&
+											aadhaarCard.map((item, idx) =>
+												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle1(item)}
+													className={classes.upLoadBtnChips} size='medium' variant="outlined"
+												/>
+											)
+										}
 									</Box>
-								</Fade>
-							</Modal>
+								</div>
+							</Grid>
 						</Grid>
-					</Grid>
-					<Grid container spacing={1}>
-						<Grid item xs={12} >
-							<div style={{ display: 'flex', columnGap: '12px' }}>
-								<input multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
-									type="file"
-								/>
-								<label htmlFor="raised-button-file">
-									<Button variant="raised" component="span" className={classes.upLoadBtns} >
-										Upload Aadhaar Card
-									</Button>
-								</label>
-								<Box>
-									{aadhaarCard.length > 0 &&
-										aadhaarCard.map((item, idx) =>
-											<Chip key={idx} label={item.name} onDelete={chipDeleteHandle1(item)}
-												className={classes.upLoadBtnChips} size='medium' variant="outlined"
-											/>
-										)
-									}
-								</Box>
-							</div>
+						<Grid container spacing={1}>
+							<Grid item xs={12} >
+								<div style={{ display: 'flex', columnGap: '12px' }}>
+									<input multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
+										type="file"
+									/>
+									<label htmlFor="button-file">
+										<Button variant="raised" component="span" className={classes.upLoadBtns} >
+											Upload Charger Area Image
+										</Button>
+									</label>
+									<Box>
+										{chargerArea.length > 0 &&
+											chargerArea.map((item, idx) =>
+												<Chip key={idx} label={item.image} onDelete={chipDeleteHandle2(item)}
+													className={classes.upLoadBtnChips} size='medium' variant="outlined"
+												/>
+											)
+										}
+									</Box>
+								</div>
+							</Grid>
 						</Grid>
-					</Grid>
-					<Grid container spacing={1}>
-						<Grid item xs={12} >
-							<div style={{ display: 'flex', columnGap: '12px' }}>
-								<input multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
-									type="file"
-								/>
-								<label htmlFor="button-file">
-									<Button variant="raised" component="span" className={classes.upLoadBtns} >
-										Upload Charger Area Image
-									</Button>
-								</label>
-								<Box>
-									{chargerArea.length > 0 &&
-										chargerArea.map((item, idx) =>
-											<Chip key={idx} label={item.image} onDelete={chipDeleteHandle2(item)}
-												className={classes.upLoadBtnChips} size='medium' variant="outlined"
-											/>
-										)
-									}
-								</Box>
-							</div>
-						</Grid>
-					</Grid>
-				</Box>
-				<Button onClick={saveData} sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
+					</Box>
+					<Button onClick={saveData} sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
 
-				<Divider className={classes.dividerStyle}>or</Divider>
-				<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontWeight: '500', }}>
-					Skip for later
-				</Link>
-			</Box>
-		</Box >
-	)
+					<Divider className={classes.dividerStyle}>or</Divider>
+					<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontWeight: '500', }}>
+						Skip for later
+					</Link>
+				</Box>
+			</Box >
+		)
 	}
 }
 export default Provider;
