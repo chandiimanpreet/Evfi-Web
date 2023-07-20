@@ -134,7 +134,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 				}
 				else if (res.registeredLevel2 === true) {
 					setData({ ...res, "loading": false, "flag": true });
-					navigate('/register-provider', { replace: true })
+					navigate('/provider-register', { replace: true })
 				} else {
 					setUtils({ ...util, ...res, loading: false, enterOtpInactive: false })
 				}
