@@ -69,6 +69,7 @@ export const useStyles = makeStyles({
         fontSize: '1.7rem',
         color: '#fff',
         fontWeight: '500',
+        marginBottom:'1rem'
     },
     skip: {
         color: '#282828',
@@ -249,11 +250,12 @@ export const otpStyle = {
         paddingY: '3rem',
         width: '20rem',
     },
-    registerBox1: {
-        width: '20rem',
+    registerBox: {
+        maxHeight:"33rem",
+        width: '23rem',
+        overflowY:'auto',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         gap: '1.1rem',
         paddingX: '4rem',
         paddingY: '2rem',
@@ -282,13 +284,13 @@ export const otpStyle = {
     companylogo: {
         height: '2.5rem',
         width: '2.5rem',
-        margin: '0 auto',
+        margin: '0 auto'
     },
     registerTextfieldStyle: {
+        marginBottom:'1rem',
         backgroundColor: ' #ffffff26',
         borderRadius: '5px',
         fontWeight: '500',
-        marginBottom: '10px',
         'input': {
             color: '#fff',
         },

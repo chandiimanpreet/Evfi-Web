@@ -37,11 +37,11 @@ export const logInUser =async (mobile) => {
                     resolve(snapshot.val())
                 } else {
                     const data = {
-                        mobile: mobile, registered: false, uid: auth
+                        mobile: mobile,uid: auth,username:null,registeredLevel1:false,isProvider:false,registeredLevel2:false,vehicleNo:null,chargerType:null,vehicleType:null
                     }
                     set(ref(database, "Users/" + auth), data)
                         .then(() => {
-                            resolve({ registered: false });
+                            resolve(data);
                         })
                         .catch((error) => {
                             reject({ error: error.message })
@@ -59,7 +59,7 @@ export const registerUser =async (data) => {
         const database = getDatabase();
         update(ref(database, "Users/" + auth), data)
             .then(() => {
-                resolve({ registered: true });
+                resolve({ message: "success" });
             })
             .catch((error) => {
                 reject({ error: error.message });

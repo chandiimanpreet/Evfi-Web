@@ -17,6 +17,7 @@ import { signOut, getAuth } from 'firebase/auth';
 import { initializeApp } from 'firebase/app'
 import firebaseConfig from '../utils/config/firebaseConfig';
 import axios from 'axios';
+import Provider from '../pages/auths/Provider';
 
 
 const app = initializeApp(firebaseConfig)
@@ -83,11 +84,12 @@ export default function AnimatedRoutes() {
                 <Routes location={location} key={location.pathname}>
                     <Route element={<Protector flag={user.flag} setDirection={setDirection} />} >
                         <Route path="/" element={<Home direction={currentDirection} />} />
-                        <Route path="previousBooking" element={<PreviousBooking direction={currentDirection} />} />
+                        <Route path="previousBooking" element={<PreviousBooking direction={currentDirection} user={user} />} />
                         <Route path="about" element={<About direction={currentDirection} />} />
                         <Route path="requests" element={<Request direction={currentDirection} />} />
                         <Route path="profile" element={<Profile direction={currentDirection} logout={logout} />} />
                         <Route path='register' element={<Registerauth user={user} direction={currentDirection} setData={saveUserData} />} />
+                        <Route path='provider-register' element={<Provider user={user} setData={saveUserData} />} />
                     </Route>
                     <Route path='auth' element={<Phoneauth code={countryCode} setNumber={setPhone} flag={user.flag} phone={phone} setData={saveUserData} />} />
                     <Route path='*' element={<Page404 />} />

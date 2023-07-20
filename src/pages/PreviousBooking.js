@@ -5,7 +5,7 @@ import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
 import searchedData from '../components/ListPreviousBooking/searchedData';
 
-const PreviousBooking = ({ direction }) => {
+const PreviousBooking = ({ direction, user }) => {
 
 	//States
 	const [newCard, setNewCard] = useState('');
@@ -22,7 +22,7 @@ const PreviousBooking = ({ direction }) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<Box sx={{ display: 'flex', width: "100%" }}>
-				<List searchedData={searchedData} collectCardData={getData} />
+				<List user={user} searchedData={searchedData} collectCardData={getData} />
 				<Box width="100%" position="relative" className="previousBookingPage">
 					<DashboardMap card={newCard} />
 				</Box>

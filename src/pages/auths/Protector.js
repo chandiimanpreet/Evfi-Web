@@ -12,7 +12,7 @@ export default function Protector(props) {
 			<>
 				<Outlet />
 				{
-					location.pathname !== "/register" &&
+					location.pathname !== "/register" && location.pathname!=="/provider-register" &&
 					<FloatingNavbar setDirection={props.setDirection} />
 				}
 			</>
