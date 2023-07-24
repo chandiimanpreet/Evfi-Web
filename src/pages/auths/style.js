@@ -18,12 +18,6 @@ export const useStyles = makeStyles({
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
-        position: 'absolute',
-        height: 'fit-content',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
       },
     welcome: {
         marginLeft: '5rem',
@@ -45,8 +39,9 @@ export const useStyles = makeStyles({
     },
     sbmtOtp: {
         backgroundColor: "#282828",
-        fontFamily: "Manrope",
+        fontFamily: "Manrope !important",
         fontWeight: '600',
+        width: '100%',
         color: 'white',
         "&:hover": {
             backgroundColor: 'black',
@@ -56,7 +51,7 @@ export const useStyles = makeStyles({
     btn: {
         backgroundColor: '#fff',
         color: '#282828',
-        fontFamily: 'Manrope 27px',
+        fontFamily: 'Manrope !important',
         '&:hover': {
             backgroundColor: '#ccc'
         }
@@ -75,8 +70,8 @@ export const useStyles = makeStyles({
         textAlign: 'center',
         fontSize: '1.7rem',
         color: '#fff',
-        fontFamily: 'inter',
         fontWeight: '500',
+        marginBottom:'1rem'
     },
     skip: {
         color: '#282828',
@@ -87,7 +82,7 @@ export const useStyles = makeStyles({
     changeBtn: {
         color: 'white',
         border: 'none',
-        fontFamily: 'Manrope 27px',
+        fontFamily: 'Manrope !important',
         "&:hover": {
             backgroundColor: 'rgba(125, 125, 125, 0.15)',
             border: 'none'
@@ -95,51 +90,15 @@ export const useStyles = makeStyles({
     },
     newBtn: {
         color: 'white',
-        fontFamily: 'Manrope 27px',
+        fontFamily: 'Manrope !important',
         borderColor: 'white',
         "&:disabled": {
             color: 'white',
             borderColor: 'white'
         }
     },
-    companyText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: "Manrope",
-        fontWeight: 'bold',
-        fontSize: '1.8rem',
-    },
-    headText: {
-        textAlign: 'center',
-        wrap: 'nowrap',
-        color: '#fff',
-        fontFamily: "inter",
-        fontSize: '1.4rem',
-        fontWeight: '500',
-        marginBottom: '1.5rem',
-    },
-    headOtp: {
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: 'Manrope',
-        fontWeight: 'bold',
-        fontSize: '1.8rem'
-    },
-    otpTitle: {
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: 'inter',
-        fontSize: '1.5rem',
-        fontWeight: '500',
-    },
-    otpSent: {
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: 'inter',
-    },
     dividerStyle: {
         color: '#ddd',
-        fontFamily: 'inter',
         '&.MuiDivider-root': {
             '&::before': {
                 borderTop: 'thin solid #ddd'
@@ -150,10 +109,15 @@ export const useStyles = makeStyles({
         },
     },
     disabledBtn: {
-        color: '#fff',
-        fontWeight: '400',
-        padding: '8px 4px 8px 11px',
+        backgroundColor: "#282828",
+        fontFamily: "Manrope !important",
+        fontWeight: '600',
+        color: 'white',
         textTransform: 'capitalize',
+        "&:hover": {
+            backgroundColor: 'black',
+            color: 'white',
+        },
         '&:disabled': {
             color: '#aaa',
         }
@@ -165,13 +129,77 @@ export const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: '0',
     },
-})
+    setChargerLocationBtn: {
+        backgroundColor: '#282828 !important',
+        fontSize: '14px',
+        color: '#fff',
+        textTransform: 'capitalize',
+        padding: '16.5px 14px',
+        ':hover': {
+            backgroundColor: '#000 !important'
+        },
+    },
+    upLoadBtns: {
+        backgroundColor: '#282828 !important',
+        fontSize: '12px !important',
+        color: '#fff !important',
+        textTransform: 'capitalize !important',
+        marginTop: '8px !important',
+        ':hover': {
+            backgroundColor: '#000 !important',
+        },
+    },
+    upLoadBtnChips: {
+        color: 'white !important',
+        marginRight: '8px',
+        marginTop: '8px',
+        '& .MuiChip-deleteIcon': {
+            color: 'white !important',
+            ':hover': {
+                color: 'white !important'
+            },
+        },
+    },
+
+
+    /////////////////////////////////////////   ModalMap Styling    ////////////////////////
+    setLocationBtn: {
+        position: 'absolute',
+        top: '1rem ',
+        right: '.5rem',
+        cursor: 'pointer',
+        zIndex: 1500,
+        color: '#fff',
+        backgroundColor: '#282828',
+        borderRadius: '5px',
+        textTransform: 'capitalize',
+        padding: '3px 7px',
+        '&:hover': {
+            backgroundColor: '#282828',
+        },
+    },
+    currentLocationBtn: {
+        zIndex: 1500,
+        position: 'absolute',
+        top: '1rem',
+        left: '1rem',
+        backgroundColor: '#fff',
+        padding: '4px',
+        cursor: 'pointer',
+        '&:hover': {
+            color: '#ff4d4d',
+        },
+        '&:active': {
+            color: 'red',
+        },
+    },
+});
+
 
 export const otpStyle = {
     inputStyle: {
-        width: '100%',
+        width: '30px',
         height: '2.5rem',
         borderRadius: '7px',
         border: '0px',
@@ -180,14 +208,14 @@ export const otpStyle = {
         backgroundColor: '#ffffff30',
         color: '#fff',
         fontSize: '20px',
-        fontFamily: 'inter',
     },
     phoneBox: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         gap: '2rem',
-        padding: '4rem',
+        paddingX: '4rem',
+        paddingY: '4rem',
         width: '20rem',
     },
     phoneBoxNext: {
@@ -195,16 +223,33 @@ export const otpStyle = {
         flexDirection: 'column',
         justifyContent: 'center',
         gap: '1.5rem',
+        paddingX: '4rem',
+        paddingY: '3rem',
         width: '20rem',
     },
     registerBox: {
-        width: '20rem',
+        maxHeight:"33rem",
+        width: '18rem',
+        overflowY:'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.8rem',
+        margin: '1rem',
+        padding: '4%',
+        boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
+        backdropFilter: 'blur(50px) ',
+        '&::-webkit-backdrop-filter': 'blur(25px) ',
+        backgroundColor: 'rgba(125, 125, 125, 0.15)',
+        borderRadius: '12px',
+        border: '1px solid rgba(255, 255, 255, 0.125)',
+    },
+    registerBox2: {
+        width: '60vw',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         gap: '1.1rem',
-        margin: '1rem',
-        paddingX: '2rem',
+        paddingX: '4rem',
         paddingY: '2rem',
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
         backdropFilter: 'blur(50px) ',
@@ -216,12 +261,12 @@ export const otpStyle = {
     companylogo: {
         height: '2.5rem',
         width: '2.5rem',
-        margin: '0 auto',
+        margin: '0 auto'
     },
     registerTextfieldStyle: {
+        marginBottom:'1rem',
         backgroundColor: ' #ffffff26',
         borderRadius: '5px',
-        fontFamily: 'inter',
         fontWeight: '500',
         'input': {
             color: '#fff',
@@ -235,5 +280,5 @@ export const otpStyle = {
         color: 'white',
         fontFamily: 'Manrope !important',
         fontWeight: '600',
-    }
+    },
 } 

@@ -5,7 +5,6 @@ import { useStyles } from './style'
 
 
 export default function List({ data, show }) {
-
     //Styles
     const classes = useStyles();
 
@@ -14,12 +13,12 @@ export default function List({ data, show }) {
             <Card className={classes.cardStyle}>
                 <CardMedia
                     component="img"
-                    sx={{ width: { xs: '5rem', md: '10rem', lg: '10rem'}, height: { xs: '5rem', md: '10rem', lg: '10rem'}, marginTop: '0.5rem', marginLeft: "0.5rem" }}
+                    sx={{ width: { xs: '5rem', md: '10rem', lg: '10rem'}, height: { xs: '5rem', md: '10rem', lg: '10rem'}, marginTop: '0.5rem', marginLeft: '0.5rem'}}
                     image="/resources/user.png"
                     alt=""
                 />
-                <CardContent sx={{ width: '100%' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
+                <CardContent>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
                         <Typography className={classes.cardName} variant="h6"  >
                             {data.name}
                         </Typography>

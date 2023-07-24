@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { Navigate, useNavigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid } from '@mui/material';
 import { useStyles, otpStyle } from './style';
 import OTPInput from 'react-otp-input';
 import { logInUser } from '../../utils/auth/user';
@@ -15,32 +15,26 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
 
 let appVerifier;
-export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 
-	//States
+export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
 	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
 	const [otp, setotp] = useState("")
-	const [remember, setRemember] = useState(false);
+	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 
-	//Styles
 	const classes = useStyles();
-
-	//Handlers
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (showOtpForm) {
-			console.log(timer);
 			if (timer > 0) {
 				setTimeout(() => {
 					setTimer(timer - 1);
 				}, 1000)
 			}
 		} else {
-			console.log("e");
 			setTimer(30);
 		}
 	}, [showOtpForm, timer])
@@ -80,7 +74,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 
 	const submitPhoneNumberAuth = () => {
 		if (phone.length < 12) {
-			setUtils({ ...util, error: "Please enter valid phone number" })
+			setUtils({ ...util, error: "Please enter a valid phone number" })
 			return;
 		}
 		setUtils({ ...util, loading: true, enterNumberInactive: true })
@@ -89,7 +83,6 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			recaptchaWrapperRef.current.innerHTML = `<div id="recaptcha-container"></div>`;
 		}
 
-		// Initialize new reCaptcha verifier
 		generateRecaptcha();
 		if (!remember) {
 			setPersistence(auth, browserSessionPersistence)
@@ -130,15 +123,13 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		window.confirmationResult.confirm(otp)
 			.then(async () => {
 				const res = await logInUser(phone);
-				console.log("e");
-				if (res.registered === false) {
+				if (res.registeredLevel2 === false) {
 					setData({ "loading": false, "flag": true, ...res });
 					navigate('/register', { replace: true });
 				}
-
-				else if (res.registered === true) {
+				else if (res.registeredLevel2 === true) {
 					setData({ ...res, "loading": false, "flag": true });
-					navigate('/', { replace: true })
+					navigate('/provider-register', { replace: true })
 				} else {
 					setUtils({ ...util, ...res, loading: false, enterOtpInactive: false })
 				}
@@ -160,73 +151,76 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			</div>
 			<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
 			<Box className={classes.loginCard}>
-				{
-					util.error && (
-						<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
-					)
-				}
-				{/* otpStyle.phoneBox */}
-				{(!showOtpForm) ?
-					<div>
-						<Box component='form' onSubmit={(e) => { e.preventDefault(); submitPhoneNumberAuth(); }} sx={{
-							width: { xs: '15rem', md: '20rem', lg: '20rem' }, display: 'flex',
-							flexDirection: 'column',
-							justifyContent: 'center',
-							gap: '2rem',
-							padding: { xs: '1rem', md: '3rem', lg: '2rem' }
-						}}>
-							<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-							<Typography className={classes.companyText}>EVFI</Typography>
-							<Typography className={classes.headText}>Verify Your Number</Typography>
-							<div>
-								<PhoneInput sx={{ backgroundColor: '#ffffff26 !important' }}
-									country={(code ? code : 'us')}
-									value={phone}
-									inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
-									onChange={num => setNumber(num)}
-									inputProps={{ required: true }}
-								/>
-								<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} size="small" sx={{ color: '#fff' }} />} label="Remember me" sx={{ color: '#fff', fontFamily: "inter", }} />
-							</div>
-							{(!util.loading) ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Get OTP</Button> :
-								<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={true} loadingPosition='start'>Get OTP</LoadingButton>}
-						</Box>
-					</div>
+				{util.error && (
+					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
+				)}
+				{!showOtpForm ?
+					<Grid 
+					gap={3} 
+					display='flex' 
+					flexDirection='column' 
+					padding={3.5} 
+					textAlign='center'>
+						<img style={otpStyle.companylogo} 
+						src='/resources/light.png' alt='' />
+
+						<Typography 
+						color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
+
+						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Verify Your Number</Typography>
+
+						<PhoneInput
+							country={(code ? code : 'us')}
+							value={phone}
+							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
+							onChange={num => setNumber(num)}
+							inputProps='true'
+						/>
+
+						<FormControlLabel
+							control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} />}
+							label='Remember me'
+							style={{ color: 'white' }}
+						/>
+
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth} loadingPosition='start'>Get OTP</LoadingButton>
+					</Grid>
 					:
-					<div>
-						<Box component='form' sx={{
-							width: { xs: '15rem', md: '20rem', lg: '20rem' }, display: 'flex',
-							flexDirection: 'column',
-							justifyContent: 'center',
-							gap: '2rem',
-							padding: { xs: '1rem', sm: '2rem', lg: '2rem' },
-							margin: { xs: '0rem' }
-						}} onSubmit={(e) => { e.preventDefault(); submitCode(); }}>
-							<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-							<Typography className={classes.headOtp}>EVFI</Typography>
-							<Typography className={classes.otpTitle}>Enter OTP Code</Typography>
-							<Typography className={classes.otpSent}>{`OTP sent to +${phone}`}</Typography>
+					<Grid gap={2} display='flex' flexDirection='column' padding={2} textAlign='center'>
 
-							<OTPInput inputType='tel'  inputStyle={otpStyle.inputStyle} containerStyle={{ alignSelf: 'center', color: '#fff', }} numInputs={6} value={otp}
-								onChange={setotp} renderInput={(props) => <input {...props} />} renderSeparator={<span>-</span>} />
+						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 
-							{!util.loading ? <Button size='large' className={classes.sbmtOtp} type='submit' variant='contained'>Submit OTP</Button> :
-								<LoadingButton size='large' variant='contained' style={{
-									backgroundColor: '#282828', color: 'white', fontFamily: "Manrope", fontWeight: '600',
-								}} loading={true} loadingPosition='start'>Verifying OTP</LoadingButton>}
+						<Typography color='#fff' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
-							<Box sx={{ display: 'flex', }}>
-								<Button size='large' disabled={timer > 0} onClick={resendOtp} variant='text' className={classes.disabledBtn}>Resend OTP</Button>
-								<Typography sx={{ color: '#aaa', marginTop: '6px' }}>
-									{timer === 0 ? '' : `: 00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
-								</Typography>
-							</Box>
+						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Enter OTP Code</Typography>
 
-							<Divider className={classes.dividerStyle}>or</Divider>
+						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${phone}`}</Typography>
 
-							<Button size='large' disabled={util.loading} className={classes.disabledBtn} type='button' onClick={changePhoneHandler} variant='text'>Change Phone Number</Button>
+						<OTPInput
+							inputStyle={otpStyle.inputStyle}
+							containerStyle={{ color: '#fff' }}
+							numInputs={6}
+							value={otp}
+							onChange={setotp}
+							renderInput={(props) => <input {...props} />}
+							renderSeparator='-' />
+
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode} loadingPosition='start'>Verifying OTP</LoadingButton>
+
+						<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+							<Typography color='#fff' paddingTop={1.5}>Resend OTP</Typography>
+
+							<Button size='large' disabled={timer > 0} onClick={resendOtp} variant='text' className={classes.disabledBtn} style={{ display: timer > 0 ? 'none' : 'block' }}>Send</Button>
+
+							<Typography style={{ color: '#aaa', marginTop: '9px', display: timer > 0 ? 'block' : 'none' }}>
+								{timer === 0 ? '' : `00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}
+							</Typography>
 						</Box>
-					</div>
+
+						<Divider className={classes.dividerStyle}>or</Divider>
+
+						<Button size='large' disabled={util.loading} className={classes.disabledBtn} type='button' onClick={changePhoneHandler} variant='text'>Change Phone Number</Button>
+					</Grid>
 				}
 			</Box>
 		</Box>
