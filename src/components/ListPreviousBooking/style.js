@@ -8,6 +8,7 @@ export const useStyles = makeStyles({
 	outerBox: {
 		display: 'flex',
 		maxHeight: 'calc(100vh - 1rem)',
+		height: '100vh',
 		backgroundColor: '#000',
 		backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)',
 		color: '#fff',

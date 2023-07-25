@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react' 
 import { otpStyle } from './style';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -37,7 +37,7 @@ export default function CustomerForm({ user, data, classes, theme, changeDataHan
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNo' value={data.vehicleNo} />
 
             <div>
-                <FormControl sx={{ width: '22rem' }}>
+                <FormControl sx={{ width: '100%' }}>
                     <InputLabel sx={{
                         color: 'white', '& .MuiInputLabel-root': {
                             color: '#fff !important',

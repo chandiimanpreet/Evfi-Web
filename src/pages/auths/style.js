@@ -1,6 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
+    
     bodyPage: {
         width: '100vw',
         height: '100vh',
@@ -13,11 +14,11 @@ export const useStyles = makeStyles({
     loginCard: {
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
         backdropFilter: 'blur(50px)',
-        '&::-webkit-backdrop-filter': 'blur(25px) ',
+        '&::-webkit-backdrop-filter': 'blur(25px)',
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
-    },
+      },
     welcome: {
         marginLeft: '5rem',
         fontSize: '2rem',
@@ -40,6 +41,7 @@ export const useStyles = makeStyles({
         backgroundColor: "#282828",
         fontFamily: "Manrope !important",
         fontWeight: '600',
+        width: '100%',
         color: 'white',
         "&:hover": {
             backgroundColor: 'black',
@@ -95,37 +97,6 @@ export const useStyles = makeStyles({
             borderColor: 'white'
         }
     },
-    companyText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: "Manrope !important",
-        fontWeight: 'bold',
-        fontSize: '1.8rem',
-    },
-    headText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontSize: '1.4rem',
-        fontWeight: '500',
-        marginBottom: '1.5rem',
-    },
-    headOtp: {
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: 'Manrope !important',
-        fontWeight: 'bold',
-        fontSize: '1.8rem'
-    },
-    otpTitle: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: '1.5rem',
-        fontWeight: '500',
-    },
-    otpSent: {
-        color: '#fff',
-        textAlign: 'center',
-    },
     dividerStyle: {
         color: '#ddd',
         '&.MuiDivider-root': {
@@ -138,20 +109,26 @@ export const useStyles = makeStyles({
         },
     },
     disabledBtn: {
-        color: '#fff',
-        fontWeight: '400',
-        padding: '8px 4px 8px 11px',
+        backgroundColor: "#282828",
+        fontFamily: "Manrope !important",
+        fontWeight: '600',
+        color: 'white',
         textTransform: 'capitalize',
+        "&:hover": {
+            backgroundColor: 'black',
+            color: 'white',
+        },
         '&:disabled': {
             color: '#aaa',
         }
     },
     boxBehindImgStyle: {
-        width: '30rem',
-        height: '36rem',
+        width: '20rem',
+        height: '26rem',
         position: 'absolute',
-        top: '-300px',
-        left: '5px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     setChargerLocationBtn: {
         backgroundColor: '#282828 !important',
@@ -222,12 +199,12 @@ export const useStyles = makeStyles({
 
 export const otpStyle = {
     inputStyle: {
-        width: '35px',
-        height: '45px',
+        width: '30px',
+        height: '2.5rem',
         borderRadius: '7px',
         border: '0px',
-        marginLeft: '8px',
-        marginRight: '8px',
+        marginLeft: '5px',
+        marginRight: '5px',
         backgroundColor: '#ffffff30',
         color: '#fff',
         fontSize: '20px',
@@ -252,13 +229,13 @@ export const otpStyle = {
     },
     registerBox: {
         maxHeight:"33rem",
-        width: '23rem',
+        width: '18rem',
         overflowY:'auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '1.1rem',
-        paddingX: '4rem',
-        paddingY: '2rem',
+        gap: '0.8rem',
+        margin: '1rem',
+        padding: '4%',
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
         backdropFilter: 'blur(50px) ',
         '&::-webkit-backdrop-filter': 'blur(25px) ',
@@ -304,6 +281,4 @@ export const otpStyle = {
         fontFamily: 'Manrope !important',
         fontWeight: '600',
     },
-
-
 } 
