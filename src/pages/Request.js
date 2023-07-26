@@ -7,21 +7,19 @@ import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 
 const Request = ({ direction }) => {
-
-	//States
 	const [show, setShow] = useState("pending");
-
-	//Styles
 	const classes = useStyles();
+
 	return (
 		<motion.div key="lo"
-			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+			initial={{ x: direction }}
 			animate={{ x: 0 }}
-			transition={{ duration: 0.25, delay: 0 }}>
+			transition={{ duration: 0.25, delay: 0 }}
+		>
 			<Box className={classes.bodyPage}>
 				<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
 				<Box marginX={8} paddingY={4} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-					<Box sx={{ display: 'flex', gap: '2rem', marginTop: { xs: '-1.5rem'} }} >
+					<Box sx={{ display: 'flex', gap: '2rem' }} >
 						<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
 							onClick={() => setShow("pending")}>
 							Pending
@@ -31,14 +29,11 @@ const Request = ({ direction }) => {
 							Recent
 						</Link>
 					</Box>
-					<Divider sx={{ backgroundColor: 'antiquewhite'}} />
+					<Divider sx={{ backgroundColor: 'antiquewhite' }} />
 					<Grid justifyContent={'center'} container columns={3} gap={2}>
 						{show === "pending" ?
-							request.map((ele) => {
-								return <List key={ele.id} show={show} data={ele} />;
-							}) : recent.map((ele) => {
-								return <List key={ele.id} show={show} data={ele} />;
-							})
+							request.map((ele) => <List key={ele.id} show={show} data={ele} />) : 
+							recent.map((ele) => <List key={ele.id} show={show} data={ele} />)
 						}
 					</Grid>
 				</Box>

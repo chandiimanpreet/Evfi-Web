@@ -6,18 +6,14 @@ import DashboardMap from '../components/DashboardMap';
 import searchedData from '../components/ListPreviousBooking/searchedData';
 
 const PreviousBooking = ({ direction, user }) => {
-
-	//States
 	const [newCard, setNewCard] = useState('');
-
-	//Handlers
 	const getData = (data) => {
 		setNewCard(data);
 	};
 
 	return (
 		<motion.div key="pb"
-			initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+			initial={{ x: direction }}
 			animate={{ x: 0 }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
