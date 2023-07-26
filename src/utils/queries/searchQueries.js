@@ -2,19 +2,8 @@ import { getDatabase, push, ref } from 'firebase/database';
 import firebaseConfig from '../config/firebaseConfig'
 import { initializeApp } from 'firebase/app';
 
-const app = initializeApp(firebaseConfig)
-const database = getDatabase(app);
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-/* Geohash encoding/decoding and associated functions   (c) Chris Veness 2014-2019 / MIT Licence  */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-
 const base32 = '0123456789bcdefghjkmnpqrstuvwxyz'; // (geohash-specific) Base32 map
 
-
-/**
- * Geohash: Gustavo Niemeyer’s geocoding system.
- */
 class Geohash {
 
     /**
@@ -176,29 +165,27 @@ class Geohash {
     }
 }
 
-export const saveQuery = async (data) => {
-    return new Promise((resolve, reject) => {
+export const saveQuery = (data) => {
+    const app = initializeApp(firebaseConfig)
+    const database = getDatabase(app);
+
+    return new Promise(async (resolve, reject) => {
         const dbRef = ref(database, "RouteMap");
         const startHash = Geohash.encode(data.start[1], data.start[0]);
         const endHash = Geohash.encode(data.end[1], data.end[0]);
-        push(dbRef, {
-            geohash: startHash,
-            geopoint: `${data.start[1]}, ${data.start[0]}`
-        })
-            .then(() => {
-                push(dbRef, {
-                    geohash: endHash,
-                    geopoint: `${data.end[1]}, ${data.end[0]}`
-                })
-                    .then(() => {
-                        resolve({ msg: "Success" })
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    })
-            })
-            .catch((error) => {
-                reject(error);
-            })
-    })
+
+        try {
+            await push(dbRef, {
+                geohash: startHash,
+                geopoint: `${data.start[1]}, ${data.start[0]}`
+            });
+            await push(dbRef, {
+                geohash: endHash,
+                geopoint: `${data.end[1]}, ${data.end[0]}`
+            });
+            resolve({ msg: "Success" });
+        } catch (error) {
+            reject(error);
+        }
+    });
 }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import DashboardMap from "./../components/DashboardMap";
 import { useState } from "react";
-const Home = () => {
+const Home = ({ direction }) => {
 
 	// States
 	const [show, setShow] = useState(false);
@@ -25,14 +25,11 @@ const Home = () => {
 		setShow(false);
 		setShowCurrentLocation(true)
 	}
-	const direction = {
-		direction: 1
-	};
 
 	return (
 
 		<motion.div key="home" exit={{ x: window.innerWidth, transition: { duration: 1 } }}
-			animate={{ x: 0 }} initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+			animate={{ x: 0 }} initial={{ x: direction }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<DashboardMap show={show} showCurrentLocation={showCurrentLocation}
