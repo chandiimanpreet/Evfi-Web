@@ -1,12 +1,12 @@
 import React from 'react'
-import { otpStyle } from './style';
+import { otpStyle } from '../../pages/auths/style';
 import { Button, TextField, Typography } from '@mui/material';
 
 export default function NameInput({ data, changeDataHandler }) {
     return (
         <>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Enter Your Name.</Typography>
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' value={data.username} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='Name' value={data.Name} />
             <Button size='large' sx={{backgroundColor: '#ffdf00',color:'#262626',fontSize:'1rem', ':hover': {
                     backgroundColor: '#e1ad01'
                 }

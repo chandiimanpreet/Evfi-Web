@@ -2,7 +2,7 @@ import React, { Fragment, } from 'react';
 import { MapContainer, TileLayer, useMap, } from "react-leaflet";
 import { GpsFixed, } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
-import { useStyles } from './style';
+import { useStyles } from '../../pages/auths/style';
 
 const ModalMap = ({ data, setUserData, handleClose }) => {
 

@@ -13,8 +13,8 @@ const ListItem = ({ result ,user}) => {
 	const classes = useStyles();
 	const navigate=useNavigate();
 	const bookingHandler=()=>{
-		if(!user.registeredLevel2){
-			navigate('/register?redirectTo=previousBooking');
+		if(!user.level2){
+			navigate('/register/level2?redirectTo=previousBooking');
 		}
 	}
 	return (

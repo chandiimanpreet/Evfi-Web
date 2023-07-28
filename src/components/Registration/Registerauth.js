@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Navigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useParams, useSearchParams } from 'react-router-dom'
 import { Box, Typography } from '@mui/material';
-import { useStyles, otpStyle } from './style';
+import { useStyles, otpStyle } from '../../pages/auths/style';
 import { registerUser } from '../../utils/auth/user';
 import { useTheme } from '@mui/material/styles';
 import CustomerForm from './CustomerForm';
@@ -41,15 +41,13 @@ function getStyles(name, personName, theme) {
 export default function Registerauth({ setData, user }) {
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
-
+	const { level } = useParams();
 	const [searchParams] = useSearchParams();
 	const classes = useStyles();
 	const theme = useTheme();
-
-	const [data, setUserData] = useState({ username: user.username, vehicleType: "", customerchargerType: "", vehicleNo: '', idImageURL: null });
+	const [data, setUserData] = useState({ Name: user.Name, VehicleManufacturer: "", ChargingRequirements: "", VehicleNumber: '', idImageURL: null });
 	const [image, setImage] = useState(null);
 	const [idType, setIdType] = useState('');
-
 	const handleChange = (event) => {
 		const {
 			target: { value },
@@ -60,9 +58,10 @@ export default function Registerauth({ setData, user }) {
 		setUserData({ ...data, [e.target.name]: e.target.value })
 	}
 	const saveData = async () => {
-		if (!user.registeredLevel1) {
-			await registerUser({ username: data.username, registeredLevel1: true });
-			setData({ ...user, username: data.username, registeredLevel1: true });
+		if (!user.level1) {
+			await registerUser({ Name: data.Name, level1: true });
+			setData({ ...user, Name: data.Name, level1: true });
+
 		} else {
 			let downloadURL = null;
 			if (image !== null) {
@@ -70,29 +69,38 @@ export default function Registerauth({ setData, user }) {
 				const uploadResult = await uploadBytes(imageRef, image);
 				downloadURL = await getDownloadURL(uploadResult.ref);
 			}
-			const temp = await registerUser({ ...data, idImageURL: downloadURL, registeredLevel2: true })
+			const temp = await registerUser({ ...data, idImageURL: downloadURL, level2: true })
 			if (temp.error) {
 				console.log(temp.error);
 			}
-			setData({ ...data, ...user, registeredLevel2: true, idImageURL: downloadURL });
+			setData({ ...data, ...user, level2: true, idImageURL: downloadURL });
 		}
 	}
-	if (user.registeredLevel2 === true) {
-		return <Navigate to={`/${searchParams.has("redirectTo") ? searchParams.get("redirectTo") : "provider-register"}`} />
+	if (level === "level1" && user.level1) {
+		return <Navigate to={'/'} />
 	}
-	return (
-		<Box className={classes.bodyPage}>
-			<Box sx={{ position: 'relative' }}>
-				<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
-			</Box>
-			<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
-				<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-				<Typography className={classes.headOtp}>EVFI</Typography>
-				<Typography className={classes.register}>Welcome Back</Typography>
+	else if (level === "level2" && user.level2) {
+		return <Navigate to={`/${searchParams.has("redirectTo") ? searchParams.get("redirectTo") : ""}`} />
+	}
+	else {
+		return (
+			<Box className={classes.bodyPage}>
+				<Box sx={{ position: 'relative' }}>
+					<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
+				</Box>
+				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
+					<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+					<Typography className={classes.headOtp}>EVFI</Typography>
+					<Typography className={classes.register}>Welcome Back</Typography>
 
-				{!user.registeredLevel1 && <NameInput data={data} changeDataHandler={changeDataHandler} />}
-				{user.registeredLevel1 && !user.registeredLevel2 && <CustomerForm user={user} data={data} getStyles={getStyles} classes={classes} theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps} names={names} image={image} setImage={setImage} handleChange={handleChange} />}
+					{
+						level === "level1" ? <NameInput data={data} changeDataHandler={changeDataHandler} />
+							:
+							level === "level2" ? <CustomerForm user={user} data={data} getStyles={getStyles} classes={classes} theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps} names={names} image={image} setImage={setImage} handleChange={handleChange} />
+								: <Navigate to={'/404'} />
+					}
+				</Box>
 			</Box>
-		</Box>
-	)
+		)
+	}
 }
