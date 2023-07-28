@@ -7,21 +7,22 @@ import {
 import { useStyles, otpStyle } from '../../pages/auths/style';
 import { registerUser } from '../../utils/auth/user';
 import ModalMap from './ModalMap';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimeField } from '@mui/x-date-pickers/TimeField';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../utils/config/firebaseConfig';
+import countriesStateCitiesData from '../../utils/timezone/countriesStateCitiesData';
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app);
 
-// user, setData;
-// saveData();
-
 const Provider = ({ user, setData }) => {
 
 	// States
-
 	const [open, setOpen] = useState(false);
 	const [aadhaarCard, setAadhaarCard] = useState([]);
 	const [chargerArea, setchargerArea] = useState([]);
@@ -29,17 +30,17 @@ const Provider = ({ user, setData }) => {
 	const [data, setUserData] = useState({
 		StationName: "",
 		Address: "",
-		country: "",
+		country: "India",
 		state: "",
 		city: "",
 		pinCode: "",
 		chargerLocation: null,
-		ChargerType: "",
+		ChargerType: [],
 		Price: "",
 		HostName: "",
-		availability: "",
+		openingTime: null,
+		closingTime: null,
 	});
-	const [countriesData, setCountriesData] = useState();
 	const [ownStates, setOwnStates] = useState({});
 	const [ownCities, setOwnCities] = useState({});
 
@@ -47,33 +48,26 @@ const Provider = ({ user, setData }) => {
 	const classes = useStyles();
 
 	// Handlers
-	const getData = () => {
-		fetch('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates%2Bcities.json')
-			.then((res) => res.json())
-			.then((json) => {
-				setCountriesData(json)
-			});
-	};
 
 	useEffect(() => {
-		getData();
-	}, []);
-
-	useEffect(() => {
-		if (countriesData && countriesData.length > 0 && data.country !== "") {
-			setOwnStates(Object.values(countriesData).find(obj => obj.name === data.country).states);
+		if (data.country !== "") {
+			setOwnStates(Object.values(countriesStateCitiesData).find(obj => obj.name === data.country).states);
 		}
 
 		if (ownStates && ownStates.length > 0 && data.state !== "") {
 			setOwnCities(Object.values(ownStates).find(obj => obj.name === data.state).cities);
 		}
-	}, [countriesData, ownCities, ownStates, data]);
+	}, [ownCities, ownStates, data]);
 
 	const handleOpen = () => setOpen(true);
 
 	const handleClose = () => setOpen(false);
 
 	const changeDataHandler = (e) => {
+
+		if (e.target.name === 'ChargerType') {
+			setUserData({ ...data, [e.target.name]: e.target.value === 'string' ? e.target.value.split(',') : e.target.value });
+		}
 		setUserData({ ...data, [e.target.name]: e.target.value });
 	};
 
@@ -140,52 +134,55 @@ const Provider = ({ user, setData }) => {
 					<Box sx={{ flexGrow: 1 }}>
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={4}>
-								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='text' label='Charger Name' name='StationName' value={data.StationName} />
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
+									type='text' label='Station Name' name='StationName' value={data.StationName} />
 							</Grid>
-							<Grid item xs={4}>
-								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={3}  >
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName} />
+							</Grid>
+							<Grid item xs={3}>
+								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="types">Charger Type</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="types" name='ChargerType' value={data.ChargerType}
-										label="Charger Type" onChange={changeDataHandler}>
+										label="Charger Type" onChange={changeDataHandler} multiple >
 										<MenuItem value={'a'}>Type A</MenuItem>
 										<MenuItem value={'b'}>Type B</MenuItem>
 										<MenuItem value={'c'}>Type C</MenuItem>
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={4}>
-								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='number' label='Expected price per hour' name='Price' value={data.Price} />
+							<Grid item xs={2}>
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
+									type='number' label='Price' name='Price' value={data.Price} />
 							</Grid>
 						</Grid>
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-							<Grid item xs={3}>
-								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+							<Grid item xs={6}>
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Address' name='Address' value={data.Address} />
 							</Grid>
-							<Grid item xs={3} >
-								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={2} >
+								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
 										label="Country" onChange={changeDataHandler}
-										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
 									>
 										{
-											countriesData && countriesData.length > 0 &&
-											countriesData.map((item, idx) => (
+											countriesStateCitiesData.map((item, idx) => (
 												<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
 											))
 										}
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={3} >
-								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={2} >
+								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="state">State</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
 										label="State" onChange={changeDataHandler}
-										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
 									>
 										{
 											ownStates !== undefined && ownStates.length > 0 && ownStates.map((item, idx) => (
@@ -195,16 +192,16 @@ const Provider = ({ user, setData }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={3} >
-								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={2} >
+								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="city">City</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
 										label="City" onChange={changeDataHandler}
-										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '23vw', }, }}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
 									>
 										{
 											ownCities !== undefined && ownCities.length > 0 && ownCities.map((item, idx) => (
-												<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
+												<MenuItem key={idx} value={item}>{item}</MenuItem>
 											))
 										}
 									</Select>
@@ -212,17 +209,25 @@ const Provider = ({ user, setData }) => {
 							</Grid>
 						</Grid>
 						<Grid container spacing={2}>
-							<Grid item xs={3} >
-								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+							<Grid item xs={3}>
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode} />
 							</Grid>
 							<Grid item xs={3}  >
-								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName} />
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DemoContainer components={['TimeField']}>
+										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+											variant='outlined' label='Opening Time' name='openingTime' value={data.openingTime} />
+									</DemoContainer>
+								</LocalizationProvider>
 							</Grid>
 							<Grid item xs={3}  >
-								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Availability' name='availability' value={data.availability} />
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DemoContainer components={['TimeField']}>
+										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+											variant='outlined' label='Closing Time' name='closingTime' value={data.closingTime} />
+									</DemoContainer>
+								</LocalizationProvider>
 							</Grid>
 							<Grid item xs={3}  >
 								<Button fullWidth className={classes.setChargerLocationBtn} onClick={handleOpen}

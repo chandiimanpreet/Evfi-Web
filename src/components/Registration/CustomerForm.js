@@ -12,18 +12,20 @@ import { Add } from '@mui/icons-material';
 export default function CustomerForm({ user, data, classes, theme, changeDataHandler, idType, MenuProps, names, image, setImage, handleChange, getStyles }) {
     const [searchParams] = useSearchParams();
     const [showPlus, setShow] = useState(searchParams.has("redirectTo") ? true : false);
-    const [showInfo,setShowInfo]=useState(true)
+    const [showInfo, setShowInfo] = useState(true)
 
     if (showPlus) {
-        return (<>
-            <Alert sx={{display:showInfo?'flex':'none',marginBottom:'2rem'}} onClose={()=>{setShowInfo(false)}} severity="info"> You need to register to rent charger.</Alert>
-            <Typography style={{ textAlign: 'center', color: '#fff', marginBottom:'0.6rem'}}>Click below to register.</Typography>
-            <Button variant="contained" onClick={() => setShow(false)} type="button" sx={{
-                height: '64px', marginBottom:'2.4rem',backgroundColor: '#ffdf00', ':hover': {
-                    backgroundColor: '#e1ad01'
-                }
-            }}><Add sx={{ fontSize: '2.8rem', color: '#262626' }} /></Button>
-        </>)
+        return (
+            <>
+                <Alert sx={{ display: showInfo ? 'flex' : 'none', marginBottom: '2rem' }} onClose={() => { setShowInfo(false) }} severity="info"> You need to register to rent charger.</Alert>
+                <Typography style={{ textAlign: 'center', color: '#fff', marginBottom: '0.6rem' }}>Click below to register.</Typography>
+                <Button variant="contained" onClick={() => setShow(false)} type="button" sx={{
+                    height: '64px', marginBottom: '2.4rem', backgroundColor: '#ffdf00', ':hover': {
+                        backgroundColor: '#e1ad01'
+                    }
+                }}><Add sx={{ fontSize: '2.8rem', color: '#262626' }} /></Button>
+            </>
+        )
     }
     return (
         <>

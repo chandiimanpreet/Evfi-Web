@@ -1,5 +1,6 @@
 // code for timezone
-import { data } from './data';
+// import { data } from './data';
+import data from './countriesStateCitiesData';
 export const getCountryCode = () => {
     let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     if (userTimeZone === "Asia/Calcutta") {

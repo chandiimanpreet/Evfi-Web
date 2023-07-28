@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles({
-    
+
     bodyPage: {
         width: '100vw',
         height: '100vh',
@@ -18,7 +18,7 @@ export const useStyles = makeStyles({
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
-      },
+    },
     welcome: {
         marginLeft: '5rem',
         fontSize: '2rem',
@@ -71,7 +71,7 @@ export const useStyles = makeStyles({
         fontSize: '1.7rem',
         color: '#fff',
         fontWeight: '500',
-        marginBottom:'1rem'
+        marginBottom: '1rem'
     },
     skip: {
         color: '#282828',
@@ -163,6 +163,7 @@ export const useStyles = makeStyles({
     },
 
 
+
     /////////////////////////////////////////   ModalMap Styling    ////////////////////////
     setLocationBtn: {
         position: 'absolute',
@@ -194,6 +195,8 @@ export const useStyles = makeStyles({
             color: 'red',
         },
     },
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 });
 
 
@@ -228,9 +231,9 @@ export const otpStyle = {
         width: '20rem',
     },
     registerBox: {
-        maxHeight:"33rem",
+        maxHeight: "33rem",
         width: '18rem',
-        overflowY:'auto',
+        overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.8rem',
@@ -264,12 +267,12 @@ export const otpStyle = {
         margin: '0 auto'
     },
     registerTextfieldStyle: {
-        marginBottom:'1rem',
+        marginBottom: '1rem',
         backgroundColor: ' #ffffff26',
         borderRadius: '5px',
         fontWeight: '500',
         'input': {
-            color: '#fff',
+            color: '#fff !important',
         },
         '& .MuiInputLabel-root': {
             color: '#fff !important',
@@ -280,5 +283,20 @@ export const otpStyle = {
         color: 'white',
         fontFamily: 'Manrope !important',
         fontWeight: '600',
+    },
+    availabiltyBoxStyle: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        padding: '1rem 2rem 3rem 0rem',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '55%',
+        width: '50%',
+        borderRadius: '8px',
     },
 } 
