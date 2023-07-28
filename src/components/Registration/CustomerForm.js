@@ -1,5 +1,5 @@
 import React, { useState } from 'react' 
-import { otpStyle } from './style';
+import { otpStyle } from '../../pages/auths/style';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -28,13 +28,13 @@ export default function CustomerForm({ user, data, classes, theme, changeDataHan
     return (
         <>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='username' disabled value={user.username} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='Name' disabled value={user.Name} />
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' label='Vehicle Type' type='text' name='vehicleType' value={data.email} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' label='Vehicle Company' type='text' name='VehicleManufacturer' value={data.VehicleManufacturer} />
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='chargerType' value={data.customerChargerType} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNo' value={data.vehicleNo} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='VehicleNumber' value={data.VehicleNumber} />
 
             <div>
                 <FormControl sx={{ width: '100%' }}>
@@ -89,7 +89,7 @@ export default function CustomerForm({ user, data, classes, theme, changeDataHan
             }
             <Button size='large' type='submit' className={classes.sbmtOtp} variant='contained'>Register</Button>
             <Divider className={classes.dividerStyle}>or</Divider>
-            <Link to='/provider-register' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontFamily: 'inter' }}>Skip for later</Link>
+            <Link to='/previousBooking' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontFamily: 'inter' }}>Skip for later</Link>
         </>
     )
 }

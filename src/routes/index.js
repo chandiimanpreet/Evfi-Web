@@ -4,7 +4,7 @@ import Request from '../pages/Request';
 import Profile from '../pages/Profile/index';
 import PreviousBooking from '../pages/PreviousBooking';
 import Phoneauth from '../pages/auths/Phoneauth';
-import Registerauth from '../pages/auths/Registerauth';
+import Registerauth from '../components/Registration/Registerauth';
 import Protector from '../pages/auths/Protector';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
@@ -15,8 +15,7 @@ import { getUser } from '../utils/auth/user';
 import { signOut, getAuth } from 'firebase/auth';
 import { initializeApp } from 'firebase/app'
 import firebaseConfig from '../utils/config/firebaseConfig';
-import axios from 'axios';
-import Provider from '../pages/auths/Provider';
+import { getCountryCode } from '../utils/timezone/index';
 
 const getPageIndex = (path) => {
     switch (path) {
@@ -33,9 +32,8 @@ const AnimatedRoutes = () => {
     const auth = getAuth(app);
     const location = useLocation();
     const currentPageIndex = useRef(getPageIndex(location.pathname));
-
+    const [country,setCountry]=useState(null);
     const [user, setData] = useState({ "loading": true, "flag": false });
-    const [countryCode, setCountryCode] = useState(null);
     const [phone, setPhone] = useState("");
     const [motionDirection, setMotionDirection] = useState("100vw");
 
@@ -54,23 +52,18 @@ const AnimatedRoutes = () => {
     }
 
     const getUserData = async () => {
+        setCountry(getCountryCode());
         try {
-            const temp2 = await axios.get('https://1.1.1.1/cdn-cgi/trace');
-            const response = temp2.data.split('\n');
-            let code = response[9].substring(4);
-            code = code.toLowerCase();
-            setCountryCode(code);
-        } catch (error) {
-            console.log(error.message);
-            setData({ "loading": false, "flag": false });
-            return;
-        } finally {
             const res = await getUser();
             if (res.user) {
                 setData({ "loading": false, "flag": true, ...res.user });
             } else {
                 setData({ "loading": false, "flag": false });
             }
+        } catch (error) {
+            console.log(error.message);
+            setData({ "loading": false, "flag": false });
+            return;
         }
     }
 
@@ -98,12 +91,11 @@ const AnimatedRoutes = () => {
                     <Route element={<Protector flag={user.flag} moveToPageIndex={moveToPageIndex} />} >
                         <Route path="/" element={<Home direction={motionDirection} />} />
                         <Route path="previousBooking" element={<PreviousBooking direction={motionDirection} user={user} />} />
-                        <Route path="requests" element={<Request direction={motionDirection} />} />
+                        <Route path="requests" element={<Request moveToPageIndex={moveToPageIndex} setData={saveUserData} user={user} direction={motionDirection} />} />
                         <Route path="profile" element={<Profile direction={motionDirection} logout={logout} />} />
                     </Route>
-                    <Route path='auth' element={<Phoneauth code={countryCode} setNumber={setPhone} flag={user.flag} phone={phone} setData={saveUserData} />} />
-                    <Route path='register' element={<Registerauth user={user} setData={saveUserData} />} />
-                    <Route path='provider-register' element={<Provider user={user} setData={saveUserData} />} />
+                    <Route path='auth' element={<Phoneauth country={country} setNumber={setPhone} flag={user.flag} phone={phone} setData={saveUserData} />} />
+                    <Route path='register/:level' element={<Registerauth user={user} setData={saveUserData} />} />
                     <Route path='*' element={<Page404 />} />
                 </Routes>
             </AnimatePresence>

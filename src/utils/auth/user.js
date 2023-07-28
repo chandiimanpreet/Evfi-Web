@@ -1,17 +1,20 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { child, get, getDatabase, ref, set, update } from 'firebase/database';
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 
 export const getUser = () => {
     return new Promise((resolve, reject) => {
         const auth = getAuth();
-        const database = getDatabase();
+        const db = getFirestore();
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    const dbRef = ref(database);
-                    const snapshot = await get(child(dbRef, `Users/${user.uid}`));
-                    resolve({ user: snapshot.val() });
+                    const snapshot = await getDoc(doc(db, "UserChargingRegister", user.uid));
+                    if (snapshot.exists()) {
+                        resolve({ user: snapshot.data() });
+                    } else {
+                        resolve({ user: null });
+                    }
                 }
                 catch (error) {
                     reject({ error: error.message });
@@ -28,17 +31,15 @@ export const logInUser = (mobile) => {
     return new Promise(async (resolve, reject) => {
         try {
             const auth = getAuth().currentUser.uid;
-            const database = getDatabase();
-            const dbRef = ref(database);
-            const snapshot = await get(child(dbRef, `Users/${auth}`));
-
+            const db = getFirestore();
+            const snapshot = await getDoc(doc(db, "UserChargingRegister", auth));
             if (snapshot.exists()) {
-                resolve(snapshot.val());
+                resolve(snapshot.data());
             } else {
                 const data = {
-                    mobile: mobile, uid: auth, username: null, registeredLevel1: false, isProvider: false, registeredLevel2: false, vehicleNo: null, chargerType: null, vehicleType: null
+                    PhoneNumber: mobile, uid: auth, level1: false, isProvider: false, level2: false
                 }
-                await set(ref(database, "Users/" + auth), data);
+                await setDoc(doc(db, "UserChargingRegister", auth), data);
                 resolve(data);
             }
         } catch (error) {
@@ -50,9 +51,9 @@ export const logInUser = (mobile) => {
 export const registerUser = (data) => {
     return new Promise(async (resolve, reject) => {
         const auth = getAuth().currentUser.uid;
-        const database = getDatabase();
+        const db = getFirestore();
         try {
-            await update(ref(database, "Users/" + auth), data);
+            await setDoc(doc(db, "UserChargingRegister", auth), data, { merge: true });
             resolve({ message: "success" });
         } catch (error) {
             reject({ error: error.message });

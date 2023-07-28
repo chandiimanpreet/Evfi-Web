@@ -16,7 +16,7 @@ const auth = getAuth(app);
 
 let appVerifier;
 
-export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
+export default function Phoneauth({ phone, setNumber, setData, flag, country }) {
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
 	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
@@ -38,7 +38,6 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 			setTimer(30);
 		}
 	}, [showOtpForm, timer])
-
 	const changePhoneHandler = () => {
 		setShowOtpForm(false);
 		setUtils({ ...util, error: null, enterNumberInactive: false, resendOtpActive: false })
@@ -123,18 +122,15 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 		window.confirmationResult.confirm(otp)
 			.then(async () => {
 				const res = await logInUser(phone);
-				if (res.registeredLevel2 === false) {
+				if (res.level1 === false) {
 					setData({ "loading": false, "flag": true, ...res });
-					navigate('/register', { replace: true });
+					navigate('/register/level1', { replace: true });
 				}
-				else if (res.registeredLevel2 === true) {
+				else {
 					setData({ ...res, "loading": false, "flag": true });
-					navigate('/provider-register', { replace: true })
-				} else {
-					setUtils({ ...util, ...res, loading: false, enterOtpInactive: false })
+					navigate('/', { replace: true })
 				}
 			})
-
 			.catch((error) => {
 				setUtils({ ...util, enterOtpInactive: false, loading: false, error: error.message })
 			})
@@ -155,22 +151,22 @@ export default function Phoneauth({ phone, setNumber, setData, flag, code }) {
 					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
 				)}
 				{!showOtpForm ?
-					<Grid 
-					gap={3} 
-					display='flex' 
-					flexDirection='column' 
-					padding={3.5} 
-					textAlign='center'>
-						<img style={otpStyle.companylogo} 
-						src='/resources/light.png' alt='' />
+					<Grid
+						gap={3}
+						display='flex'
+						flexDirection='column'
+						padding={3.5}
+						textAlign='center'>
+						<img style={otpStyle.companylogo}
+							src='/resources/light.png' alt='' />
 
-						<Typography 
-						color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
+						<Typography
+							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
 						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Verify Your Number</Typography>
 
 						<PhoneInput
-							country={(code ? code : 'us')}
+							country={country.countryCode}
 							value={phone}
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
 							onChange={num => setNumber(num)}

@@ -4,7 +4,7 @@ import {
 	FormControl, MenuItem, InputLabel, Select, Box, TextField, Button, Divider, Typography, Grid,
 	Chip, Fade, Modal, Backdrop
 } from '@mui/material';
-import { useStyles, otpStyle } from './style';
+import { useStyles, otpStyle } from '../../pages/auths/style';
 import { registerUser } from '../../utils/auth/user';
 import ModalMap from './ModalMap';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -21,21 +21,22 @@ const storage = getStorage(app);
 const Provider = ({ user, setData }) => {
 
 	// States
+
 	const [open, setOpen] = useState(false);
 	const [aadhaarCard, setAadhaarCard] = useState([]);
 	const [chargerArea, setchargerArea] = useState([]);
 	const [showOnBtn, setShow] = useState("Register");
 	const [data, setUserData] = useState({
-		chargerName: "",
-		address: "",
+		StationName: "",
+		Address: "",
 		country: "",
 		state: "",
 		city: "",
 		pinCode: "",
 		chargerLocation: null,
-		chargerType: "",
-		expectedPrice: "",
-		hostNames: "",
+		ChargerType: "",
+		Price: "",
+		HostName: "",
 		availability: "",
 	});
 	const [countriesData, setCountriesData] = useState();
@@ -122,9 +123,9 @@ const Provider = ({ user, setData }) => {
 	};
 
 	if (user.isProvider) {
-		return <Navigate to={'/'} />
-	} else {
-
+		return <Navigate to={'/requests'} />
+	}
+	else {
 		return (
 			<Box className={classes.bodyPage}>
 				<Box sx={{ position: 'relative' }}>
@@ -136,17 +137,16 @@ const Provider = ({ user, setData }) => {
 						<Typography className={classes.headOtp}>EVFI</Typography>
 						<Typography className={classes.register}>Become a Provider</Typography>
 					</Box>
-
 					<Box sx={{ flexGrow: 1 }}>
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={4}>
 								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='text' label='Charger Name' name='chargerName' value={data.chargerName} />
+									type='text' label='Charger Name' name='StationName' value={data.StationName} />
 							</Grid>
 							<Grid item xs={4}>
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="types">Charger Type</InputLabel>
-									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
+									<Select sx={{ color: '#fff', }} labelId="types" name='ChargerType' value={data.ChargerType}
 										label="Charger Type" onChange={changeDataHandler}>
 										<MenuItem value={'a'}>Type A</MenuItem>
 										<MenuItem value={'b'}>Type B</MenuItem>
@@ -156,13 +156,13 @@ const Provider = ({ user, setData }) => {
 							</Grid>
 							<Grid item xs={4}>
 								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='number' label='Expected price per hour' name='expectedPrice' value={data.expectedPrice} />
+									type='number' label='Expected price per hour' name='Price' value={data.Price} />
 							</Grid>
 						</Grid>
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={3}>
 								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Address' name='address' value={data.address} />
+									variant='outlined' type='text' label='Address' name='Address' value={data.Address} />
 							</Grid>
 							<Grid item xs={3} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
@@ -218,7 +218,7 @@ const Provider = ({ user, setData }) => {
 							</Grid>
 							<Grid item xs={3}  >
 								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Host Name' name='hostNames' value={data.hostNames} />
+									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName} />
 							</Grid>
 							<Grid item xs={3}  >
 								<TextField fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
@@ -292,7 +292,7 @@ const Provider = ({ user, setData }) => {
 					<Button onClick={saveData} sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
 
 					<Divider className={classes.dividerStyle}>or</Divider>
-					<Link to='/' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontWeight: '500', }}>
+					<Link to={"/"} style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontWeight: '500', }}>
 						Skip for later
 					</Link>
 				</Box>

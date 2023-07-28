@@ -2,163 +2,135 @@ import { getDatabase, push, ref } from 'firebase/database';
 import firebaseConfig from '../config/firebaseConfig'
 import { initializeApp } from 'firebase/app';
 
-const base32 = '0123456789bcdefghjkmnpqrstuvwxyz'; // (geohash-specific) Base32 map
+const base32 = '0123456789bcdefghjkmnpqrstuvwxyz'; // geohash Base32 map
 
-class Geohash {
+export class Geohash {
 
-    /**
-     * Encodes latitude/longitude to geohash, either to specified precision or to automatically
-     * evaluated precision.
-     *
-     * @param   {number} lat - Latitude in degrees.
-     * @param   {number} lon - Longitude in degrees.
-     * @param   {number} [precision] - Number of characters in resulting geohash.
-     * @returns {string} Geohash of supplied latitude/longitude.
-     * @throws  Invalid geohash.
-     *
-     * @example
-     *     const geohash = Geohash.encode(52.205, 0.119, 7); // => 'u120fxw'
-     */
-    static encode(lat, lon, precision) {
-        // infer precision?
+    static encode(latitude, longitude, precision) {
+        // If precision is not given, find the smallest precision that matches the given latitude and longitude
         if (typeof precision === 'undefined') {
-            // refine geohash until it matches precision of supplied lat/lon
             for (let p = 1; p <= 12; p++) {
-                const hash = Geohash.encode(lat, lon, p);
+                const hash = Geohash.encode(latitude, longitude, p);
                 const posn = Geohash.decode(hash);
-                if (posn.lat === lat && posn.lon === lon) return hash;
+                if (posn.latitude === latitude && posn.longitude === longitude) {
+                    return hash;
+                }
             }
-            precision = 12; // set to maximum
+            precision = 12; // Set to maximum precision
         }
 
-        lat = Number(lat);
-        lon = Number(lon);
+        latitude = Number(latitude);
+        longitude = Number(longitude);
         precision = Number(precision);
 
-        if (isNaN(lat) || isNaN(lon) || isNaN(precision)) throw new Error('Invalid geohash');
+        if (isNaN(latitude) || isNaN(longitude) || isNaN(precision)) {
+            throw new Error('Invalid geohash');
+        }
 
-        let idx = 0; // index into base32 map
-        let bit = 0; // each char holds 5 bits
-        let evenBit = true;
+        let characterIndex = 0; // Index into base32 map
+        let bit = 0; // Each character holds 5 bits
+        let isEvenBit = true; // Used for alternating between latitude and longitude bits
         let geohash = '';
 
-        let latMin = -90, latMax = 90;
-        let lonMin = -180, lonMax = 180;
+        let minLatitude = -90, maxLatitude = 90;
+        let minLongitude = -180, maxLongitude = 180;
 
+        // Create the geohash character by alternating between bits of latitude and longitude
         while (geohash.length < precision) {
-            if (evenBit) {
-                // bisect E-W longitude
-                const lonMid = (lonMin + lonMax) / 2;
-                if (lon >= lonMid) {
-                    idx = idx * 2 + 1;
-                    lonMin = lonMid;
+            if (isEvenBit) {
+                const midLongitude = (minLongitude + maxLongitude) / 2;
+                if (longitude >= midLongitude) {
+                    characterIndex = characterIndex * 2 + 1;
+                    minLongitude = midLongitude;
                 } else {
-                    idx = idx * 2;
-                    lonMax = lonMid;
+                    characterIndex = characterIndex * 2;
+                    maxLongitude = midLongitude;
                 }
             } else {
-                // bisect N-S latitude
-                const latMid = (latMin + latMax) / 2;
-                if (lat >= latMid) {
-                    idx = idx * 2 + 1;
-                    latMin = latMid;
+                const midLatitude = (minLatitude + maxLatitude) / 2;
+                if (latitude >= midLatitude) {
+                    characterIndex = characterIndex * 2 + 1;
+                    minLatitude = midLatitude;
                 } else {
-                    idx = idx * 2;
-                    latMax = latMid;
+                    characterIndex = characterIndex * 2;
+                    maxLatitude = midLatitude;
                 }
             }
-            evenBit = !evenBit;
+            isEvenBit = !isEvenBit;
 
             if (++bit === 5) {
-                // 5 bits gives us a character: append it and start over
-                geohash += base32.charAt(idx);
+                // 5 bits give us a character: append it and start over
+                geohash += base32.charAt(characterIndex);
                 bit = 0;
-                idx = 0;
+                characterIndex = 0;
             }
         }
 
         return geohash;
     }
 
-
-    /**
-     * Decode geohash to latitude/longitude (location is approximate centre of geohash cell,
-     *     to reasonable precision).
-     *
-     * @param   {string} geohash - Geohash string to be converted to latitude/longitude.
-     * @returns {{lat:number, lon:number}} (Center of) geohashed location.
-     * @throws  Invalid geohash.
-     *
-     * @example
-     *     const latlon = Geohash.decode('u120fxw'); // => { lat: 52.205, lon: 0.1188 }
-     */
     static decode(geohash) {
+        // Calculate the bounding box of the geohash
+        const bounds = Geohash.calculateBounds(geohash);
+        const minLatitude = bounds.sw.latitude, minLongitude = bounds.sw.longitude;
+        const maxLatitude = bounds.ne.latitude, maxLongitude = bounds.ne.longitude;
 
-        const bounds = Geohash.bounds(geohash); // <-- the hard work
-        // now just determine the centre of the cell...
+        // Calculate the approximate latitude and longitude coordinates from the bounding box
+        let latitude = (minLatitude + maxLatitude) / 2;
+        let longitude = (minLongitude + maxLongitude) / 2;
 
-        const latMin = bounds.sw.lat, lonMin = bounds.sw.lon;
-        const latMax = bounds.ne.lat, lonMax = bounds.ne.lon;
+        // Calculate the precision based on the range of latitude and longitude
+        latitude = latitude.toFixed(Math.floor(2 - Math.log(maxLatitude - minLatitude) / Math.LN10));
+        longitude = longitude.toFixed(Math.floor(2 - Math.log(maxLongitude - minLongitude) / Math.LN10));
 
-        // cell centre
-        let lat = (latMin + latMax) / 2;
-        let lon = (lonMin + lonMax) / 2;
-
-        // round to close to centre without excessive precision: ⌊2-log10(Δ°)⌋ decimal places
-        lat = lat.toFixed(Math.floor(2 - Math.log(latMax - latMin) / Math.LN10));
-        lon = lon.toFixed(Math.floor(2 - Math.log(lonMax - lonMin) / Math.LN10));
-
-        return { lat: Number(lat), lon: Number(lon) };
+        return { latitude: Number(latitude), longitude: Number(longitude) };
     }
 
-
-    /**
-     * Returns SW/NE latitude/longitude bounds of specified geohash.
-     *
-     * @param   {string} geohash - Cell that bounds are required of.
-     * @returns {{sw: {lat: number, lon: number}, ne: {lat: number, lon: number}}}
-     * @throws  Invalid geohash.
-     */
-    static bounds(geohash) {
-        if (geohash.length === 0) throw new Error('Invalid geohash');
+    static calculateBounds(geohash) {
+        if (geohash.length === 0) {
+            throw new Error('Invalid geohash');
+        }
 
         geohash = geohash.toLowerCase();
 
-        let evenBit = true;
-        let latMin = -90, latMax = 90;
-        let lonMin = -180, lonMax = 180;
+        let isEvenBit = true; // Used for alternating between latitude and longitude bits
+        let minLatitude = -90, maxLatitude = 90;
+        let minLongitude = -180, maxLongitude = 180;
 
         for (let i = 0; i < geohash.length; i++) {
-            const chr = geohash.charAt(i);
-            const idx = base32.indexOf(chr);
-            if (idx === -1) throw new Error('Invalid geohash');
+            const char = geohash.charAt(i);
+            const characterIndex = base32.indexOf(char);
+            if (characterIndex === -1) {
+                throw new Error('Invalid geohash');
+            }
 
-            for (let n = 4; n >= 0; n--) {
-                const bitN = (idx >> n) & 1;
-                if (evenBit) {
-                    // longitude
-                    const lonMid = (lonMin + lonMax) / 2;
-                    if (bitN === 1) {
-                        lonMin = lonMid;
+            // Extract bits from the character and adjust latitude and longitude ranges accordingly
+            for (let bit = 4; bit >= 0; bit--) {
+                const bitValue = (characterIndex >> bit) & 1;
+                if (isEvenBit) {
+                    // Longitude
+                    const midLongitude = (minLongitude + maxLongitude) / 2;
+                    if (bitValue === 1) {
+                        minLongitude = midLongitude;
                     } else {
-                        lonMax = lonMid;
+                        maxLongitude = midLongitude;
                     }
                 } else {
-                    // latitude
-                    const latMid = (latMin + latMax) / 2;
-                    if (bitN === 1) {
-                        latMin = latMid;
+                    // Latitude
+                    const midLatitude = (minLatitude + maxLatitude) / 2;
+                    if (bitValue === 1) {
+                        minLatitude = midLatitude;
                     } else {
-                        latMax = latMid;
+                        maxLatitude = midLatitude;
                     }
                 }
-                evenBit = !evenBit;
+                isEvenBit = !isEvenBit;
             }
         }
 
         const bounds = {
-            sw: { lat: latMin, lon: lonMin },
-            ne: { lat: latMax, lon: lonMax },
+            sw: { latitude: minLatitude, longitude: minLongitude },
+            ne: { latitude: maxLatitude, longitude: maxLongitude },
         };
 
         return bounds;

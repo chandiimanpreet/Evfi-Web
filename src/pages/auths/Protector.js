@@ -4,7 +4,6 @@ import FloatingNavbar from '../../components/FloatingNavbar';
 
 export default function Protector({ flag, moveToPageIndex }) {
 	const location = useLocation();
-
 	return (
 		!flag ?
 
@@ -12,7 +11,7 @@ export default function Protector({ flag, moveToPageIndex }) {
 			<>
 				<Outlet />
 				{
-					location.pathname !== "/register" && location.pathname!=="/provider-register" &&
+					location.pathname !== "/register" && location.pathname!=="/requests" &&
 					<FloatingNavbar moveToPageIndex={moveToPageIndex} />
 				}
 			</>
