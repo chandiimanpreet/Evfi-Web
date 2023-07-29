@@ -122,7 +122,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 		window.confirmationResult.confirm(otp)
 			.then(async () => {
 				const res = await logInUser(phone);
-				if (res.level1 === false) {
+				if (res.registeredLevel2 === false) {
 					setData({ "loading": false, "flag": true, ...res });
 					navigate('/register/level1', { replace: true });
 				}
@@ -151,26 +151,22 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
 				)}
 				{!showOtpForm ?
-					<Grid
-						gap={3}
-						display='flex'
-						flexDirection='column'
-						padding={3.5}
-						textAlign='center'>
-						<img style={otpStyle.companylogo}
-							src='/resources/light.png' alt='' />
+					<Grid 
+					gap={3} 
+					display='flex' 
+					flexDirection='column' 
+					padding={3.5} 
+					textAlign='center'>
+						<img style={otpStyle.companylogo} 
+						src='/resources/light.png' alt='' />
 
-						<Typography
-							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
+						<Typography 
+						color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
 						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Verify Your Number</Typography>
 
-						<PhoneInput
-							country={country.countryCode}
-							value={phone}
+						<PhoneInput country={country.countryCode} value={phone} onChange={num => setNumber(num)} inputProps='true'
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
-							onChange={num => setNumber(num)}
-							inputProps='true'
 						/>
 
 						<FormControlLabel

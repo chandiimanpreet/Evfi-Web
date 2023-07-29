@@ -39,6 +39,7 @@ function getStyles(name, personName, theme) {
 }
 
 export default function Registerauth({ setData, user }) {
+	
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
 	const { level } = useParams();

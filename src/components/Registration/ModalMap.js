@@ -8,7 +8,7 @@ const ModalMap = ({ data, setUserData, handleClose }) => {
 
     return (
         <div>
-            <MapContainer center={[29.9695, 76.8783]} zoom={12} scrollWheelZoom={true}>
+            <MapContainer center={[29.9695, 76.8783]} zoom={15} scrollWheelZoom={true}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -35,8 +35,10 @@ const CurrentLocationMarker = ({ data, setUserData, handleClose }) => {
 
     const getCurrentLocation = () => {
         map.locate({ enableHighAccuracy: true, }).on("locationfound", (e) => {
-            map.flyTo(e.latlng, 13, { duration: 1 });
+            map.flyTo(e.latlng, 15, { duration: 1 });
+            console.log(e.latlng)
         });
+        
     }
 
     return (
