@@ -41,13 +41,14 @@ export const useStyles = makeStyles({
 
 	extendnavigationroot: {
 		width: "85vw!important",
-		position: 'relative',
+		position: "relative",
 		backgroundColor: "#282828!important",
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: "10rem",
 		zIndex: 1500,
+		left: "0.3 rem !important"
 	},
 
 	bigboltIconRoot: {
@@ -78,7 +79,7 @@ export const useStyles = makeStyles({
 		width: "100%!important",
 		padding: "0.1rem!important",
 		alignItems: 'center',
-		left: '0.7rem!important'
+		left: '-0.3rem!important'
 	},
 
 	autocompletestyle: {
@@ -123,7 +124,7 @@ export const useStyles = makeStyles({
 		color: 'white',
 		cursor: 'pointer',
 		zIndex: 1500,
-		left: '3.3rem',
+		left: '4.0rem',
 	},
 
 	exNavPopover: {

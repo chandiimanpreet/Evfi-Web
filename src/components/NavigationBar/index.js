@@ -48,11 +48,13 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	}
 
 	const setPolyline = async () => {
-		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
+		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
 			await saveQuery({ start: searchCoordinates.source.coordinates, end: searchCoordinates.destination.coordinates });
+		}
+		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
+			// await saveQuery({ start: searchCoordinates.source.coordinates, end: searchCoordinates.destination.coordinates });
 			showRoute();
 			handleClose();
-
 		}
 
 	}

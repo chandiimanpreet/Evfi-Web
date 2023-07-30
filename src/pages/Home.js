@@ -9,8 +9,8 @@ import firebaseConfig from "../utils/config/firebaseConfig";
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
-const geocollection = GeoFirestore.collection('chargers');
-const Home = () => {
+const geocollection = GeoFirestore.collection('Chargers');
+const Home = ({ direction }) => {
 
 	// States
 	const [show, setShow] = useState(false);
@@ -25,7 +25,7 @@ const Home = () => {
 	const showRoute = () => {
 		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
 			setChargers(null);
-			const query = geocollection.near({ center: new firebase.firestore.GeoPoint(searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]), radius: 1000 });
+			const query = geocollection.near({ center: new firebase.firestore.GeoPoint(searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]), radius: 100 });
 			query.get().then((value) => {
 				setChargers(value.docs);
 				console.log(value.docs);
@@ -40,14 +40,11 @@ const Home = () => {
 		setShowCurrentLocation(true)
 		console.log();
 	}
-	const direction = {
-		direction: 1
-	};
 
 	return (
 
 		<motion.div key="home" exit={{ x: window.innerWidth, transition: { duration: 1 } }}
-			animate={{ x: 0 }} initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }}
+			animate={{ x: 0 }} initial={{ x: direction }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<DashboardMap show={show} showCurrentLocation={showCurrentLocation}

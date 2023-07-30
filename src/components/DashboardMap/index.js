@@ -14,7 +14,7 @@ import firebaseConfig from "../../utils/config/firebaseConfig";
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
-const geocollection = GeoFirestore.collection('chargers');
+const geocollection = GeoFirestore.collection('Chargers');
 
 const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers }) => {
 	const [position, setPosition] = useState(null);
@@ -38,7 +38,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 
 	const setcurrentmarker = useCallback(() => {
 		setCurrentchargers(null);
-		const query = geocollection.near({ center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 1000 });
+		const query = geocollection.near({ center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 100 });
 
 		query.get().then((value) => {
 			setCurrentchargers(value.docs);

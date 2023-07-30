@@ -1,68 +1,62 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { child, get, getDatabase, ref, set, update } from 'firebase/database';
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 
-export const getUser = async () => new Promise((resolve, reject) => {
-    const auth = getAuth();
-    const database = getDatabase();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const dbRef = ref(database)
-            get(child(dbRef, `Users/${user.uid}`))
-                .then((snapshot) => {
+export const getUser = () => {
+    return new Promise((resolve, reject) => {
+        const auth = getAuth();
+        const db = getFirestore();
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const snapshot = await getDoc(doc(db, "UserChargingRegister", user.uid));
                     if (snapshot.exists()) {
-                        resolve({ user: snapshot.val() })
+                        resolve({ user: snapshot.data() });
                     } else {
-                        resolve({ user: null })
+                        resolve({ user: null });
                     }
-                })
-                .catch((error) => {
-                    reject({ error: error.message })
-                })
-        } else {
-            resolve({ user: null })
-        }
-    })
-})
-
-
-export const logInUser =async (mobile) => {
-    return new Promise((resolve, reject) => {
-        const auth = getAuth().currentUser.uid;
-        const database = getDatabase();
-        const dbRef = ref(database);
-        get(child(dbRef, `Users/${auth}`))
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    resolve(snapshot.val())
-                } else {
-                    const data = {
-                        mobile: mobile, registered: false, uid: auth
-                    }
-                    set(ref(database, "Users/" + auth), data)
-                        .then(() => {
-                            resolve({ registered: false });
-                        })
-                        .catch((error) => {
-                            reject({ error: error.message })
-                        })
                 }
-            })
-            .catch((error) => {
-                reject({ error: error.message })
-            })
-    })
+                catch (error) {
+                    reject({ error: error.message });
+                }
+            } else {
+                resolve({ user: null });
+            }
+        })
+    });
 }
-export const registerUser =async (data) => {
-    return new Promise((resolve, reject) => {
+
+
+export const logInUser = (mobile) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const auth = getAuth().currentUser.uid;
+            const db = getFirestore();
+            const snapshot = await getDoc(doc(db, "UserChargingRegister", auth));
+            if (snapshot.exists()) {
+                resolve(snapshot.data());
+            } else {
+                const data = {
+                    PhoneNumber: mobile, uid: auth, level1: false, isProvider: false, level2: false
+                }
+                await setDoc(doc(db, "UserChargingRegister", auth), data);
+                resolve(data);
+            }
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    });
+}
+
+export const registerUser = (data) => {
+    return new Promise(async (resolve, reject) => {
         const auth = getAuth().currentUser.uid;
-        const database = getDatabase();
-        update(ref(database, "Users/" + auth), data)
-            .then(() => {
-                resolve({ registered: true });
-            })
-            .catch((error) => {
-                reject({ error: error.message });
-            })
-    })
+        const db = getFirestore();
+        try {
+            await setDoc(doc(db, "UserChargingRegister", auth), data, { merge: true });
+            resolve({ message: "success" });
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    });
 }

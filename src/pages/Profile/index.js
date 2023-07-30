@@ -33,7 +33,7 @@ const Profile = ({ logout, direction }) => {
     };
 
     return (
-        <motion.Box key="pr" initial={{ x: direction.direction === 1 ? "100vw" : "-100vw" }} animate={{ x: 0 }}
+        <motion.Box key="pr" initial={{ x: direction }} animate={{ x: 0 }}
             transition={{ duration: 0.25, delay: 0 }} className={classes.root}
         >
             <Box className={classes.container}>
