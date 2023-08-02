@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Popover, TextField, Autocomplete } from "@mui/material";
-import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, TravelExploreRounded as TravelExploreRoundedIcon, Tune as TuneIcon, MyLocation as MyLocationIcon } from "@mui/icons-material";
+import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, Tune as TuneIcon, MyLocation as MyLocationIcon } from "@mui/icons-material";
 import { motion } from 'framer-motion';
 import { useStyles } from "./style";
 
@@ -89,15 +89,19 @@ const ExtendedNavigation = ({ anchorEl,
 							onChange={(event, newValue) => {
 								if (newValue) {
 									setSearchCoordinates({ ...searchCoordinates, destination: { coordinates: newValue.coordinates, label: newValue.label } })
+									setPolyline()
 								}
 							}}
 						/>
-						<TravelExploreRoundedIcon onClick={setPolyline} className={classes.travelExploreRoundedIcon} />
+
 					</Box>
 				</Box>
 				<TuneIcon className={classes.filterdesign} />
 			</Popover>
+
 		</motion.div>
 	)
 }
 export default ExtendedNavigation
+
+
