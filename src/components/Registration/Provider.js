@@ -46,16 +46,18 @@ const Provider = ({ user, setData }) => {
 
 	// Styles
 	const classes = useStyles();
-
+	useEffect(() => {
+		console.log(data)
+	}, [data])
 	// Handlers
 
 	useEffect(() => {
 		if (data.country !== "") {
-			setOwnStates(Object.values(countriesStateCitiesData).find(obj => obj.name === data.country).states);
+			setOwnStates(countriesStateCitiesData.find(obj => obj.name === data.country).states);
 		}
 
 		if (ownStates && ownStates.length > 0 && data.state !== "") {
-			setOwnCities(Object.values(ownStates).find(obj => obj.name === data.state).cities);
+			setOwnCities(ownStates.find(obj => obj.name === data.state).cities);
 		}
 	}, [ownCities, ownStates, data]);
 
@@ -64,12 +66,18 @@ const Provider = ({ user, setData }) => {
 	const handleClose = () => setOpen(false);
 
 	const changeDataHandler = (e) => {
-
 		if (e.target.name === 'ChargerType') {
 			setUserData({ ...data, [e.target.name]: e.target.value === 'string' ? e.target.value.split(',') : e.target.value });
 		}
 		setUserData({ ...data, [e.target.name]: e.target.value });
 	};
+
+	const timingHandler1 = (e) => {
+		setUserData({ ...data, 'openingTime': e });
+	}
+	const timingHandler2 = (e) => {
+		setUserData({ ...data, 'closingTime': e });
+	}
 
 	const chipDeleteHandle1 = (item) => () => {
 		setAadhaarCard((aadhaar) => aadhaar.filter((images) => images !== item))
@@ -87,33 +95,40 @@ const Provider = ({ user, setData }) => {
 	};
 
 	const saveData = async () => {
-		setShow("Uploading images...")
 
-		const chargersImageURL = [];
+		if (data.StationName !== "" && data.Address !== "" && data.country !== "" && data.state !== "" &&
+			data.city !== "" && data.pinCode !== "" && data.Price !== "" && data.HostName !== "" &&
+			data.chargerLocation !== null && data.openingTime !== null && data.openingTime !== null &&
+			data.ChargerType !== undefined) {
 
-		for (const img of chargerArea) {
-			const chargersImageRef = ref(storage, `chargers/${user.uid}/${img.name}`);
-			const uploadResult = await uploadBytes(chargersImageRef, img);
-			chargersImageURL.push(await getDownloadURL(uploadResult.ref));
+			setShow("Uploading images...")
+
+			const chargersImageURL = [];
+
+			for (const img of chargerArea) {
+				const chargersImageRef = ref(storage, `chargers/${user.uid}/${img.name}`);
+				const uploadResult = await uploadBytes(chargersImageRef, img);
+				chargersImageURL.push(await getDownloadURL(uploadResult.ref));
+			}
+
+			const aadharImagesUrl = [];
+
+			for (const img of aadhaarCard) {
+				const aadharImageRef = ref(storage, `id_proofs/${img.name + user.uid}`);
+				const uploadResult = await uploadBytes(aadharImageRef, img);
+				aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
+			}
+
+			setShow("Uploading Data...")
+
+			const temp = await registerUser({ ...data, isProvider: true, aadharImagesUrl, chargersImageURL })
+
+			if (temp.error) {
+				console.log(temp.error);
+			}
+			setShow("Almost Done")
+			setData({ ...user, ...data, isProvider: true, aadharImagesUrl, chargersImageURL });
 		}
-
-		const aadharImagesUrl = [];
-
-		for (const img of aadhaarCard) {
-			const aadharImageRef = ref(storage, `id_proofs/${img.name + user.uid}`);
-			const uploadResult = await uploadBytes(aadharImageRef, img);
-			aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
-		}
-
-		setShow("Uploading Data...")
-
-		const temp = await registerUser({ ...data, isProvider: true, aadharImagesUrl, chargersImageURL })
-
-		if (temp.error) {
-			console.log(temp.error);
-		}
-		setShow("Almost Done")
-		setData({ ...user, ...data, isProvider: true, aadharImagesUrl, chargersImageURL });
 	};
 
 	if (user.isProvider) {
@@ -135,11 +150,13 @@ const Provider = ({ user, setData }) => {
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={4}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='text' label='Station Name' name='StationName' value={data.StationName} />
+									type='text' label='Station Name' name='StationName' value={data.StationName}
+									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 							<Grid item xs={3}  >
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName} />
+									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName}
+									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 							<Grid item xs={3}>
 								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
@@ -154,13 +171,15 @@ const Provider = ({ user, setData }) => {
 							</Grid>
 							<Grid item xs={2}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='number' label='Price' name='Price' value={data.Price} />
+									type='number' label='Price' name='Price' value={data.Price}
+									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
 							</Grid>
 						</Grid>
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={6}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Address' name='Address' value={data.Address} />
+									variant='outlined' type='text' label='Address' name='Address' value={data.Address}
+									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 							<Grid item xs={2} >
 								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
@@ -211,32 +230,34 @@ const Provider = ({ user, setData }) => {
 						<Grid container spacing={2}>
 							<Grid item xs={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode} />
+									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode}
+									onInput={(e) => { e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 6) }}
+								/>
 							</Grid>
 							<Grid item xs={3}  >
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
-										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-											variant='outlined' label='Opening Time' name='openingTime' value={data.openingTime} />
+										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={timingHandler1}
+											variant='outlined' label='Opening Time' value={data.openingTime} />
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
 							<Grid item xs={3}  >
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
-										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-											variant='outlined' label='Closing Time' name='closingTime' value={data.closingTime} />
+										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={timingHandler2}
+											variant='outlined' label='Closing Time' value={data.closingTime} />
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
 							<Grid item xs={3}  >
-								<Button fullWidth className={classes.setChargerLocationBtn} onClick={handleOpen}
+								<Button fullWidth required className={classes.setChargerLocationBtn} onClick={handleOpen}
 									name='chargerLocation' value={data.chargerLocation}
 								>
 									{data.chargerLocation && <CheckCircleOutlineIcon sx={{ marginRight: '5px', fontSize: '26px', color: 'green' }} />}
 									{data.chargerLocation === null ? 'Set Charger Location' : 'Location captured'}
 								</Button>
-								<Modal open={open} onClose={handleClose} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, }, }}>
+								<Modal required open={open} onClose={handleClose} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, }, }}>
 									<Fade in={open}>
 										<Box sx={{
 											position: 'absolute', top: '10%', left: '25%', border: '2px solid #000', boxShadow: 24, p: 4,
@@ -250,11 +271,11 @@ const Provider = ({ user, setData }) => {
 						<Grid container spacing={1}>
 							<Grid item xs={12} >
 								<div style={{ display: 'flex', columnGap: '12px' }}>
-									<input multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
+									<input required multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
 										type="file"
 									/>
 									<label htmlFor="raised-button-file">
-										<Button variant="raised" component="span" className={classes.upLoadBtns} >
+										<Button required variant="raised" component="span" className={classes.upLoadBtns} >
 											Upload Aadhaar Card
 										</Button>
 									</label>
@@ -273,18 +294,18 @@ const Provider = ({ user, setData }) => {
 						<Grid container spacing={1}>
 							<Grid item xs={12} >
 								<div style={{ display: 'flex', columnGap: '12px' }}>
-									<input multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
+									<input required multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
 										type="file"
 									/>
 									<label htmlFor="button-file">
-										<Button variant="raised" component="span" className={classes.upLoadBtns} >
+										<Button required variant="raised" component="span" className={classes.upLoadBtns} >
 											Upload Charger Area Image
 										</Button>
 									</label>
 									<Box>
 										{chargerArea.length > 0 &&
 											chargerArea.map((item, idx) =>
-												<Chip key={idx} label={item.image} onDelete={chipDeleteHandle2(item)}
+												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle2(item)}
 													className={classes.upLoadBtnChips} size='medium' variant="outlined"
 												/>
 											)
