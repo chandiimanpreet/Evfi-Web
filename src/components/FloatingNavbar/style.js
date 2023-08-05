@@ -6,12 +6,11 @@ export const useStyles = makeStyles({
 		zIndex: 1100,
 		right: "50%",
 		transform: "translateX(50%)",
-		width: "35vw",
 		display: "flex",
+		padding:'0 1rem 0 1rem',
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: "10px",
-		bottom: "2.5rem",
 		background: "#282828!important",
 	},
 	bottomNavigationAction: {
