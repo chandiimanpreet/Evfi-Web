@@ -20,7 +20,11 @@ const Home = ({ direction }) => {
 		source: { coordinates: null, label: '' },
 		destination: { coordinates: null, label: '' }
 	})
+	const [searchLocationCoordinates, setSearchLocationCoordinates] = useState({
+		searchlocation: { coordinates: null, label: '' }
+	})
 	console.log(searchCoordinates);
+	console.log(searchLocationCoordinates);
 
 	const showRoute = () => {
 		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
@@ -51,7 +55,8 @@ const Home = ({ direction }) => {
 				setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates}
 				setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} card={[null]}
 				chargers={chargers}
-
+				searchLocationCoordinates={searchLocationCoordinates}
+				setSearchLocationCoordinates={setSearchLocationCoordinates}
 			/>
 		</motion.div>
 	);
