@@ -8,7 +8,7 @@ import { useStyles } from "./style";
 import Provider from '../components/Registration/Provider';
 import FloatingNavbar from '../components/FloatingNavbar';
 
-const Request = ({ direction, user, setData, moveToPageIndex }) => {
+const Request = ({ direction, user, moveToPageIndex }) => {
 	const [show, setShow] = useState("pending");
 	const classes = useStyles();
 
@@ -18,7 +18,7 @@ const Request = ({ direction, user, setData, moveToPageIndex }) => {
 			animate={{ x: 0 }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
-			{user.isProvider === false ? <Provider user={user} setData={setData} /> :
+			{user.isProvider === false ? <Provider/> :
 				<>
 					<Box className={classes.bodyPage}>
 						<Typography className={classes.heading} variant="h5">Booking Requests</Typography>

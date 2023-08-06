@@ -15,12 +15,14 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../utils/config/firebaseConfig';
-import countriesStateCitiesData from '../../utils/timezone/countriesStateCitiesData';
+import {countriesStateCitiesData} from '../../utils/timezone/countriesStateCitiesData';
+import { connect } from 'react-redux';
+import { addUserData } from '../../actions';
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app);
 
-const Provider = ({ user, setData }) => {
+const Provider = ({  userData,addUserData }) => {
 
 	// States
 	const [open, setOpen] = useState(false);
@@ -106,7 +108,7 @@ const Provider = ({ user, setData }) => {
 			const chargersImageURL = [];
 
 			for (const img of chargerArea) {
-				const chargersImageRef = ref(storage, `chargers/${user.uid}/${img.name}`);
+				const chargersImageRef = ref(storage, `chargers/${userData.uid}/${img.name}`);
 				const uploadResult = await uploadBytes(chargersImageRef, img);
 				chargersImageURL.push(await getDownloadURL(uploadResult.ref));
 			}
@@ -114,24 +116,22 @@ const Provider = ({ user, setData }) => {
 			const aadharImagesUrl = [];
 
 			for (const img of aadhaarCard) {
-				const aadharImageRef = ref(storage, `id_proofs/${img.name + user.uid}`);
+				const aadharImageRef = ref(storage, `id_proofs/${img.name + userData.uid}`);
 				const uploadResult = await uploadBytes(aadharImageRef, img);
 				aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
 			}
-
 			setShow("Uploading Data...")
-
 			const temp = await registerUser({ ...data, isProvider: true, aadharImagesUrl, chargersImageURL })
 
 			if (temp.error) {
 				console.log(temp.error);
 			}
 			setShow("Almost Done")
-			setData({ ...user, ...data, isProvider: true, aadharImagesUrl, chargersImageURL });
+			addUserData({...data, isProvider: true, aadharImagesUrl, chargersImageURL});
 		}
 	};
 
-	if (user.isProvider) {
+	if (userData.isProvider) {
 		return <Navigate to={'/requests'} />
 	}
 	else {
@@ -326,4 +326,10 @@ const Provider = ({ user, setData }) => {
 		)
 	}
 }
-export default Provider;
+const mapStateToProps = state => ({
+	userData: state.userData.user
+})
+const mapDispatchFromprops = dispatch => ({
+	addUserData: (data) => dispatch(addUserData(data))
+})
+export default connect(mapStateToProps, mapDispatchFromprops)(Provider);

@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
 import { saveQuery } from '../../utils/queries/searchQueries';
+
 const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
 	showRoute }) => {
+
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);
@@ -17,7 +20,7 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 		const url = 'https://nominatim.openstreetmap.org/search?format=geojson&limit=5&q';
 		searchTimeoutRef.current = setTimeout(async () => {
 			try {
-				const response = await fetch(`${url}=${encodeURI(e.target.value)}`);
+				const response = await axios.get(`${url}=${encodeURI(e.target.value)}`);
 				let results = response.data.features.map((ele) => ({
 					coordinates: ele.geometry.coordinates,
 					label: ele.properties.display_name
@@ -49,13 +52,13 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	const setPolyline = async () => {
 		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
 			await saveQuery({ start: searchCoordinates.source.coordinates, end: searchCoordinates.destination.coordinates });
-		}
-		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
-			// await saveQuery({ start: searchCoordinates.source.coordinates, end: searchCoordinates.destination.coordinates });
 			showRoute();
 			handleClose();
-		}
 
+		}
+		else {
+			window.alert("please fill the source and destination");
+		}
 	}
 	return (
 		<motion.div>

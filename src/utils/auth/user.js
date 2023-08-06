@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 
@@ -13,14 +13,14 @@ export const getUser = () => {
                     if (snapshot.exists()) {
                         resolve({ user: snapshot.data() });
                     } else {
-                        resolve({ user: null });
+                        reject({ error: "User doesn't exists" });
                     }
                 }
                 catch (error) {
                     reject({ error: error.message });
                 }
             } else {
-                resolve({ user: null });
+                reject({ error: "User doesn't exists" });
             }
         })
     });
@@ -37,10 +37,15 @@ export const logInUser = (mobile) => {
                 resolve(snapshot.data());
             } else {
                 const data = {
-                    PhoneNumber: mobile, uid: auth, level1: false, isProvider: false, level2: false
+                    PhoneNumber: mobile, uid: auth, level1: false, isProvider: false, level2: false,Name:''
                 }
-                await setDoc(doc(db, "UserChargingRegister", auth), data);
-                resolve(data);
+                setDoc(doc(db, "UserChargingRegister", auth), data)
+                .then(()=>{
+                    resolve(data);
+                })
+                .catch((error)=>{
+                    reject({error:error.message});
+                })
             }
         } catch (error) {
             reject({ error: error.message });
@@ -59,4 +64,16 @@ export const registerUser = (data) => {
             reject({ error: error.message });
         }
     });
+}
+export const logoutUser = () => {
+    return new Promise(async (resolve, reject) => {
+        const auth = getAuth();
+        signOut(auth)
+            .then(() => {
+                resolve("Successfully logged out");
+            })
+            .catch((error) => {
+                reject({ error: error.message });
+            })
+    })
 }

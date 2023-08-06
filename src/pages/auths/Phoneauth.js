@@ -1,32 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate } from 'react-router';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid } from '@mui/material';
 import { useStyles, otpStyle } from './style';
 import OTPInput from 'react-otp-input';
-import { logInUser } from '../../utils/auth/user';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../utils/config/firebaseConfig';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/material.css';
+import { login, setPhoneNo } from '../../actions';
+import { connect } from 'react-redux';
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
 
 let appVerifier;
 
-export default function Phoneauth({ phone, setNumber, setData, flag, country }) {
+function Phoneauth({ country ,login,userData,setPhoneNo}) {
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
-	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null })
+	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null });
 	const [otp, setotp] = useState("")
 	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 
 	const classes = useStyles();
-	const navigate = useNavigate();
-
 	useEffect(() => {
 		if (showOtpForm) {
 			if (timer > 0) {
@@ -54,7 +53,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 	};
 
 	const signInHandler = (resend) => {
-		signInWithPhoneNumber(auth, "+" + phone, appVerifier)
+		signInWithPhoneNumber(auth, "+" + userData.phone, appVerifier)
 			.then((confirmationResult) => {
 				if (resend) {
 					setTimer(30);
@@ -72,7 +71,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 	};
 
 	const submitPhoneNumberAuth = () => {
-		if (phone.length < 12) {
+		if (userData.phone.length < 12) {
 			setUtils({ ...util, error: "Please enter a valid phone number" })
 			return;
 		}
@@ -121,25 +120,16 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 		}
 		window.confirmationResult.confirm(otp)
 			.then(async () => {
-				const res = await logInUser(phone);
-				if (res.registeredLevel2 === false) {
-					setData({ "loading": false, "flag": true, ...res });
-					navigate('/register/level1', { replace: true });
-				}
-				else {
-					setData({ ...res, "loading": false, "flag": true });
-					navigate('/', { replace: true })
-				}
+				login();
 			})
 			.catch((error) => {
 				setUtils({ ...util, enterOtpInactive: false, loading: false, error: error.message })
 			})
 	};
 
-	if (flag) {
-		return <Navigate to='/' />
+	if(userData.user){
+		return <Navigate to='/register/level1'/>
 	}
-
 	return (
 		<Box className={classes.bodyPage} >
 			<div ref={recaptchaWrapperRef}>
@@ -151,22 +141,26 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
 				)}
 				{!showOtpForm ?
-					<Grid 
-					gap={3} 
-					display='flex' 
-					flexDirection='column' 
-					padding={3.5} 
-					textAlign='center'>
-						<img style={otpStyle.companylogo} 
-						src='/resources/light.png' alt='' />
+					<Grid
+						gap={3}
+						display='flex'
+						flexDirection='column'
+						padding={3.5}
+						textAlign='center'>
+						<img style={otpStyle.companylogo}
+							src='/resources/light.png' alt='' />
 
-						<Typography 
-						color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
+						<Typography
+							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
 						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Verify Your Number</Typography>
 
-						<PhoneInput country={country.countryCode} value={phone} onChange={num => setNumber(num)} inputProps='true'
+						<PhoneInput
+							country={country.countryCode}
+							value={userData.phone}
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
+							onChange={num => {setPhoneNo(num);}}
+							inputProps='true'
 						/>
 
 						<FormControlLabel
@@ -186,7 +180,7 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 
 						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Enter OTP Code</Typography>
 
-						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${phone}`}</Typography>
+						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${userData.phone}`}</Typography>
 
 						<OTPInput
 							inputStyle={otpStyle.inputStyle}
@@ -218,3 +212,11 @@ export default function Phoneauth({ phone, setNumber, setData, flag, country }) 
 		</Box>
 	)
 }
+const mapStateToProps=state=>({
+    userData:state.userData
+})
+const mapDispatchFromProps=dispatch=>({
+	login:()=>dispatch(login()),
+	setPhoneNo:(number)=>dispatch(setPhoneNo(number))
+})
+export default connect(mapStateToProps,mapDispatchFromProps)(Phoneauth);
