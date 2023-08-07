@@ -7,10 +7,8 @@ export const useStyles = makeStyles({
 		right: "50%",
 		transform: "translateX(50%)",
 		display: "flex",
-		padding:'0 1rem 0 1rem',
 		justifyContent: "center",
 		alignItems: "center",
-		borderRadius: "10px",
 		background: "#282828!important",
 	},
 	bottomNavigationAction: {
