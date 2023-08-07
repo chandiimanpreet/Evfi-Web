@@ -1,4 +1,3 @@
-
 import { AppBar, Toolbar, TextField, Autocomplete, Box } from "@mui/material";
 import { Bolt as BoltIcon, Directions as DirectionsIcon } from "@mui/icons-material";
 import { useStyles } from "./style";
@@ -19,6 +18,7 @@ const PlaceSearchingNavigationbar = ({
                     <BoltIcon className={classes.searchboltIcon} />
                     <Box className={classes.extendinputroot}>
                         <Autocomplete
+                            clearIcon
                             disablePortal
                             id="combo-box-demo"
                             value={searchLocationCoordinates.searchlocation.label}
@@ -38,8 +38,11 @@ const PlaceSearchingNavigationbar = ({
                                 />
                             }
                             onChange={(event, newValue) => {
+                                console.log(newValue);
                                 if (newValue) {
                                     setSearchLocationCoordinates({ ...searchLocationCoordinates, searchlocation: { coordinates: newValue.coordinates, label: newValue.label } })
+                                } else {
+                                    setSearchLocationCoordinates({ searchlocation: { coordinates: null, label: '' } })
                                 }
                             }}
                         />
@@ -50,9 +53,6 @@ const PlaceSearchingNavigationbar = ({
                     />
                 </Toolbar>
             </AppBar >
-
-
-
         </motion.div>
     )
 }

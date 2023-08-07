@@ -61,7 +61,7 @@ export const useStyles = makeStyles({
 	arrowBackIcon: {
 		color: "yellow",
 		fontSize: "3rem!important",
-		border: "4px solid black",
+		border: "3px solid black",
 		borderRadius: "100%",
 		position: "absolute",
 		right: "-5rem",

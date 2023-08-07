@@ -57,6 +57,7 @@ const Home = ({ direction }) => {
 				chargers={chargers}
 				searchLocationCoordinates={searchLocationCoordinates}
 				setSearchLocationCoordinates={setSearchLocationCoordinates}
+				setShow={setShow}
 			/>
 		</motion.div>
 	);

@@ -1,7 +1,8 @@
 import { AppBar, Toolbar, Button } from "@mui/material";
-import { Bolt as BoltIcon, ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { Bolt as BoltIcon, ArrowCircleLeftOutlined as ArrowCircleLeftOutlinedIcon } from "@mui/icons-material";
 import { useStyles } from "./style";
 import { motion } from 'framer-motion';
+
 
 const ReduceNavigation = ({ handleOnclickSource, searchCoordinates, handleOnclickDestination, handleOnclickSearchLocation }) => {
     const classes = useStyles();
@@ -34,7 +35,7 @@ const ReduceNavigation = ({ handleOnclickSource, searchCoordinates, handleOnclic
                             : 'Destination'}
                         {searchCoordinates && searchCoordinates.destination.label.length > 26 ? '...' : ''}
                     </Button>
-                    <ArrowBackIcon
+                    <ArrowCircleLeftOutlinedIcon
                         className={classes.arrowBackIcon}
                         onClick={handleOnclickSearchLocation}
                     />

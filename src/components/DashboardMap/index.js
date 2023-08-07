@@ -16,7 +16,7 @@ const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('Chargers');
 
-const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates }) => {
+const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates }) => {
 	const [position, setPosition] = useState(null);
 	console.log(chargers);
 	const [currentchargers, setCurrentchargers] = useState(null);
@@ -96,7 +96,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 				/>
 
 				{
-					show === false && <div>
+					show === false && searchLocationCoordinates.searchlocation.coordinates === null && <div>
 						<LocationMarker setPosition={setPosition} position={position} markerIcon={markerIcon} />
 						{
 							currentchargers && currentchargers.map((ele, index) => {
@@ -176,6 +176,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 					setCurrentLocation={setCurrentLocation}
 					searchLocationCoordinates={searchLocationCoordinates}
 					setSearchLocationCoordinates={setSearchLocationCoordinates}
+					setShow={setShow}
 				/>
 			}
 		</>
