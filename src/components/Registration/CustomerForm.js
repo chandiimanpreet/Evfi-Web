@@ -30,6 +30,7 @@ export default function CustomerForm({ user, data, classes, theme, changeDataHan
     return (
         <>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
+            
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='Name' disabled value={user.Name} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' label='Vehicle Company' type='text' name='VehicleManufacturer' value={data.VehicleManufacturer} />

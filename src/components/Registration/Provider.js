@@ -141,24 +141,26 @@ const Provider = ({ user, setData }) => {
 					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
 				</Box>
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); }} sx={otpStyle.registerBox2}>
-					<Box sx={{ display: 'flex', flexDirection: 'column', }}>
+					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-						<Typography className={classes.headOtp}>EVFI</Typography>
-						<Typography className={classes.register}>Become a Provider</Typography>
+						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
+
+						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.5rem'>Become a Provider</Typography>
 					</Box>
-					<Box sx={{ flexGrow: 1 }}>
-						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-							<Grid item xs={4}>
+
+					<Box>
+						<Grid container spacing={2} sx={{ marginBottom: '7px', marginTop: '0.1px' }}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='text' label='Station Name' name='StationName' value={data.StationName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={3}  >
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={3}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="types">Charger Type</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="types" name='ChargerType' value={data.ChargerType}
@@ -169,24 +171,25 @@ const Provider = ({ user, setData }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={2}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='number' label='Price' name='Price' value={data.Price}
 									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
 							</Grid>
 						</Grid>
+
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-							<Grid item xs={6}>
+							<Grid item xs={12} sm={6} lg={6}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Address' name='Address' value={data.Address}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={2} >
+							<Grid item xs={12} sm={6} lg={2} >
 								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>
-									<Select sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
+									<Select sx={{ color: '#fff' }} labelId="country" name='country' value={data.country}
 										label="Country" onChange={changeDataHandler}
-										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw' } }}
 									>
 										{
 											countriesStateCitiesData.map((item, idx) => (
@@ -196,12 +199,12 @@ const Provider = ({ user, setData }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={2} >
+							<Grid item xs={12} sm={6} lg={2} >
 								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="state">State</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
 										label="State" onChange={changeDataHandler}
-										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
+										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw' } }}
 									>
 										{
 											ownStates !== undefined && ownStates.length > 0 && ownStates.map((item, idx) => (
@@ -211,7 +214,7 @@ const Provider = ({ user, setData }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={2} >
+							<Grid item xs={12} sm={6} lg={2} >
 								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="city">City</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
@@ -227,14 +230,15 @@ const Provider = ({ user, setData }) => {
 								</FormControl>
 							</Grid>
 						</Grid>
+
 						<Grid container spacing={2}>
-							<Grid item xs={3}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode}
 									onInput={(e) => { e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 6) }}
 								/>
 							</Grid>
-							<Grid item xs={3}  >
+							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
 										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={timingHandler1}
@@ -242,7 +246,7 @@ const Provider = ({ user, setData }) => {
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
-							<Grid item xs={3}  >
+							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
 										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={timingHandler2}
@@ -250,17 +254,20 @@ const Provider = ({ user, setData }) => {
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
-							<Grid item xs={3}  >
+							<Grid item xs={12} sm={6} lg={3}>
 								<Button fullWidth required className={classes.setChargerLocationBtn} onClick={handleOpen}
 									name='chargerLocation' value={data.chargerLocation}
 								>
 									{data.chargerLocation && <CheckCircleOutlineIcon sx={{ marginRight: '5px', fontSize: '26px', color: 'green' }} />}
 									{data.chargerLocation === null ? 'Set Charger Location' : 'Location captured'}
 								</Button>
+
 								<Modal required open={open} onClose={handleClose} closeAfterTransition slots={{ backdrop: Backdrop }} slotProps={{ backdrop: { timeout: 500, }, }}>
 									<Fade in={open}>
 										<Box sx={{
-											position: 'absolute', top: '10%', left: '25%', border: '2px solid #000', boxShadow: 24, p: 4,
+											top: '10%',
+											left: { xs: '5%', sm: '10%', md: '15%', lg: '25%', xl: '35%', },
+											boxShadow: 24, p: 4, position: 'absolute',
 										}} className='modalMap'>
 											<ModalMap data={data} setUserData={setUserData} handleClose={handleClose} />
 										</Box>
