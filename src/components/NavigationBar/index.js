@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
@@ -14,7 +14,6 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	const [showPlaceSearching, setShowPlaceSearching] = useState(true);
 	const [showExtendedNavigation, setShowExtendedNavigation] = useState(false);
 	const [showRadiusNavigation, setShowRadiusNavigation] = useState(false);
-
 
 	const onChangeRoute = async (e) => {
 		// if exit searchTimeout
@@ -40,20 +39,23 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 		}, 500);
 	};
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setAnchorEl(null);
-		setShowPlaceSearching(true);
+		setShowPlaceSearching(false);
 		setShowExtendedNavigation(false);
-		setShowRadiusNavigation(false);
-	};
+		setShowRadiusNavigation(true);
+	}, []);
 
 	const handleOnclickSource = (event) => {
 		setAnchorEl(event.currentTarget);
+		setSearchCoordinates({
+			source: { coordinates: null, label: '' },
+			destination: searchLocationCoordinates.searchlocation
+		})
 		setAutofocusedSource(true);
-		setAutofocusedDestination(false);
-
-		setShowPlaceSearching(false);
 		setShowExtendedNavigation(true);
+		setAutofocusedDestination(false);
+		setShowPlaceSearching(false);
 		setShowRadiusNavigation(false);
 	}
 
@@ -78,8 +80,7 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 		})
 	}
 
-
-	const setPolyline = async () => {
+	const setPolyline = useCallback(async () => {
 		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
 			await saveQuery({ start: searchCoordinates.source.coordinates, end: searchCoordinates.destination.coordinates });
 		}
@@ -89,8 +90,16 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 			setShowPlaceSearching(false);
 			setShowExtendedNavigation(false);
 			setShowRadiusNavigation(true);
+
 		}
-	}
+	}, [searchCoordinates, showRoute, handleClose]);
+	useEffect(() => {
+		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
+			setPolyline();
+		}
+	}, [searchCoordinates, setPolyline]);
+
+
 	return (
 		<motion.div>
 			{showPlaceSearching && (
@@ -111,14 +120,11 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 					handleClose={handleClose}
 					distanceData={distanceData}
 					onChangeRoute={onChangeRoute}
-					setPolyline={setPolyline}
 					setSearchCoordinates={setSearchCoordinates}
 					searchCoordinates={searchCoordinates}
 					autofocusedSource={autofocusedSource}
 					autofocusedDestination={autofocusedDestination}
 					setCurrentLocation={setCurrentLocation}
-					searchLocationCoordinates={searchLocationCoordinates}
-					setSearchLocationCoordinates={setSearchLocationCoordinates}
 				/>
 			)}
 			{showRadiusNavigation && (

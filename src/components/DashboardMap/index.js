@@ -132,7 +132,7 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 					</div>
 				}
 
-				{show &&
+				{show && searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates &&
 					<div>
 						<Marker position={[searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]]} icon={markerIcon} draggable={false}>
 						</Marker>
@@ -166,7 +166,7 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 						<Mark cardDetails={card} />
 					)
 				}
-			</MapContainer>
+			</MapContainer >
 			{
 				location.pathname === '/' &&
 				<NavigationBar
