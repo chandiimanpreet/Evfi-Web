@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles({
     cardStyle: {
         maxWidth: '25rem',
-        width: 'fit-content',
         display: 'flex',
         boxShadow: '5px 0 5px 0 rgba(0,0,0,0.5)',
         backdropFilter: "blur(19px) saturate(132%)",

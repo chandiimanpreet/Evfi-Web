@@ -22,7 +22,7 @@ const Request = ({ direction, user, setData, moveToPageIndex }) => {
 				<>
 					<Box className={classes.bodyPage}>
 						<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
-						<Box marginX={8} paddingY={4} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+						<Box marginX={2} paddingY={2} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 							<Box sx={{ display: 'flex', gap: '2rem' }} >
 								<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
 									onClick={() => setShow("pending")}>
@@ -34,12 +34,12 @@ const Request = ({ direction, user, setData, moveToPageIndex }) => {
 								</Link>
 							</Box>
 							<Divider sx={{ backgroundColor: 'antiquewhite' }} />
-							<Grid justifyContent={'center'} container columns={3} gap={2}>
+							<Grid justifyContent={'center'} container gap={2.5}>
 								{show === "pending" ?
 									request.map((ele) => <List key={ele.id} show={show} data={ele} />) :
 									recent.map((ele) => <List key={ele.id} show={show} data={ele} />)
 								}
-							</Grid>
+							</Grid><br /><br />
 						</Box>
 					</Box>
 					<FloatingNavbar moveToPageIndex={moveToPageIndex} />
