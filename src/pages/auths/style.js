@@ -12,35 +12,23 @@ export const useStyles = makeStyles({
         backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)',
     },
     loginCard: {
+        height: '35rem',
+        width: '90vw',
+        maxHeight: '40rem',
+        maxWidth: '22rem',
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
-        backdropFilter: 'blur(50px)',
-        '&::-webkit-backdrop-filter': 'blur(25px)',
+        backdropFilter: 'blur(30px)',
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
     },
-    welcome: {
-        marginLeft: '5rem',
-        fontSize: '2rem',
-        marginTop: '2rem',
-        marginBottom: '2rem'
-    },
-    icon: {
-        marginLeft: '8rem',
-        marginBottom: '2rem'
-    },
-    mbottom: {
-        marginBottom: '0.8rem'
-    },
-    heading: {
-        marginLeft: '4rem',
-        fontSize: '1.5rem',
-        marginBottom: '6rem'
-    },
     sbmtOtp: {
+        marginTop: '0.5rem',
+        padding: '0.5rem',
         backgroundColor: "#282828",
         fontFamily: "Manrope !important",
         fontWeight: '600',
+        fontSize: '1rem',
         width: '100%',
         color: 'white',
         "&:hover": {
@@ -59,43 +47,6 @@ export const useStyles = makeStyles({
     imgStyle: {
         height: '100vh',
         width: '100%'
-    },
-    registerGrid: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: "#FAF9F6",
-        width: "100%"
-    },
-    register: {
-        textAlign: 'center',
-        fontSize: '1.7rem',
-        color: '#fff',
-        fontWeight: '500',
-        marginBottom: '1rem'
-    },
-    skip: {
-        color: '#282828',
-        borderColor: '#282828',
-        alignSelf: 'center',
-        width: '100%'
-    },
-    changeBtn: {
-        color: 'white',
-        border: 'none',
-        fontFamily: 'Manrope !important',
-        "&:hover": {
-            backgroundColor: 'rgba(125, 125, 125, 0.15)',
-            border: 'none'
-        }
-    },
-    newBtn: {
-        color: 'white',
-        fontFamily: 'Manrope !important',
-        borderColor: 'white',
-        "&:disabled": {
-            color: 'white',
-            borderColor: 'white'
-        }
     },
     dividerStyle: {
         color: '#ddd',
@@ -123,19 +74,20 @@ export const useStyles = makeStyles({
         }
     },
     boxBehindImgStyle: {
-        width: '20rem',
-        height: '26rem',
+        maxWidth: '31rem',
+        width: '100%',
         position: 'absolute',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        filter: 'blur(20px)',
     },
     setChargerLocationBtn: {
         backgroundColor: '#282828 !important',
         fontSize: '14px',
         color: '#fff',
         textTransform: 'capitalize',
-        padding: '16.5px 14px',
+        padding: '16px 14px',
         ':hover': {
             backgroundColor: '#000 !important'
         },
@@ -162,13 +114,12 @@ export const useStyles = makeStyles({
         },
     },
 
-
-
     /////////////////////////////////////////   ModalMap Styling    ////////////////////////
     setLocationBtn: {
         position: 'absolute',
-        top: '1rem ',
-        right: '.5rem',
+        bottom: '1rem ',
+        left: '50%',
+        transform: 'translateX(-50%)',
         cursor: 'pointer',
         zIndex: 1500,
         color: '#fff',
@@ -202,68 +153,78 @@ export const useStyles = makeStyles({
 
 export const otpStyle = {
     inputStyle: {
-        width: '30px',
-        height: '2.5rem',
-        borderRadius: '7px',
+        width: '100%',
+        height: '3rem',
         border: '0px',
-        marginLeft: '5px',
-        marginRight: '5px',
+        borderRadius: '7px',
+        margin: '0.3rem',
         backgroundColor: '#ffffff30',
         color: '#fff',
         fontSize: '20px',
     },
-    phoneBox: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        gap: '2rem',
-        paddingX: '4rem',
-        paddingY: '4rem',
-        width: '20rem',
-    },
-    phoneBoxNext: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        gap: '1.5rem',
-        paddingX: '4rem',
-        paddingY: '3rem',
-        width: '20rem',
-    },
     registerBox: {
         maxHeight: "33rem",
         width: '18rem',
-        overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.8rem',
         margin: '1rem',
-        padding: '4%',
+        padding: '2rem',
         boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
         backdropFilter: 'blur(50px) ',
         '&::-webkit-backdrop-filter': 'blur(25px) ',
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        '&::-webkit-scrollbar': {
+            width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#e2b714',
+            borderRadius: '12px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#ffffff26',
+            borderRadius: '12px',
+            marginBlock: '0.2rem',
+        },
     },
     registerBox2: {
-        width: '60vw',
+        height: '86vh',
+        maxHeight: '39rem',
+        width: '80vw',
+        maxWidth: '55rem',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        margin: 'auto',
         gap: '1.1rem',
-        paddingX: '4rem',
-        paddingY: '2rem',
-        boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
-        backdropFilter: 'blur(50px) ',
-        '&::-webkit-backdrop-filter': 'blur(25px) ',
+        padding: '1rem',
+        boxShadow: '0 0 1.5rem 0 rgba(0, 0, 0, 0.75)',
+        backdropFilter: 'blur(40px)',
         backgroundColor: 'rgba(125, 125, 125, 0.15)',
         borderRadius: '12px',
         border: '1px solid rgba(255, 255, 255, 0.125)',
+        overflow: 'auto',
+        '&::-webkit-scrollbar': {
+            width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#e2b714',
+            borderRadius: '12px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#ffffff26',
+            borderRadius: '12px',
+            marginBlock: '0.2rem',
+        },
     },
+
     companylogo: {
-        height: '2.5rem',
-        width: '2.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        width: '3rem',
         margin: '0 auto'
     },
     registerTextfieldStyle: {
@@ -279,24 +240,10 @@ export const otpStyle = {
         }
     },
     getOtpStyle: {
+        width: '100%',
         backgroundColor: '#282828',
         color: 'white',
         fontFamily: 'Manrope !important',
         fontWeight: '600',
-    },
-    availabiltyBoxStyle: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        padding: '1rem 2rem 3rem 0rem',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '55%',
-        width: '50%',
-        borderRadius: '8px',
     },
 } 

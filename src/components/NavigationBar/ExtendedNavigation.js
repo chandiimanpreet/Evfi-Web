@@ -4,17 +4,16 @@ import { Bolt as BoltIcon, SwapHorizontalCircle as SwapHorizontalCircleIcon, Tun
 import { motion } from 'framer-motion';
 import { useStyles } from "./style";
 
-const ExtendedNavigation = ({ anchorEl,
+const ExtendedNavigation = ({
+	anchorEl,
 	handleClose,
 	distanceData,
 	onChangeRoute,
-	setPolyline,
 	setSearchCoordinates,
 	searchCoordinates,
 	autofocusedSource,
 	autofocusedDestination,
 	setCurrentLocation,
-	inputsCleared
 }) => {
 
 	const classes = useStyles();
@@ -89,7 +88,7 @@ const ExtendedNavigation = ({ anchorEl,
 							onChange={(event, newValue) => {
 								if (newValue) {
 									setSearchCoordinates({ ...searchCoordinates, destination: { coordinates: newValue.coordinates, label: newValue.label } })
-									setPolyline()
+
 								}
 							}}
 						/>
@@ -103,5 +102,4 @@ const ExtendedNavigation = ({ anchorEl,
 	)
 }
 export default ExtendedNavigation
-
 

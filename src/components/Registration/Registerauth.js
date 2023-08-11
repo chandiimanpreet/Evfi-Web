@@ -92,11 +92,13 @@ function Registerauth({ addUserData, userData }) {
 				<Box sx={{ position: 'relative' }}>
 					<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
 				</Box>
+
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
 					<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-					<Typography className={classes.headOtp}>EVFI</Typography>
-					<Typography className={classes.register}>Welcome Back</Typography>
 
+					<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
+
+					<Typography color='#fff' textAlign='center' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Welcome Back</Typography>
 					{
 						level === "level1" ? <NameInput data={data} changeDataHandler={changeDataHandler} />
 							:

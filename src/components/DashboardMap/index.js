@@ -16,10 +16,12 @@ const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('Chargers');
 
-const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers }) => {
+const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates }) => {
 	const [position, setPosition] = useState(null);
 	console.log(chargers);
+	const uselocation=useLocation();
 	const [currentchargers, setCurrentchargers] = useState(null);
+	const [currentLocationChargers, setCurrentLocationChargers] = useState(null);
 	console.log(position);
 	const markerIcon = new L.icon({
 		iconUrl: require("./locationmarker.png"),
@@ -35,6 +37,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 		focus: true,
 		draggable: false,
 	});
+
 
 	const setcurrentmarker = useCallback(() => {
 		setCurrentchargers(null);
@@ -54,6 +57,27 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 		}
 		// Call setcurrentmarker only once when the component mounts
 	}, [position, setcurrentmarker]);
+
+	const showSearchLocationChargers = useCallback(() => {
+
+		if (uselocation.pathname==='/' && searchLocationCoordinates.searchlocation.coordinates != null) {
+			setCurrentLocationChargers(null);
+			const query = geocollection.near({ center: new firebase.firestore.GeoPoint(searchLocationCoordinates.searchlocation.coordinates[1], searchLocationCoordinates.searchlocation.coordinates[0]), radius: 100 });
+
+			query.get().then((value) => {
+				setCurrentLocationChargers(value.docs);
+				console.log(value.docs);
+			});
+		}
+	}, [searchLocationCoordinates,uselocation.pathname]);
+
+	useEffect(() => {
+		if (uselocation.pathname==='/' && searchLocationCoordinates.searchlocation.coordinates) {
+			showSearchLocationChargers();
+		}
+		// Call setcurrentmarker only once when the component mounts
+	}, [searchLocationCoordinates, showSearchLocationChargers,uselocation.pathname]);
+
 	const location = useLocation();
 
 	return (
@@ -67,7 +91,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 				/>
 
 				{
-					show === false && <div>
+					show === false && searchLocationCoordinates.searchlocation.coordinates === null && <div>
 						<LocationMarker setPosition={setPosition} position={position} markerIcon={markerIcon} />
 						{
 							currentchargers && currentchargers.map((ele, index) => {
@@ -84,8 +108,26 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 					</div>
 				}
 
+				{
+					show === false && searchLocationCoordinates.searchlocation.coordinates &&
+					<div>
+						<SearchLocationMark cardDetails={{ coordinates: { latitude: searchLocationCoordinates.searchlocation.coordinates[1], longitude: searchLocationCoordinates.searchlocation.coordinates[0] } }} />
+						{
+							currentLocationChargers && currentLocationChargers.map((ele, index) => {
+								return <Marker
+									key={index}
+									position={[
+										ele.data().g.geopoint.latitude,
+										ele.data().g.geopoint.longitude
+									]} icon={greenmarkerIcon} draggable={false}
+								>
+								</Marker>
+							})
+						}
+					</div>
+				}
 
-				{show &&
+				{show && searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates &&
 					<div>
 						<Marker position={[searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]]} icon={markerIcon} draggable={false}>
 						</Marker>
@@ -119,7 +161,7 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 						<Mark cardDetails={card} />
 					)
 				}
-			</MapContainer>
+			</MapContainer >
 			{
 				location.pathname === '/' &&
 				<NavigationBar
@@ -127,6 +169,9 @@ const DashboardMap = ({ searchCoordinates, show, setSearchCoordinates, showRoute
 					searchCoordinates={searchCoordinates}
 					showRoute={showRoute}
 					setCurrentLocation={setCurrentLocation}
+					searchLocationCoordinates={searchLocationCoordinates}
+					setSearchLocationCoordinates={setSearchLocationCoordinates}
+					setShow={setShow}
 				/>
 			}
 		</>
@@ -187,6 +232,37 @@ const Mark = ({ cardDetails }) => {
 		</Marker>
 	);
 }
+
+const SearchLocationMark = ({ cardDetails }) => {
+	const { coordinates } = cardDetails;
+
+	// States
+	const map = useMap();
+	const markerRef = useRef(null);
+	const markerIcon = new L.icon({
+		iconUrl: require("./locationmarker.png"),
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+	});
+	useEffect(() => {
+		if (coordinates !== undefined) {
+			map.flyTo(
+				[coordinates.latitude, coordinates.longitude],
+				13,
+				{ duration: 1 }
+			);
+		}
+	}, [map, coordinates]);
+
+	if (!coordinates) {
+		return null; // Handle case when coordinates are undefined
+	}
+	return (
+		<Marker position={[coordinates.latitude, coordinates.longitude]} icon={markerIcon} ref={markerRef}>
+		</Marker>
+	);
+}
+
 const LocationMarker = ({ setPosition, position, markerIcon }) => {
 
 	const map = useMap();

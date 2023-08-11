@@ -39,6 +39,7 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 	}, [showOtpForm, timer])
 	const changePhoneHandler = () => {
 		setShowOtpForm(false);
+		setotp("");
 		setUtils({ ...util, error: null, enterNumberInactive: false, resendOtpActive: false })
 	};
 
@@ -135,20 +136,24 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 			<div ref={recaptchaWrapperRef}>
 				<div id="recaptcha-container"></div>
 			</div>
-			<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
-			<Box className={classes.loginCard}>
+
+			<img className={classes.boxBehindImgStyle}
+				src='/resources/light.png' alt='' />
+
+			<Box className={classes.loginCard} >
 				{util.error && (
 					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
 				)}
 				{!showOtpForm ?
-					<Grid
-						gap={3}
-						display='flex'
-						flexDirection='column'
-						padding={3.5}
-						textAlign='center'>
-						<img style={otpStyle.companylogo}
-							src='/resources/light.png' alt='' />
+					<Grid 
+					gap={3} 
+					display='flex' 
+					flexDirection='column' 
+					alignContent= 'center'
+					padding= '4rem 2rem'
+					textAlign='center'>
+						<img style={otpStyle.companylogo} 
+						src='/resources/light.png' alt='' />
 
 						<Typography
 							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
@@ -169,16 +174,16 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 							style={{ color: 'white' }}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth} loadingPosition='start'>Get OTP</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth} loadingPosition='start'> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 					</Grid>
 					:
-					<Grid gap={2} display='flex' flexDirection='column' padding={2} textAlign='center'>
+					<Grid gap={2} display='flex' flexDirection='column' padding={2} textAlign='center' >
 
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 
 						<Typography color='#fff' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
-						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Enter OTP Code</Typography>
+						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1rem'>Enter OTP Code</Typography>
 
 						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${userData.phone}`}</Typography>
 
@@ -191,12 +196,12 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 							renderInput={(props) => <input {...props} />}
 							renderSeparator='-' />
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode} loadingPosition='start'>Verifying OTP</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode} loadingPosition='start'> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 
 						<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 							<Typography color='#fff' paddingTop={1.5}>Resend OTP</Typography>
 
-							<Button size='large' disabled={timer > 0} onClick={resendOtp} variant='text' className={classes.disabledBtn} style={{ display: timer > 0 ? 'none' : 'block' }}>Send</Button>
+							<Button size='large' disabled={timer > 0} onClick={resendOtp} variant='text' style={{ display: timer > 0 ? 'none' : 'block', color: 'white' }}>Send</Button>
 
 							<Typography style={{ color: '#aaa', marginTop: '9px', display: timer > 0 ? 'block' : 'none' }}>
 								{timer === 0 ? '' : `00:${(timer / 10) >= 1 ? timer : `0${timer}`}`}

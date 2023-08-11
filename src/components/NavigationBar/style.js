@@ -11,11 +11,29 @@ export const useStyles = makeStyles({
 		width: "46vw!important",
 		left: "calc(50% - 23vw)!important",
 	},
+	searchNavigation: {
+		backgroundColor: "#282828!important",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: "10rem",
+		top: "2.5rem !important",
+		width: "46vw!important",
+		left: "calc(50% - 23vw)!important",
 
+	},
+	searchboltIcon: {
+		color: "yellow",
+		fontSize: "2.5rem!important",
+		border: "2px solid yellow",
+		borderRadius: "100%",
+		position: "absolute",
+		left: "0.5rem"
+	},
 	toolbarstyle: {
 		display: 'flex!important',
-		justifyContent: 'space-around!important',
-		width: "100%!important",
+		justifyContent: 'space-between!important',
+		width: "97%!important",
 		padding: "0.1rem!important",
 	},
 
@@ -37,8 +55,18 @@ export const useStyles = makeStyles({
 		fontSize: "2.5rem!important",
 		border: "2px solid yellow",
 		borderRadius: "100%",
+		position: "absolute",
+		left: '20rem'
 	},
-
+	arrowBackIcon: {
+		color: "yellow",
+		fontSize: "3rem!important",
+		border: "3px solid black",
+		borderRadius: "100%",
+		position: "absolute",
+		right: "-5rem",
+		cursor: 'pointer'
+	},
 	extendnavigationroot: {
 		width: "85vw!important",
 		position: "relative",
@@ -71,7 +99,16 @@ export const useStyles = makeStyles({
 		left: '6rem',
 		zIndex: 1500,
 	},
-
+	directionsIcon: {
+		color: 'yellow',
+		border: '2px solid yellow',
+		position: 'absolute',
+		fontSize: '2.5rem!important',
+		borderRadius: '100%',
+		zIndex: 1500,
+		cursor: 'pointer',
+		left: '40rem',
+	},
 	extendinputroot: {
 		position: 'relative',
 		display: 'flex!important',
@@ -82,6 +119,15 @@ export const useStyles = makeStyles({
 		left: '-0.3rem!important'
 	},
 
+	searchPlaceAutoComplete: {
+		width: '37vw',
+		border: 'none',
+		cursor: 'pointer',
+		padding: ' 0.5rem 0.5rem ',
+		position: 'relative',
+		left: '0.5rem'
+	},
+
 	autocompletestyle: {
 		width: '33vw',
 		border: 'none',
@@ -90,6 +136,7 @@ export const useStyles = makeStyles({
 		position: 'relative',
 
 	},
+
 	swapHorizontalCircleIcon: {
 		color: '#fff',
 		cursor: 'pointer',

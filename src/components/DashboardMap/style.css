@@ -8,8 +8,10 @@
 
 .modalMap .leaflet-container {
 	position: absolute;
-	width: 45vw;
+	width: 70vw;
 	height: 60vh;
+	max-width: 42rem;
+	max-height: 40rem;
 	border-radius: 8px;
 }
 

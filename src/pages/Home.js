@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import DashboardMap from "./../components/DashboardMap";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
@@ -20,21 +20,34 @@ const Home = ({ direction }) => {
 		source: { coordinates: null, label: '' },
 		destination: { coordinates: null, label: '' }
 	})
+	const [searchLocationCoordinates, setSearchLocationCoordinates] = useState({
+		searchlocation: { coordinates: null, label: '' }
+	})
 	console.log(searchCoordinates);
+	console.log(searchLocationCoordinates);
 
-	const showRoute = () => {
+	const showRoute = useCallback(() => {
 		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
 			setChargers(null);
-			const query = geocollection.near({ center: new firebase.firestore.GeoPoint(searchCoordinates.source.coordinates[1], searchCoordinates.source.coordinates[0]), radius: 100 });
-			query.get().then((value) => {
-				setChargers(value.docs);
-				console.log(value.docs);
-			})
-			setShow(true)
-			setShowCurrentLocation(false)
-		}
 
-	}
+			if (searchCoordinates.source.coordinates) {
+				const query = geocollection.near({
+					center: new firebase.firestore.GeoPoint(
+						searchCoordinates.source.coordinates[1],
+						searchCoordinates.source.coordinates[0]
+					),
+					radius: 100
+				});
+				query.get().then((value) => {
+					setChargers(value.docs);
+					console.log(value.docs);
+				});
+				setShow(true);
+				setShowCurrentLocation(false);
+			}
+		}
+	}, [searchCoordinates]);
+
 	const setCurrentLocation = () => {
 		setShow(false);
 		setShowCurrentLocation(true)
@@ -51,7 +64,9 @@ const Home = ({ direction }) => {
 				setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates}
 				setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} card={[null]}
 				chargers={chargers}
-
+				searchLocationCoordinates={searchLocationCoordinates}
+				setSearchLocationCoordinates={setSearchLocationCoordinates}
+				setShow={setShow}
 			/>
 		</motion.div>
 	);
