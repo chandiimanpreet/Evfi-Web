@@ -11,7 +11,7 @@ export default function Protector({ flag, moveToPageIndex }) {
 			<>
 				<Outlet />
 				{
-					location.pathname !== "/register/level2" && location.pathname !== "/register/level1" && location.pathname !== "/requests" &&
+					location.pathname !== "/register/level2" && location.pathname !== "/register/level1" &&
 					<FloatingNavbar moveToPageIndex={moveToPageIndex} />
 				}
 			</>

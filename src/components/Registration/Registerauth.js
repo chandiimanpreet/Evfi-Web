@@ -47,7 +47,7 @@ function Registerauth({ addUserData, userData }) {
 	const [searchParams] = useSearchParams();
 	const classes = useStyles();
 	const theme = useTheme();
-	const [data, setUserData] = useState({ Name: userData.Name, VehicleManufacturer: "", ChargingRequirements: "", VehicleNumber: '', idImageURL: null });
+	const [data, setUserData] = useState({ Name: userData.Name, VehicleManufacturer: "", ChargingRequirements: "", VehicleNumber: '', idImageURL: null ,mileage:'',batteryCapacity:''});
 	const [image, setImage] = useState(null);
 	const [idType, setIdType] = useState('');
 	const handleChange = (event) => {

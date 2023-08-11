@@ -25,11 +25,15 @@ const addUserData = (data) => ({
   type: 'ADD_USER_DATA',
   payload: data
 })
-const login=()=>({
-  type:'LOGIN_USER'
+const login = () => ({
+  type: 'LOGIN_USER'
 })
-const setPhoneNo=(number)=>({
-  type:'SET_PHONE',
-  payload:number
+const setPhoneNo = (number) => ({
+  type: 'SET_PHONE',
+  payload: number
 })
-export { setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData ,login,setPhoneNo};
+const addChargerAction = (res) => ({
+  type: 'ADD_CHARGER',
+  payload: res
+})
+export { setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction };

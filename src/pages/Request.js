@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 import Provider from '../components/Registration/Provider';
-import FloatingNavbar from '../components/FloatingNavbar';
 
 const Request = ({ direction, user, moveToPageIndex }) => {
 	const [show, setShow] = useState("pending");
@@ -18,7 +17,7 @@ const Request = ({ direction, user, moveToPageIndex }) => {
 			animate={{ x: 0 }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
-			{user.isProvider === false ? <Provider/> :
+			{user.level3 === false ? <Provider/> :
 				<>
 					<Box className={classes.bodyPage}>
 						<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
@@ -42,7 +41,6 @@ const Request = ({ direction, user, moveToPageIndex }) => {
 							</Grid>
 						</Box>
 					</Box>
-					<FloatingNavbar moveToPageIndex={moveToPageIndex} />
 				</>
 			}
 		</motion.div>

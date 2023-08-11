@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
 import { saveQuery } from '../../utils/queries/searchQueries';
@@ -20,8 +19,12 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 		const url = 'https://nominatim.openstreetmap.org/search?format=geojson&limit=5&q';
 		searchTimeoutRef.current = setTimeout(async () => {
 			try {
-				const response = await axios.get(`${url}=${encodeURI(e.target.value)}`);
-				let results = response.data.features.map((ele) => ({
+				const response = await fetch(`${url}=${encodeURI(e.target.value)}`);
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				const responseData = await response.json();
+				const results = responseData.features.map((ele) => ({
 					coordinates: ele.geometry.coordinates,
 					label: ele.properties.display_name
 				}));

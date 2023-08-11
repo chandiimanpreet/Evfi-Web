@@ -1,6 +1,6 @@
 const initialState = {
     user: null,
-    chargers: null,
+    chargers: [],
     phone: ''
 }
 
@@ -17,11 +17,15 @@ const userReducer = (state = initialState, action) => {
             }
         case 'CLEAR_USER':
             return {
-                user: null, chargers: null, phone: ''
+                user: null, chargers: [], phone: ''
             }
         case 'SET_PHONE':
             return {
                 ...state, phone: action.payload
+            }
+        case 'ADD_CHARGER':
+            return {
+                ...state,user:{...state.user,level3:true}
             }
         default:
             return state
