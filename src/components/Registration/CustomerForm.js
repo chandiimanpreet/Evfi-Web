@@ -1,4 +1,4 @@
-import React, { useState } from 'react' 
+import React, { useState } from 'react'
 import { otpStyle } from '../../pages/auths/style';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -38,7 +38,8 @@ export default function CustomerForm({ user, data, classes, theme, changeDataHan
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='VehicleNumber' value={data.VehicleNumber} />
-
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Battery Capacity(kWh)' name='batterycapacity' value={data.batterycapacity} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Mileage' name='mileage' value={data.mileage} />
             <div>
                 <FormControl sx={{ width: '100%' }}>
                     <InputLabel sx={{

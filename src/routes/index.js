@@ -11,11 +11,9 @@ import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
 import Page404 from '../pages/Page404';
-import { getUser } from '../utils/auth/user';
-import { signOut, getAuth } from 'firebase/auth';
-import { initializeApp } from 'firebase/app'
-import firebaseConfig from '../utils/config/firebaseConfig';
 import { getCountryCode } from '../utils/timezone/index';
+import { loadUser } from '../actions/index'
+import { connect } from 'react-redux';
 
 const getPageIndex = (path) => {
     switch (path) {
@@ -27,45 +25,11 @@ const getPageIndex = (path) => {
     }
 }
 
-const AnimatedRoutes = () => {
-    const app = initializeApp(firebaseConfig)
-    const auth = getAuth(app);
+const AnimatedRoutes = ({ userData, loadingData, loadUser }) => {
     const location = useLocation();
     const currentPageIndex = useRef(getPageIndex(location.pathname));
-    const [country,setCountry]=useState(null);
-    const [user, setData] = useState({ "loading": true, "flag": false });
-    const [phone, setPhone] = useState("");
+    const [country, setCountry] = useState(null);
     const [motionDirection, setMotionDirection] = useState("100vw");
-
-    const logout = async () => {
-        try {
-            await signOut(auth);
-            setData({ "loading": true, "flag": false });
-            setPhone("")
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-
-    const saveUserData = (data) => {
-        setData({ ...user, ...data });
-    }
-
-    const getUserData = async () => {
-        setCountry(getCountryCode());
-        try {
-            const res = await getUser();
-            if (res.user) {
-                setData({ "loading": false, "flag": true, ...res.user });
-            } else {
-                setData({ "loading": false, "flag": false });
-            }
-        } catch (error) {
-            console.log(error.message);
-            setData({ "loading": false, "flag": false });
-            return;
-        }
-    }
 
     const moveToPageIndex = async (index) => {
         setMotionDirection(index > currentPageIndex.current ? "100vw" : "-100vw");
@@ -75,31 +39,33 @@ const AnimatedRoutes = () => {
     // 1 for right movement
     // -1 for left movement
     useEffect(() => {
-        if (user.loading) {
-            getUserData();
-        }
-    }, [user.loading]);
-    // <Route path="/" element={<Home direction={currentDirection} />} />
-
+        setCountry(getCountryCode());
+        loadUser();
+    }, [loadUser])
     return (
-        user.loading ?
+        loadingData.loading ?
 
             <CircularProgress sx={{ ml: '45rem', mt: '20rem' }} /> :
 
             <AnimatePresence initial={false}>
                 <Routes location={location} key={location.pathname}>
-                    <Route element={<Protector flag={user.flag} moveToPageIndex={moveToPageIndex} />} >
+                    <Route element={<Protector flag={userData.user === null || userData.user.level1 === false} moveToPageIndex={moveToPageIndex} />} >
                         <Route path="/" element={<Home direction={motionDirection} />} />
-                        <Route path="previousBooking" element={<PreviousBooking direction={motionDirection} user={user} />} />
-                        <Route path="requests" element={<Request moveToPageIndex={moveToPageIndex} setData={saveUserData} user={user} direction={motionDirection} />} />
-                        <Route path="profile" element={<Profile direction={motionDirection} logout={logout} />} />
+                        <Route path="previousBooking" element={<PreviousBooking direction={motionDirection} user={userData.user} />} />
+                        <Route path="requests" element={<Request moveToPageIndex={moveToPageIndex} user={userData.user} direction={motionDirection} />} />
+                        <Route path="profile" element={<Profile direction={motionDirection} />} />
                     </Route>
-                    <Route path='auth' element={<Phoneauth country={country} setNumber={setPhone} flag={user.flag} phone={phone} setData={saveUserData} />} />
-                    <Route path='register/:level' element={<Registerauth user={user} setData={saveUserData} />} />
+                    <Route path='register/:level' element={<Registerauth />} />
+                    <Route path='auth' element={<Phoneauth country={country} />} />
                     <Route path='*' element={<Page404 />} />
                 </Routes>
             </AnimatePresence>
     )
 }
-
-export default AnimatedRoutes;
+const mapStateToProps = state => ({
+    userData: state.userData, loadingData: state.loading
+})
+const mapDispatchFromProps = dispatch => ({
+    loadUser: () => dispatch(loadUser()),
+})
+export default connect(mapStateToProps, mapDispatchFromProps)(AnimatedRoutes);

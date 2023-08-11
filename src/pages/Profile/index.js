@@ -14,8 +14,10 @@ import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceW
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { logout } from "../../actions";
+import { connect } from "react-redux";
 
-const Profile = ({ logout, direction }) => {
+const Profile = ({ direction, logoutUser }) => {
 
     //States
     const [activeTab, setActiveTab] = useState("My Profile");
@@ -29,7 +31,7 @@ const Profile = ({ logout, direction }) => {
     };
 
     const handleLogout = () => {
-        logout();
+        logoutUser();
     };
 
     return (
@@ -90,5 +92,7 @@ const Profile = ({ logout, direction }) => {
         </motion.Box>
     );
 };
-
-export default Profile;
+const mapDispatchFromProps = dispatch => ({
+    logoutUser: () => dispatch(logout())
+})
+export default connect(null, mapDispatchFromProps)(Profile);

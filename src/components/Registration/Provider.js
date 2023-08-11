@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import {
-	FormControl, MenuItem, InputLabel, Select, Box, TextField, Button, Divider, Typography, Grid,
+	FormControl, MenuItem, InputLabel, Select, Box, TextField, Button, Typography, Grid,
 	Chip, Fade, Modal, Backdrop
 } from '@mui/material';
 import { useStyles, otpStyle } from '../../pages/auths/style';
-import { registerUser } from '../../utils/auth/user';
+import { addCharger} from '../../utils/auth/user';
 import ModalMap from './ModalMap';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../../utils/config/firebaseConfig';
-import countriesStateCitiesData from '../../utils/timezone/countriesStateCitiesData';
+import {countriesStateCitiesData} from '../../utils/timezone/countriesStateCitiesData';
+import { connect } from 'react-redux';
+import { addChargerAction,addUserData,setError } from '../../actions';
 
-const app = initializeApp(firebaseConfig)
-const storage = getStorage(app);
-
-const Provider = ({ user, setData }) => {
+const Provider = ({  userData,addChargerAction,setError }) => {
 
 	// States
 	const [open, setOpen] = useState(false);
@@ -95,43 +91,18 @@ const Provider = ({ user, setData }) => {
 	};
 
 	const saveData = async () => {
-
-		if (data.StationName !== "" && data.Address !== "" && data.country !== "" && data.state !== "" &&
-			data.city !== "" && data.pinCode !== "" && data.Price !== "" && data.HostName !== "" &&
-			data.chargerLocation !== null && data.openingTime !== null && data.openingTime !== null &&
-			data.ChargerType !== undefined) {
-
-			setShow("Uploading images...")
-
-			const chargersImageURL = [];
-
-			for (const img of chargerArea) {
-				const chargersImageRef = ref(storage, `chargers/${user.uid}/${img.name}`);
-				const uploadResult = await uploadBytes(chargersImageRef, img);
-				chargersImageURL.push(await getDownloadURL(uploadResult.ref));
-			}
-
-			const aadharImagesUrl = [];
-
-			for (const img of aadhaarCard) {
-				const aadharImageRef = ref(storage, `id_proofs/${img.name + user.uid}`);
-				const uploadResult = await uploadBytes(aadharImageRef, img);
-				aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
-			}
-
+		if (data.chargerLocation !== null && data.openingTime !== null && data.openingTime !== null) {
 			setShow("Uploading Data...")
-
-			const temp = await registerUser({ ...data, isProvider: true, aadharImagesUrl, chargersImageURL })
-
-			if (temp.error) {
-				console.log(temp.error);
+			try {
+				const res = await addCharger(data, chargerArea, aadhaarCard);
+				addChargerAction(res.chargerId);
+			} catch (error) {
+				setError(error.msg);
 			}
-			setShow("Almost Done")
-			setData({ ...user, ...data, isProvider: true, aadharImagesUrl, chargersImageURL });
 		}
 	};
 
-	if (user.isProvider) {
+	if (userData.level3) {
 		return <Navigate to={'/requests'} />
 	}
 	else {
@@ -140,8 +111,8 @@ const Provider = ({ user, setData }) => {
 				<Box sx={{ position: 'relative' }}>
 					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
 				</Box>
-				<Box component='form' onSubmit={(e) => { e.preventDefault(); }} sx={otpStyle.registerBox2}>
-					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
+				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
+					<Box sx={{ display: 'flex', flexDirection: 'column', }}>
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
@@ -160,10 +131,10 @@ const Provider = ({ user, setData }) => {
 									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3}>
-								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={3}>
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="types">Charger Type</InputLabel>
-									<Select sx={{ color: '#fff', }} labelId="types" name='ChargerType' value={data.ChargerType}
+									<Select required sx={{ color: '#fff', }} labelId="types" name='ChargerType' value={data.ChargerType}
 										label="Charger Type" onChange={changeDataHandler} multiple >
 										<MenuItem value={'a'}>Type A</MenuItem>
 										<MenuItem value={'b'}>Type B</MenuItem>
@@ -184,10 +155,10 @@ const Provider = ({ user, setData }) => {
 									variant='outlined' type='text' label='Address' name='Address' value={data.Address}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={12} sm={6} lg={2} >
-								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={2} >
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>
-									<Select sx={{ color: '#fff' }} labelId="country" name='country' value={data.country}
+									<Select required sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
 										label="Country" onChange={changeDataHandler}
 										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw' } }}
 									>
@@ -199,10 +170,10 @@ const Provider = ({ user, setData }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={2} >
-								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={2} >
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="state">State</InputLabel>
-									<Select sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
+									<Select required sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
 										label="State" onChange={changeDataHandler}
 										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw' } }}
 									>
@@ -214,10 +185,10 @@ const Provider = ({ user, setData }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={2} >
-								<FormControl required fullWidth sx={otpStyle.registerTextfieldStyle}>
+							<Grid item xs={2} >
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="city">City</InputLabel>
-									<Select sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
+									<Select required sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
 										label="City" onChange={changeDataHandler}
 										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
 									>
@@ -278,11 +249,11 @@ const Provider = ({ user, setData }) => {
 						<Grid container spacing={1}>
 							<Grid item xs={12} >
 								<div style={{ display: 'flex', columnGap: '12px' }}>
-									<input required multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
+									<input name='idProof' multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
 										type="file"
 									/>
 									<label htmlFor="raised-button-file">
-										<Button required variant="raised" component="span" className={classes.upLoadBtns} >
+										<Button variant="raised" component="span" className={classes.upLoadBtns} >
 											Upload Aadhaar Card
 										</Button>
 									</label>
@@ -301,11 +272,11 @@ const Provider = ({ user, setData }) => {
 						<Grid container spacing={1}>
 							<Grid item xs={12} >
 								<div style={{ display: 'flex', columnGap: '12px' }}>
-									<input required multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
+									<input name='chargerArea' multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
 										type="file"
 									/>
 									<label htmlFor="button-file">
-										<Button required variant="raised" component="span" className={classes.upLoadBtns} >
+										<Button variant="raised" component="span" className={classes.upLoadBtns} >
 											Upload Charger Area Image
 										</Button>
 									</label>
@@ -322,15 +293,18 @@ const Provider = ({ user, setData }) => {
 							</Grid>
 						</Grid>
 					</Box>
-					<Button onClick={saveData} sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
-
-					<Divider className={classes.dividerStyle}>or</Divider>
-					<Link to={"/"} style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontWeight: '500', }}>
-						Skip for later
-					</Link>
+					<Button sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
 				</Box>
 			</Box >
 		)
 	}
 }
-export default Provider;
+const mapStateToProps = state => ({
+	userData: state.userData.user
+})
+const mapDispatchFromprops = dispatch => ({
+	addUserData: (data) => dispatch(addUserData(data)),
+	addChargerAction: (id) => dispatch(addChargerAction(id)),
+	setError: (error) => dispatch(setError(error))
+})
+export default connect(mapStateToProps, mapDispatchFromprops)(Provider);

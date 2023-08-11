@@ -19,6 +19,7 @@ const geocollection = GeoFirestore.collection('Chargers');
 const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates }) => {
 	const [position, setPosition] = useState(null);
 	console.log(chargers);
+	const uselocation=useLocation();
 	const [currentchargers, setCurrentchargers] = useState(null);
 	const [currentLocationChargers, setCurrentLocationChargers] = useState(null);
 	console.log(position);
@@ -59,7 +60,7 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 
 	const showSearchLocationChargers = useCallback(() => {
 
-		if (searchLocationCoordinates.searchlocation.coordinates != null) {
+		if (uselocation.pathname==='/' && searchLocationCoordinates.searchlocation.coordinates != null) {
 			setCurrentLocationChargers(null);
 			const query = geocollection.near({ center: new firebase.firestore.GeoPoint(searchLocationCoordinates.searchlocation.coordinates[1], searchLocationCoordinates.searchlocation.coordinates[0]), radius: 100 });
 
@@ -68,20 +69,14 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 				console.log(value.docs);
 			});
 		}
-	}, [searchLocationCoordinates.searchlocation.coordinates]);
+	}, [searchLocationCoordinates,uselocation.pathname]);
 
 	useEffect(() => {
-		if (searchLocationCoordinates.searchlocation.coordinates) {
+		if (uselocation.pathname==='/' && searchLocationCoordinates.searchlocation.coordinates) {
 			showSearchLocationChargers();
 		}
 		// Call setcurrentmarker only once when the component mounts
-	}, [searchLocationCoordinates.searchlocation.coordinates, showSearchLocationChargers]);
-
-
-
-	if (searchLocationCoordinates.searchlocation.coordinates != null) {
-		console.log([searchLocationCoordinates.searchlocation.coordinates[1], searchLocationCoordinates.searchlocation.coordinates[0]]);
-	}
+	}, [searchLocationCoordinates, showSearchLocationChargers,uselocation.pathname]);
 
 	const location = useLocation();
 

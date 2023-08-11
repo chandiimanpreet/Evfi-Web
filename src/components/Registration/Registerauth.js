@@ -9,6 +9,8 @@ import NameInput from './NameInput';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../utils/config/firebaseConfig';
+import { addUserData } from '../../actions';
+import { connect } from 'react-redux';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -38,15 +40,14 @@ function getStyles(name, personName, theme) {
 	};
 }
 
-export default function Registerauth({ setData, user }) {
-
+function Registerauth({ addUserData, userData }) {
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
 	const classes = useStyles();
 	const theme = useTheme();
-	const [data, setUserData] = useState({ Name: user.Name, VehicleManufacturer: "", ChargingRequirements: "", VehicleNumber: '', idImageURL: null });
+	const [data, setUserData] = useState({ Name: userData.Name, VehicleManufacturer: "", ChargingRequirements: "", VehicleNumber: '', idImageURL: null ,mileage:'',batteryCapacity:''});
 	const [image, setImage] = useState(null);
 	const [idType, setIdType] = useState('');
 	const handleChange = (event) => {
@@ -59,10 +60,9 @@ export default function Registerauth({ setData, user }) {
 		setUserData({ ...data, [e.target.name]: e.target.value })
 	}
 	const saveData = async () => {
-		if (!user.level1) {
+		if (!userData.level1) {
 			await registerUser({ Name: data.Name, level1: true });
-			setData({ ...user, Name: data.Name, level1: true });
-
+			addUserData({ Name: data.Name, level1: true });
 		} else {
 			let downloadURL = null;
 			if (image !== null) {
@@ -74,13 +74,16 @@ export default function Registerauth({ setData, user }) {
 			if (temp.error) {
 				console.log(temp.error);
 			}
-			setData({ ...data, ...user, level2: true, idImageURL: downloadURL });
+			addUserData({ ...data, idImageURL: downloadURL, level2: true })
 		}
 	}
-	if (level === "level1" && user.level1) {
+	if(!userData){
+		return <Navigate to={'/auth'}/>
+	}
+	else if (level === "level1" && userData.level1) {
 		return <Navigate to={'/'} />
 	}
-	else if (level === "level2" && user.level2) {
+	else if (level === "level2" && userData.level2) {
 		return <Navigate to={`/${searchParams.has("redirectTo") ? searchParams.get("redirectTo") : ""}`} />
 	}
 	else {
@@ -99,11 +102,18 @@ export default function Registerauth({ setData, user }) {
 					{
 						level === "level1" ? <NameInput data={data} changeDataHandler={changeDataHandler} />
 							:
-							level === "level2" ? <CustomerForm user={user} data={data} getStyles={getStyles} classes={classes} theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps} names={names} image={image} setImage={setImage} handleChange={handleChange} />
-								: <Navigate to={'/404'} />
-					}
+							level==="level2"?<CustomerForm user={userData} data={data} getStyles={getStyles} classes={classes} theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps} names={names} image={image} setImage={setImage} handleChange={handleChange} />
+							:<Navigate to='/404'/>
+						}
 				</Box>
 			</Box>
 		)
 	}
 }
+const mapStateToProps = state => ({
+	userData: state.userData.user
+})
+const mapDispatchFromprops = dispatch => ({
+	addUserData: (data) => dispatch(addUserData(data))
+})
+export default connect(mapStateToProps, mapDispatchFromprops)(Registerauth);
