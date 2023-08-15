@@ -6,9 +6,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 import Provider from '../components/Registration/Provider';
+import Navbar from '../components/Navbar';
 
-const Request = ({ direction, user, moveToPageIndex }) => {
+const Request = ({ direction, user, setData, moveToPageIndex }) => {
+
+	// States
 	const [show, setShow] = useState("pending");
+
+	// Styles
 	const classes = useStyles();
 
 	return (
@@ -41,6 +46,7 @@ const Request = ({ direction, user, moveToPageIndex }) => {
 							</Grid><br /><br />
 						</Box>
 					</Box>
+					<Navbar moveToPageIndex={moveToPageIndex} />
 				</>
 			}
 		</motion.div>

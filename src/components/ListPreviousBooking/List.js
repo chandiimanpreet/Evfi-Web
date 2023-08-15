@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment, } from 'react';
+import React, { useState, Fragment, useEffect, useCallback } from 'react';
 import ListItem from './ListItem';
 import FilterGroup from '../Filters/FilterGroup';
 import { chargerTypeOptions, sortByOptions } from '../../constants';
@@ -14,17 +14,17 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
 
-const List = ({ searchedData, collectCardData ,user}) => {
+const List = ({ searchedData, collectCardData, user }) => {
 
 	//States
 	const [showFilter, setShowFilter] = useState(false);
+	const [cardData, setCardData] = useState('');
 	const [selectedFilters, setSelectedFilters] = useState({
 		chargerType: [],
 		sortBy: '',
 		from: null,
 		to: null,
 	});
-	const [cardData, setCardData] = useState('');
 
 	//Styling
 	const classes = useStyles();
@@ -47,15 +47,14 @@ const List = ({ searchedData, collectCardData ,user}) => {
 		}))
 	};
 
-	const handleCardData = (result) => { 
-		console.log("clicked");	
-		setCardData(result); 
-	};
+	const handleCardData = useCallback((result) => {
+		console.log("clicked");
+		setCardData(result);
+	}, [setCardData]);
 
 	useEffect(() => {
 		collectCardData(cardData);
-		// eslint-disable-next-line
-	}, [cardData]);
+	}, [cardData, collectCardData]);
 
 	return (
 		<Fragment>
@@ -125,7 +124,7 @@ const List = ({ searchedData, collectCardData ,user}) => {
 
 					<Box className={classes.searchResultsContainer}>
 						{searchedData.map((result) => (
-							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }}  key={result.id}>
+							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} key={result.id}>
 								<ListItem user={user} result={result} />
 							</Box>
 						))}

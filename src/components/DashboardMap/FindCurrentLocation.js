@@ -4,12 +4,14 @@ import "./style.css";
 import { Icon } from 'leaflet'
 
 const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
-    const [position, setPosition] = useState(null);
+
     const map = useMap();
+    
+    // States
+    const [position, setPosition] = useState(null);
 
     useEffect(() => {
         map.locate({
-            // setView: true,
             enableHighAccuracy: true,
         }).on("locationfound", function (e) {
 
@@ -28,11 +30,13 @@ const FindCurrentLocation = ({ setSearchCoordinates, searchCoordinates }) => {
             map.flyTo(e.latlng, map.getZoom());
         });
     }, [map, searchCoordinates, setSearchCoordinates]);
-    console.log(position);
 
     return (
         position === null ? null : (
-            <Marker position={position} icon={new Icon({ iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png', iconSize: [25, 41], iconAnchor: [12, 41] })}>
+            <Marker position={position} icon={new Icon({
+                iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+                iconSize: [25, 41], iconAnchor: [12, 41]
+            })}>
             </Marker>
         )
     )

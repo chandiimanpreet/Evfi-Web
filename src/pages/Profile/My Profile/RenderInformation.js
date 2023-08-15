@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, TextField } from "@mui/material";
 import useStyles from "./styles";
 
-export default function RenderInformation({ field, label, value, isEditing, handleChange, }) {
+const RenderInformation = ({ field, label, value, isEditing, handleChange, }) => {
 
     //Styles
     const classes = useStyles();
@@ -15,3 +15,5 @@ export default function RenderInformation({ field, label, value, isEditing, hand
         </Grid>
     );
 }
+
+export default RenderInformation;

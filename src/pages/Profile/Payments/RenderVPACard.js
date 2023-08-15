@@ -29,7 +29,9 @@ const SaveVPACard = () => {
     };
 
     const handleSaveUpiId = () => {
+
         const { upiIdValue, nameValue } = paymentData;
+        
         if (!upiIdValue.includes("@")) {
             setPaymentData((prevState) => ({
                 ...prevState,

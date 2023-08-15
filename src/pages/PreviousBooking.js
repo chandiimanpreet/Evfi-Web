@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { Box, } from "@mui/material";
 import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
-import searchedData from '../components/ListPreviousBooking/searchedData';
+import searchedData from '../utils/searchedData';
 
 const PreviousBooking = ({ direction, user }) => {
+
+	// States
 	const [newCard, setNewCard] = useState('');
+
+	// Handlers
 	const getData = (data) => {
 		setNewCard(data);
 	};
+
+	useEffect(() => {
+		console.log(user)
+	},[user])
 
 	return (
 		<motion.div key="pb"

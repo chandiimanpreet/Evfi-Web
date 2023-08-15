@@ -3,7 +3,7 @@ import { Box, Card, CardMedia, Chip, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './style';
 
-export default function List({ data, show }) {
+const List = ({ data, show }) => {
     //Styles
     const classes = useStyles();
 
@@ -12,8 +12,7 @@ export default function List({ data, show }) {
             <Card className={classes.cardStyle}>
                 <Box display='flex' flexDirection='row' padding={0.9}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <CardMedia
-                            component="img"
+                        <CardMedia component="img"
                             sx={{
                                 width: { xs: '5rem', md: '10rem', lg: '10rem' },
                                 height: { xs: '5rem', md: '10rem', lg: '10rem' },
@@ -37,17 +36,14 @@ export default function List({ data, show }) {
                         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                             {show === "pending" ? (
                                 <Box className={classes.buttons}>
-                                    <Chip
-                                        className={classes.chipGreen}
-                                        label="Accept"
-                                        onClick={() => console.log("accepted")}
+                                    <Chip className={classes.chipGreen}
+                                        label="Accept" onClick={() => console.log("accepted")}
                                         icon={<Done style={{ color: 'white' }} />}
                                         size='small'
                                     />
                                     <Chip
                                         className={classes.chipRed}
-                                        label="Decline"
-                                        onClick={() => console.log("declined")}
+                                        label="Decline" onClick={() => console.log("declined")}
                                         icon={<Close style={{ color: 'white' }} />}
                                         size='small'
                                     />
@@ -73,3 +69,5 @@ export default function List({ data, show }) {
         </Box>
     );
 }
+
+export default List;

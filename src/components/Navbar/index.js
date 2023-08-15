@@ -4,6 +4,8 @@ import { Restore, AccountCircle, Home, EvStation } from "@mui/icons-material";
 import { useStyles } from "./style";
 
 const FloatingNavbar = ({ moveToPageIndex }) => {
+
+	// Styles
 	const classes = useStyles();
 
 	const styles = ({ isActive }) => {
@@ -25,8 +27,8 @@ const FloatingNavbar = ({ moveToPageIndex }) => {
 			<Tooltip title="History" placement="top" arrow><NavLink style={styles}
 				onClick={() => moveToPageIndex(1)} to='/previousBooking'><Restore /></NavLink>
 			</Tooltip>
-			<Tooltip title="Booking Requests" placement="top" arrow><NavLink style={styles}
-				onClick={() => moveToPageIndex(2)} to='/requests'> <EvStation /> </NavLink>
+			<Tooltip title="Chargers List" placement="top" arrow><NavLink style={styles}
+				onClick={() => moveToPageIndex(2)} to='/requests'> <EvStation sx={{ mx: 4 }} /> </NavLink>
 			</Tooltip>
 			<Tooltip title="Profile" placement="top" arrow><NavLink style={styles}
 				onClick={() => moveToPageIndex(3)} to='/profile'><AccountCircle /></NavLink>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { Typography } from '@mui/material';
 
-const MyChargers = () => {
+const MyChargers = ({user}) => {
   return (
-    <div>
-      <h1>My Chargers</h1>
-    </div>
+    <Fragment>
+      <Typography variant='h4' sx={{ color: '#fff',}}>My Chargers</Typography>
+    </Fragment>
   );
 };
 

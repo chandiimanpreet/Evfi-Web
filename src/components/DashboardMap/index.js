@@ -1,28 +1,38 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, Fragment } from 'react';
 import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet";
-import { Typography, Box, } from '@mui/material';
+import { Typography, Box, Chip, Button } from '@mui/material';
+import { CurrencyRupee } from '@mui/icons-material';
 import Ratings from '../../components/Rating';
 import RoutingMachine from "./RoutingMachine";
 import L from 'leaflet';
-import NavigationBar from "../NavigationBar";
+import SearchBar from "../SearchBar";
 import FindCurrentLocation from "./FindCurrentLocation";
 import { useLocation } from "react-router";
 import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
 import firebaseConfig from "../../utils/config/firebaseConfig";
+import { useNavigate } from 'react-router-dom';
+
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
-const geocollection = GeoFirestore.collection('Chargers');
+const geocollection = GeoFirestore.collection('chargers');
 
-const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation, setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates }) => {
+const DashboardMap = ({
+	searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
+	setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates, user }) => {
+
+	// Constants
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	// States
 	const [position, setPosition] = useState(null);
-	console.log(chargers);
-	const uselocation=useLocation();
+	const uselocation = useLocation();
 	const [currentchargers, setCurrentchargers] = useState(null);
 	const [currentLocationChargers, setCurrentLocationChargers] = useState(null);
-	console.log(position);
+
 	const markerIcon = new L.icon({
 		iconUrl: require("./locationmarker.png"),
 		iconSize: [25, 41],
@@ -30,26 +40,39 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 		focus: true,
 		draggable: false,
 	});
+
 	const greenmarkerIcon = new L.icon({
 		iconUrl: require("./GreenMarker.png"),
 		iconSize: [100, 100],
 		iconAnchor: [12, 41],
+		popupAnchor: [41, -31],
 		focus: true,
 		draggable: false,
 	});
 
+	// Handlers
+	const bookingHandler = () => {
+		if (!user.level2) {
+			navigate('/register/level2?redirectTo=Home');
+		}
+	};
 
 	const setcurrentmarker = useCallback(() => {
 		setCurrentchargers(null);
-		const query = geocollection.near({ center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 100 });
+		const query = geocollection.near({
+			center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 100
+		});
 
 		query.get().then((value) => {
 			setCurrentchargers(value.docs);
 			console.log(value.docs);
 		});
-
 	}, [position]);
-	console.log(currentchargers)
+
+	useEffect(() => {
+		console.log(currentLocationChargers)
+		console.log(chargers)
+	},[currentLocationChargers, chargers])
 
 	useEffect(() => {
 		if (position) {
@@ -60,30 +83,33 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 
 	const showSearchLocationChargers = useCallback(() => {
 
-		if (uselocation.pathname==='/' && searchLocationCoordinates.searchlocation.coordinates != null) {
+		if (uselocation.pathname === '/' && searchLocationCoordinates.searchlocation.coordinates != null) {
 			setCurrentLocationChargers(null);
-			const query = geocollection.near({ center: new firebase.firestore.GeoPoint(searchLocationCoordinates.searchlocation.coordinates[1], searchLocationCoordinates.searchlocation.coordinates[0]), radius: 100 });
+
+			const query = geocollection.near({
+				center: new firebase.firestore.GeoPoint(
+					searchLocationCoordinates.searchlocation.coordinates[1],
+					searchLocationCoordinates.searchlocation.coordinates[0]),
+				radius: 100
+			});
 
 			query.get().then((value) => {
 				setCurrentLocationChargers(value.docs);
 				console.log(value.docs);
 			});
 		}
-	}, [searchLocationCoordinates,uselocation.pathname]);
+	}, [searchLocationCoordinates, uselocation.pathname]);
 
 	useEffect(() => {
-		if (uselocation.pathname==='/' && searchLocationCoordinates.searchlocation.coordinates) {
+		if (uselocation.pathname === '/' && searchLocationCoordinates.searchlocation.coordinates) {
 			showSearchLocationChargers();
 		}
 		// Call setcurrentmarker only once when the component mounts
-	}, [searchLocationCoordinates, showSearchLocationChargers,uselocation.pathname]);
-
-	const location = useLocation();
+	}, [searchLocationCoordinates, showSearchLocationChargers, uselocation.pathname]);
 
 	return (
-		<>
-			<MapContainer center={[29.9695, 76.8783]}
-				zoom={13} scrollWheelZoom={false} minZoom={2}
+		<Fragment>
+			<MapContainer center={[29.9695, 76.8783]} zoom={13} scrollWheelZoom={true} minZoom={2}
 				maxZoom={18} >
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -91,21 +117,63 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 				/>
 
 				{
-					show === false && searchLocationCoordinates.searchlocation.coordinates === null && <div>
-						<LocationMarker setPosition={setPosition} position={position} markerIcon={markerIcon} />
-						{
-							currentchargers && currentchargers.map((ele, index) => {
-								return <Marker
-									key={index}
-									position={[
-										ele.data().g.geopoint.latitude,
-										ele.data().g.geopoint.longitude
-									]} icon={greenmarkerIcon} draggable={false}
-								>
-								</Marker>
-							})
-						}
-					</div>
+					show === false && searchLocationCoordinates.searchlocation.coordinates === null && (
+						<div>
+							<LocationMarker setPosition={setPosition} position={position} markerIcon={markerIcon} />
+							{
+								currentchargers && currentchargers.map((ele, index) => {
+									return (
+										<Marker key={index} icon={greenmarkerIcon} draggable={false}
+											position={[ele.data().g.geopoint.latitude, ele.data().g.geopoint.longitude]}>
+											<Popup>
+												<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+												<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+													<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+													<Chip label="Available" color="success" size="small" variant="contained" />
+												</Box>
+												<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+												<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
+													<Box sx={{ display: 'flex', }}>
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+													</Box>
+													<Box sx={{ display: 'flex' }} >
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
+														<Ratings rating={4} />
+													</Box>
+												</Box>
+												<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
+													<Box sx={{ display: 'flex' }}>
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>9:00 AM</Typography>
+													</Box>
+													<Box sx={{ display: 'flex' }} >
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>8:00 PM</Typography>
+													</Box>
+												</Box>
+												<Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
+
+													<Box sx={{ display: 'flex' }} >
+														<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
+														<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
+															{ele.data().info.price}
+														</Typography>
+													</Box>
+													<Box sx={{ display: 'flex' }}>
+														<Button onClick={bookingHandler} variant="contained" sx={{
+															backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
+															textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
+														}}>Book Now</Button>
+													</Box>
+												</Box>
+											</Popup>
+										</Marker>
+									)
+								})
+							}
+						</div>
+					)
 				}
 
 				{
@@ -114,14 +182,55 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 						<SearchLocationMark cardDetails={{ coordinates: { latitude: searchLocationCoordinates.searchlocation.coordinates[1], longitude: searchLocationCoordinates.searchlocation.coordinates[0] } }} />
 						{
 							currentLocationChargers && currentLocationChargers.map((ele, index) => {
-								return <Marker
-									key={index}
-									position={[
-										ele.data().g.geopoint.latitude,
-										ele.data().g.geopoint.longitude
-									]} icon={greenmarkerIcon} draggable={false}
-								>
-								</Marker>
+								return (
+									<Marker key={index} icon={greenmarkerIcon} draggable={false}
+										position={[ele.data().g.geopoint.latitude, ele.data().g.geopoint.longitude]}
+									>
+										<Popup>
+											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+												<Chip label="Available" color="success" size="small" variant="contained" />
+											</Box>
+											<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
+												<Box sx={{ display: 'flex', }}>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+												</Box>
+												<Box sx={{ display: 'flex' }} >
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
+													<Ratings rating={4} />
+												</Box>
+											</Box>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
+												<Box sx={{ display: 'flex' }}>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>9:00 AM</Typography>
+												</Box>
+												<Box sx={{ display: 'flex' }} >
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>8:00 PM</Typography>
+												</Box>
+											</Box>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
+
+												<Box sx={{ display: 'flex' }} >
+													<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
+													<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
+														{ele.data().info.price}
+													</Typography>
+												</Box>
+												<Box sx={{ display: 'flex' }}>
+													<Button onClick={bookingHandler} variant="contained" sx={{
+														backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
+														textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
+													}}>Book Now</Button>
+												</Box>
+											</Box>
+										</Popup>
+									</Marker>
+								)
 							})
 						}
 					</div>
@@ -137,12 +246,54 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 
 						{
 							chargers && chargers.map((ele, index) => {
-								return <Marker
-									key={index}
-									position={[
-										ele.data().g.geopoint.latitude,
-										ele.data().g.geopoint.longitude
-									]} icon={greenmarkerIcon} draggable={false}></Marker>
+								return (
+									<Marker key={index} icon={greenmarkerIcon} draggable={false}
+										position={[ele.data().g.geopoint.latitude, ele.data().g.geopoint.longitude]} >
+										<Popup>
+											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+												<Chip label="Available" color="success" size="small" variant="contained" />
+											</Box>
+											<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
+												<Box sx={{ display: 'flex', }}>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+												</Box>
+												<Box sx={{ display: 'flex' }} >
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
+													<Ratings rating={4} />
+												</Box>
+											</Box>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
+												<Box sx={{ display: 'flex' }}>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>9:00 AM</Typography>
+												</Box>
+												<Box sx={{ display: 'flex' }} >
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>8:00 PM</Typography>
+												</Box>
+											</Box>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
+
+												<Box sx={{ display: 'flex' }} >
+													<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
+													<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
+														{ele.data().info.price}
+													</Typography>
+												</Box>
+												<Box sx={{ display: 'flex' }}>
+													<Button onClick={bookingHandler} variant="contained" sx={{
+														backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
+														textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
+													}}>Book Now</Button>
+												</Box>
+											</Box>
+										</Popup>
+									</Marker>
+								)
 							})
 						}
 
@@ -151,8 +302,7 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 				}
 				{
 					showCurrentLocation &&
-					<FindCurrentLocation
-						setSearchCoordinates={setSearchCoordinates}
+					<FindCurrentLocation setSearchCoordinates={setSearchCoordinates}
 						searchCoordinates={searchCoordinates}
 					/>
 				}
@@ -164,7 +314,7 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 			</MapContainer >
 			{
 				location.pathname === '/' &&
-				<NavigationBar
+				<SearchBar
 					setSearchCoordinates={setSearchCoordinates}
 					searchCoordinates={searchCoordinates}
 					showRoute={showRoute}
@@ -174,11 +324,12 @@ const DashboardMap = ({ searchCoordinates, show, setShow, setSearchCoordinates, 
 					setShow={setShow}
 				/>
 			}
-		</>
+		</Fragment>
 	)
 }
 
 const Mark = ({ cardDetails }) => {
+
 	const { name, location, type, rating, img, coordinates } = cardDetails;
 
 	// States
@@ -285,7 +436,5 @@ const LocationMarker = ({ setPosition, position, markerIcon }) => {
 		<Marker position={position} icon={markerIcon}></Marker>
 	);
 }
-
-
 
 export default DashboardMap;

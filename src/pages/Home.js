@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import DashboardMap from "./../components/DashboardMap";
+import { Box } from '@mui/material';
 import { useState, useCallback } from "react";
 import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
@@ -9,8 +10,9 @@ import firebaseConfig from "../utils/config/firebaseConfig";
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
-const geocollection = GeoFirestore.collection('Chargers');
-const Home = ({ direction }) => {
+const geocollection = GeoFirestore.collection('chargers');
+
+const Home = ({ direction ,user }) => {
 
 	// States
 	const [show, setShow] = useState(false);
@@ -23,9 +25,8 @@ const Home = ({ direction }) => {
 	const [searchLocationCoordinates, setSearchLocationCoordinates] = useState({
 		searchlocation: { coordinates: null, label: '' }
 	})
-	console.log(searchCoordinates);
-	console.log(searchLocationCoordinates);
 
+	// Handlers
 	const showRoute = useCallback(() => {
 		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
 			setChargers(null);
@@ -50,8 +51,7 @@ const Home = ({ direction }) => {
 
 	const setCurrentLocation = () => {
 		setShow(false);
-		setShowCurrentLocation(true)
-		console.log();
+		setShowCurrentLocation(true);
 	}
 
 	return (
@@ -60,14 +60,16 @@ const Home = ({ direction }) => {
 			animate={{ x: 0 }} initial={{ x: direction }}
 			transition={{ duration: 0.25, delay: 0 }}
 		>
-			<DashboardMap show={show} showCurrentLocation={showCurrentLocation}
-				setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates}
-				setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} card={[null]}
-				chargers={chargers}
-				searchLocationCoordinates={searchLocationCoordinates}
-				setSearchLocationCoordinates={setSearchLocationCoordinates}
-				setShow={setShow}
-			/>
+			<Box className="homePage">
+				<DashboardMap show={show} showCurrentLocation={showCurrentLocation}
+					setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates}
+					setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} card={[null]}
+					chargers={chargers} setShow={setShow}
+					searchLocationCoordinates={searchLocationCoordinates}
+					setSearchLocationCoordinates={setSearchLocationCoordinates}
+					user={user}
+				/>
+			</Box>
 		</motion.div>
 	);
 }

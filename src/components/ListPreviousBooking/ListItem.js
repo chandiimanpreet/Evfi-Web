@@ -1,22 +1,29 @@
 import React, { Fragment } from 'react';
-import searchedData from './searchedData';
+import searchedData from '../../utils/searchedData';
 import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-
-
 import { useStyles } from './style';
 
 const ListItem = ({ result ,user}) => {
+	
 	const { name, location, type, isAvailable, price, rating, img } = result;
+	
+	// Constants
+	const navigate = useNavigate();
+	
+	// Styles
 	const classes = useStyles();
-	const navigate=useNavigate();
-	const bookingHandler=()=>{
+	
+	// Handlers
+
+	const bookingHandler = () => {
 		if(!user.level2){
 			navigate('/register/level2?redirectTo=previousBooking');
 		}
 	}
+	
 	return (
 		<Fragment>
 			{
