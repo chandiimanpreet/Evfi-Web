@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { otpStyle } from '../../pages/auths/style';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -9,31 +9,37 @@ import { Alert, Button, Chip, Divider, TextField, Typography } from '@mui/materi
 import { Link, useSearchParams } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 
-export default function CustomerForm({ user, data, classes, theme, changeDataHandler, idType, MenuProps, names, image, setImage, handleChange, getStyles }) {
+const CustomerForm = ({ user, data, classes, theme, changeDataHandler, idType, MenuProps, names, image,
+    setImage, handleChange, getStyles }) => {
+
+    // States
     const [searchParams] = useSearchParams();
     const [showPlus, setShow] = useState(searchParams.has("redirectTo") ? true : false);
-    const [showInfo, setShowInfo] = useState(true)
+    const [showInfo, setShowInfo] = useState(true);
 
     if (showPlus) {
         return (
-            <>
+            <Fragment>
                 <Alert sx={{ display: showInfo ? 'flex' : 'none', marginBottom: '2rem' }} onClose={() => { setShowInfo(false) }} severity="info"> You need to register to rent charger.</Alert>
                 <Typography style={{ textAlign: 'center', color: '#fff', marginBottom: '0.6rem' }}>Click below to register.</Typography>
                 <Button variant="contained" onClick={() => setShow(false)} type="button" sx={{
-                    height: '64px', marginBottom: '2.4rem', backgroundColor: '#ffdf00', ':hover': {
-                        backgroundColor: '#e1ad01'
-                    }
-                }}><Add sx={{ fontSize: '2.8rem', color: '#262626' }} /></Button>
-            </>
+                    height: '64px', marginBottom: '2.4rem', backgroundColor: '#ffdf00', ':hover': { backgroundColor: '#e1ad01' }
+                }}><Add sx={{ fontSize: '2.8rem', color: '#262626' }} />
+                </Button>
+            </Fragment>
         )
     }
     return (
-        <>
+        <Fragment>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
-            
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='Name' disabled value={user.Name} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
+                type='text' label='Username' name='Name' disabled value={user.Name} />
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' label='Vehicle Company' type='text' name='VehicleManufacturer' value={data.VehicleManufacturer} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
+                label='Vehicle Company' type='text' name='VehicleManufacturer' value={data.VehicleManufacturer} />
+
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
+                type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
 
@@ -93,7 +99,9 @@ export default function CustomerForm({ user, data, classes, theme, changeDataHan
             }
             <Button size='large' type='submit' className={classes.sbmtOtp} variant='contained'>Register</Button>
             <Divider className={classes.dividerStyle}>or</Divider>
-            <Link to='/previousBooking' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', fontFamily: 'inter' }}>Skip for later</Link>
-        </>
+            <Link to='/previousBooking' style={{ alignSelf: 'center', color: '#fff', textDecoration: 'none', }}>Skip for later</Link>
+        </Fragment>
     )
 }
+
+export default CustomerForm;

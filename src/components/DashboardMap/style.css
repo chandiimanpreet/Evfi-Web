@@ -50,3 +50,7 @@
 .previousBookingPage .leaflet-popup-close-button {
 	display: none;
 }
+
+.homePage .leaflet-popup-close-button {
+	display: none;
+}

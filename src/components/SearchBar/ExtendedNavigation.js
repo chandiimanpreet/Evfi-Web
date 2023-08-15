@@ -5,28 +5,16 @@ import { motion } from 'framer-motion';
 import { useStyles } from "./style";
 
 const ExtendedNavigation = ({
-	anchorEl,
-	handleClose,
-	distanceData,
-	onChangeRoute,
-	setSearchCoordinates,
-	searchCoordinates,
-	autofocusedSource,
-	autofocusedDestination,
-	setCurrentLocation,
-}) => {
+	anchorEl, handleClose, distanceData, onChangeRoute, setSearchCoordinates, searchCoordinates,
+	autofocusedSource, autofocusedDestination, setCurrentLocation, }) => {
 
+	// Styles
 	const classes = useStyles();
+
 	return (
 		<motion.div>
-
-			<Popover
-				id='simple-popover'
-				open={true}
-				anchorEl={anchorEl}
-				onClose={handleClose}
-				className={classes.exNavPopover}
-				anchorOrigin={{
+			<Popover id='simple-popover' open={true} anchorEl={anchorEl} onClose={handleClose}
+				className={classes.exNavPopover} anchorOrigin={{
 					vertical: 'center',
 					horizontal: 'center',
 				}}
@@ -41,12 +29,8 @@ const ExtendedNavigation = ({
 					</Box>
 					<Box className={classes.extendinputroot}>
 						<MyLocationIcon className={classes.myLocationIcon} onClick={() => setCurrentLocation(true)} />
-						<Autocomplete
-							disablePortal
-							id="combo-box-demo"
-							options={distanceData}
-							value={searchCoordinates.source.label}
-							className={classes.autocompletestyle}
+						<Autocomplete disablePortal id="combo-box-demo" options={distanceData}
+							value={searchCoordinates.source.label} className={classes.autocompletestyle}
 							sx={{ left: '2.3rem' }}
 							renderInput={(params) =>
 								<TextField
@@ -64,21 +48,15 @@ const ExtendedNavigation = ({
 							}}
 						/>
 						<SwapHorizontalCircleIcon className={classes.swapHorizontalCircleIcon} fontSize="large" />
-						<Autocomplete
-							disablePortal
-							id="combo-box-demo"
-							value={searchCoordinates.destination.label}
-							options={distanceData}
-							data-shrink="false!important"
-							className={classes.autocompletestyle}
-							sx={{ right: '2.3rem' }}
+						<Autocomplete disablePortal id="combo-box-demo" options={distanceData}
+							value={searchCoordinates.destination.label} data-shrink="false!important"
+							className={classes.autocompletestyle} sx={{ right: '2.3rem' }}
 							renderInput={(params) =>
 								<TextField
 									value={searchCoordinates.destination.label}
 									{...(autofocusedDestination) ? { autoFocus: true } : { autoFocus: false }}
 									onChange={onChangeRoute}
 									inputProps={{ sx: { color: '#fff' }, maxLength: 12 }}
-
 									className={classes.popDesign} {...params}
 									id="destination-textfield"
 									placeholder="Destination"
@@ -87,8 +65,12 @@ const ExtendedNavigation = ({
 							}
 							onChange={(event, newValue) => {
 								if (newValue) {
-									setSearchCoordinates({ ...searchCoordinates, destination: { coordinates: newValue.coordinates, label: newValue.label } })
-
+									setSearchCoordinates({
+										...searchCoordinates, destination: {
+											coordinates: newValue.coordinates,
+											label: newValue.label,
+										}
+									})
 								}
 							}}
 						/>
@@ -97,9 +79,9 @@ const ExtendedNavigation = ({
 				</Box>
 				<TuneIcon className={classes.filterdesign} />
 			</Popover>
-
 		</motion.div>
 	)
 }
-export default ExtendedNavigation
+
+export default ExtendedNavigation;
 

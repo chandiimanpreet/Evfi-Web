@@ -19,7 +19,7 @@ const ModalMap = ({ data, setUserData, handleClose }) => {
     )
 }
 
-export default ModalMap
+export default ModalMap;
 
 const CurrentLocationMarker = ({ data, setUserData, handleClose }) => {
 
@@ -38,14 +38,11 @@ const CurrentLocationMarker = ({ data, setUserData, handleClose }) => {
             map.flyTo(e.latlng, 15, { duration: 1 });
             console.log(e.latlng)
         });
-        
     }
 
     return (
         <Fragment>
-            <Button onClick={handleClose} className={classes.setLocationBtn} >
-                Set Location
-            </Button>
+            <Button onClick={handleClose} className={classes.setLocationBtn} >Set Location</Button>
             <GpsFixed
                 onClick={getCurrentLocation} className={classes.currentLocationBtn} />
             <Box sx={{

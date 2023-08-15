@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, {  useState, } from 'react';
+import {  Navigate } from 'react-router-dom';
 import {
 	FormControl, MenuItem, InputLabel, Select, Box, TextField, Button, Typography, Grid,
 	Chip, Fade, Modal, Backdrop
@@ -24,70 +24,51 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 	const [chargerArea, setchargerArea] = useState([]);
 	const [showOnBtn, setShow] = useState("Register");
 	const [data, setUserData] = useState({
-		StationName: "",
-		Address: "",
+		stationName: "",
+		address: "",
 		country: "India",
 		state: "",
 		city: "",
 		pinCode: "",
 		chargerLocation: null,
-		ChargerType: [],
-		Price: "",
-		HostName: "",
+		chargerType: [],
+		price: "",
+		hostName: "",
 		openingTime: null,
 		closingTime: null,
 	});
-	const [ownStates, setOwnStates] = useState({});
-	const [ownCities, setOwnCities] = useState({});
 
 	// Styles
 	const classes = useStyles();
-	useEffect(() => {
-		console.log(data)
-	}, [data])
+
 	// Handlers
 
-	useEffect(() => {
-		if (data.country !== "") {
-			setOwnStates(countriesStateCitiesData.find(obj => obj.name === data.country).states);
-		}
-
-		if (ownStates && ownStates.length > 0 && data.state !== "") {
-			setOwnCities(ownStates.find(obj => obj.name === data.state).cities);
-		}
-	}, [ownCities, ownStates, data]);
-
 	const handleOpen = () => setOpen(true);
-
 	const handleClose = () => setOpen(false);
 
 	const changeDataHandler = (e) => {
-		if (e.target.name === 'ChargerType') {
-			setUserData({ ...data, [e.target.name]: e.target.value === 'string' ? e.target.value.split(',') : e.target.value });
+		if (e.target.name === 'chargerType') {
+			setUserData({
+				...data, [e.target.name]: e.target.value === 'string' ?
+					e.target.value.split(',') : e.target.value
+			});
 		}
-		setUserData({ ...data, [e.target.name]: e.target.value });
+		else {
+			setUserData({ ...data, [e.target.name]: e.target.value });
+		}
 	};
 
-	const timingHandler1 = (e) => {
-		setUserData({ ...data, 'openingTime': e });
+	const timingHandler = (e, flag) => {
+		flag ? setUserData({ ...data, 'openingTime': e }) : setUserData({ ...data, 'closingTime': e });
 	}
-	const timingHandler2 = (e) => {
-		setUserData({ ...data, 'closingTime': e });
-	}
 
-	const chipDeleteHandle1 = (item) => () => {
-		setAadhaarCard((aadhaar) => aadhaar.filter((images) => images !== item))
-	};
-	const chipDeleteHandle2 = (item) => () => {
-		setchargerArea((aadhaar) => aadhaar.filter((images) => images !== item))
+	const chipDeleteHandle = (item, flag) => () => {
+		flag ? setAadhaarCard((aadhaar) => aadhaar.filter((images) => images !== item)) :
+			setchargerArea((aadhaar) => aadhaar.filter((images) => images !== item));
 	};
 
-	const fileDataHandler1 = (e) => {
-		setAadhaarCard([...e.target.files, ...aadhaarCard]);
-	};
-
-	const fileDataHandler2 = (e) => {
-		setchargerArea([...e.target.files, ...chargerArea]);
+	const fileDataHandler = (e, flag) => {
+		flag ? setAadhaarCard([...e.target.files, ...aadhaarCard]) : setchargerArea([...e.target.files, ...chargerArea]);
 	};
 
 	const saveData = async () => {
@@ -114,27 +95,26 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
 					<Box sx={{ display: 'flex', flexDirection: 'column', }}>
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
-						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
-
-						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.5rem'>Become a Provider</Typography>
+						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold'
+							fontSize='1.5rem'>Become a Provider</Typography>
 					</Box>
 
 					<Box>
 						<Grid container spacing={2} sx={{ marginBottom: '7px', marginTop: '0.1px' }}>
 							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='text' label='Station Name' name='StationName' value={data.StationName}
+									type='text' label='Station Name' name='stationName' value={data.stationName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Host Name' name='HostName' value={data.HostName}
+									variant='outlined' type='text' label='Host Name' name='hostName' value={data.hostName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 							<Grid item xs={3}>
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="types">Charger Type</InputLabel>
-									<Select required sx={{ color: '#fff', }} labelId="types" name='ChargerType' value={data.ChargerType}
+									<Select required sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
 										label="Charger Type" onChange={changeDataHandler} multiple >
 										<MenuItem value={'a'}>Type A</MenuItem>
 										<MenuItem value={'b'}>Type B</MenuItem>
@@ -144,7 +124,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 							</Grid>
 							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='number' label='Price' name='Price' value={data.Price}
+									type='number' label='Price' name='price' value={data.price}
 									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
 							</Grid>
 						</Grid>
@@ -152,7 +132,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={12} sm={6} lg={6}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Address' name='Address' value={data.Address}
+									variant='outlined' type='text' label='Address' name='address' value={data.address}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 							<Grid item xs={2} >
@@ -178,7 +158,8 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw' } }}
 									>
 										{
-											ownStates !== undefined && ownStates.length > 0 && ownStates.map((item, idx) => (
+											data.country !== "" &&
+											countriesStateCitiesData.find(obj => obj.name === data.country).states.map((item, idx) => (
 												<MenuItem key={idx} value={item.name}>{item.name}</MenuItem>
 											))
 										}
@@ -193,7 +174,8 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 										MenuProps={{ style: { maxHeight: '60vh', maxWidth: '16vw', }, }}
 									>
 										{
-											ownCities !== undefined && ownCities.length > 0 && ownCities.map((item, idx) => (
+											data.country !== "" && data.state !== "" &&
+											countriesStateCitiesData.find(obj => obj.name === data.country).states.find(obj => obj.name === data.state).cities.map((item, idx) => (
 												<MenuItem key={idx} value={item}>{item}</MenuItem>
 											))
 										}
@@ -212,7 +194,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
-										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={timingHandler1}
+										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={(e) => { timingHandler(e, true) }}
 											variant='outlined' label='Opening Time' value={data.openingTime} />
 									</DemoContainer>
 								</LocalizationProvider>
@@ -220,7 +202,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
-										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={timingHandler2}
+										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={(e) => { timingHandler(e, false) }}
 											variant='outlined' label='Closing Time' value={data.closingTime} />
 									</DemoContainer>
 								</LocalizationProvider>
@@ -249,7 +231,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 						<Grid container spacing={1}>
 							<Grid item xs={12} >
 								<div style={{ display: 'flex', columnGap: '12px' }}>
-									<input name='idProof' multiple onChange={fileDataHandler1} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
+									<input name='idProof' multiple onChange={fileDataHandler} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
 										type="file"
 									/>
 									<label htmlFor="raised-button-file">
@@ -260,7 +242,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 									<Box>
 										{aadhaarCard.length > 0 &&
 											aadhaarCard.map((item, idx) =>
-												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle1(item)}
+												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle(item, true)}
 													className={classes.upLoadBtnChips} size='medium' variant="outlined"
 												/>
 											)
@@ -272,7 +254,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 						<Grid container spacing={1}>
 							<Grid item xs={12} >
 								<div style={{ display: 'flex', columnGap: '12px' }}>
-									<input name='chargerArea' multiple onChange={fileDataHandler2} accept="image/*" style={{ display: 'none' }} id="button-file"
+									<input name='chargerArea' multiple onChange={fileDataHandler} accept="image/*" style={{ display: 'none' }} id="button-file"
 										type="file"
 									/>
 									<label htmlFor="button-file">
@@ -283,7 +265,7 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 									<Box>
 										{chargerArea.length > 0 &&
 											chargerArea.map((item, idx) =>
-												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle2(item)}
+												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle(item, false)}
 													className={classes.upLoadBtnChips} size='medium' variant="outlined"
 												/>
 											)
@@ -295,10 +277,11 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 					</Box>
 					<Button sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
 				</Box>
-			</Box >
+			</Box>
 		)
 	}
 }
+
 const mapStateToProps = state => ({
 	userData: state.userData.user
 })

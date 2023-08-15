@@ -17,15 +17,26 @@ const auth = getAuth(app);
 
 let appVerifier;
 
-function Phoneauth({ country ,login,userData,setPhoneNo}) {
+const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
+	
+	// States
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
-	const [util, setUtils] = useState({ loading: false, enterNumberInactive: false, enterOtpInactive: false, resendOtpActive: false, error: null });
+	const [util, setUtils] = useState({
+		loading: false,
+		enterNumberInactive: false,
+		enterOtpInactive: false,
+		resendOtpActive: false,
+		error: null
+	});
 	const [otp, setotp] = useState("")
 	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 
+	// Styles
 	const classes = useStyles();
+
+	// Handlers
 	useEffect(() => {
 		if (showOtpForm) {
 			if (timer > 0) {
@@ -36,7 +47,8 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 		} else {
 			setTimer(30);
 		}
-	}, [showOtpForm, timer])
+	}, [showOtpForm, timer]);
+
 	const changePhoneHandler = () => {
 		setShowOtpForm(false);
 		setotp("");
@@ -128,8 +140,8 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 			})
 	};
 
-	if(userData.user){
-		return <Navigate to='/register/level1'/>
+	if (userData.user) {
+		return <Navigate to='/register/level1' />
 	}
 	return (
 		<Box className={classes.bodyPage} >
@@ -145,33 +157,27 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
 				)}
 				{!showOtpForm ?
-					<Grid 
-					gap={3} 
-					display='flex' 
-					flexDirection='column' 
-					alignContent= 'center'
-					padding= '4rem 2rem'
-					textAlign='center'>
-						<img style={otpStyle.companylogo} 
-						src='/resources/light.png' alt='' />
+					<Grid gap={3} display='flex' flexDirection='column' alignContent='center'
+						textAlign='center' padding='4rem 2rem' >
+						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 
 						<Typography
 							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
-						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Verify Your Number</Typography>
+						<Typography color='#fff' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>
+							Verify Your Number
+						</Typography>
 
 						<PhoneInput
 							country={country.countryCode}
 							value={userData.phone}
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
-							onChange={num => {setPhoneNo(num);}}
+							onChange={num => { setPhoneNo(num); }}
 							inputProps='true'
 						/>
 
-						<FormControlLabel
-							control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} />}
-							label='Remember me'
-							style={{ color: 'white' }}
+						<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} />}
+							label='Remember me' style={{ color: 'white' }}
 						/>
 
 						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth} loadingPosition='start'> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
@@ -187,14 +193,10 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 
 						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${userData.phone}`}</Typography>
 
-						<OTPInput
-							inputStyle={otpStyle.inputStyle}
-							containerStyle={{ color: '#fff' }}
-							numInputs={6}
-							value={otp}
-							onChange={setotp}
+						<OTPInput inputStyle={otpStyle.inputStyle} containerStyle={{ color: '#fff' }}
+							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-'
 							renderInput={(props) => <input {...props} />}
-							renderSeparator='-' />
+						/>
 
 						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode} loadingPosition='start'> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 
@@ -217,11 +219,11 @@ function Phoneauth({ country ,login,userData,setPhoneNo}) {
 		</Box>
 	)
 }
-const mapStateToProps=state=>({
-    userData:state.userData
+const mapStateToProps = state => ({
+	userData: state.userData
 })
-const mapDispatchFromProps=dispatch=>({
-	login:()=>dispatch(login()),
-	setPhoneNo:(number)=>dispatch(setPhoneNo(number))
+const mapDispatchFromProps = dispatch => ({
+	login: () => dispatch(login()),
+	setPhoneNo: (number) => dispatch(setPhoneNo(number))
 })
-export default connect(mapStateToProps,mapDispatchFromProps)(Phoneauth);
+export default connect(mapStateToProps, mapDispatchFromProps)(Phoneauth);

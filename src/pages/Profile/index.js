@@ -7,25 +7,22 @@ import Payments from "./Payments/Payments";
 import Settings from "./Settings/Settings";
 import Support from "./Support";
 import { useStyles } from "./styles";
-import { Bolt as BoltIcon } from "@mui/icons-material";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import DockRoundedIcon from "@mui/icons-material/DockRounded";
-import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { logout } from "../../actions";
+import {
+    Bolt, PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded,
+    SupportAgentRounded, LogoutRounded
+} from "@mui/icons-material";
 import { connect } from "react-redux";
+import { logout } from "../../actions";
 
-const Profile = ({ direction, logoutUser }) => {
+const Profile = ({ direction, logoutUser ,userData}) => {
 
-    //States
+    // States
     const [activeTab, setActiveTab] = useState("My Profile");
 
-    //Styles
+    // Styles
     const classes = useStyles();
 
-    //Handlers
+    // Handlers
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
@@ -40,7 +37,7 @@ const Profile = ({ direction, logoutUser }) => {
         >
             <Box className={classes.container}>
                 <Box className={classes.sidebox}>
-                    <BoltIcon className={classes.boltIcon} />
+                    <Bolt className={classes.boltIcon} />
                     <Card className={classes.profilePictureContainer}>
                         <Box className={classes.profileGreet}>
                             <Avatar alt="Profile Picture" className={classes.profilePicture}
@@ -50,7 +47,12 @@ const Profile = ({ direction, logoutUser }) => {
                                 <Typography className={classes.hello} variant="h6" gutterBottom color={"#ffffff"}>
                                     Hello,
                                 </Typography>
-                                <Typography className={classes.name} variant="h6" gutterBottom>Virat Kohli</Typography>
+                                <Typography className={classes.name} variant="h6" gutterBottom>
+                                    {
+                                        userData.firstName !== undefined && userData.lastName !== undefined
+                                            ? userData.firstName + " " + userData.lastName : ""
+                                    }
+                                </Typography>
                             </Box>
                         </Box>
                     </Card>
@@ -58,12 +60,12 @@ const Profile = ({ direction, logoutUser }) => {
                     <Card className={classes.outerBox}>
                         <Box className={classes.buttonGroup}>
                             {[
-                                { tab: "My Profile", icon: <PersonRoundedIcon /> },
-                                { tab: "My Chargers", icon: <DockRoundedIcon /> },
-                                { tab: "Payments", icon: <AccountBalanceWalletRoundedIcon /> },
-                                { tab: "Settings", icon: <SettingsRoundedIcon /> },
-                                { tab: "Support", icon: <SupportAgentRoundedIcon /> },
-                                { tab: "Logout", icon: <LogoutRoundedIcon /> },
+                                { tab: "My Profile", icon: <PersonRounded /> },
+                                { tab: "My Chargers", icon: <DockRounded /> },
+                                { tab: "Payments", icon: <AccountBalanceWalletRounded /> },
+                                { tab: "Settings", icon: <SettingsRounded /> },
+                                { tab: "Support", icon: <SupportAgentRounded /> },
+                                { tab: "Logout", icon: <LogoutRounded /> },
                             ].map(({ tab, icon }) => (
                                 <Box key={tab} className={`${classes.button} ${activeTab === tab ? classes.activeButton : ""}`}
                                     onClick={() => tab === "Logout" ? handleLogout() : handleTabChange(tab)}
@@ -82,8 +84,8 @@ const Profile = ({ direction, logoutUser }) => {
                     </Card>
                 </Box>
                 <Box className={classes.tabContent}>
-                    {activeTab === "My Profile" && <MyProfile />}
-                    {activeTab === "My Chargers" && <MyChargers />}
+                    {activeTab === "My Profile" && <MyProfile user={userData.user} />}
+                    {activeTab === "My Chargers" && <MyChargers user={userData.user} />}
                     {activeTab === "Payments" && <Payments />}
                     {activeTab === "Settings" && <Settings />}
                     {activeTab === "Support" && <Support />}
@@ -92,7 +94,10 @@ const Profile = ({ direction, logoutUser }) => {
         </motion.Box>
     );
 };
+const mapStateToProps = state => ({
+    userData: state.userData
+})
 const mapDispatchFromProps = dispatch => ({
     logoutUser: () => dispatch(logout())
 })
-export default connect(null, mapDispatchFromProps)(Profile);
+export default connect(mapStateToProps, mapDispatchFromProps)(Profile);

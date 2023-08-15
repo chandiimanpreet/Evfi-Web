@@ -3,7 +3,8 @@ import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
 
 const createRoutineMachineLayer = ({ searchCoordinates }) => {
-    const { source, destination } = searchCoordinates
+    
+    const { source, destination } = searchCoordinates;
     const instance = L.Routing.control({
         createMarker: function () { return null; },
         waypoints: [
@@ -23,7 +24,6 @@ const createRoutineMachineLayer = ({ searchCoordinates }) => {
     });
 
     return instance;
-
 };
 
 const RoutingMachine = createControlComponent(createRoutineMachineLayer);

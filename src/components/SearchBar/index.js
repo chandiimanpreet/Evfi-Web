@@ -4,8 +4,11 @@ import ReduceNavigation from './ReduceNavigation';
 import ExtendedNavigation from './ExtendedNavigation';
 import { saveQuery } from '../../utils/queries/searchQueries';
 import PlaceSearchingNavigationbar from './PlaceSearchingNavigationbar';
+
 const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
 	showRoute, searchLocationCoordinates, setSearchLocationCoordinates, setShow }) => {
+	
+	// States
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);
@@ -14,6 +17,8 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	const [showPlaceSearching, setShowPlaceSearching] = useState(true);
 	const [showExtendedNavigation, setShowExtendedNavigation] = useState(false);
 	const [showRadiusNavigation, setShowRadiusNavigation] = useState(false);
+
+	// Handlers
 
 	const onChangeRoute = async (e) => {
 		// if exit searchTimeout
@@ -90,9 +95,9 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 			setShowPlaceSearching(false);
 			setShowExtendedNavigation(false);
 			setShowRadiusNavigation(true);
-
 		}
 	}, [searchCoordinates, showRoute, handleClose]);
+	
 	useEffect(() => {
 		if (searchCoordinates.source.coordinates && searchCoordinates.destination.coordinates) {
 			setPolyline();

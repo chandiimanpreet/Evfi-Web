@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom'
 import { Box, Typography } from '@mui/material';
 import { useStyles, otpStyle } from '../../pages/auths/style';
@@ -43,22 +43,37 @@ function getStyles(name, personName, theme) {
 function Registerauth({ addUserData, userData }) {
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
+
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
-	const classes = useStyles();
-	const theme = useTheme();
-	const [data, setUserData] = useState({ Name: userData.Name, VehicleManufacturer: "", ChargingRequirements: "", VehicleNumber: '', idImageURL: null ,mileage:'',batteryCapacity:''});
+	const [data, setUserData] = useState({
+		Name: userData.Name,
+		VehicleManufacturer: "",
+		ChargingRequirements: "",
+		VehicleNumber: '',
+		idImageURL: null,
+		mileage: '',
+		batteryCapacity: ''
+	});
 	const [image, setImage] = useState(null);
 	const [idType, setIdType] = useState('');
+
+	// Styles
+	const classes = useStyles();
+	const theme = useTheme();
+
+	// Handlers
 	const handleChange = (event) => {
 		const {
 			target: { value },
 		} = event;
 		setIdType(value);
 	};
+
 	const changeDataHandler = (e) => {
 		setUserData({ ...data, [e.target.name]: e.target.value })
-	}
+	};
+
 	const saveData = async () => {
 		if (!userData.level1) {
 			await registerUser({ Name: data.Name, level1: true });

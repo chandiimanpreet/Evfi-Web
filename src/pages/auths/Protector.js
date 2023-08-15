@@ -1,8 +1,8 @@
 import React from 'react'
 import { Outlet, useLocation, Navigate } from 'react-router'
-import FloatingNavbar from '../../components/FloatingNavbar';
+import Navbar from '../../components/Navbar';
 
-export default function Protector({ flag, moveToPageIndex }) {
+const Protector = ({ flag, moveToPageIndex }) =>{
 	const location = useLocation();
 	return (
 		flag ?
@@ -12,8 +12,10 @@ export default function Protector({ flag, moveToPageIndex }) {
 				<Outlet />
 				{
 					location.pathname !== "/register/level2" && location.pathname !== "/register/level1" &&
-					<FloatingNavbar moveToPageIndex={moveToPageIndex} />
+					<Navbar moveToPageIndex={moveToPageIndex} />
 				}
 			</>
 	);
 }
+
+export default Protector;

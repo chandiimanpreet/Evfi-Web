@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Button, Grid, Card, CardContent } from "@mui/material";
 import useStyles from "./styles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import RenderInformation from "./RenderInformation";
+import { registerUser } from '../../../utils/auth/user';
 
-const MyProfile = () => {
+const MyProfile = ({ user }) => {
 
     //States
     const [isEditing, setIsEditing] = useState(false);
     const [profile, setProfile] = useState({
-        firstName: "Virat", lastName: "Kohli", email: "viratkohli18@gmail.com",
-        phoneNumber: "+91-9876543210", country: "India", state: "New Delhi", city: "New Delhi",
-        pinCode: "110011",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        PhoneNumber: user.PhoneNumber,
+        country: user.country,
+        state: user.state,
+        city: user.city,
+        pinCode: user.pinCode,
     });
 
     //Styles
@@ -32,6 +38,22 @@ const MyProfile = () => {
             [field]: value,
         }));
     };
+
+    useEffect(() => {
+        if (isEditing) {
+            registerUser({
+                firstName: profile.firstName,
+                lastName: profile.lastName,
+                email: profile.email,
+                PhoneNumber: profile.PhoneNumber,
+                country: profile.country,
+                state: profile.state,
+                city: profile.city,
+                pinCode: profile.pinCode,
+            });
+
+        }
+    }, [isEditing, profile]);
 
     return (
         <div className={classes.root}>
@@ -57,7 +79,7 @@ const MyProfile = () => {
                             <RenderInformation field="email" label="Email" value={profile.email}
                                 isEditing={isEditing} handleChange={handleChange}
                             />
-                            <RenderInformation field="phoneNumber" label="Phone Number" value={profile.phoneNumber}
+                            <RenderInformation field="PhoneNumber" label="Phone Number" value={profile.PhoneNumber}
                                 isEditing={isEditing} handleChange={handleChange}
                             />
                         </Grid>

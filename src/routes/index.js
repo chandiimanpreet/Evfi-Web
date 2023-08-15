@@ -50,7 +50,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser }) => {
             <AnimatePresence initial={false}>
                 <Routes location={location} key={location.pathname}>
                     <Route element={<Protector flag={userData.user === null || userData.user.level1 === false} moveToPageIndex={moveToPageIndex} />} >
-                        <Route path="/" element={<Home direction={motionDirection} />} />
+                        <Route path="/" element={<Home direction={motionDirection} user={userData.user} />} />
                         <Route path="previousBooking" element={<PreviousBooking direction={motionDirection} user={userData.user} />} />
                         <Route path="requests" element={<Request moveToPageIndex={moveToPageIndex} user={userData.user} direction={motionDirection} />} />
                         <Route path="profile" element={<Profile direction={motionDirection} />} />
