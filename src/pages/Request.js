@@ -1,14 +1,13 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import List from '../components/Request/List';
-import { request, recent } from "../components/Request/request";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 import Provider from '../components/Registration/Provider';
 import Navbar from '../components/Navbar';
 
-const Request = ({ direction, user, setData, moveToPageIndex }) => {
+const Request = ({ direction, user,  moveToPageIndex, book }) => {
 
 	// States
 	const [show, setShow] = useState("pending");
@@ -39,10 +38,15 @@ const Request = ({ direction, user, setData, moveToPageIndex }) => {
 							</Box>
 							<Divider sx={{ backgroundColor: 'antiquewhite' }} />
 							<Grid justifyContent={'center'} container gap={2.5}>
-								{show === "pending" ?
-									request.map((ele) => <List key={ele.id} show={show} data={ele} />) :
-									recent.map((ele) => <List key={ele.id} show={show} data={ele} />)
-								}
+							{
+								show === "pending" ?
+									book.map((booking, idx) => ((booking.status === 1 || booking.status === 2) &&
+										<List key={idx} user={user} show={show} data={booking} />)) :
+									
+									
+										book.map((booking, idx) => ((booking.status === -1 || booking.status === 3 || booking.status === -2) &&
+										<List key={idx} user={user} show={show} data={booking} />))
+							}
 							</Grid><br /><br />
 						</Box>
 					</Box>

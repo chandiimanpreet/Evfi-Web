@@ -47,11 +47,11 @@ function Registerauth({ addUserData, userData }) {
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
 	const [data, setUserData] = useState({
-		Name: userData.Name,
-		VehicleManufacturer: "",
-		ChargingRequirements: "",
-		VehicleNumber: '',
-		idImageURL: null,
+		name: userData.name,
+		vehicleManufacturer: "",
+		chargingRequirements: "",
+		vehicleNumber: '',
+		idImageUrl: null,
 		mileage: '',
 		batteryCapacity: ''
 	});
@@ -76,8 +76,8 @@ function Registerauth({ addUserData, userData }) {
 
 	const saveData = async () => {
 		if (!userData.level1) {
-			await registerUser({ Name: data.Name, level1: true });
-			addUserData({ Name: data.Name, level1: true });
+			await registerUser({ name: data.name, level1: true });
+			addUserData({ name: data.name, level1: true });
 		} else {
 			let downloadURL = null;
 			if (image !== null) {
@@ -85,13 +85,14 @@ function Registerauth({ addUserData, userData }) {
 				const uploadResult = await uploadBytes(imageRef, image);
 				downloadURL = await getDownloadURL(uploadResult.ref);
 			}
-			const temp = await registerUser({ ...data, idImageURL: downloadURL, level2: true })
+			const temp = await registerUser({ ...data, idImageURL: downloadURL, level2: data })
 			if (temp.error) {
 				console.log(temp.error);
 			}
-			addUserData({ ...data, idImageURL: downloadURL, level2: true })
+			addUserData({ ...data, idImageURL: downloadURL, level2: data })
 		}
 	}
+	
 	if(!userData){
 		return <Navigate to={'/auth'}/>
 	}
@@ -117,7 +118,9 @@ function Registerauth({ addUserData, userData }) {
 					{
 						level === "level1" ? <NameInput data={data} changeDataHandler={changeDataHandler} />
 							:
-							level==="level2"?<CustomerForm user={userData} data={data} getStyles={getStyles} classes={classes} theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps} names={names} image={image} setImage={setImage} handleChange={handleChange} />
+							level === "level2" ? <CustomerForm user={userData} data={data} getStyles={getStyles} classes={classes}
+								theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps}
+								names={names} image={image} setImage={setImage} handleChange={handleChange} />
 							:<Navigate to='/404'/>
 						}
 				</Box>

@@ -13,7 +13,7 @@ const MyProfile = ({ user }) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        PhoneNumber: user.PhoneNumber,
+        phoneNumber: user.phoneNumber,
         country: user.country,
         state: user.state,
         city: user.city,
@@ -45,7 +45,7 @@ const MyProfile = ({ user }) => {
                 firstName: profile.firstName,
                 lastName: profile.lastName,
                 email: profile.email,
-                PhoneNumber: profile.PhoneNumber,
+                phoneNumber: profile.phoneNumber,
                 country: profile.country,
                 state: profile.state,
                 city: profile.city,
@@ -79,7 +79,7 @@ const MyProfile = ({ user }) => {
                             <RenderInformation field="email" label="Email" value={profile.email}
                                 isEditing={isEditing} handleChange={handleChange}
                             />
-                            <RenderInformation field="PhoneNumber" label="Phone Number" value={profile.PhoneNumber}
+                            <RenderInformation field="PhoneNumber" label="Phone Number" value={profile.phoneNumber}
                                 isEditing={isEditing} handleChange={handleChange}
                             />
                         </Grid>

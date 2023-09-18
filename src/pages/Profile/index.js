@@ -14,7 +14,7 @@ import {
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 
-const Profile = ({ direction, logoutUser ,userData}) => {
+const Profile = ({ direction, logoutUser, userData }) => {
 
     // States
     const [activeTab, setActiveTab] = useState("My Profile");
@@ -30,6 +30,8 @@ const Profile = ({ direction, logoutUser ,userData}) => {
     const handleLogout = () => {
         logoutUser();
     };
+
+    console.log(userData.user);
 
     return (
         <motion.Box key="pr" initial={{ x: direction }} animate={{ x: 0 }}
@@ -49,8 +51,8 @@ const Profile = ({ direction, logoutUser ,userData}) => {
                                 </Typography>
                                 <Typography className={classes.name} variant="h6" gutterBottom>
                                     {
-                                        userData.firstName !== undefined && userData.lastName !== undefined
-                                            ? userData.firstName + " " + userData.lastName : ""
+                                        userData.user.firstName !== undefined && userData.user.lastName !== undefined
+                                            ? userData.user.firstName + " " + userData.user.lastName : ""
                                     }
                                 </Typography>
                             </Box>

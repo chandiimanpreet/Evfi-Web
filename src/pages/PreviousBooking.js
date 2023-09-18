@@ -3,9 +3,8 @@ import { Box, } from "@mui/material";
 import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
-import searchedData from '../utils/searchedData';
 
-const PreviousBooking = ({ direction, user }) => {
+const PreviousBooking = ({ direction, user ,book}) => {
 
 	// States
 	const [newCard, setNewCard] = useState('');
@@ -26,7 +25,7 @@ const PreviousBooking = ({ direction, user }) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<Box sx={{ display: 'flex', width: "100%" }}>
-				<List user={user} searchedData={searchedData} collectCardData={getData} />
+				<List user={user}  collectCardData={getData}  book={book} />
 				<Box width="100%" position="relative" className="previousBookingPage">
 					<DashboardMap card={newCard} />
 				</Box>
