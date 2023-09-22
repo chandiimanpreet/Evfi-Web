@@ -12,7 +12,7 @@ import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
 import firebaseConfig from "../../utils/config/firebaseConfig";
-import { useNavigate } from 'react-router-dom';
+import { requestCharger } from '../../utils/auth/user';
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
@@ -25,11 +25,10 @@ const DashboardMap = ({
 
 	// Constants
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	// States
-	const [position, setPosition] = useState(null);
 	const uselocation = useLocation();
+	const [position, setPosition] = useState(null);
 	const [currentchargers, setCurrentchargers] = useState(null);
 	const [currentLocationChargers, setCurrentLocationChargers] = useState(null);
 
@@ -51,10 +50,14 @@ const DashboardMap = ({
 	});
 
 	// Handlers
-	const bookingHandler = () => {
-		if (!user.level2) {
-			navigate('/register/level2?redirectTo=Home');
-		}
+	const bookingHandler = async (charger) => {
+		// if (user.level2.mileage === '') {
+		// 	navigate('/register/level2?redirectTo=Home');
+		// }
+		console.log(charger.data().info.price)
+		const timeSlot = '2:00 - 3:00 PM';
+
+		await requestCharger(charger, timeSlot, user)
 	};
 
 	const setcurrentmarker = useCallback(() => {
@@ -72,7 +75,7 @@ const DashboardMap = ({
 	useEffect(() => {
 		console.log(currentLocationChargers)
 		console.log(chargers)
-	},[currentLocationChargers, chargers])
+	}, [currentLocationChargers, chargers])
 
 	useEffect(() => {
 		if (position) {
@@ -121,21 +124,21 @@ const DashboardMap = ({
 						<div>
 							<LocationMarker setPosition={setPosition} position={position} markerIcon={markerIcon} />
 							{
-								currentchargers && currentchargers.map((ele, index) => {
+								currentchargers && currentchargers.map((charger, index) => {
 									return (
 										<Marker key={index} icon={greenmarkerIcon} draggable={false}
-											position={[ele.data().g.geopoint.latitude, ele.data().g.geopoint.longitude]}>
+											position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}>
 											<Popup>
-												<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+												<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.chargersImageUrl}></Box>
 												<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-													<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+													<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{charger.data().info.stationName}</Typography>
 													<Chip label="Available" color="success" size="small" variant="contained" />
 												</Box>
-												<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+												<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{charger.data().info.address}</Typography>
 												<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
 													<Box sx={{ display: 'flex', }}>
 														<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
-														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{charger.data().info.chargerType}</Typography>
 													</Box>
 													<Box sx={{ display: 'flex' }} >
 														<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
@@ -157,11 +160,11 @@ const DashboardMap = ({
 													<Box sx={{ display: 'flex' }} >
 														<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
 														<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
-															{ele.data().info.price}
+															{charger.data().info.price}
 														</Typography>
 													</Box>
 													<Box sx={{ display: 'flex' }}>
-														<Button onClick={bookingHandler} variant="contained" sx={{
+														<Button onClick={() => { bookingHandler(charger); }} variant="contained" sx={{
 															backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
 															textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
 														}}>Book Now</Button>
@@ -181,22 +184,22 @@ const DashboardMap = ({
 					<div>
 						<SearchLocationMark cardDetails={{ coordinates: { latitude: searchLocationCoordinates.searchlocation.coordinates[1], longitude: searchLocationCoordinates.searchlocation.coordinates[0] } }} />
 						{
-							currentLocationChargers && currentLocationChargers.map((ele, index) => {
+							currentLocationChargers && currentLocationChargers.map((charger, index) => {
 								return (
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
-										position={[ele.data().g.geopoint.latitude, ele.data().g.geopoint.longitude]}
+										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}
 									>
 										<Popup>
-											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.chargersImageUrl}></Box>
 											<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{charger.data().info.stationName}</Typography>
 												<Chip label="Available" color="success" size="small" variant="contained" />
 											</Box>
-											<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+											<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{charger.data().info.address}</Typography>
 											<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
 												<Box sx={{ display: 'flex', }}>
 													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
-													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{charger.data().info.chargerType}</Typography>
 												</Box>
 												<Box sx={{ display: 'flex' }} >
 													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
@@ -218,11 +221,11 @@ const DashboardMap = ({
 												<Box sx={{ display: 'flex' }} >
 													<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
 													<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
-														{ele.data().info.price}
+														{charger.data().info.price}
 													</Typography>
 												</Box>
 												<Box sx={{ display: 'flex' }}>
-													<Button onClick={bookingHandler} variant="contained" sx={{
+													<Button onClick={() => { bookingHandler(charger); }} variant="contained" sx={{
 														backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
 														textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
 													}}>Book Now</Button>
@@ -245,21 +248,21 @@ const DashboardMap = ({
 						</Marker>
 
 						{
-							chargers && chargers.map((ele, index) => {
+							chargers && chargers.map((charger, index) => {
 								return (
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
-										position={[ele.data().g.geopoint.latitude, ele.data().g.geopoint.longitude]} >
+										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]} >
 										<Popup>
-											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.chargersImageUrl}></Box>
 											<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{charger.data().info.stationName}</Typography>
 												<Chip label="Available" color="success" size="small" variant="contained" />
 											</Box>
-											<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+											<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{charger.data().info.address}</Typography>
 											<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
 												<Box sx={{ display: 'flex', }}>
 													<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
-													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{charger.data().info.chargerType}</Typography>
 												</Box>
 												<Box sx={{ display: 'flex' }} >
 													<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
@@ -281,11 +284,11 @@ const DashboardMap = ({
 												<Box sx={{ display: 'flex' }} >
 													<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
 													<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
-														{ele.data().info.price}
+														{charger.data().info.price}
 													</Typography>
 												</Box>
 												<Box sx={{ display: 'flex' }}>
-													<Button onClick={bookingHandler} variant="contained" sx={{
+													<Button onClick={() => { bookingHandler(charger); }} variant="contained" sx={{
 														backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
 														textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
 													}}>Book Now</Button>

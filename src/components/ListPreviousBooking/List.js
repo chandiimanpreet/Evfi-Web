@@ -4,7 +4,7 @@ import FilterGroup from '../Filters/FilterGroup';
 import { chargerTypeOptions, sortByOptions } from '../../constants';
 import {
 	FormControl, InputAdornment, Input, Accordion, AccordionDetails, Button, AccordionSummary, Box,
-	Typography,
+	Typography, Link
 } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,9 +14,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
 
-const List = ({ searchedData, collectCardData, user }) => {
+const List = ({ collectCardData, user, book }) => {
 
 	//States
+	const [show, setShow] = useState("pending");
 	const [showFilter, setShowFilter] = useState(false);
 	const [cardData, setCardData] = useState('');
 	const [selectedFilters, setSelectedFilters] = useState({
@@ -55,6 +56,8 @@ const List = ({ searchedData, collectCardData, user }) => {
 	useEffect(() => {
 		collectCardData(cardData);
 	}, [cardData, collectCardData]);
+
+	console.log(book)
 
 	return (
 		<Fragment>
@@ -122,12 +125,42 @@ const List = ({ searchedData, collectCardData, user }) => {
 						</Accordion>
 					</Box>
 
+					<Box marginX={2} paddingY={2} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+						<Box sx={{ display: 'flex', gap: '1rem' }} >
+							<Link style={{
+								textDecoration: show === 'pending' ? 'underline' : 'none',
+								fontSize: '1rem',
+								textUnderlineOffset: '8px',
+								color: 'antiquewhite', cursor: 'pointer',
+							}}
+								onClick={() => setShow("pending")}>
+								Pending
+							</Link>
+							<Link style={{
+								textDecoration: show === 'recent' ? 'underline' : 'none', fontSize: '1rem',
+								textUnderlineOffset: '8px',
+								color: 'antiquewhite', cursor: 'pointer',
+							}}
+								onClick={() => setShow("recent")}>
+								Recent
+							</Link>
+						</Box>
+					</Box>
+
 					<Box className={classes.searchResultsContainer}>
-						{searchedData.map((result) => (
-							<Box onClick={() => { handleCardData(result) }} sx={{ marginBottom: '10px' }} key={result.id}>
-								<ListItem user={user} result={result} />
-							</Box>
-						))}
+						{
+							show === "pending" ?
+								book.map((ele, idx) => ((ele.status === 1 || ele.status === 2 || ele.status === 0) &&
+									<Box onClick={() => { handleCardData(ele) }} sx={{ marginBottom: '10px' }} key={idx}>
+										<ListItem user={user} result={ele} />
+									</Box>
+								)) :
+								book.map((ele, idx) => ((ele.status === -1 || ele.status === -2 || ele.status === 3) &&
+									<Box onClick={() => { handleCardData(ele) }} sx={{ marginBottom: '10px' }} key={idx}>
+										<ListItem user={user} result={ele} />
+									</Box>
+								))
+						}
 					</Box>
 				</Box>
 			</Box>

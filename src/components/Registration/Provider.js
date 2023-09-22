@@ -1,22 +1,22 @@
-import React, {  useState, } from 'react';
-import {  Navigate } from 'react-router-dom';
+import React, { useState, } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
 	FormControl, MenuItem, InputLabel, Select, Box, TextField, Button, Typography, Grid,
 	Chip, Fade, Modal, Backdrop
 } from '@mui/material';
 import { useStyles, otpStyle } from '../../pages/auths/style';
-import { addCharger} from '../../utils/auth/user';
+import { addCharger } from '../../utils/auth/user';
 import ModalMap from './ModalMap';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import {countriesStateCitiesData} from '../../utils/timezone/countriesStateCitiesData';
+import { countriesStateCitiesData } from '../../utils/timezone/countriesStateCitiesData';
 import { connect } from 'react-redux';
-import { addChargerAction,addUserData,setError } from '../../actions';
+import { addChargerAction, addUserData, setError } from '../../actions';
 
-const Provider = ({  userData,addChargerAction,setError }) => {
+const Provider = ({ userData, addChargerAction, setError }) => {
 
 	// States
 	const [open, setOpen] = useState(false);
@@ -116,9 +116,9 @@ const Provider = ({  userData,addChargerAction,setError }) => {
 									<InputLabel id="types">Charger Type</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
 										label="Charger Type" onChange={changeDataHandler} multiple >
-										<MenuItem value={'a'}>Type A</MenuItem>
-										<MenuItem value={'b'}>Type B</MenuItem>
-										<MenuItem value={'c'}>Type C</MenuItem>
+										<MenuItem value={'Level 1'}>Level 1</MenuItem>
+										<MenuItem value={'Level 2'}>Level 2</MenuItem>
+										<MenuItem value={'Level 3'}>Level 3</MenuItem>
 									</Select>
 								</FormControl>
 							</Grid>

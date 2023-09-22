@@ -1,6 +1,7 @@
 import L from "leaflet";
 import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
+import { nearByChargers } from "./script";
 
 const createRoutineMachineLayer = ({ searchCoordinates }) => {
     
@@ -22,6 +23,7 @@ const createRoutineMachineLayer = ({ searchCoordinates }) => {
         fitSelectedRoutes: true,
         showAlternatives: false,
     });
+    instance.on("routesfound", async (e) => { nearByChargers(e); })
 
     return instance;
 };
