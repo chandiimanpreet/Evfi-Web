@@ -126,7 +126,8 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                 const uploadResult = await uploadBytes(aadharImageRef, img);
                 aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
             }
-            const docRef = await addDoc(collection(db, 'chargers'), {
+            const docRef=doc(collection(db, 'chargers'));
+            await setDoc(docRef, {
                 userId: auth.currentUser.uid,
                 g: {
                     geopoint: new GeoPoint(chargerData.chargerLocation.lat, chargerData.chargerLocation.lng),
@@ -144,6 +145,7 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                     mileage: '',
                     vehicleManufacturer: '',
                     vehicleRegistration: '',
+                    id:docRef.id
                 }
             });
             await setDoc(doc(db, 'user', auth.currentUser.uid), {
@@ -157,18 +159,21 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
     })
 };
 
-export const requestCharger = (chargerData, timeSlot, user) => {
+export const requestCharger = (chargerData, user) => {
     return new Promise(async (resolve, reject) => {
         try {
             const auth = getAuth().currentUser.uid;
             const db = getFirestore();
-
+            console.log(chargerData);
             const data = {
                 status: 1,
                 userId: auth,
                 chargerId: chargerData.id,
-                timeSlot: timeSlot,
-                price: chargerData.data().info.price,
+                timeSlot:{
+                    from:new Timestamp(new Date(chargerData.start['$d']).getTime() / 1000, 0),
+                    end:new Timestamp(new Date(chargerData.end['$d']).getTime() / 1000, 0)
+                },
+                price: chargerData.info.price,
             }
             try {
                 await addDoc(collection(db, "booking"), data);
