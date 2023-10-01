@@ -23,7 +23,7 @@ const ListItem = ({ result, user }) => {
 	// Handlers
 
 	const fetchData = async () => {
-		const res = await getParticularUser(result.userId, result.chargerId);
+		const res = await getParticularUser(result.uId, result.chargerId);
 		setRequestedChargerData(res);
 	};
 
@@ -32,7 +32,7 @@ const ListItem = ({ result, user }) => {
 		// eslint-disable-next-line
 	}, []);
 
-	console.log(requestedChargerData?.charger?.info?.imageUrl[0])
+	// console.log(requestedChargerData?.charger?.info?.imageUrl[0])
 
 	return (
 		<Box className={classes.listItemStyle} sx={{ minWidth: `${searchedData.length > 4 ? '40rem' : '41rem'}`, }}>

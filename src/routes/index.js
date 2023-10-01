@@ -45,7 +45,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
             const bookingRef = collection(db, 'booking');
 
             onSnapshot(bookingRef, (snapshot) => {
-                setBooking(snapshot.docs.map((doc) => ({ ...doc.data(), bookingId: doc.id })).filter((book) => book?.userId === userData.user?.uid));
+                setBooking(snapshot.docs.map((doc) => ({ ...doc.data(), bookingId: doc.id })).filter((book) => book?.uId === userData.user?.uid));
                 setProvider(snapshot.docs.map((doc) => ({ ...doc.data(), bookingId: doc.id })).filter((prov) => prov?.chargerId === userData.chargers[0]));
             }, (error) => {
                 console.log(error);

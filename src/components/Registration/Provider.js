@@ -34,8 +34,8 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		chargerType: [],
 		price: "",
 		hostName: "",
-		openingTime: null,
-		closingTime: null,
+		start: null,
+		end: null,
 	});
 
 	// Styles
@@ -59,7 +59,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 	};
 
 	const timingHandler = (e, flag) => {
-		flag ? setUserData({ ...data, 'openingTime': e }) : setUserData({ ...data, 'closingTime': e });
+		flag ? setUserData({ ...data, start: e }) : setUserData({ ...data, end: e });
 	}
 
 	const chipDeleteHandle = (item, flag) => () => {
@@ -75,6 +75,9 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		if (data.chargerLocation !== null && data.openingTime !== null && data.openingTime !== null) {
 			setShow("Uploading Data...")
 			try {
+				const timeFormat = new Intl.DateTimeFormat('en-In', { timeStyle: 'short' });
+				data.start = timeFormat.format(data.start['$d']).toUpperCase();
+				data.end = timeFormat.format(data.end['$d']).toUpperCase();
 				const res = await addCharger(data, chargerArea, aadhaarCard);
 				addChargerAction(res.chargerId);
 			} catch (error) {
@@ -195,7 +198,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
 										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={(e) => { timingHandler(e, true) }}
-											variant='outlined' label='Opening Time' value={data.openingTime} />
+											variant='outlined' label='Opening Time' value={data.start} />
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
@@ -203,7 +206,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimeField']}>
 										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={(e) => { timingHandler(e, false) }}
-											variant='outlined' label='Closing Time' value={data.closingTime} />
+											variant='outlined' label='Closing Time' value={data.end} />
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
