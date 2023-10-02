@@ -3,7 +3,6 @@ import { GeoPoint, addDoc, arrayUnion, collection, doc, getDoc, getFirestore, se
 import { Geohash } from "../queries/searchQueries";
 import { initializeApp } from "firebase/app";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { Timestamp } from 'firebase/firestore';
 import firebaseConfig from "../config/firebaseConfig";
 
 const app = initializeApp(firebaseConfig)
@@ -111,12 +110,12 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
         const auth = getAuth();
         const db = getFirestore();
         try {
-            const chargersImageUrl = [];
+            const imageUrl = [];
 
             for (const img of chargerImages) {
                 const chargersImageRef = ref(storage, `chargers/${auth.currentUser.uid}/${img.name}`);
                 const uploadResult = await uploadBytes(chargersImageRef, img);
-                chargersImageUrl.push(await getDownloadURL(uploadResult.ref));
+                imageUrl.push(await getDownloadURL(uploadResult.ref));
             }
 
             const aadharImagesUrl = [];
@@ -126,24 +125,21 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                 const uploadResult = await uploadBytes(aadharImageRef, img);
                 aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
             }
-            const docRef = await addDoc(collection(db, 'chargers'), {
-                userId: auth.currentUser.uid,
+            const chargerLocation = chargerData.chargerLocation;
+            delete chargerData.chargerLocation;
+            const docRef = doc(collection(db, 'chargers'));
+            console.log(chargerData);
+            await setDoc(docRef, {
+                uid: auth.currentUser.uid,
+                chargerId: docRef.id,
                 g: {
-                    geopoint: new GeoPoint(chargerData.chargerLocation.lat, chargerData.chargerLocation.lng),
-                    geohash: Geohash.encode(chargerData.chargerLocation.lat, chargerData.chargerLocation.lng, 9)
+                    geopoint: new GeoPoint(chargerLocation.lat, chargerLocation.lng),
+                    geohash: Geohash.encode(chargerLocation.lat, chargerLocation.lng, 9)
                 },
                 info: {
                     ...chargerData,
-                    chargerLocation: null,
-                    openingTime: new Timestamp(new Date(chargerData.openingTime['$d']).getTime() / 1000, 0),
-                    closingTime: new Timestamp(new Date(chargerData.closingTime['$d']).getTime() / 1000, 0),
                     aadharImagesUrl,
-                    chargersImageUrl,
-                    batteryCapacity: '',
-                    chargerInfo: '',
-                    mileage: '',
-                    vehicleManufacturer: '',
-                    vehicleRegistration: '',
+                    imageUrl,
                 }
             });
             await setDoc(doc(db, 'user', auth.currentUser.uid), {
@@ -157,18 +153,22 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
     })
 };
 
-export const requestCharger = (chargerData, timeSlot, user) => {
+export const requestCharger = (chargerData, user) => {
     return new Promise(async (resolve, reject) => {
         try {
             const auth = getAuth().currentUser.uid;
             const db = getFirestore();
-
+            console.log(chargerData);
+            const timeFormat = new Intl.DateTimeFormat('en-In', { timeStyle: 'short' });
+            const dateFormat=Intl.DateTimeFormat('en-In',{day:'numeric',month:'long',year:'numeric'});
             const data = {
                 status: 1,
-                userId: auth,
-                chargerId: chargerData.id,
-                timeSlot: timeSlot,
-                price: chargerData.data().info.price,
+                uId: auth,
+                chargerId: chargerData.chargerId,
+                providerId: chargerData.uid,
+                timeSlot:(timeFormat.format(new Date(chargerData.start['$d']))+" - "+timeFormat.format(new Date(chargerData.end['$d']))).toUpperCase(),
+                price: chargerData.info.price,
+                bookingDate:dateFormat.format(new Date())
             }
             try {
                 await addDoc(collection(db, "booking"), data);

@@ -23,7 +23,7 @@ const ListItem = ({ result, user }) => {
 	// Handlers
 
 	const fetchData = async () => {
-		const res = await getParticularUser(result.userId, result.chargerId);
+		const res = await getParticularUser(result.uId, result.chargerId);
 		setRequestedChargerData(res);
 	};
 
@@ -32,7 +32,7 @@ const ListItem = ({ result, user }) => {
 		// eslint-disable-next-line
 	}, []);
 
-	console.log(requestedChargerData?.charger?.info?.imageUrl[0])
+	// console.log(requestedChargerData?.charger?.info?.imageUrl[0])
 
 	return (
 		<Box className={classes.listItemStyle} sx={{ minWidth: `${searchedData.length > 4 ? '40rem' : '41rem'}`, }}>
@@ -57,8 +57,6 @@ const ListItem = ({ result, user }) => {
 					</Box>
 					<Box className={classes.card} sx={{ marginTop: '.8rem', padding: '4px 0px', }}>
 						<Box className={classes.card} sx={{ marginTop: '.8rem', }}>
-							<Typography className={classes.cardTextStyle} sx={{ marginRight: '4px', marginTop: '3px' }}>Status:</Typography>
-							<Typography className={classes.cardTextStyle} sx={{ marginRight: '4px', marginTop: '3px' }}>{result?.status}</Typography>
 							<Chip label={(result?.status === 1 && 'Requested') || (result?.status === 2 && 'Accepted') || (result?.status === 0 && 'Charging...')
 								|| (result?.status === -2 && 'Canceled by you') || (result?.status === -1 && 'Declined by provider') || (result?.status === 3 && 'Charging Completed')}
 								color={(result?.status === 1 && 'success') || (result?.status === 2 && 'primary') || (result?.status === 0 && 'secondary')
