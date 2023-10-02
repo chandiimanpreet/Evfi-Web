@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
@@ -12,6 +12,14 @@ export default function ChargerPopup({ ele, bookingHandler}) {
     const [showSlot, setShowSlot] = useState(false);
     const [start,setStart]=useState(null);
     const [end,setEnd]=useState(null);
+
+    useEffect(()=>{
+
+        return ()=>{
+            setShowSlot(false);
+        }
+
+    },[])
 
     return (
         <Popup>

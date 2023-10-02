@@ -57,8 +57,6 @@ const ListItem = ({ result, user }) => {
 					</Box>
 					<Box className={classes.card} sx={{ marginTop: '.8rem', padding: '4px 0px', }}>
 						<Box className={classes.card} sx={{ marginTop: '.8rem', }}>
-							<Typography className={classes.cardTextStyle} sx={{ marginRight: '4px', marginTop: '3px' }}>Status:</Typography>
-							<Typography className={classes.cardTextStyle} sx={{ marginRight: '4px', marginTop: '3px' }}>{result?.status}</Typography>
 							<Chip label={(result?.status === 1 && 'Requested') || (result?.status === 2 && 'Accepted') || (result?.status === 0 && 'Charging...')
 								|| (result?.status === -2 && 'Canceled by you') || (result?.status === -1 && 'Declined by provider') || (result?.status === 3 && 'Charging Completed')}
 								color={(result?.status === 1 && 'success') || (result?.status === 2 && 'primary') || (result?.status === 0 && 'secondary')
