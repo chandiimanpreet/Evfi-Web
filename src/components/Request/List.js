@@ -14,9 +14,12 @@ const List = ({ data, show, user }) => {
 
     // Handlers
     const fetchData = async () => {
-        console.log(data);
-        const res = await getParticularUser(data.uId, data.chargerId);
-        setRequestedUserData(res);
+        try {
+            const res = await getParticularUser(data.uId, data.chargerId);
+            setRequestedUserData(res);
+        } catch (err) {
+            console.log(err)            
+        }
     };
 
     useEffect(() => {

@@ -24,6 +24,8 @@ const DashboardMap = ({
 	searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
 	setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates, user }) => {
 
+	console.log(card.charger)
+
 	// Constants
 	const location = useLocation();
 
@@ -146,7 +148,7 @@ const DashboardMap = ({
 										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}
 									>
 										<Popup>
-											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.chargersImageUrl}></Box>
+											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.imageUrl[0]}></Box>
 											<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{charger.data().info.stationName}</Typography>
 												<Chip label="Available" color="success" size="small" variant="contained" />
@@ -209,7 +211,7 @@ const DashboardMap = ({
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
 										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]} >
 										<Popup>
-											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.chargersImageUrl}></Box>
+											<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={charger.data().info.imageUrl[0]}></Box>
 											<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 												<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{charger.data().info.stationName}</Typography>
 												<Chip label="Available" color="success" size="small" variant="contained" />
@@ -266,8 +268,8 @@ const DashboardMap = ({
 					/>
 				}
 				{
-					card.coordinates !== undefined && (
-						<Mark cardDetails={card} />
+					card.charger?.g && card.charger?.g && (
+						<Mark cardDetails={card.charger} />
 					)
 				}
 			</MapContainer >
@@ -289,7 +291,10 @@ const DashboardMap = ({
 
 const Mark = ({ cardDetails }) => {
 
-	const { name, location, type, rating, img, coordinates } = cardDetails;
+	console.log(cardDetails)
+
+	const latitude = cardDetails?.g.geopoint.latitude;
+	const longitude = cardDetails?.g.geopoint.longitude;
 
 	// States
 	const map = useMap();
@@ -303,39 +308,59 @@ const Mark = ({ cardDetails }) => {
 	// Handlers
 
 	useEffect(() => {
-		if (markerRef.current) {
+		if (latitude !== undefined && longitude !== undefined) {
 			markerRef.current.openPopup();
-		}
-	}, [markerRef]);
-
-
-	useEffect(() => {
-		if (coordinates !== undefined) {
 			map.flyTo(
-				[coordinates.latitude, coordinates.longitude],
+				[latitude, longitude],
 				13,
 				{ duration: 1 }
 			);
 		}
-	}, [map, coordinates]);
+	}, [map, latitude, longitude]);
 
-	if (!coordinates) {
-		return null; // Handle case when coordinates are undefined
-	}
 	return (
-		<Marker position={[coordinates.latitude, coordinates.longitude]} icon={markerIcon} ref={markerRef}>
+		<Marker icon={markerIcon} draggable={false}
+			position={[cardDetails.g.geopoint.latitude, cardDetails.g.geopoint.longitude]} ref={markerRef}>
 			<Popup>
-				<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={img}></Box>
-				<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{name}</Typography>
-				<Typography sx={{ fontSize: 13, color: '#797575', margin: '0px !important' }}>{location}</Typography>
+				<Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={cardDetails.info.imageUrl[0]}></Box>
 				<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-					<Box sx={{ display: 'flex' }}>
+					<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{cardDetails.info.stationName}</Typography>
+					<Chip label="Available" color="success" size="small" variant="contained" />
+				</Box>
+				<Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{cardDetails.info.address}</Typography>
+				<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
+					<Box sx={{ display: 'flex', }}>
 						<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
-						<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{type}</Typography>
+						<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{cardDetails.info.chargerType}</Typography>
 					</Box>
 					<Box sx={{ display: 'flex' }} >
 						<Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
-						<Ratings rating={rating} />
+						<Ratings rating={4} />
+					</Box>
+				</Box>
+				<Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
+					<Box sx={{ display: 'flex' }}>
+						<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
+						<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>9:00 AM</Typography>
+					</Box>
+					<Box sx={{ display: 'flex' }} >
+						<Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
+						<Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>8:00 PM</Typography>
+					</Box>
+				</Box>
+				<Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
+
+					<Box sx={{ display: 'flex' }} >
+						<CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
+						<Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
+							{cardDetails.info.price}
+						</Typography>
+					</Box>
+					<Box sx={{ display: 'flex' }}>
+						<Button variant="contained" sx={{
+							backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
+							textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
+						}}>Book Now</Button>
 					</Box>
 				</Box>
 			</Popup>

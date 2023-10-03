@@ -2,7 +2,7 @@ const initialState = {
     chargerId: '',
     status: '',
     timeSlot: '',
-    userId: '',
+    uId: '',
     price: '',
 }
 
@@ -20,7 +20,7 @@ const bookingReducer = (state = initialState, action) => {
                 chargerInfo: null,
                 status: '',
                 timeSlot: '',
-                uid: '',
+                uId: '',
             }
         default:
             return state

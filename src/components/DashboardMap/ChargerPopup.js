@@ -27,7 +27,7 @@ export default function ChargerPopup({ ele, bookingHandler}) {
                 {
                     !showSlot ?
                         (<>
-                            <Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.chargersImageUrl}></Box>
+                            <Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.imageUrl[0]}></Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
                                 <Chip label="Available" color="success" size="small" variant="contained" />

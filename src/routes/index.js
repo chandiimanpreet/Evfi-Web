@@ -37,6 +37,9 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
         setMotionDirection(index > currentPageIndex.current ? "100vw" : "-100vw");
         currentPageIndex.current = index;
     };
+    // console.log(provider)
+    console.log(Object.values(provider))
+    console.log(Object.values(booking))
 
     useEffect(() => {
         const getBooking = (userData) => {
@@ -46,7 +49,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
 
             onSnapshot(bookingRef, (snapshot) => {
                 setBooking(snapshot.docs.map((doc) => ({ ...doc.data(), bookingId: doc.id })).filter((book) => book?.uId === userData.user?.uid));
-                setProvider(snapshot.docs.map((doc) => ({ ...doc.data(), bookingId: doc.id })).filter((prov) => prov?.chargerId === userData.chargers[0]));
+                setProvider(snapshot.docs.map((doc) => ({ ...doc.data(), bookingId: doc.id })).filter((prov) => prov?.providerId === userData.user?.uid));
             }, (error) => {
                 console.log(error);
             });
