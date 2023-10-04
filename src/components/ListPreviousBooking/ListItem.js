@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import searchedData from '../../utils/searchedData';
 // import Ratings from '../Rating';
 // import { CurrencyRupee } from '@mui/icons-material';
@@ -9,11 +9,6 @@ import { getParticularUser } from '../../utils/auth/user';
 
 const ListItem = ({ result, user }) => {
 
-	// const { name, location, type, isAvailable, price, rating, img } = result;
-
-	// Constants
-	// const navigate = useNavigate();
-
 	// States
 	const [requestedChargerData, setRequestedChargerData] = useState(null);
 
@@ -21,10 +16,13 @@ const ListItem = ({ result, user }) => {
 	const classes = useStyles();
 
 	// Handlers
-
 	const fetchData = async () => {
-		const res = await getParticularUser(result.uId, result.chargerId);
-		setRequestedChargerData(res);
+		try {
+			const res = await getParticularUser(result.uId, result.chargerId);
+			setRequestedChargerData(res);
+		} catch (err) {
+			console.log(err)
+		}
 	};
 
 	useEffect(() => {
@@ -32,7 +30,6 @@ const ListItem = ({ result, user }) => {
 		// eslint-disable-next-line
 	}, []);
 
-	// console.log(requestedChargerData?.charger?.info?.imageUrl[0])
 
 	return (
 		<Box className={classes.listItemStyle} sx={{ minWidth: `${searchedData.length > 4 ? '40rem' : '41rem'}`, }}>

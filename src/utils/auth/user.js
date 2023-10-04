@@ -116,14 +116,15 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                 const chargersImageRef = ref(storage, `chargers/${auth.currentUser.uid}/${img.name}`);
                 const uploadResult = await uploadBytes(chargersImageRef, img);
                 imageUrl.push(await getDownloadURL(uploadResult.ref));
+                imageUrl.push(await getDownloadURL(uploadResult.ref));
             }
 
-            const aadharImagesUrl = [];
+            const aadharImages = [];
 
             for (const img of idproofImages) {
                 const aadharImageRef = ref(storage, `id_proofs/${img.name + auth.currentUser.uid}`);
                 const uploadResult = await uploadBytes(aadharImageRef, img);
-                aadharImagesUrl.push(await getDownloadURL(uploadResult.ref));
+                aadharImages.push(await getDownloadURL(uploadResult.ref));
             }
             const chargerLocation = chargerData.chargerLocation;
             delete chargerData.chargerLocation;
@@ -138,7 +139,7 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                 },
                 info: {
                     ...chargerData,
-                    aadharImagesUrl,
+                    aadharImages,
                     imageUrl,
                 }
             });

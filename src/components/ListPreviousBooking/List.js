@@ -13,6 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
+import { getParticularUser } from '../../utils/auth/user';
 
 const List = ({ collectCardData, user, book }) => {
 
@@ -50,6 +51,7 @@ const List = ({ collectCardData, user, book }) => {
 
 	const handleCardData = useCallback((result) => {
 		console.log("clicked");
+		console.log(result);
 		setCardData(result);
 	}, [setCardData]);
 
@@ -58,6 +60,21 @@ const List = ({ collectCardData, user, book }) => {
 	}, [cardData, collectCardData]);
 
 	console.log(book)
+
+	const fetchData = async (charger) => {
+		console.log(charger)
+		try {
+			const res = await getParticularUser(charger?.uId, charger?.chargerId);
+			handleCardData(res);
+		} catch (err) {
+			console.log(err)			
+		}
+	};
+
+	// useEffect(() => {
+	// 	// fetchData();
+	// 	// eslint-disable-next-line
+	// }, [setCardData]);
 
 	return (
 		<Fragment>
@@ -151,12 +168,12 @@ const List = ({ collectCardData, user, book }) => {
 						{
 							show === "pending" ?
 								book.map((ele, idx) => ((ele.status === 1 || ele.status === 2 || ele.status === 0) &&
-									<Box onClick={() => { handleCardData(ele) }} sx={{ marginBottom: '10px' }} key={idx}>
+									<Box onClick={() => { fetchData(ele);  }} sx={{ marginBottom: '10px' }} key={idx}>
 										<ListItem user={user} result={ele} />
 									</Box>
 								)) :
 								book.map((ele, idx) => ((ele.status === -1 || ele.status === -2 || ele.status === 3) &&
-									<Box onClick={() => { handleCardData(ele) }} sx={{ marginBottom: '10px' }} key={idx}>
+									<Box onClick={() => { fetchData(ele);  }} sx={{ marginBottom: '10px' }} key={idx}>
 										<ListItem user={user} result={ele} />
 									</Box>
 								))

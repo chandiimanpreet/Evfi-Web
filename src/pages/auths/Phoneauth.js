@@ -174,6 +174,7 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
 							onChange={num => { setPhoneNo(num); }}
 							inputProps='true'
+							specialLabel=''
 						/>
 
 						<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} />}
