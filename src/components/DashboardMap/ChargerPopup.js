@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
@@ -7,19 +7,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { Popup } from 'react-leaflet';
 
-export default function ChargerPopup({ ele, bookingHandler}) {
+export default function ChargerPopup({ ele, bookingHandler }) {
 
     const [showSlot, setShowSlot] = useState(false);
-    const [start,setStart]=useState(null);
-    const [end,setEnd]=useState(null);
-
-    useEffect(()=>{
-
-        return ()=>{
-            setShowSlot(false);
-        }
-
-    },[])
+    const [start, setStart] = useState(null);
+    const [end, setEnd] = useState(null);
 
     return (
         <Popup>
@@ -27,16 +19,16 @@ export default function ChargerPopup({ ele, bookingHandler}) {
                 {
                     !showSlot ?
                         (<>
-                            <Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.data().info.imageUrl[0]}></Box>
+                            <Box component='img' sx={{ height: 150, width: 300, borderRadius: '15px' }} alt='Charging Station' src={ele.info.imageUrl[0]}></Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.data().info.stationName}</Typography>
+                                <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.info.stationName}</Typography>
                                 <Chip label="Available" color="success" size="small" variant="contained" />
                             </Box>
-                            <Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.data().info.address}</Typography>
+                            <Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.info.address}</Typography>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
                                 <Box sx={{ display: 'flex', }}>
                                     <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Charging Type:{' '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.data().info.chargerType}</Typography>
+                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.info.chargerType}</Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex' }} >
                                     <Typography sx={{ fontSize: '.75rem', margin: '0px !important', }}>Ratings{' '}</Typography>
@@ -46,11 +38,11 @@ export default function ChargerPopup({ ele, bookingHandler}) {
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
                                 <Box sx={{ display: 'flex' }}>
                                     <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>9:00 AM</Typography>
+                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.info.start}</Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex' }} >
                                     <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>8:00 PM</Typography>
+                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>{ele.info.end}</Typography>
                                 </Box>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
@@ -58,7 +50,7 @@ export default function ChargerPopup({ ele, bookingHandler}) {
                                 <Box sx={{ display: 'flex' }} >
                                     <CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
                                     <Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
-                                        {ele.data().info.price}
+                                        {ele.info.price}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -86,7 +78,7 @@ export default function ChargerPopup({ ele, bookingHandler}) {
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
-                            bookingHandler({...ele.data(),start,end});
+                            bookingHandler({ ...ele, start, end });
                             setShowSlot(false);
                             setStart(null);
                             setEnd(null);
