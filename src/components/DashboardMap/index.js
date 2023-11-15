@@ -50,10 +50,11 @@ const DashboardMap = ({
 
 	// Handlers
 	const bookingHandler = async (charger) => {
-		// if (user.level2.mileage === '') {
-		// 	navigate('/register/level2?redirectTo=Home');
-		// }
-		await requestCharger(charger, user)
+		try {
+			await requestCharger(charger, user)
+		} catch (err) {
+			console.log(err)			
+		}
 	};
 
 	const setcurrentmarker = useCallback(() => {
@@ -64,14 +65,8 @@ const DashboardMap = ({
 
 		query.get().then((value) => {
 			setCurrentchargers(value.docs);
-			console.log(value.docs);
 		});
 	}, [position]);
-
-	useEffect(() => {
-		console.log(currentLocationChargers)
-		console.log(chargers)
-	}, [currentLocationChargers, chargers])
 
 	useEffect(() => {
 		if (position) {
@@ -94,7 +89,6 @@ const DashboardMap = ({
 
 			query.get().then((value) => {
 				setCurrentLocationChargers(value.docs);
-				console.log(value.docs);
 			});
 		}
 	}, [searchLocationCoordinates, uselocation.pathname]);
@@ -180,8 +174,8 @@ const DashboardMap = ({
 					/>
 				}
 				{
-					card.charger?.g && card.charger?.g && (
-						<Mark cardDetails={card.charger} bookingHandler={bookingHandler} />
+					card.chargerData?.g && card.chargerData?.g && (
+						<Mark cardDetails={card.chargerData} bookingHandler={bookingHandler} />
 					)
 				}
 			</MapContainer >
@@ -203,8 +197,6 @@ const DashboardMap = ({
 
 const Mark = ({ cardDetails, bookingHandler }) => {
 
-	console.log(cardDetails)
-
 	const latitude = cardDetails?.g.geopoint.latitude;
 	const longitude = cardDetails?.g.geopoint.longitude;
 
@@ -218,7 +210,6 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 	});
 
 	// Handlers
-
 	useEffect(() => {
 		if (latitude !== undefined && longitude !== undefined) {
 			markerRef.current.openPopup();
@@ -226,8 +217,8 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 				[latitude, longitude],
 				13,
 				{ duration: 1 }
-			);
-		}
+				);
+			}
 	}, [map, latitude, longitude]);
 
 	return (

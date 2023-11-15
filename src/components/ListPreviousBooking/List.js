@@ -1,6 +1,13 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
+import React, { useState, Fragment, useEffect, useMemo } from 'react';
 import ListItem from './ListItem';
 import FilterGroup from '../Filters/FilterGroup';
+import {
+	STATUS_CANCELED, STATUS_REQUESTED,
+	STATUS_ACCEPTED,
+	STATUS_DECLINED,
+	STATUS_CHARGING_COMPLETED,
+	STATUS_CHARGING,
+} from '../../constants';
 import { chargerTypeOptions, sortByOptions } from '../../constants';
 import {
 	FormControl, InputAdornment, Input, Accordion, AccordionDetails, Button, AccordionSummary, Box,
@@ -13,20 +20,21 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
-import { getParticularUser } from '../../utils/auth/user';
+import { getUserAndChargers } from '../../utils/auth/user';
 
-const List = ({ collectCardData, user, book }) => {
+const List = ({ setFetchChargerFromList, user, userBooking }) => {
 
 	//States
 	const [show, setShow] = useState("pending");
 	const [showFilter, setShowFilter] = useState(false);
-	const [cardData, setCardData] = useState('');
 	const [selectedFilters, setSelectedFilters] = useState({
 		chargerType: [],
 		sortBy: '',
 		from: null,
 		to: null,
 	});
+	const [pendingBookings, setPendingBookings] = useState(null);
+	const [recentBookings, setRecentBookings] = useState(null);
 
 	//Styling
 	const classes = useStyles();
@@ -49,36 +57,42 @@ const List = ({ collectCardData, user, book }) => {
 		}))
 	};
 
-	const handleCardData = useCallback((result) => {
-		console.log("clicked");
-		console.log(result);
-		setCardData(result);
-	}, [setCardData]);
+	const fetchData = (charger) => setFetchChargerFromList(charger);
+
+	const pendingBookingsInfo = useMemo(() => {
+		return userBooking.filter((charger) =>
+			charger.status === STATUS_REQUESTED || charger.status === STATUS_ACCEPTED || charger.status === STATUS_CHARGING
+		);
+	}, [userBooking]);
+
+	console.log(pendingBookingsInfo)
+
+	const recentBookingsInfo = useMemo(() => {
+		return userBooking.filter((charger) =>
+			charger.status === STATUS_DECLINED || charger.status === STATUS_CANCELED || charger.status === STATUS_CHARGING_COMPLETED
+		);
+	}, [userBooking]);
 
 	useEffect(() => {
-		collectCardData(cardData);
-	}, [cardData, collectCardData]);
+		const helperFunction = async () => {
+			const response1 = await Promise.all(pendingBookingsInfo.map(async (charger) => {
+				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId];
+			}));
 
-	console.log(book)
-
-	const fetchData = async (charger) => {
-		console.log(charger)
-		try {
-			const res = await getParticularUser(charger?.uId, charger?.chargerId);
-			handleCardData(res);
-		} catch (err) {
-			console.log(err)			
+			setPendingBookings(response1);
+			const response2 = await Promise.all(recentBookingsInfo.map(async (charger) => {
+				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot];
+			}));
+			setRecentBookings(response2);
 		}
-	};
-
-	// useEffect(() => {
-	// 	// fetchData();
-	// 	// eslint-disable-next-line
-	// }, [setCardData]);
+		helperFunction();
+	}, [pendingBookingsInfo, recentBookingsInfo]);
 
 	return (
 		<Fragment>
-			<Box className={classes.outerBox} >
+			<Box className={classes.outerBox}>
 				<Box>
 					<Box sx={{ padding: '11px 8px 2px 8px', display: 'flex', justifyContent: 'space-between', }} >
 						<FormControl variant="standard" fullWidth>
@@ -167,21 +181,24 @@ const List = ({ collectCardData, user, book }) => {
 					<Box className={classes.searchResultsContainer}>
 						{
 							show === "pending" ?
-								book.map((ele, idx) => ((ele.status === 1 || ele.status === 2 || ele.status === 0) &&
-									<Box onClick={() => { fetchData(ele);  }} sx={{ marginBottom: '10px' }} key={idx}>
-										<ListItem user={user} result={ele} />
-									</Box>
-								)) :
-								book.map((ele, idx) => ((ele.status === -1 || ele.status === -2 || ele.status === 3) &&
-									<Box onClick={() => { fetchData(ele);  }} sx={{ marginBottom: '10px' }} key={idx}>
-										<ListItem user={user} result={ele} />
-									</Box>
-								))
+								!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
+									pendingBookings?.map(([chargerData, status, timeSlot, bookingId]) => ({ chargerData, status, timeSlot, bookingId })).map((charger, idx) => (
+										<Box sx={{ marginBottom: '10px' }} key={idx} onClick={() => { fetchData(charger) }} >
+											<ListItem data={charger} show={show} />
+										</Box>
+									)))
+								:
+								!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
+									recentBookings?.map(([chargerData, status, timeSlot]) => ({ chargerData, status, timeSlot })).map((charger, idx) => (
+										<Box sx={{ marginBottom: '10px' }} key={idx} onClick={() => { fetchData(charger) }} >
+											<ListItem data={charger} show={show} />
+										</Box>
+									)))
 						}
 					</Box>
 				</Box>
 			</Box>
-		</Fragment >
+		</Fragment>
 	);
 };
 

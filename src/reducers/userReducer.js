@@ -13,7 +13,6 @@ const userReducer = (state = initialState, action) => {
                 chargers: action.payload.chargers,
             }
         case 'ADD_USER_DATA':
-            console.log("object");
             return {
                 ...state, user: {
                     ...state.user,

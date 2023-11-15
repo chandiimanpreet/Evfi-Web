@@ -31,8 +31,6 @@ const Profile = ({ direction, logoutUser, userData }) => {
         logoutUser();
     };
 
-    console.log(userData.user);
-
     return (
         <motion.Box key="pr" initial={{ x: direction }} animate={{ x: 0 }}
             transition={{ duration: 0.25, delay: 0 }} className={classes.root}

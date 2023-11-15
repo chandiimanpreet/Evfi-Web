@@ -1,18 +1,21 @@
 const initialState = {
-    status: '',
-    timeSlot: '',
-    userId: '',
+    bookings: [],
 }
 
 const providerReducer = (state = initialState, action) => {
     switch (action.type) {
-
-        case 'SET_PROVIDER':
-            console.log(action.payload.status)
+        case 'GET_BOOKINGS':
             return {
-                ...action.payload,
+                ...state,
+                bookings: [action.payload, ...state.bookings],
             }
-
+        case 'UPDATE_BOOKING':
+            return {
+                ...state,
+                bookings: state.bookings.map(booking => (booking.bookingId === action.payload.id) ?
+                    { ...booking, status: action.payload.status } : booking
+                ),
+            }
 
         default:
             return state

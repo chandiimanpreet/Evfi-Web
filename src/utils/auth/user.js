@@ -4,9 +4,14 @@ import { Geohash } from "../queries/searchQueries";
 import { initializeApp } from "firebase/app";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import firebaseConfig from "../config/firebaseConfig";
+// import { getMessaging } from "firebase/messaging";
+import { STATUS_REQUESTED } from "../../constants";
+// import { fun } from "../../help";
+
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app);
+// const messaging = getMessaging(app);
 
 export const getUser = () => {
     return new Promise((resolve, reject) => {
@@ -66,7 +71,6 @@ export const logInUser = (mobile) => {
                 setDoc(doc(db, "user", auth), data)
                     .then(() => {
                         resolve(data);
-                        console.log(data)
                     })
                     .catch((error) => {
                         reject({ error: error.message });
@@ -80,7 +84,6 @@ export const logInUser = (mobile) => {
 
 export const registerUser = (data) => {
     return new Promise(async (resolve, reject) => {
-        console.log(data);
         const auth = getAuth().currentUser.uid;
         const db = getFirestore();
         try {
@@ -129,7 +132,6 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
             const chargerLocation = chargerData.chargerLocation;
             delete chargerData.chargerLocation;
             const docRef = doc(collection(db, 'chargers'));
-            console.log(chargerData);
             await setDoc(docRef, {
                 uid: auth.currentUser.uid,
                 chargerId: docRef.id,
@@ -159,17 +161,16 @@ export const requestCharger = (chargerData, user) => {
         try {
             const auth = getAuth().currentUser.uid;
             const db = getFirestore();
-            console.log(chargerData);
             const timeFormat = new Intl.DateTimeFormat('en-In', { timeStyle: 'short' });
-            const dateFormat=Intl.DateTimeFormat('en-In',{day:'numeric',month:'long',year:'numeric'});
+            const dateFormat = Intl.DateTimeFormat('en-In', { day: 'numeric', month: 'long', year: 'numeric' });
             const data = {
-                status: 1,
+                status: STATUS_REQUESTED,
                 uId: auth,
                 chargerId: chargerData.chargerId,
                 providerId: chargerData.uid,
-                timeSlot:(timeFormat.format(new Date(chargerData.start['$d']))+" - "+timeFormat.format(new Date(chargerData.end['$d']))).toUpperCase(),
+                timeSlot: (timeFormat.format(new Date(chargerData.start['$d'])) + " - " + timeFormat.format(new Date(chargerData.end['$d']))).toUpperCase(),
                 price: chargerData.info.price,
-                bookingDate:dateFormat.format(new Date())
+                bookingDate: dateFormat.format(new Date())
             }
             try {
                 await addDoc(collection(db, "booking"), data);
@@ -202,7 +203,7 @@ export const updateCharger = (id, status) => {
     });
 };
 
-export const getParticularUser = (userId, chargerId) => {
+export const getUserAndChargers = (userId, chargerId) => {
     return new Promise(async (resolve, reject) => {
         const db = getFirestore();
         try {
@@ -226,3 +227,4 @@ export const getParticularUser = (userId, chargerId) => {
 };
 
 
+// fun();
