@@ -1,22 +1,15 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState } from 'react';
 import { Box, } from "@mui/material";
 import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
 
-const PreviousBooking = ({ direction, user ,book}) => {
+const PreviousBooking = ({ direction, user, userBooking }) => {
 
 	// States
-	const [newCard, setNewCard] = useState('');
+	const [fetchChargerFromList, setFetchChargerFromList] = useState('');
 
-	// Handlers
-	const getData = (data) => {
-		setNewCard(data);
-	};
-
-	useEffect(() => {
-		console.log(user)
-	},[user])
+	console.log(userBooking)
 
 	return (
 		<motion.div key="pb"
@@ -25,9 +18,9 @@ const PreviousBooking = ({ direction, user ,book}) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<Box sx={{ display: 'flex', width: "100%" }}>
-				<List user={user}  collectCardData={getData}  book={book} />
+				<List user={user} setFetchChargerFromList={setFetchChargerFromList} userBooking={userBooking} />
 				<Box width="100%" position="relative" className="previousBookingPage">
-					<DashboardMap card={newCard} />
+					<DashboardMap card={fetchChargerFromList} />
 				</Box>
 			</Box>
 		</motion.div>
