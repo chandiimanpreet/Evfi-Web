@@ -41,13 +41,13 @@ const DashboardMap = ({
 
 	const greenmarkerIcon = new L.icon({
 		iconUrl: require("./GreenMarker.png"),
-		iconSize: [100, 100],
+		iconSize: [48, 48],
 		iconAnchor: [12, 41],
 		popupAnchor: [41, -31],
 		focus: true,
 		draggable: false,
 	});
-
+	
 	// Handlers
 	const bookingHandler = async (charger) => {
 		// if (user.level2.mileage === '') {

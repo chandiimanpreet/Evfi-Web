@@ -6,77 +6,87 @@ export const useStyles = makeStyles({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		borderRadius: "10rem",
-		top: "2.5rem !important",
-		width: "46vw!important",
-		left: "calc(50% - 23vw)!important",
+		//borderRadius: "10rem",
+		//top: "2.5rem !important",
+		//width: "46vw!important",
+		//left: "calc(50% - 23vw)!important",
 	},
 	searchNavigation: {
 		backgroundColor: "#282828!important",
 		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
+		// justifyContent: "center",
+		// alignItems: "center",
 		borderRadius: "10rem",
 		top: "2.5rem !important",
-		width: "46vw!important",
-		left: "calc(50% - 23vw)!important",
+		// width: "46vw!important",
+		// left: "calc(50% - 23vw)!important",
 
 	},
 	searchboltIcon: {
 		color: "yellow",
-		fontSize: "2.5rem!important",
+		//fontSize: "2.5rem!important",
 		border: "2px solid yellow",
 		borderRadius: "100%",
 		position: "absolute",
-		left: "0.5rem"
+		left: "1rem"
 	},
 	toolbarstyle: {
-		display: 'flex!important',
-		justifyContent: 'space-between!important',
-		width: "97%!important",
-		padding: "0.1rem!important",
+		display: 'flex',
+		flexDirection: 'row',
+		padding: "0.1rem",
+
+
+	},
+	newtoolbarstyle:{
+		display: 'flex',
+		//flexDirection: 'row',
+		padding: "0.1rem",
+		width:'95%'
 	},
 
 	inputBtns: {
 		backgroundColor: '#ffffff26!important',
 		color: '#fff!important',
-		borderRadius: '10rem!important',
+		//borderRadius: '10rem!important',
 		fontSize: '16px!important',
 		textTransform: 'none!important',
 		padding: '0.5rem 1.5rem!important',
-		width: "calc(50% - 3.5rem)!important",
+		//width: "calc(50% - 3.5rem)!important",
+		//width:"100%",
 		cursor: "text!important",
 		display: "flex",
 		justifyContent: "left!important",
 	},
 
 	boltIcon: {
+		
 		color: "yellow",
-		fontSize: "2.5rem!important",
+		//fontSize: "2.5rem!important",
 		border: "2px solid yellow",
 		borderRadius: "100%",
-		position: "absolute",
-		left: '20rem'
+		//margin:'0 1rem'
 	},
 	arrowBackIcon: {
 		color: "yellow",
-		fontSize: "3rem!important",
-		border: "3px solid black",
+		//fontSize: "3rem!important",
+		//border: "3px solid black",
 		borderRadius: "100%",
 		position: "absolute",
-		right: "-5rem",
+		//right: "-5rem",
 		cursor: 'pointer'
+
 	},
 	extendnavigationroot: {
-		width: "85vw!important",
+		//width: "85vw!important",
 		position: "relative",
 		backgroundColor: "#282828!important",
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		borderRadius: "10rem",
+		//borderRadius: "10rem",
 		zIndex: 1500,
-		left: "0.3 rem !important"
+		//top:"10rem!important"
+		//left: "0.3 rem !important"
 	},
 
 	bigboltIconRoot: {
@@ -90,24 +100,25 @@ export const useStyles = makeStyles({
 	},
 
 	bigboltIcon: {
-		top: '-2.3rem',
+		//top: '-2.3rem',
 		color: 'yellow',
-		border: '4px solid yellow',
+		//border: '4px solid yellow',
 		position: 'absolute',
-		fontSize: '2.3rem!important',
+		//fontSize: '2.3rem!important',
 		borderRadius: '100%',
-		left: '6rem',
+		//left: '6rem',
 		zIndex: 1500,
 	},
 	directionsIcon: {
 		color: 'yellow',
 		border: '2px solid yellow',
-		position: 'absolute',
-		fontSize: '2.5rem!important',
+		position: 'sticky',
+		//fontSize: '2.5rem!important',
 		borderRadius: '100%',
 		zIndex: 1500,
 		cursor: 'pointer',
-		left: '40rem',
+		marginRight:'1rem'
+		// left: '40rem',
 	},
 	extendinputroot: {
 		position: 'relative',
@@ -117,33 +128,35 @@ export const useStyles = makeStyles({
 		padding: "0.1rem!important",
 		alignItems: 'center',
 		left: '-0.3rem!important'
+
 	},
 
 	searchPlaceAutoComplete: {
-		width: '37vw',
+		width: '93%',
 		border: 'none',
 		cursor: 'pointer',
-		padding: ' 0.5rem 0.5rem ',
-		position: 'relative',
-		left: '0.5rem'
+		//padding: ' 0.5rem 0.5rem ',
+		position: 'sticky',
+		paddingLeft:'4.5rem'
+		//left: '0.5rem'
 	},
 
 	autocompletestyle: {
-		width: '33vw',
+		//width: '33vw',
 		border: 'none',
 		cursor: 'pointer',
-		padding: ' 0.5rem 0.5rem ',
-		position: 'relative',
+		//padding: ' 0.5rem 0.5rem ',
+		//position: 'relative',
 
 	},
 
 	swapHorizontalCircleIcon: {
 		color: '#fff',
 		cursor: 'pointer',
-		marginRight: '5px',
-		marginLeft: '5px',
-		marginTop: '0px',
-		fontSize: '2.5rem!important'
+		//marginRight: '5px',
+		//marginLeft: '31px',
+		//marginTop: '0px',
+		//fontSize: '2.5rem!important'
 	},
 
 	travelExploreRoundedIcon: {
@@ -166,12 +179,12 @@ export const useStyles = makeStyles({
 	},
 
 	myLocationIcon: {
-		fontSize: '2rem',
+		//fontSize: '2rem',
 		position: 'relative',
 		color: 'white',
 		cursor: 'pointer',
 		zIndex: 1500,
-		left: '4.0rem',
+		//left: '4.0rem',
 	},
 
 	exNavPopover: {
@@ -191,6 +204,7 @@ export const useStyles = makeStyles({
 	},
 
 	popDesign: {
+		
 		'& label.Mui-focused': {
 			color: '#fff',
 		},
@@ -211,6 +225,14 @@ export const useStyles = makeStyles({
 				cursor: 'pointer',
 				borderRadius: '2rem'
 			},
+
+			// '@media (max-width: 768px)': {
+			// 	.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root: {
+			// 	  font-size: 0.8rem; /* Adjust the font size for smaller screens */
+			// 	  width: 100%; /* Make it full-width on smaller screens */
+			// 	  /* Add other responsive styles as needed */
+			// 	}
+			//   },
 			'&:hover fieldset': {
 				color: '#fff',
 				backgroundColor: '#ffffff26!important',
@@ -230,4 +252,39 @@ export const useStyles = makeStyles({
 		},
 
 	},
+	'@media (max-width: 425px)': {
+		
+		popDesign: {
+
+			'&  .MuiOutlinedInput-root': {
+				height: '3rem!important'
+			},
+			'& .MuiOutlinedInput-root': {
+				'& fieldset': {
+					borderRadius: '10px'
+				},
+			},
+			
+		  '& .MuiOutlinedInput-root': {
+			'& fieldset': {
+				
+				//right:"1rem",
+				width:"91%",
+				fontSize:"0.4rem",
+				top:"0.1rem",
+				height:'rem'
+			  
+			},
+		  },
+
+		  //.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-ejyr7l-MuiAutocomplete-root 
+		//   '&:hover fieldset': {
+		// 	color: '#fff',
+		// 	backgroundColor: '#ffffff26!important',
+		// 	height:"2rem",
+		// 	border: 'none',
+		// 	cursor: 'pointer'
+		// },
+		},
+	}
 });

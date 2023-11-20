@@ -23,15 +23,45 @@ const ExtendedNavigation = ({
 					horizontal: 'center',
 				}}
 			>
-				<Box className={classes.extendnavigationroot}>
+				<Box className={classes.extendnavigationroot}
+				 //height={["9rem", "9rem","9rem","auto"]}
+				 sx={{ 
+				borderRadius: {xs: '0rem', sm: '10rem'},
+				 top: {xs: '-2rem!important',sm:"0rem!important" },
+				 left: {xs: '-1rem'},
+				 height: {xs: '9.6rem', sm: 'auto'},
+				 width:{xs:"100vw",sm:"85vw",md:"93"}
+				}}
+				//  borderRadius={["0rem","10rem"]}
+				//  top={["-2rem!important","0rem!important"]}
+				// left={["-1rem!important", "0.3 rem!important"]}
+				// height={["11rem","auto"]}
+				// width={["100vw","85vw"]}
+				// width={["85rem"]}
+				 >
 					<Box className={classes.bigboltIconRoot}>
-						<BoltIcon className={classes.bigboltIcon} />
+						<BoltIcon className={classes.bigboltIcon} 
+						sx={{ top: {xs: '0.5rem', sm: '-2.3rem'},left:{xs: "5.3rem", sm:"6rem" },border:{xs: '2px solid yellow', sm: '4px solid yellow'},fontSize:{xs:'1.3rem',sm:'2.3rem'}}}
+						// fontSize={["1.1rem","1.1rem","1.1rem","2.3rem"]}
+						/>
 					</Box>
-					<Box className={classes.extendinputroot}>
-						<MyLocationIcon className={classes.myLocationIcon} onClick={() => setCurrentLocation(true)} />
+					<Box className={classes.extendinputroot}
+					flexDirection={["column","row"]}
+					top={["-0.5rem","0rem"]}
+					
+					>
+						<MyLocationIcon className={classes.myLocationIcon} onClick={() => setCurrentLocation(true)}
+						sx={{ left: {xs: '0.6rem', sm: '4rem'},fontSize:{xs: "1.8rem", sm:"2rem" },top:{xs: '0.8rem', sm: 'auto'}}}
+						//left={["0rem","0rem","0rem",]}
+						// fontSize={["1.5rem","1.5rem","2rem"]}
+						//right={["9rem","9rem","0rem"]}
+						//sx={{left:{sm:"4rem"},right:{xs:"10rem",sm:"0rem"},fontSize:{xs:"1.5rem",sm:"2rem"},top:{xs:"3rem"}}}
+						/>
 						<Autocomplete disablePortal id="combo-box-demo" options={distanceData}
 							value={searchCoordinates.source.label} className={classes.autocompletestyle}
-							sx={{ left: '2.3rem' }}
+							
+							sx={{ position: {xs: 'sticky', sm: 'relative',md:'relative'},left:{xs: "2.3rem" },width:{xs: '87vw', sm: '87svw',md:'33vw'},padding:{xs:"0rem 0rem",sm:"0.5rem 0.5rem"}}}
+							//aria-posinset={["9rem","9rem","0rem"]}
 							renderInput={(params) =>
 								<TextField
 									{...(autofocusedSource) ? { autoFocus: true } : { autoFocus: false }}
@@ -47,10 +77,16 @@ const ExtendedNavigation = ({
 
 							}}
 						/>
-						<SwapHorizontalCircleIcon className={classes.swapHorizontalCircleIcon} fontSize="large" />
+						<SwapHorizontalCircleIcon className={classes.swapHorizontalCircleIcon} 
+						//fontSize={["1.5rem","1.5rem","2.5rem"]
+						sx={{transform:{xs:"rotate(90deg)",sm:"rotate(0deg)"}, marginLeft:{xs:"0px",sm:"31px"},fontSize:{xs:"2rem",sm:"3rem"}}}
+						/>
 						<Autocomplete disablePortal id="combo-box-demo" options={distanceData}
 							value={searchCoordinates.destination.label} data-shrink="false!important"
-							className={classes.autocompletestyle} sx={{ right: '2.3rem' }}
+							className={classes.autocompletestyle} 
+							//fullWidth={["89rem","89rem","89rem","33rem"]}
+							sx={{ position: {xs: 'sticky', sm: 'sticky',md:'relative'},left:{xs:"2rem",sm:"2rem",md:"auto"},width:{xs: '87vw', sm: '87vw',md:'33vw'},padding:{xs:"0rem 0rem",sm:"0.5rem 0.5rem"}}}
+							
 							renderInput={(params) =>
 								<TextField
 									value={searchCoordinates.destination.label}
@@ -77,7 +113,7 @@ const ExtendedNavigation = ({
 
 					</Box>
 				</Box>
-				<TuneIcon className={classes.filterdesign} />
+				{/* <TuneIcon className={classes.filterdesign} /> */}
 			</Popover>
 		</motion.div>
 	)
