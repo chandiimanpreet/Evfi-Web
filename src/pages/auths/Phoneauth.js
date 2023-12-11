@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router';
-import { LoadingButton } from '@mui/lab';
 import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid } from '@mui/material';
-import { useStyles, otpStyle } from './style';
+import { LoadingButton } from '@mui/lab';
+import PhoneInput from 'react-phone-input-2';
 import OTPInput from 'react-otp-input';
 import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, setPersistence, browserSessionPersistence } from "firebase/auth";
 import firebaseConfig from '../../utils/config/firebaseConfig';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/material.css';
 import { login, setPhoneNo } from '../../actions';
 import { connect } from 'react-redux';
+import { useStyles, otpStyle } from './style';
+import 'react-phone-input-2/lib/material.css';
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app);
@@ -18,8 +18,7 @@ const auth = getAuth(app);
 let appVerifier;
 
 const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
-	
-	// States
+	const classes = useStyles();
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
 	const [util, setUtils] = useState({
@@ -33,19 +32,16 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 
-	// Styles
-	const classes = useStyles();
 
-	// Handlers
 	useEffect(() => {
 		if (showOtpForm) {
-			if (timer > 0) {
-				setTimeout(() => {
-					setTimer(timer - 1);
-				}, 1000)
-			}
-		} else {
-			setTimer(30);
+			const interval = setInterval(() => {
+				setTimer(timer - 1);
+				if (timer === 0) {
+					clearInterval(interval);
+				}
+			}, 1000);
+			return () => clearInterval(interval);
 		}
 	}, [showOtpForm, timer]);
 
@@ -58,9 +54,7 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 	const generateRecaptcha = () => {
 		appVerifier = new RecaptchaVerifier(
 			"recaptcha-container",
-			{
-				size: "invisible",
-			},
+			{ size: "invisible" },
 			auth
 		)
 	};
@@ -70,12 +64,11 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 			.then((confirmationResult) => {
 				if (resend) {
 					setTimer(30);
-					setShowOtpForm(true);
 					setUtils({ ...util, resendOtpActive: false, loading: false, error: null });
 				} else {
-					setShowOtpForm(true);
 					setUtils({ ...util, loading: false, error: null });
 				}
+				setShowOtpForm(true);
 				window.confirmationResult = confirmationResult;
 			})
 			.catch((error) => {
@@ -173,7 +166,6 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 							value={userData.phone}
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
 							onChange={num => { setPhoneNo(num); }}
-							inputProps='true'
 							specialLabel=''
 						/>
 
@@ -181,7 +173,7 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 							label='Remember me' style={{ color: 'white' }}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth} loadingPosition='start'> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth}> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 					</Grid>
 					:
 					<Grid gap={2} display='flex' flexDirection='column' padding={2} textAlign='center' >
@@ -199,7 +191,7 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 							renderInput={(props) => <input {...props} />}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode} loadingPosition='start'> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode}> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 
 						<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 							<Typography color='#fff' paddingTop={1.5}>Resend OTP</Typography>

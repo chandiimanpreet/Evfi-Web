@@ -1,18 +1,11 @@
-import React, { useRef } from 'react';
-import Home from '../pages/Home';
-import Request from '../pages/Request';
-import Profile from '../pages/Profile/index';
-import PreviousBooking from '../pages/PreviousBooking';
-import Phoneauth from '../pages/auths/Phoneauth';
+import { useEffect, useRef, useState } from 'react';
+import { Home, PreviousBooking, Request, Profile, Page404, Protector, Phoneauth } from '../pages';
 import Registerauth from '../components/Registration/Registerauth';
-import Protector from '../pages/auths/Protector';
-import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
-import Page404 from '../pages/Page404';
-import { getCountryCode } from '../utils/timezone/index';
-import { bookingUpdate, loadUser, userBookingRequests, getBookingRequests } from '../actions/index'
+import { getCountryCode } from '../utils/timezone';
+import { bookingUpdate, loadUser, userBookingRequests, getBookingRequests } from '../actions';
 import { connect } from 'react-redux';
 import { collection, getFirestore, onSnapshot, } from "firebase/firestore";
 
@@ -83,7 +76,6 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
 
     return (
         loadingData.loading ?
-
             <CircularProgress sx={{ ml: '45rem', mt: '20rem' }} /> :
             <AnimatePresence initial={false}>
                 <Routes location={location} key={location.pathname}>
