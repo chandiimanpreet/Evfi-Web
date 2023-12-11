@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import { otpStyle } from '../../pages/auths/style';
 import { Button, TextField, Typography } from '@mui/material';
 
 const NameInput = ({ data, changeDataHandler }) => {
-
     return (
         <Fragment>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Enter Your Name.</Typography>

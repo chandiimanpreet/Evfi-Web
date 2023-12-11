@@ -88,7 +88,7 @@ const RenderCard = () => {
             </Typography>
             <br />
             <Box>
-                <Grid container spacing={2} className={classes.outerbox}>
+                <Grid container spacing={2}>
                     {cards.map((card, index) => (
                         <Card key={index} className={classes.card}>
                             <Box className={classes.idLabel}>
