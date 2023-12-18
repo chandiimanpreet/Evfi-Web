@@ -9,7 +9,8 @@ const PreviousBooking = ({ direction, user, userBooking }) => {
 	// States
 	const [fetchChargerFromList, setFetchChargerFromList] = useState('');
 
-	console.log(userBooking)
+	console.log(userBooking);
+	console.log(fetchChargerFromList);
 
 	return (
 		<motion.div key="pb"
@@ -18,9 +19,12 @@ const PreviousBooking = ({ direction, user, userBooking }) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			<Box sx={{ display: 'flex', width: "100%" }}>
-				<List user={user} setFetchChargerFromList={setFetchChargerFromList} userBooking={userBooking} />
-				<Box width="100%" position="relative" className="previousBookingPage">
-					<DashboardMap card={fetchChargerFromList} />
+				<Box sx={{ display: { xs: fetchChargerFromList !== '' ? 'none' : 'flex', md: 'flex' }, width: { xs: '100vw', md: '28rem' } }}>
+					<List user={user} setFetchChargerFromList={setFetchChargerFromList} userBooking={userBooking} />
+				</Box>
+
+				<Box width="100vw" sx={{ display: 'flex', position: { xs: 'fixed', md: 'relative' } }} className="previousBookingPage">
+					<DashboardMap collectCardData={setFetchChargerFromList} card={fetchChargerFromList} />
 				</Box>
 			</Box>
 		</motion.div>

@@ -92,11 +92,11 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 
 	return (
 		<Fragment>
-			<Box className={classes.outerBox}>
-				<Box>
-					<Box sx={{ padding: '11px 8px 2px 8px', display: 'flex', justifyContent: 'space-between', }} >
+			<Box sx={{ width: ['100vw', '100vw', '60vw'] }} className={classes.outerBox}>
+				<Box width='100%' >
+					<Box sx={{ width: '90%', padding: { xs: '11px 0px 2px 15px', md: '11px 0px 2px 15px' }, display: 'flex' }} >
 						<FormControl variant="standard" fullWidth>
-							<Input placeholder='Search Charging Stations...' className={classes.inputField}
+							<Input sx={{ fontSize: { xs: '0.85rem', md: '1rem' } }} placeholder='Search Charging Stations...' className={classes.inputField}
 								startAdornment={<InputAdornment position="start" >
 									<Search sx={{ paddingLeft: '10px', color: '#fff' }} /></InputAdornment>}
 							/>
@@ -106,7 +106,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 						</Box>
 					</Box>
 
-					<Box sx={{ marginLeft: '8px', marginTop: '6px', marginBottom: showFilter ? '4px' : '0px', }}>
+					<Box sx={{ marginLeft: '8px', marginTop: '6px', marginBottom: showFilter ? '4px' : '0px' }}>
 						<Accordion expanded={showFilter} sx={{ width: '98%' }}>
 							<AccordionSummary sx={{ display: 'none' }}>
 							</AccordionSummary>
@@ -114,7 +114,8 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 								<Box sx={{ display: 'flex', flexDirection: 'column', padding: '4px 5px', }}>
 									<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 										<Box>
-											<Typography mb={1} className={classes.filterHeadersStyle} >Charger Type</Typography>
+											<Typography mb={1} fontFamily='Manrope !important'
+												fontWeight='600' color='#444' >Charger Type</Typography>
 											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
 												<FilterGroup options={chargerTypeOptions} type='multi'
 													property='chargerType' selected={selectedFilters.chargerType} setSelected={filterHandler} />
@@ -129,16 +130,15 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 										</Box>
 										<Box>
 											<Button className={classes.clearAllBtnStyle}
-												onClick={() => { clearFilters() }} >Clear All <Clear /> </Button>
+												onClick={() => { clearFilters() }} >Clear <Clear /> </Button>
 										</Box>
-									</Box>
-
-									<Box sx={{ marginTop: '13px', }}>
+									</Box><br />
+									<Box>
 										<Typography className={classes.filterHeadersStyle} >Date</Typography>
-										<Box sx={{ display: 'flex' }}>
+										<Box>
 											<LocalizationProvider dateAdapter={AdapterDayjs} >
 												<DemoContainer components={['DatePicker']}>
-													<DatePicker label="Start" sx={{ marginRight: '15px' }} value={selectedFilters.to}
+													<DatePicker label="Start" value={selectedFilters.to}
 														onChange={(newValue) => filterHandler('to', newValue)} />
 												</DemoContainer>
 											</LocalizationProvider>
@@ -178,23 +178,25 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 						</Box>
 					</Box>
 
-					<Box className={classes.searchResultsContainer}>
-						{
-							show === "pending" ?
-								!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
-									pendingBookings?.map(([chargerData, status, timeSlot, bookingId]) => ({ chargerData, status, timeSlot, bookingId })).map((charger, idx) => (
-										<Box sx={{ marginBottom: '10px' }} key={idx} onClick={() => { fetchData(charger) }} >
-											<ListItem data={charger} show={show} />
-										</Box>
-									)))
-								:
-								!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
-									recentBookings?.map(([chargerData, status, timeSlot]) => ({ chargerData, status, timeSlot })).map((charger, idx) => (
-										<Box sx={{ marginBottom: '10px' }} key={idx} onClick={() => { fetchData(charger) }} >
-											<ListItem data={charger} show={show} />
-										</Box>
-									)))
-						}
+					<Box display='flex' justifyContent='center'>
+						<Box sx={{ maxHeight: ['calc(100vh - 11.5rem)', 'calc(100vh - 11.5rem)', 'calc(100vh - 8rem)'] }} className={classes.searchResultsContainer}>
+							{
+								show === "pending" ?
+									!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
+										pendingBookings?.map(([chargerData, status, timeSlot, bookingId]) => ({ chargerData, status, timeSlot, bookingId })).map((charger, idx) => (
+											<Box sx={{ marginBottom: { xs: '10px', md: '10px' } }} key={idx} onClick={() => { fetchData(charger) }} >
+												<ListItem data={charger} show={show} />
+											</Box>
+										)))
+									:
+									!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
+										recentBookings?.map(([chargerData, status, timeSlot]) => ({ chargerData, status, timeSlot })).map((charger, idx) => (
+											<Box sx={{ marginBottom: { xs: '10px', md: '0px' } }} key={idx} onClick={() => { fetchData(charger) }} >
+												<ListItem data={charger} show={show} />
+											</Box>
+										)))
+							}
+						</Box>
 					</Box>
 				</Box>
 			</Box>
