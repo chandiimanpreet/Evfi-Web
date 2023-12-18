@@ -12,12 +12,11 @@ const Navbar = ({ moveToPageIndex }) => {
 
 	return (
 		<BottomNavigation showLabels={false} className={classes.bottomNavigation}
-			sx={{
-				gap: { xs: '3.5rem', md: '5rem', lg: '6rem' },
-				bottom: { xs: '0', md: '2.5rem' },
-				width: { xs: '100vw', md: 'fit-content' },
-				borderRadius: { xs: '0', md: '10px' },
-				padding: { xs: '0', md: '0 1.5rem' },
+			sx={{ gap: { xs: '3.8rem', md: '5rem', lg: '6rem' },
+			bottom: { xs: '0', md: '2.5rem' },
+			width: { xs: '100vw', md: 'fit-content'},
+			borderRadius: { xs: '0', md: '10px' },
+			padding: { xs: '0 1.5rem', md: '0 1.5rem' },
 			}}>
 
 			<Tooltip title="Home" placement="top" arrow>
@@ -30,10 +29,8 @@ const Navbar = ({ moveToPageIndex }) => {
 					<Restore />
 				</NavLink>
 			</Tooltip>
-			<Tooltip title="Chargers List" placement="top" arrow>
-				<NavLink style={styles} onClick={() => moveToPageIndex(2)} to='/requests'>
-					<EvStation sx={{ mx: 4 }} />
-				</NavLink>
+			<Tooltip title="Chargers List" placement="top" arrow><NavLink style={styles}
+				onClick={() => moveToPageIndex(2)} to='/requests'> <EvStation /> </NavLink>
 			</Tooltip>
 			<Tooltip title="Profile" placement="top" arrow>
 				<NavLink style={styles} onClick={() => moveToPageIndex(3)} to='/profile'>

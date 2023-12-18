@@ -4,21 +4,22 @@ import RoutingMachine from "./RoutingMachine";
 import L from 'leaflet';
 import SearchBar from "../SearchBar";
 import FindCurrentLocation from "./FindCurrentLocation";
-import { useLocation } from "react-router";
+import { useLocation} from "react-router";
 import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
 import firebaseConfig from "../../utils/config/firebaseConfig";
 import { requestCharger } from '../../utils/auth/user';
 import ChargerPopup from './ChargerPopup';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { Box } from '@mui/material';
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('chargers');
 
-const DashboardMap = ({
-	searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
+const DashboardMap = ({collectCardData, searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
 	setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates, user }) => {
 
 
@@ -49,11 +50,15 @@ const DashboardMap = ({
 	});
 
 	// Handlers
+	function handleBackButton() {
+		collectCardData('');
+	};
+
 	const bookingHandler = async (charger) => {
 		try {
 			await requestCharger(charger, user)
 		} catch (err) {
-			console.log(err)			
+			console.log(err)
 		}
 	};
 
@@ -178,6 +183,9 @@ const DashboardMap = ({
 						<Mark cardDetails={card.chargerData} bookingHandler={bookingHandler} />
 					)
 				}
+				<Box style={{ position: 'absolute', left: '10px', bottom: '10%', cursor: 'pointer', zIndex: 1000 }} >
+					{card && location.pathname === '/previousBooking' && <ArrowBackRoundedIcon onClick={handleBackButton} sx={{ display: { xs: 'flex', md: 'none' } }} />}
+				</Box>
 			</MapContainer >
 			{
 				location.pathname === '/' &&
@@ -217,8 +225,8 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 				[latitude, longitude],
 				13,
 				{ duration: 1 }
-				);
-			}
+			);
+		}
 	}, [map, latitude, longitude]);
 
 	return (
