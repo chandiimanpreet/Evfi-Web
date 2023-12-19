@@ -6,7 +6,7 @@ const NameInput = ({ data, changeDataHandler }) => {
     return (
         <Fragment>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Enter Your Name.</Typography>
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='Name' value={data.Name} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Username' name='name' value={data.name} />
             <Button size='large' sx={{
                 backgroundColor: '#ffdf00', color: '#262626', fontSize: '1rem', ':hover': {
                     backgroundColor: '#e1ad01'

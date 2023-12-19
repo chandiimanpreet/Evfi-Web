@@ -5,8 +5,6 @@ import Navbar from '../components/Navbar';
 // import SimpleSnackbar from "../components/Notification/SimpleSnackbar";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { useStyles } from "./style";
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
 	STATUS_ACCEPTED,
@@ -14,6 +12,8 @@ import {
 	STATUS_CHARGING_COMPLETED,
 } from '../constants/index'
 import { getUserAndChargers } from "../utils/auth/user";
+import { Link, useSearchParams } from "react-router-dom";
+import { useStyles } from "./style";
 
 // import { onMessageListner } from "../help";
 const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
@@ -22,7 +22,7 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 	const [show, setShow] = useState("pending");
 	const [pendingRequests, setPendingRequests] = useState(null);
 	const [recentRequests, setRecentRequests] = useState(null);
-
+	const [searchParams] = useSearchParams();
 	// Styles
 	const classes = useStyles();
 	
@@ -64,12 +64,13 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			{
-				user.level3 === false ? <Provider /> :
+				user.level3 === false || searchParams.has('addCharger', 'true') === true ? <Provider /> :
 					<Fragment>
 						<Box className={classes.bodyPage}>
 							<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
 							<Box marginX={2} paddingY={2} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 								<Box sx={{ display: 'flex', gap: '2rem' }} >
+			
 									<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
 										onClick={() => setShow("pending")}>
 										Pending
