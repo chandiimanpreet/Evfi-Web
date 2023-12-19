@@ -46,8 +46,8 @@ const ListItem = ({ data, show }) => {
 						</Typography>
 					</Box>
 
-					<Box >
-						<Box><Chip
+					<Box sx={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+						<Chip
 							label={
 								(data?.status === STATUS_REQUESTED && 'Requested') ||
 								(data?.status === STATUS_ACCEPTED && 'Accepted') ||
@@ -64,14 +64,14 @@ const ListItem = ({ data, show }) => {
 								(data?.status === STATUS_DECLINED && 'error') ||
 								(data?.status === STATUS_CHARGING_COMPLETED && 'warning')
 							}
-							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid' }} /></Box>
-						{
+							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid',  marginRight: 'auto'}} />
+						    {
 							show === 'pending' && (
-								<Box display='flex' justifyContent='flex-end'>
+								
 									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
 										e.stopPropagation();
 										updateCharger(data.bookingId, STATUS_CANCELED);
-									}} className={classes.cancelBtn}>Cancel</Button></Box>
+									}} className={classes.cancelBtn}>Cancel</Button>
 							)
 						}
 					</Box>
