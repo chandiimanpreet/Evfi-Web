@@ -5,7 +5,7 @@ import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
 import { getCountryCode } from '../utils/timezone';
-import { bookingUpdate, loadUser, userBookingRequests, getBookingRequests } from '../actions';
+import { bookingUpdate, loadUser, setUserBooking, setProviderRequests, } from '../actions';
 import { connect } from 'react-redux';
 import { collection, getFirestore, onSnapshot, } from "firebase/firestore";
 
@@ -19,7 +19,7 @@ const getPageIndex = (path) => {
     }
 }
 
-const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, provider, setProvider, updateBooking }) => {
+const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, provider, setProvider, updateBooking, loadBookings, loadRequests }) => {
 
     const location = useLocation();
     const currentPageIndex = useRef(getPageIndex(location.pathname));
@@ -37,18 +37,20 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
             const handleSnapshot = (snapshot) => {
                 const changes = snapshot.docChanges();
                 const change = changes[0];
+                
                 if (!change) {
                     return;
                 }
 
                 if (change.type === 'added') {
+
                     const bookingDocs = snapshot.docChanges().map((change) => ({ ...change.doc.data(), bookingId: change.doc.id }));
-                    const userBookings = bookingDocs.filter((book) => book.uId === userData.user?.uid);
-                    userBookings.forEach((booking) => setBooking(booking));
 
-                    const requestBookings = bookingDocs.filter((prov) => prov.providerId === userData.user?.uid);
-                    setProvider(requestBookings);
+                    // User Booking
+                    bookingDocs.filter((book) => book.uId === userData.user?.uid).map((booking) => setBooking(booking));
 
+                    // Charing Requests for Provider
+                    bookingDocs.filter((prov) => prov.providerId === userData.user?.uid).map((request) => setProvider(request));
 
                 } else {    // modified
                     const id = changes[0].doc.id;
@@ -95,14 +97,15 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
 
 const mapStateToProps = state => ({
     userData: state.userData, loadingData: state.loading,
-    booking: state.booking.bookings, provider: state.provider.bookings,
+    booking: state.booking.bookings, provider: state.provider.requests,
 });
 
 const mapDispatchFromProps = dispatch => ({
     loadUser: () => dispatch(loadUser()),
-    setBooking: (data) => dispatch(userBookingRequests(data)),
-    setProvider: (data) => dispatch(getBookingRequests(data)),
-    updateBooking: (data) => dispatch(bookingUpdate(data))
+    setBooking: (data) => dispatch(setUserBooking(data)),
+    setProvider: (data) => dispatch(setProviderRequests(data)),
+    updateBooking: (data) => dispatch(bookingUpdate(data)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchFromProps)(AnimatedRoutes);

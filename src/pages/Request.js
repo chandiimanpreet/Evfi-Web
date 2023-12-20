@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useState, useMemo } from "react";
+import { Badge, Box, Divider, Grid, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
 import List from '../components/Request/List';
 import Provider from '../components/Registration/Provider';
 import Navbar from '../components/Navbar';
-// import SimpleSnackbar from "../components/Notification/SimpleSnackbar";
-import { Box, Divider, Grid, Typography } from "@mui/material";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { useStyles } from "./style";
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
@@ -15,7 +15,6 @@ import {
 } from '../constants/index'
 import { getUserAndChargers } from "../utils/auth/user";
 
-// import { onMessageListner } from "../help";
 const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 
 	// States
@@ -25,10 +24,10 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 
 	// Styles
 	const classes = useStyles();
-	
+
 	const pendingRequestsInfo = useMemo(() => {
 		return bookingRequests.filter((charger) =>
-		charger.status === STATUS_REQUESTED || charger.status === STATUS_ACCEPTED
+			charger.status === STATUS_REQUESTED || charger.status === STATUS_ACCEPTED
 		);
 	}, [bookingRequests]);
 
@@ -73,21 +72,34 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 									<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
 										onClick={() => setShow("pending")}>
 										Pending
+										{
+											pendingRequestsInfo.length > 0 && (
+												<Badge badgeContent={pendingRequestsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+													anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" />)
+										}
 									</Link>
 									<Link className={classes.links} style={{ textDecoration: show === 'recent' ? 'underline' : 'none', }}
 										onClick={() => setShow("recent")}>
 										Recent
+										{
+											recentRequestsInfo.length > 0 && (
+												<Badge badgeContent={recentRequestsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+													anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" variant="dot" />)
+										}
+
 									</Link>
 								</Box>
 								<Divider sx={{ backgroundColor: 'antiquewhite' }} />
-								<Grid justifyContent={'center'} container gap={2.5}>
+								<Grid justifyContent={'center'} container gap={2.5} sx={{ color: '#fff' }}>
 									{
 										show === "pending" ?
-											pendingRequests?.map(([userData, chargerType, bookingId, status, timeSlot]) => ({ userData, chargerType, bookingId, status, timeSlot })).map((request, idx) => (
-												<List key={idx} show={show} data={request} />))
+											!pendingRequestsInfo.length > 0 ? 'No New Requests Available' : (
+												pendingRequests?.map(([userData, chargerType, bookingId, status, timeSlot]) => ({ userData, chargerType, bookingId, status, timeSlot })).map((request, idx) => (
+													<List key={idx} show={show} data={request} />)))
 											:
-											recentRequests?.map(([userData, chargerType, bookingId, status, timeSlot]) => ({ userData, chargerType, bookingId, status, timeSlot })).map((request, idx) => (
-												<List key={idx} show={show} data={request} />))
+											!recentRequestsInfo.length > 0 ? 'No Recent Requests Available' : (
+												recentRequests?.map(([userData, chargerType, bookingId, status, timeSlot]) => ({ userData, chargerType, bookingId, status, timeSlot })).map((request, idx) => (
+													<List key={idx} show={show} data={request} />)))
 									}
 								</Grid><br /><br />
 							</Box>

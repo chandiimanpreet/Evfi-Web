@@ -47,24 +47,23 @@ const addChargerAction = (res) => ({
     payload: res
 });
 
-const setBooking = (data) => ({
-    type: 'SET_BOOKING',
-    payload: data
-});
 
-
-const getBook = () => ({
-    type: 'GET_BOOKING',
-});
-
-const userBookingRequests = (data) => ({
-    type: 'GET_BOOKINGS',
+const setUserBooking = (data) => ({
+    type: 'SET_USER_BOOKING',
     payload: data,
-})
+});
 
-const getBookingRequests = (data) => ({
-    type: 'GET_BOOKINGS',
-    payload: data
+// const getBookings = () => ({
+//     type: 'GET_USER_BOOKING',
+// });
+
+// const getRequests = () => ({
+//     type: 'GET_PROVIDER_REQUEST',
+// });
+
+const setProviderRequests = (data) => ({
+    type: 'SET_PROVIDER_REQUEST',
+    payload: data,
 });
 
 const bookingUpdate = (data) => ({
@@ -74,5 +73,5 @@ const bookingUpdate = (data) => ({
 
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    setBooking, getBook, getBookingRequests, bookingUpdate, userBookingRequests
+     bookingUpdate, setUserBooking, setProviderRequests, 
 };
