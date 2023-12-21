@@ -1,17 +1,65 @@
-import { Box, Button, Chip, Typography } from '@mui/material';
+import { Box, Button, Chip, Typography, Switch } from '@mui/material';
 import React, { useState } from 'react'
 // import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { Popup } from 'react-leaflet';
+import { styled } from '@mui/material/styles';
+
+
+const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+    width: 59,
+    height: 30,
+    padding: 7,
+    '& .MuiSwitch-switchBase': {
+        margin: 1,
+        padding: 0,
+        transform: 'translateX(6px)',
+        '&.Mui-checked': {
+            color: '#fff',
+            transform: 'translateX(22px)',
+            '& .MuiSwitch-thumb:before': {
+                content: '"AM"',
+                margin: '5px',
+                left: -1.2
+            },
+            '& + .MuiSwitch-track': {
+                opacity: 1,
+                backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+            },
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+        width: 28,
+        height: 28,
+        '&:before': {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            left: 0,
+            top: 0,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            content: '"PM"',
+            margin: '5px',
+        },
+    },
+    '& .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        borderRadius: 20 / 2,
+    },
+}));
 
 export default function ChargerPopup({ ele, bookingHandler }) {
 
     const [showSlot, setShowSlot] = useState(false);
     const [start, setStart] = useState(null);
     const [end, setEnd] = useState(null);
+
+    const timeSlotHandler=(e)=>{
+        console.log(e);
+    } 
 
     return (
         <Popup>
@@ -54,22 +102,16 @@ export default function ChargerPopup({ ele, bookingHandler }) {
                         </>) :
                         (<>
                             <Typography>Select Charging Slot</Typography>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['TimePicker', 'TimePicker']}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 300 }}>
-                                        <TimePicker
-                                            label="Start Time"
-                                            value={start}
-                                            onChange={(newValue) => setStart(newValue)}
-                                        />
-                                        <TimePicker
-                                            label="End Time"
-                                            value={end}
-                                            onChange={(newValue) => setEnd(newValue)}
-                                        />
-                                    </Box>
-                                </DemoContainer>
-                            </LocalizationProvider>
+
+                            <MaterialUISwitch sx={{ mb: 1 }} defaultChecked={(new Date().getHours()) > 12 ? false : true} />
+
+                            <Box sx={{ display: 'grid', gridTemplateColumns: '6rem 6rem 6rem', gridGap: '9px', marginBottom: '2rem' }}>
+                                {
+                                    ['12:00-1:00', '1:00-2:00', '2:00-3:00', '3:00-4:00', '4:00-5:00', '5:00-6:00', '6:00-7:00', '7:00-8:00', '8:00-9:00', '9:00-10:00', '10:00-11:00', '11:00-12:00'].map((ele) => {
+                                        return <Chip size='small'  onClick={timeSlotHandler} label={ele} variant="outlined" />
+                                    })
+                                }
+                            </Box>
                         </>)
                 }
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>

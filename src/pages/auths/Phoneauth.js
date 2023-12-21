@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router';
-import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid } from '@mui/material';
+import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid ,Snackbar} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import PhoneInput from 'react-phone-input-2';
 import OTPInput from 'react-otp-input';
@@ -17,7 +17,7 @@ const auth = getAuth(app);
 
 let appVerifier;
 
-const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
+const Phoneauth = ({ login, userData, setPhoneNo}) => {
 	const classes = useStyles();
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
@@ -28,27 +28,31 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 		resendOtpActive: false,
 		error: null
 	});
-	const [otp, setotp] = useState("")
+	const [otp, setotp] = useState("");
 	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 
 
 	useEffect(() => {
+		let id;
 		if (showOtpForm) {
-			const interval = setInterval(() => {
-				setTimer(timer - 1);
-				if (timer === 0) {
-					clearInterval(interval);
-				}
-			}, 1000);
-			return () => clearInterval(interval);
+			if (timer > 0) {
+				id = setTimeout(() => {
+					setTimer(timer - 1);
+				}, 1000)
+			}
+		} else {
+			setTimer(30);
+		}
+		return () => {
+			clearTimeout(id);
 		}
 	}, [showOtpForm, timer]);
 
 	const changePhoneHandler = () => {
 		setShowOtpForm(false);
 		setotp("");
-		setUtils({ ...util, error: null, enterNumberInactive: false, resendOtpActive: false })
+		setUtils({ ...util, error: null, enterNumberInactive: false, resendOtpActive: false });
 	};
 
 	const generateRecaptcha = () => {
@@ -78,7 +82,7 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 
 	const submitPhoneNumberAuth = () => {
 		if (userData.phone.length < 12) {
-			setUtils({ ...util, error: "Please enter a valid phone number" })
+			setUtils({ ...util, error: "Please enter a valid phone number" });
 			return;
 		}
 		setUtils({ ...util, loading: true, enterNumberInactive: true })
@@ -144,11 +148,14 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 
 			<img className={classes.boxBehindImgStyle}
 				src='/resources/light.png' alt='' />
-
+			{util.error && <Snackbar open={true} anchorOrigin={{ horizontal: 'right', vertical: 'top' }} autoHideDuration={6000} ClickAwayListenerProps={{ onClickAway: () => null }} onClose={() => {
+				setUtils({ ...util, error: null });
+			}}>
+				<Alert severity='warning' onClose={() => {
+					setUtils({ ...util, error: null });
+				}}>{util.error}</Alert>
+			</Snackbar>}
 			<Box className={classes.loginCard} >
-				{util.error && (
-					<Alert severity='warning' onClose={() => setUtils({ ...util, error: null })}>{util.error}</Alert>
-				)}
 				{!showOtpForm ?
 					<Grid gap={3} display='flex' flexDirection='column' alignContent='center'
 						textAlign='center' padding='4rem 2rem' >
@@ -162,7 +169,7 @@ const Phoneauth = ({ country, login, userData, setPhoneNo }) => {
 						</Typography>
 
 						<PhoneInput
-							country={country.countryCode}
+							country={'in'}
 							value={userData.phone}
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
 							onChange={num => { setPhoneNo(num); }}

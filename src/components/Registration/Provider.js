@@ -1,5 +1,5 @@
 import React, { useState, } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import {
 	FormControl, MenuItem, InputLabel, Select, Box, TextField, Button, Typography, Grid,
 	Chip, Fade, Modal, Backdrop
@@ -37,6 +37,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		start: null,
 		end: null,
 	});
+	const [searchParams] = useSearchParams();
 
 	// Styles
 	const classes = useStyles();
@@ -86,7 +87,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		}
 	};
 
-	if (userData.level3) {
+	if (userData.level3 && !searchParams.has('addCharger','true')) {
 		return <Navigate to={'/requests'} />
 	}
 	else {
@@ -96,7 +97,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
 				</Box>
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
-					<Box sx={{ display: 'flex', flexDirection: 'column', }}>
+					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold'
 							fontSize='1.5rem'>Become a Provider</Typography>

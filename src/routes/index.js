@@ -4,7 +4,6 @@ import Registerauth from '../components/Registration/Registerauth';
 import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
-import { getCountryCode } from '../utils/timezone';
 import { bookingUpdate, loadUser, setUserBooking, setProviderRequests, } from '../actions';
 import { connect } from 'react-redux';
 import { collection, getFirestore, onSnapshot, } from "firebase/firestore";
@@ -23,7 +22,6 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
 
     const location = useLocation();
     const currentPageIndex = useRef(getPageIndex(location.pathname));
-    const [country, setCountry] = useState(null);
     const [motionDirection, setMotionDirection] = useState("100vw");
 
     const moveToPageIndex = async (index) => {
@@ -72,7 +70,6 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
     // 1 for right movement
     // -1 for left movement
     useEffect(() => {
-        setCountry(getCountryCode());
         loadUser();
     }, [loadUser]);
 
@@ -88,7 +85,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
                         <Route path="profile" element={<Profile direction={motionDirection} />} />
                     </Route>
                     <Route path='register/:level' element={<Registerauth />} />
-                    <Route path='auth' element={<Phoneauth country={country} />} />
+                    <Route path='auth' element={<Phoneauth />} />
                     <Route path='*' element={<Page404 />} />
                 </Routes>
             </AnimatePresence>
