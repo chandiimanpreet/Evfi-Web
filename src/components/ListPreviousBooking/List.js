@@ -11,7 +11,7 @@ import {
 import { chargerTypeOptions, sortByOptions } from '../../constants';
 import {
 	FormControl, InputAdornment, Input, Accordion, AccordionDetails, Button, AccordionSummary, Box,
-	Typography, Link
+	Typography, Link, Badge
 } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -166,6 +166,11 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 							}}
 								onClick={() => setShow("pending")}>
 								Pending
+								{
+									pendingBookingsInfo.length > 0 && (
+										<Badge badgeContent={pendingBookingsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+											anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" />)
+								}
 							</Link>
 							<Link style={{
 								textDecoration: show === 'recent' ? 'underline' : 'none', fontSize: '1rem',
@@ -174,6 +179,11 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 							}}
 								onClick={() => setShow("recent")}>
 								Recent
+								{
+									recentBookingsInfo.length > 0 && (
+										<Badge badgeContent={recentBookingsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+											size="small" anchorOrigin={{ vertical: 'top', horizontal: 'right', }} variant="dot" />)
+								}
 							</Link>
 						</Box>
 					</Box>

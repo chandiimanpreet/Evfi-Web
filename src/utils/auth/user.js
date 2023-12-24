@@ -109,6 +109,7 @@ export const logoutUser = () => {
 };
 
 export const addCharger = (chargerData, chargerImages, idproofImages) => {
+    console.log(chargerData);
     return new Promise(async (resolve, reject) => {
         const auth = getAuth();
         const db = getFirestore();

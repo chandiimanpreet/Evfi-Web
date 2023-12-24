@@ -10,7 +10,7 @@ const firebaseConfig = {
 };
 export default firebaseConfig;
 
-// Manpreet Key
+// // Manpreet Key
 // const firebaseConfig = {
 // 	apiKey: "AIzaSyDd-qvMFwNEFpUz-iBpkz9bdeRC6xrQoSg",
 // 	authDomain: "evfi-test.firebaseapp.com",

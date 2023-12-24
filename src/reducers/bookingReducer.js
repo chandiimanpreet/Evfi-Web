@@ -4,12 +4,15 @@ const initialState = {
 
 const bookingReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'GET_BOOKINGS':
+        case 'GET_USER_BOOKING': 
             return {
                 ...state,
-                bookings: [action.payload, ...state.bookings.filter(booking => Boolean && Object.keys(booking).length > 0 && !Array.isArray(booking))],
             }
-
+        case 'SET_USER_BOOKING':
+            return {
+                ...state,
+                bookings: [action.payload, ...state.bookings],
+            }
         case 'UPDATE_BOOKING':
             return {
                 ...state,

@@ -1,18 +1,22 @@
 const initialState = {
-    bookings: [],
+    requests: [],
 }
 
 const providerReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'GET_BOOKINGS':
+        case 'GET_PROVIDER_REQUEST':
             return {
                 ...state,
-                bookings: [action.payload, ...state.bookings],
+            }
+        case 'SET_PROVIDER_REQUEST':
+            return {
+                ...state,
+                requests: [action.payload, ...state.requests],
             }
         case 'UPDATE_BOOKING':
             return {
                 ...state,
-                bookings: state.bookings.map(booking => (booking.bookingId === action.payload.id) ?
+                requests: state.requests.map(booking => (booking.bookingId === action.payload.id) ?
                     { ...booking, status: action.payload.status } : booking
                 ),
             }
