@@ -144,7 +144,8 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                     ...chargerData,
                     aadharImages,
                     imageUrl,
-                }
+                },
+                timeSlot: 0,
             });
             await setDoc(doc(db, 'user', auth.currentUser.uid), {
                 chargers: arrayUnion(docRef.id),
@@ -157,26 +158,101 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
     })
 };
 
-export const requestCharger = (chargerData, user) => {
+export const decimalToBinary = (decimalNumber) => {
+
+    const binaryNo = decimalNumber > 0 ? decimalNumber.toString(2) : 0;
+    const addZeros = Math.max(0, 24 - binaryNo.length);
+
+    const zeroPadding = "0".repeat(addZeros);
+
+    return zeroPadding.concat(binaryNo);
+}
+
+const binaryToDecimal = (num) => {
+    return parseInt(num, 2);
+};
+
+const newTimeSlots = (prevTimeSlot, bookedTimeSlot) => {
+
+    const prevBin = decimalToBinary(prevTimeSlot).padStart(24, '0');
+
+    let newTimeSlot = "";
+
+    for (let i = 0; i < 24; i++) {
+        newTimeSlot += (i === bookedTimeSlot) ? "1" : prevBin[i];
+    }
+
+    return newTimeSlot;
+};
+
+const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
+    return new Promise(async (resolve, reject) => {
+
+        const db = getFirestore();
+
+        try {
+            const docRef = doc(db, "chargers", chargerId);
+
+            if (newTiming === -1) {
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    console.log("Charger Data:", docSnap.data());
+                } else {
+                    console.log("No such Charger!");
+                }
+
+                resolve(docSnap.data().timeSlot);
+            } else {
+                await updateDoc(docRef, {
+                    timeSlot: newTiming
+                })
+
+                resolve({ msg: "success" });
+            }
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    });
+}
+
+export const requestCharger = (chargerData, bookedTimeSlot, AMPM) => {
     return new Promise(async (resolve, reject) => {
         try {
             const auth = getAuth().currentUser.uid;
             const db = getFirestore();
-            const timeFormat = new Intl.DateTimeFormat('en-In', { timeStyle: 'short' });
             const dateFormat = Intl.DateTimeFormat('en-In', { day: 'numeric', month: 'long', year: 'numeric' });
+            let prevTimeSlot;
+
+            try {
+                prevTimeSlot = await getORUpdateTimeSlotOFCharger(chargerData.chargerId, -1);
+            } catch (err) {
+                reject({ error: err.message });
+            }
+
+            if (AMPM === 'AM' && bookedTimeSlot === 12) {
+                bookedTimeSlot = 0;
+            } else if (AMPM === 'PM' && bookedTimeSlot !== 12) {
+                bookedTimeSlot = bookedTimeSlot + 12;
+            }
+
             const data = {
-                status: STATUS_REQUESTED,
                 uId: auth,
+                status: STATUS_REQUESTED,
                 chargerId: chargerData.chargerId,
                 providerId: chargerData.uid,
-                timeSlot: (timeFormat.format(new Date(chargerData.start['$d'])) + " - " + timeFormat.format(new Date(chargerData.end['$d']))).toUpperCase(),
                 price: chargerData.info.price,
-                bookingDate: dateFormat.format(new Date())
+                bookingDate: dateFormat.format(new Date()),
+                timeSlot: binaryToDecimal(newTimeSlots(0, bookedTimeSlot)),
             }
+
             try {
                 await addDoc(collection(db, "booking"), data);
-                resolve({ message: "success" });
 
+                await getORUpdateTimeSlotOFCharger(chargerData.chargerId,
+                    binaryToDecimal(newTimeSlots(prevTimeSlot, bookedTimeSlot)));
+
+                resolve({ message: "success" });
             } catch (error) {
                 reject({ error: error.message });
             }
@@ -186,7 +262,7 @@ export const requestCharger = (chargerData, user) => {
     });
 };
 
-export const updateCharger = (id, status) => {
+export const updateBookedCharger = (id, status) => {
 
     return new Promise(async (resolve, reject) => {
         const db = getFirestore();

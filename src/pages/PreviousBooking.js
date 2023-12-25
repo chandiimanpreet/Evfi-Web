@@ -10,7 +10,7 @@ const PreviousBooking = ({ direction, user, userBooking }) => {
 	const [fetchChargerFromList, setFetchChargerFromList] = useState('');
 
 	console.log(userBooking);
-	console.log(fetchChargerFromList);
+	// console.log(fetchChargerFromList);
 
 	return (
 		<motion.div key="pb"
