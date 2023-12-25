@@ -4,7 +4,7 @@ import RoutingMachine from "./RoutingMachine";
 import L from 'leaflet';
 import SearchBar from "../SearchBar";
 import FindCurrentLocation from "./FindCurrentLocation";
-import { useLocation} from "react-router";
+import { useLocation } from "react-router";
 import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
@@ -19,7 +19,7 @@ const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('chargers');
 
-const DashboardMap = ({collectCardData, searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
+const DashboardMap = ({ collectCardData, searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
 	setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates, user }) => {
 
 
@@ -54,9 +54,9 @@ const DashboardMap = ({collectCardData, searchCoordinates, show, setShow, setSea
 		collectCardData('');
 	};
 
-	const bookingHandler = async (charger) => {
-		try {
-			await requestCharger(charger, user)
+	const bookingHandler = async (time, AMPM, charger) => {
+		try{
+			await requestCharger(charger, time, AMPM);
 		} catch (err) {
 			console.log(err)
 		}
@@ -123,7 +123,7 @@ const DashboardMap = ({collectCardData, searchCoordinates, show, setShow, setSea
 									return (
 										<Marker key={index} icon={greenmarkerIcon} draggable={false}
 											position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}>
-											<ChargerPopup ele={charger.data()} bookingHandler={bookingHandler} />
+											<ChargerPopup chargerData={charger.data()} bookingHandler={bookingHandler} />
 										</Marker>
 									)
 								})
@@ -142,7 +142,7 @@ const DashboardMap = ({collectCardData, searchCoordinates, show, setShow, setSea
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
 										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}
 									>
-										<ChargerPopup ele={charger.data()} bookingHandler={bookingHandler} />
+										<ChargerPopup chargerData={charger.data()} bookingHandler={bookingHandler} />
 									</Marker>
 								)
 							})
@@ -163,7 +163,7 @@ const DashboardMap = ({collectCardData, searchCoordinates, show, setShow, setSea
 								return (
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
 										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]} >
-										<ChargerPopup ele={charger.data()} bookingHandler={bookingHandler} />
+										<ChargerPopup chargerData={charger.data()} bookingHandler={bookingHandler} />
 									</Marker>
 								)
 							})
@@ -232,7 +232,7 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 	return (
 		<Marker icon={markerIcon} draggable={false}
 			position={[cardDetails.g.geopoint.latitude, cardDetails.g.geopoint.longitude]} ref={markerRef}>
-			<ChargerPopup ele={cardDetails} bookingHandler={bookingHandler} />
+			<ChargerPopup chargerData={cardDetails} bookingHandler={bookingHandler} />
 		</Marker>
 	);
 }
