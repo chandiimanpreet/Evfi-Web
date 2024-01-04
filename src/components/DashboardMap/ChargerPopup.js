@@ -92,7 +92,12 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
     const timeSlotHandler = (e) => {
         const time = e.target.innerText.split('-');
         console.log(parseInt(time[0]));
-        setStart(parseInt(time[0]));
+        console.log(time);
+        if(start===(parseInt(time[1])-1)+" "+AMPM){
+            setStart(null);
+        }else{
+            setStart((parseInt(time[1])-1)+" "+AMPM);
+        }
     }
 
     return (
@@ -149,7 +154,7 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                                     {
                                         timing.map((time, idx) => {
                                             return <Chip key={idx} size='small' onClick={(e) => timeSlotHandler(e)}
-                                                disabled={checkDisabled(time)} label={time} variant="outlined" />
+                                                disabled={checkDisabled(time)} color={start===idx+" "+AMPM?"success":"default"} label={time} variant={start===idx+" "+AMPM?"filled":"outlined"} />
                                         })
                                     }
                                 </Box>
@@ -159,7 +164,7 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
-                            bookingHandler(start, AMPM, chargerData);
+                            bookingHandler(start.split(" ")[0]===0?12:start.split(" ")[0], AMPM, chargerData);
                             setShowSlot(false);
                             setStart(null);
                         } else {
