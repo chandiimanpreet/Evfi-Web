@@ -171,7 +171,8 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 						<PhoneInput
 							country={'in'}
 							value={userData.phone}
-							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff', }}
+							countryCodeEditable={false}
+							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff' }}
 							onChange={num => { setPhoneNo(num); }}
 							specialLabel=''
 						/>
