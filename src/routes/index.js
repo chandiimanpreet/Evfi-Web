@@ -43,7 +43,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, setBooking, booking, 
                 if (change.type === 'added') {
 
                     const bookingDocs = snapshot.docChanges().map((change) => ({ ...change.doc.data(), bookingId: change.doc.id }));
-
+                    console.log(bookingDocs);
                     // User Booking
                     bookingDocs.filter((book) => book.uId === userData.user?.uid).map((booking) => setBooking(booking));
 

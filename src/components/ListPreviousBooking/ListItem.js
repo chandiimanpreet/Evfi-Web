@@ -2,7 +2,7 @@ import React from 'react';
 // import Ratings from '../Rating';
 // import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button, Chip, Skeleton } from '@mui/material';
-import { updateCharger } from '../../utils/auth/user';
+import { decimalToBinary, updateBookedCharger } from '../../utils/auth/user';
 import { useStyles } from './style';
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
@@ -12,6 +12,27 @@ import {
 	STATUS_CHARGING,
 } from '../../constants';
 
+const convertTimeforUserUI = (timeSlot) => {
+
+	let time = decimalToBinary(timeSlot);
+	time = time.length > 0 ? time : 0;
+	let greaterThan12 = false;
+
+	for (let i = 0; i < time.length; i++) {
+		if (time[i] === '1') {
+			time = i;
+		}
+	}
+
+	if (time >= 12) {
+		time = time - 12;
+		greaterThan12 = true;
+	}
+
+	time = `${time === 0 ? 12 : time}:00 - ${(time + 1)}:00`.concat(greaterThan12 ? ' PM' : ' AM');
+	return time;
+}
+
 const ListItem = ({ data, show }) => {
 
 	// Styles
@@ -19,13 +40,14 @@ const ListItem = ({ data, show }) => {
 
 	return (
 		<Box className={classes.listItemStyle} sx={{
-			paddingBottom: ['0rem','0.6rem']}}>
+			paddingBottom: ['0rem', '0.6rem']
+		}}>
 			<Box display='flex'>
 				<Box component='img' sx={{ height: { xs: "8.5rem", md: "9rem" }, width: { xs: "7rem", md: "10rem" }, borderRadius: '10px 0px 0px 10px', }}
 					alt='Charging Station' src={data.chargerData?.info?.imageUrl[0]}>
 				</Box>
 
-				<Box sx={{width:['11.2rem','12rem', '15rem']}} className={classes.listItemCardStyle}>
+				<Box sx={{ width: ['11.2rem', '12rem', '15rem'] }} className={classes.listItemCardStyle}>
 					<Typography sx={{ fontSize: { xs: '0.85rem', md: '1.05rem' }, fontWeight: 'bold', color: '#fff', fontFamily: 'Manrope !important' }}>{data.chargerData?.info?.stationName}</Typography>
 
 					<Box><Typography whiteSpace='initial' className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' } }}>
@@ -40,9 +62,16 @@ const ListItem = ({ data, show }) => {
 					</Box>
 
 					<Box display="flex" justifyContent="flex-start">
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Price:</Typography>
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
+							{data.chargerData?.info?.price || <Skeleton width={20} animation="wave" />}
+						</Typography>
+					</Box>
+
+					<Box display="flex" justifyContent="flex-start">
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Slot:</Typography>
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
-							{data?.timeSlot || <Skeleton width={50} animation="wave" />}
+							{convertTimeforUserUI(data?.timeSlot) || <Skeleton width={50} animation="wave" />}
 						</Typography>
 					</Box>
 
@@ -70,8 +99,13 @@ const ListItem = ({ data, show }) => {
 								
 									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
 										e.stopPropagation();
+<<<<<<< Updated upstream
 										updateCharger(data.bookingId, STATUS_CANCELED);
+									}} className={classes.cancelBtn}>Cancel</Button></Box>
+=======
+										updateBookedCharger(data.bookingId, STATUS_CANCELED);
 									}} className={classes.cancelBtn}>Cancel</Button>
+>>>>>>> Stashed changes
 							)
 						}
 					</Box>

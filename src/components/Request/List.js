@@ -2,7 +2,7 @@ import { Done, Close } from '@mui/icons-material';
 import { Box, Card, CardMedia, Chip, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './style';
-import { updateCharger } from '../../utils/auth/user';
+import { updateBookedCharger } from '../../utils/auth/user';
 import { STATUS_ACCEPTED, STATUS_CANCELED, STATUS_DECLINED } from '../../constants';
 
 const List = ({ data, show }) => {
@@ -44,7 +44,7 @@ const List = ({ data, show }) => {
                                     <Chip className={classes.chipGreen} disabled={data.status === STATUS_ACCEPTED ? true : false}
                                         label={data.status === STATUS_ACCEPTED ? "Accepted" : "Accept"}
                                         onClick={() => {
-                                            updateCharger(data.bookingId, STATUS_ACCEPTED);
+                                            updateBookedCharger(data.bookingId, STATUS_ACCEPTED);
                                         }}
                                         icon={<Done style={{ color: 'white' }} />}
                                         size='small'
@@ -52,7 +52,7 @@ const List = ({ data, show }) => {
                                     <Chip
                                         className={classes.chipRed}
                                         label="Decline" onClick={() => {
-                                            updateCharger(data.bookingId, STATUS_DECLINED);
+                                            updateBookedCharger(data.bookingId, STATUS_DECLINED);
                                         }}
                                         icon={<Close style={{ color: 'white' }} />}
                                         size='small'

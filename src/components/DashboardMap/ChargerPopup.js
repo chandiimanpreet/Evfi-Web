@@ -1,9 +1,10 @@
 import { Box, Button, Chip, Typography, Switch } from '@mui/material';
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 // import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
 import { Popup } from 'react-leaflet';
 import { styled } from '@mui/material/styles';
+import { decimalToBinary } from '../../utils/auth/user';
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -51,76 +52,133 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
 }));
 
-export default function ChargerPopup({ ele, bookingHandler }) {
+export default function ChargerPopup({ chargerData, bookingHandler }) {
 
     const [showSlot, setShowSlot] = useState(false);
     const [start, setStart] = useState(null);
-    const [end, setEnd] = useState(null);
+    // const [end, setEnd] = useState(null);
 
-    const timeSlotHandler=(e)=>{
-        console.log(e);
-    } 
+    const [AMPM, setAMPM] = useState(new Date().getHours() > 12 ? 'PM' : 'AM');
+
+
+    const checkDisabled = (time) => {
+        let binaryTime = decimalToBinary(chargerData.timeSlot);
+        let intTime = parseInt(time.split('-')[0]);
+
+        if (AMPM === 'PM' && intTime === 12) {
+            intTime = 12;
+        } else if (AMPM === 'PM' && intTime !== 12) {
+            intTime += 12;
+        }
+        else if (AMPM === 'AM' && intTime === 12) {
+            intTime = 0;
+        }
+
+        for (let i = 0; i < 24; i++) { 
+            if (binaryTime[i] === '1' && i === intTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const timing = [
+        '12:00-1:00', '1:00-2:00', '2:00-3:00',
+        '3:00-4:00', '4:00-5:00', '5:00-6:00', '6:00-7:00',
+        '7:00-8:00', '8:00-9:00', '9:00-10:00', '10:00-11:00',
+        '11:00-12:00'
+    ];
+
+    const timeSlotHandler = (e) => {
+        const time = e.target.innerText.split('-');
+        console.log(parseInt(time[0]));
+<<<<<<< Updated upstream
+        console.log(time);
+        if(start===(parseInt(time[1])-1)+" "+AMPM){
+            setStart(null);
+        }else{
+            setStart((parseInt(time[1])-1)+" "+AMPM);
+        }
+=======
+        setStart(parseInt(time[0]));
+>>>>>>> Stashed changes
+    }
 
     return (
         <Popup>
             <Box>
                 {
                     !showSlot ?
-                        (<>
-                            <Box component='img' sx={{ height: '8rem', width: "16rem", borderRadius: '12px', display: 'flex', justifyContent: 'center' }} alt='Charging Station' src={ele.info.imageUrl[0]}></Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-                                <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{ele.info.stationName}</Typography>
-                                <Chip label="Available" color="success" size="small" variant="contained" />
-                            </Box>
-                            <Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{ele.info.address}</Typography>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
-                                <Box sx={{ display: 'flex', }}>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Type:{' '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.info.chargerType}</Typography>
+                        (
+                            <Fragment>
+                                <Box component='img' sx={{ height: '8rem', width: "16rem", borderRadius: '12px', display: 'flex', justifyContent: 'center' }} alt='Charging Station' src={chargerData.info.imageUrl[0]}></Box>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                                    <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{chargerData.info.stationName}</Typography>
+                                    <Chip label="Available" color="success" size="small" variant="contained" />
                                 </Box>
-                            </Box>
-
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
-                                <Box sx={{ display: 'flex' }}>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{ele.info.start}</Typography>
+                                <Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{chargerData.info.address}</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
+                                    <Box sx={{ display: 'flex', }}>
+                                        <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Type:{' '}</Typography>
+                                        <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.chargerType}</Typography>
+                                    </Box>
                                 </Box>
-                                <Box sx={{ display: 'flex' }} >
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>{ele.info.end}</Typography>
+
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
+                                    <Box sx={{ display: 'flex' }}>
+                                        <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
+                                        <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.start}</Typography>
+                                    </Box>
+                                    <Box sx={{ display: 'flex' }} >
+                                        <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
+                                        <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>{chargerData.info.end}</Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
-                                <Box sx={{ display: 'flex' }} >
-                                    <CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
-                                    <Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
-                                        {ele.info.price}
-                                    </Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
+                                    <Box sx={{ display: 'flex' }} >
+                                        <CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
+                                        <Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
+                                            {chargerData.info.price}
+                                        </Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
-                        </>) :
-                        (<>
-                            <Typography>Select Charging Slot</Typography>
+                            </Fragment>
+                        )
+                        :
+                        (
+                            <Fragment>
+                                <Typography>Select Charging Slot</Typography>
 
-                            <MaterialUISwitch sx={{ mb: 1 }} defaultChecked={(new Date().getHours()) > 12 ? false : true} />
+                                <MaterialUISwitch sx={{ mb: 1 }} defaultChecked={(new Date().getHours()) > 12 ? false : true} onChange={(e) => {
+                                    e.target.checked ? setAMPM('AM') : setAMPM('PM');
+                                }} />
 
-                            <Box sx={{ display: 'grid', gridTemplateColumns: '6rem 6rem 6rem', gridGap: '9px', marginBottom: '2rem' }}>
-                                {
-                                    ['12:00-1:00', '1:00-2:00', '2:00-3:00', '3:00-4:00', '4:00-5:00', '5:00-6:00', '6:00-7:00', '7:00-8:00', '8:00-9:00', '9:00-10:00', '10:00-11:00', '11:00-12:00'].map((ele) => {
-                                        return <Chip size='small'  onClick={timeSlotHandler} label={ele} variant="outlined" />
-                                    })
-                                }
-                            </Box>
-                        </>)
+                                <Box sx={{ display: 'grid', gridTemplateColumns: '6rem 6rem 6rem', gridGap: '9px', marginBottom: '2rem' }}>
+                                    {
+                                        timing.map((time, idx) => {
+                                            return <Chip key={idx} size='small' onClick={(e) => timeSlotHandler(e)}
+<<<<<<< Updated upstream
+                                                disabled={checkDisabled(time)} color={start===idx+" "+AMPM?"success":"default"} label={time} variant={start===idx+" "+AMPM?"filled":"outlined"} />
+=======
+                                                disabled={checkDisabled(time)} label={time} variant="outlined" />
+>>>>>>> Stashed changes
+                                        })
+                                    }
+                                </Box>
+                            </Fragment>
+                        )
                 }
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
-                            bookingHandler({ ...ele, start, end });
+<<<<<<< Updated upstream
+                            bookingHandler(start.split(" ")[0]===0?12:start.split(" ")[0], AMPM, chargerData);
+=======
+                            bookingHandler(start, AMPM, chargerData);
+>>>>>>> Stashed changes
                             setShowSlot(false);
                             setStart(null);
-                            setEnd(null);
                         } else {
                             setShowSlot(true);
                         }
@@ -128,7 +186,7 @@ export default function ChargerPopup({ ele, bookingHandler }) {
                     } variant="contained" sx={{
                         backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
                         textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
-                    }}>{showSlot ? "Book now" : "Select Slot"}</Button>
+                    }}>{showSlot ? "Book now" : "Select Charging Slot"}</Button>
                 </Box>
             </Box>
         </Popup>

@@ -16,6 +16,8 @@ import { useStyles } from "./style";
 
 const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 
+	console.log(bookingRequests);
+
 	// States
 	const [show, setShow] = useState("pending");
 	const [pendingRequests, setPendingRequests] = useState(null);
