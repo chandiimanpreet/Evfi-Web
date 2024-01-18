@@ -99,13 +99,8 @@ const ListItem = ({ data, show }) => {
 								
 									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
 										e.stopPropagation();
-<<<<<<< Updated upstream
-										updateCharger(data.bookingId, STATUS_CANCELED);
-									}} className={classes.cancelBtn}>Cancel</Button></Box>
-=======
 										updateBookedCharger(data.bookingId, STATUS_CANCELED);
 									}} className={classes.cancelBtn}>Cancel</Button>
->>>>>>> Stashed changes
 							)
 						}
 					</Box>
