@@ -5,10 +5,10 @@ import ExtendedNavigation from './ExtendedNavigation';
 import { saveQuery } from '../../utils/queries/searchQueries';
 import PlaceSearchingNavigationbar from './PlaceSearchingNavigationbar';
 
-const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
+const SearchBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation,
 	showRoute, searchLocationCoordinates, setSearchLocationCoordinates, setShow }) => {
 	
-	// States
+
 	const searchTimeoutRef = useRef(null);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [distanceData, setdistanceData] = useState([{ label: 'No Results Found' }]);
@@ -18,13 +18,9 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 	const [showExtendedNavigation, setShowExtendedNavigation] = useState(false);
 	const [showRadiusNavigation, setShowRadiusNavigation] = useState(false);
 
-	// Handlers
-
 	const onChangeRoute = async (e) => {
-		// if exit searchTimeout
 		clearTimeout(searchTimeoutRef.current);
 
-		// create new timeout using setTimeout, extract data and store it in setdistanceData
 		const url = 'https://nominatim.openstreetmap.org/search?format=geojson&limit=5&q';
 		searchTimeoutRef.current = setTimeout(async () => {
 			try {
@@ -144,4 +140,4 @@ const NavigationBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLoca
 		</motion.div>
 	);
 };
-export default NavigationBar;
+export default SearchBar;

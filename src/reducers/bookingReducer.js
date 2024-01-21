@@ -1,26 +1,29 @@
 const initialState = {
-    chargerId: '',
-    status: '',
-    timeSlot: '',
-    uId: '',
-    price: '',
+    bookings: [],
 }
 
 const bookingReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_BOOKING':
-            console.log(action.payload)
+        case 'GET_USER_BOOKING': 
             return {
-                ...action.payload,
+                ...state,
+            }
+        case 'SET_USER_BOOKING':
+            return {
+                ...state,
+                bookings: [action.payload, ...state.bookings],
+            }
+        case 'UPDATE_BOOKING':
+            return {
+                ...state,
+                bookings: state.bookings.map(booking => (booking.bookingId === action.payload.id) ?
+                    { ...booking, status: action.payload.status } : booking
+                ),
             }
 
         case 'CLEAR_BOOKING':
             return {
-                chargerId: '',
-                chargerInfo: null,
-                status: '',
-                timeSlot: '',
-                uId: '',
+                bookings: [],
             }
         default:
             return state

@@ -11,16 +11,18 @@ import * as geofirestore from 'geofirestore';
 import firebaseConfig from "../../utils/config/firebaseConfig";
 import { requestCharger } from '../../utils/auth/user';
 import ChargerPopup from './ChargerPopup';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { Box } from '@mui/material';
+import { setChargers } from '../../actions';
+import { connect } from 'react-redux';
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('chargers');
 
-const DashboardMap = ({
-	searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
-	setCurrentLocation, card, chargers, searchLocationCoordinates, setSearchLocationCoordinates, user }) => {
-
+const DashboardMap = ({ collectCardData, searchCoordinates, show, setShow, setSearchCoordinates, showRoute, showCurrentLocation,
+	setCurrentLocation, card, searchLocationCoordinates, setSearchLocationCoordinates, chargers, setCharger, uniqueChargersID }) => {
 
 	// Constants
 	const location = useLocation();
@@ -28,8 +30,6 @@ const DashboardMap = ({
 	// States
 	const uselocation = useLocation();
 	const [position, setPosition] = useState(null);
-	const [currentchargers, setCurrentchargers] = useState(null);
-	const [currentLocationChargers, setCurrentLocationChargers] = useState(null);
 
 	const markerIcon = new L.icon({
 		iconUrl: require("./locationmarker.png"),
@@ -49,11 +49,8 @@ const DashboardMap = ({
 	});
 	
 	// Handlers
-	const bookingHandler = async (charger) => {
-		// if (user.level2.mileage === '') {
-		// 	navigate('/register/level2?redirectTo=Home');
-		// }
-		await requestCharger(charger, user)
+	function handleBackButton() {
+		collectCardData('');
 	};
 
 	// const setcurrentmarker = useCallback(() => {
@@ -89,6 +86,39 @@ const DashboardMap = ({
 			setCurrentchargers(value.docs);
 			console.log(value.docs);
 		  });
+	const bookingHandler = async (time, AMPM, charger) => {
+		try {
+			await requestCharger(charger, parseInt(time), AMPM);
+		} catch (err) {
+			console.log(err)
+		}
+	};
+
+	// const IDs = chargers.map((charger) => charger.id);
+
+	const setcurrentmarker = useCallback(() => {
+		// setCurrentchargers(null);
+		const query = geocollection.near({
+			center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 100
+		});
+
+		query.get().then((value) => {
+			// value.docs.map((charger) => charger.data()).map((charger) => setCharger(charger));
+			value.docs.map((charger) => charger.data()).map((charger) => (!uniqueChargersID.includes(charger.chargerId) && setCharger(charger)));
+			// value.docs.map((charger) => charger.data()).filter((charger) => {
+			// 	if (!IDs.includes(charger.chargerId))
+			// 		return true;
+			// 	else
+			// 		return false;
+			// }).map((charger) => setCharger(charger));
+
+			// setCurrentchargers(value.docs);
+		});
+	}, [position, setCharger]);
+
+	useEffect(() => {
+		if (position) {
+			setcurrentmarker();
 		}
 	  }, [position, setCurrentchargers]);
 	  
@@ -109,7 +139,7 @@ const DashboardMap = ({
 	const showSearchLocationChargers = useCallback(() => {
 
 		if (uselocation.pathname === '/' && searchLocationCoordinates.searchlocation.coordinates != null) {
-			setCurrentLocationChargers(null);
+			// setCurrentLocationChargers(null);
 
 			const query = geocollection.near({
 				center: new firebase.firestore.GeoPoint(
@@ -119,11 +149,19 @@ const DashboardMap = ({
 			});
 
 			query.get().then((value) => {
-				setCurrentLocationChargers(value.docs);
-				console.log(value.docs);
+				// value.docs.map((charger) => charger.data()).map((charger) => setCharger(charger));
+				value.docs.map((charger) => charger.data()).map((charger) => (!uniqueChargersID.includes(charger.chargerId) && setCharger(charger)));
+				// value.docs.map((charger) => charger.data()).filter((charger) => {
+				// 	if (!IDs.includes(charger.chargerId))
+				// 		return true;
+				// 	else
+				// 		return false;
+				// }).map((charger) => setCharger(charger));
+
+				// setCurrentLocationChargers(value.docs);
 			});
 		}
-	}, [searchLocationCoordinates, uselocation.pathname]);
+	}, [searchLocationCoordinates, uselocation.pathname, setCharger,]);
 
 	useEffect(() => {
 		if (uselocation.pathname === '/' && searchLocationCoordinates.searchlocation.coordinates) {
@@ -131,6 +169,20 @@ const DashboardMap = ({
 		}
 		// Call setcurrentmarker only once when the component mounts
 	}, [searchLocationCoordinates, showSearchLocationChargers, uselocation.pathname]);
+
+
+	// let newChargers = chargers.filter(charger => {
+	// 	if (!uniqueChargersID.includes(charger.chargerId)) {
+	// 		uniqueChargersID = uniqueChargersID.concat(charger.chargerId);
+	// 		return true;
+	// 	}
+	// 	return false;
+	// });
+
+	// console.log(newChargers)
+	console.log(chargers)
+
+
 
 	return (
 		<Fragment>
@@ -141,16 +193,17 @@ const DashboardMap = ({
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
+				{/* Current Chargers */}
 				{
 					show === false && searchLocationCoordinates.searchlocation.coordinates === null && (
 						<div>
 							<LocationMarker setPosition={setPosition} position={position} markerIcon={markerIcon} />
 							{
-								currentchargers && currentchargers.map((charger, index) => {
+								chargers && chargers.map((charger, index) => {
 									return (
 										<Marker key={index} icon={greenmarkerIcon} draggable={false}
-											position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}>
-											<ChargerPopup ele={charger.data()} bookingHandler={bookingHandler} />
+											position={[charger?.g?.geopoint.latitude, charger?.g?.geopoint.longitude]}>
+											<ChargerPopup chargerData={charger} bookingHandler={bookingHandler} />
 										</Marker>
 									)
 								})
@@ -159,17 +212,18 @@ const DashboardMap = ({
 					)
 				}
 
+				{/*Current Location Chargers */}
 				{
 					show === false && searchLocationCoordinates.searchlocation.coordinates &&
 					<div>
 						<SearchLocationMark cardDetails={{ coordinates: { latitude: searchLocationCoordinates.searchlocation.coordinates[1], longitude: searchLocationCoordinates.searchlocation.coordinates[0] } }} />
 						{
-							currentLocationChargers && currentLocationChargers.map((charger, index) => {
+							chargers && chargers.map((charger, index) => {
 								return (
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
-										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]}
+										position={[charger?.g?.geopoint.latitude, charger?.g?.geopoint.longitude]}
 									>
-										<ChargerPopup ele={charger.data()} bookingHandler={bookingHandler} />
+										<ChargerPopup chargerData={charger} bookingHandler={bookingHandler} />
 									</Marker>
 								)
 							})
@@ -189,8 +243,8 @@ const DashboardMap = ({
 							chargers && chargers.map((charger, index) => {
 								return (
 									<Marker key={index} icon={greenmarkerIcon} draggable={false}
-										position={[charger.data().g.geopoint.latitude, charger.data().g.geopoint.longitude]} >
-										<ChargerPopup ele={charger.data()} bookingHandler={bookingHandler} />
+										position={[charger?.g?.geopoint.latitude, charger?.g?.geopoint.longitude]} >
+										<ChargerPopup chargerData={charger} bookingHandler={bookingHandler} />
 									</Marker>
 								)
 							})
@@ -206,11 +260,14 @@ const DashboardMap = ({
 					/>
 				}
 				{
-					card.charger?.g && card.charger?.g && (
-						<Mark cardDetails={card.charger} bookingHandler={bookingHandler} />
+					card.chargerData?.g && card.chargerData?.g && (
+						<Mark cardDetails={card.chargerData} bookingHandler={bookingHandler} />
 					)
 				}
-			</MapContainer >
+				<Box style={{ position: 'absolute', left: '10px', bottom: '10%', cursor: 'pointer', zIndex: 1000 }} >
+					{card && location.pathname === '/previousBooking' && <ArrowBackRoundedIcon onClick={handleBackButton} sx={{ display: { xs: 'flex', md: 'none' } }} />}
+				</Box>
+			</MapContainer>
 			{
 				location.pathname === '/' &&
 				<SearchBar
@@ -229,8 +286,6 @@ const DashboardMap = ({
 
 const Mark = ({ cardDetails, bookingHandler }) => {
 
-	console.log(cardDetails)
-
 	const latitude = cardDetails?.g.geopoint.latitude;
 	const longitude = cardDetails?.g.geopoint.longitude;
 
@@ -244,7 +299,6 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 	});
 
 	// Handlers
-
 	useEffect(() => {
 		if (latitude !== undefined && longitude !== undefined) {
 			markerRef.current.openPopup();
@@ -259,7 +313,7 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 	return (
 		<Marker icon={markerIcon} draggable={false}
 			position={[cardDetails.g.geopoint.latitude, cardDetails.g.geopoint.longitude]} ref={markerRef}>
-			<ChargerPopup ele={cardDetails} bookingHandler={bookingHandler} />
+			<ChargerPopup chargerData={cardDetails} bookingHandler={bookingHandler} />
 		</Marker>
 	);
 }
@@ -317,4 +371,13 @@ const LocationMarker = ({ setPosition, position, markerIcon }) => {
 	);
 }
 
-export default DashboardMap;
+const mapStateToProps = state => ({
+	uniqueChargersID: state.charger.uniqueChargersID,
+	// chargers: state.charger.chargers,
+});
+
+const mapDispatchFromProps = dispatch => ({
+	setCharger: (data) => dispatch(setChargers(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchFromProps)(DashboardMap);

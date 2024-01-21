@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom'
 import { Box, Typography } from '@mui/material';
 import { useStyles, otpStyle } from '../../pages/auths/style';
@@ -40,12 +40,16 @@ function getStyles(name, personName, theme) {
 	};
 }
 
-function Registerauth({ addUserData, userData }) {
-	const app = initializeApp(firebaseConfig)
-	const storage = getStorage(app);
+const Registerauth = ({ addUserData, userData }) => {
+	const classes = useStyles();
+	const theme = useTheme();
 
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
+
+	const app = initializeApp(firebaseConfig)
+	const storage = getStorage(app);
+
 	const [data, setUserData] = useState({
 		name: userData.name,
 		vehicleManufacturer: "",
@@ -58,16 +62,10 @@ function Registerauth({ addUserData, userData }) {
 	const [image, setImage] = useState(null);
 	const [idType, setIdType] = useState('');
 
-	// Styles
-	const classes = useStyles();
-	const theme = useTheme();
 
-	// Handlers
+
 	const handleChange = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setIdType(value);
+		setIdType(event.target.value);
 	};
 
 	const changeDataHandler = (e) => {
@@ -92,17 +90,14 @@ function Registerauth({ addUserData, userData }) {
 			addUserData({ ...data, idImageURL: downloadURL, level2: data })
 		}
 	}
-	
-	if(!userData){
-		return <Navigate to={'/auth'}/>
-	}
-	else if (level === "level1" && userData.level1) {
+
+	if (!userData) {
+		return <Navigate to={'/auth'} />
+	} else if (level === "level1" && userData.level1) {
 		return <Navigate to={'/'} />
-	}
-	else if (level === "level2" && userData.level2) {
+	} else if (level === "level2" && userData.level2) {
 		return <Navigate to={`/${searchParams.has("redirectTo") ? searchParams.get("redirectTo") : ""}`} />
-	}
-	else {
+	} else {
 		return (
 			<Box className={classes.bodyPage}>
 				<Box sx={{ position: 'relative' }}>
@@ -121,16 +116,18 @@ function Registerauth({ addUserData, userData }) {
 							level === "level2" ? <CustomerForm user={userData} data={data} getStyles={getStyles} classes={classes}
 								theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps}
 								names={names} image={image} setImage={setImage} handleChange={handleChange} />
-							:<Navigate to='/404'/>
-						}
+								: <Navigate to='/404' />
+					}
 				</Box>
 			</Box>
 		)
 	}
 }
+
 const mapStateToProps = state => ({
 	userData: state.userData.user
 })
+
 const mapDispatchFromprops = dispatch => ({
 	addUserData: (data) => dispatch(addUserData(data))
 })

@@ -1,34 +1,30 @@
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles({
-	card: {
-		display: 'flex',
-		justifyContent: 'space-between',
-	},
+	/////////////////////////////////////	 List 	//////////////////////////////////////
 	outerBox: {
 		display: 'flex',
-		maxHeight: 'calc(100vh - 1rem)',
 		height: '100vh',
+		justifyContent: 'center',
 		backgroundColor: '#000',
 		backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)',
 		color: '#fff',
 		zIndex: 1000,
-		padding: '0rem .8rem 1rem 1rem ',
 	},
 	searchResultsContainer: {
-		maxHeight: 'calc(100vh - 5rem)',
-		paddingTop: '6px',
-		overflowX: 'hidden',
-		overflowY: 'auto !important',
-		position: 'relative',
+		overflowY: 'auto',
+		display: "flex",
+		width:'fit-content',
+		justifyContent: "center",
+		flexDirection: 'row',
+		flexWrap: 'wrap',
 		'&::-webkit-scrollbar': {
-			width: '5px !important',
+			display:'none',
 		},
 	},
 	inputField: {
 		marginTop: '6px',
-		paddingTop: '10px',
-		paddingBottom: '10px',
+		padding: '10px 0',
 		color: '#fff',
 		backgroundColor: 'rgba(255, 255, 255, 0.15)',
 		borderRadius: '4px',
@@ -42,26 +38,8 @@ export const useStyles = makeStyles({
 		color: '#fff',
 		backgroundColor: '#282828',
 		borderRadius: '4px',
-		padding: '14px 10px',
+		padding: '12px 10px',
 	},
-	bookAgainBtnStyle: {
-		backgroundColor: '#FCDD13',
-		color: '#292929',
-		fontSize: '12px',
-		fontWeight: 'bold',
-		borderRadius: '10px',
-		padding: '1px 8px',
-		'&:hover': {
-			boxShadow: 'rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px',
-			backgroundColor: '#FCDD13',
-		},
-	},
-	filterHeadersStyle: {
-		fontFamily: 'Manrope !important',
-		fontWeight: '600',
-		color: '#444',
-	},
-
 	/////////////////////////////////////	 ListItem 	//////////////////////////////////////
 	listItemStyle: {
 		cursor: 'pointer',
@@ -75,30 +53,29 @@ export const useStyles = makeStyles({
 		backgroundColor: 'rgba(200, 200, 200, 0.2)',
 		borderRadius: '0px 12px 12px 0px',
 		border: '1px solid rgba(255, 255, 255, 0.125)',
-		padding: '10px',
-		flexGrow: 1,
-		'&:last-child': {
-			paddingBottom: 1,
-		},
+		padding: '0.2rem',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
 	},
-	bookAgainBtn: {
+	cancelBtn: {
 		backgroundColor: '#FCDD13',
 		color: '#292929',
-		fontSize: '12px',
 		fontFamily: 'Manrope !important',
 		fontWeight: 'bold',
 		borderRadius: '10px',
 		padding: '1px 8px',
-	},
+		transition: 'transform 0.2s ease-out',
+		'&:hover': {
+		  backgroundColor: '#FCDD13',
+		  borderColor: '#0062cc',
+		  transform: 'translateY(-2px)',
+		},
+	  },
 	cardTextStyle: {
-		fontSize: '.75rem',
 		color: '#eee',
-	},
-	clearAllBtnStyle: {
-		color: 'red',
-		textTransform: 'capitalize',
-		fontSize: '16px',
-		fontFamily: 'Manrope !important',
-		fontWeight: '600'
+		whiteSpace: "nowrap",
+		overflow: "hidden",
+		textOverflow: "ellipsis"
 	},
 });

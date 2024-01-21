@@ -1,10 +1,17 @@
-import React, { useState, Fragment, useEffect, useCallback } from 'react';
+import React, { useState, Fragment, useEffect, useMemo } from 'react';
 import ListItem from './ListItem';
 import FilterGroup from '../Filters/FilterGroup';
+import {
+	STATUS_CANCELED, STATUS_REQUESTED,
+	STATUS_ACCEPTED,
+	STATUS_DECLINED,
+	STATUS_CHARGING_COMPLETED,
+	STATUS_CHARGING,
+} from '../../constants';
 import { chargerTypeOptions, sortByOptions } from '../../constants';
 import {
 	FormControl, InputAdornment, Input, Accordion, AccordionDetails, Button, AccordionSummary, Box,
-	Typography, Link
+	Typography, Link, Badge
 } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,20 +20,21 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
-import { getParticularUser } from '../../utils/auth/user';
+import { getUserAndChargers } from '../../utils/auth/user';
 
-const List = ({ collectCardData, user, book }) => {
+const List = ({ setFetchChargerFromList, user, userBooking }) => {
 
 	//States
 	const [show, setShow] = useState("pending");
 	const [showFilter, setShowFilter] = useState(false);
-	const [cardData, setCardData] = useState('');
 	const [selectedFilters, setSelectedFilters] = useState({
 		chargerType: [],
 		sortBy: '',
 		from: null,
 		to: null,
 	});
+	const [pendingBookings, setPendingBookings] = useState(null);
+	const [recentBookings, setRecentBookings] = useState(null);
 
 	//Styling
 	const classes = useStyles();
@@ -49,40 +57,46 @@ const List = ({ collectCardData, user, book }) => {
 		}))
 	};
 
-	const handleCardData = useCallback((result) => {
-		console.log("clicked");
-		console.log(result);
-		setCardData(result);
-	}, [setCardData]);
+	const fetchData = (charger) => setFetchChargerFromList(charger);
+
+	const pendingBookingsInfo = useMemo(() => {
+		return userBooking.filter((charger) =>
+			charger.status === STATUS_REQUESTED || charger.status === STATUS_ACCEPTED || charger.status === STATUS_CHARGING
+		);
+	}, [userBooking]);
+
+	console.log(pendingBookingsInfo)
+
+	const recentBookingsInfo = useMemo(() => {
+		return userBooking.filter((charger) =>
+			charger.status === STATUS_DECLINED || charger.status === STATUS_CANCELED || charger.status === STATUS_CHARGING_COMPLETED
+		);
+	}, [userBooking]);
 
 	useEffect(() => {
-		collectCardData(cardData);
-	}, [cardData, collectCardData]);
+		const helperFunction = async () => {
+			const response1 = await Promise.all(pendingBookingsInfo.map(async (charger) => {
+				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId];
+			}));
 
-	console.log(book)
-
-	const fetchData = async (charger) => {
-		console.log(charger)
-		try {
-			const res = await getParticularUser(charger?.uId, charger?.chargerId);
-			handleCardData(res);
-		} catch (err) {
-			console.log(err)			
+			setPendingBookings(response1);
+			const response2 = await Promise.all(recentBookingsInfo.map(async (charger) => {
+				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot];
+			}));
+			setRecentBookings(response2);
 		}
-	};
-
-	// useEffect(() => {
-	// 	// fetchData();
-	// 	// eslint-disable-next-line
-	// }, [setCardData]);
+		helperFunction();
+	}, [pendingBookingsInfo, recentBookingsInfo]);
 
 	return (
 		<Fragment>
-			<Box className={classes.outerBox} >
-				<Box>
-					<Box sx={{ padding: '11px 8px 2px 8px', display: 'flex', justifyContent: 'space-between', }} >
+			<Box sx={{ width: ['100vw', '100vw', '60vw'] }} className={classes.outerBox}>
+				<Box width='100%' >
+					<Box sx={{ width: '90%', padding: { xs: '11px 0px 2px 15px', md: '11px 0px 2px 15px' }, display: 'flex' }} >
 						<FormControl variant="standard" fullWidth>
-							<Input placeholder='Search Charging Stations...' className={classes.inputField}
+							<Input sx={{ fontSize: { xs: '0.85rem', md: '1rem' } }} placeholder='Search Charging Stations...' className={classes.inputField}
 								startAdornment={<InputAdornment position="start" >
 									<Search sx={{ paddingLeft: '10px', color: '#fff' }} /></InputAdornment>}
 							/>
@@ -92,7 +106,7 @@ const List = ({ collectCardData, user, book }) => {
 						</Box>
 					</Box>
 
-					<Box sx={{ marginLeft: '8px', marginTop: '6px', marginBottom: showFilter ? '4px' : '0px', }}>
+					<Box sx={{ marginLeft: '8px', marginTop: '6px', marginBottom: showFilter ? '4px' : '0px' }}>
 						<Accordion expanded={showFilter} sx={{ width: '98%' }}>
 							<AccordionSummary sx={{ display: 'none' }}>
 							</AccordionSummary>
@@ -100,7 +114,8 @@ const List = ({ collectCardData, user, book }) => {
 								<Box sx={{ display: 'flex', flexDirection: 'column', padding: '4px 5px', }}>
 									<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 										<Box>
-											<Typography mb={1} className={classes.filterHeadersStyle} >Charger Type</Typography>
+											<Typography mb={1} fontFamily='Manrope !important'
+												fontWeight='600' color='#444' >Charger Type</Typography>
 											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
 												<FilterGroup options={chargerTypeOptions} type='multi'
 													property='chargerType' selected={selectedFilters.chargerType} setSelected={filterHandler} />
@@ -115,16 +130,15 @@ const List = ({ collectCardData, user, book }) => {
 										</Box>
 										<Box>
 											<Button className={classes.clearAllBtnStyle}
-												onClick={() => { clearFilters() }} >Clear All <Clear /> </Button>
+												onClick={() => { clearFilters() }} >Clear <Clear /> </Button>
 										</Box>
-									</Box>
-
-									<Box sx={{ marginTop: '13px', }}>
+									</Box><br />
+									<Box>
 										<Typography className={classes.filterHeadersStyle} >Date</Typography>
-										<Box sx={{ display: 'flex' }}>
+										<Box>
 											<LocalizationProvider dateAdapter={AdapterDayjs} >
 												<DemoContainer components={['DatePicker']}>
-													<DatePicker label="Start" sx={{ marginRight: '15px' }} value={selectedFilters.to}
+													<DatePicker label="Start" value={selectedFilters.to}
 														onChange={(newValue) => filterHandler('to', newValue)} />
 												</DemoContainer>
 											</LocalizationProvider>
@@ -152,6 +166,11 @@ const List = ({ collectCardData, user, book }) => {
 							}}
 								onClick={() => setShow("pending")}>
 								Pending
+								{
+									pendingBookingsInfo.length > 0 && (
+										<Badge badgeContent={pendingBookingsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+											anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" />)
+								}
 							</Link>
 							<Link style={{
 								textDecoration: show === 'recent' ? 'underline' : 'none', fontSize: '1rem',
@@ -160,28 +179,38 @@ const List = ({ collectCardData, user, book }) => {
 							}}
 								onClick={() => setShow("recent")}>
 								Recent
+								{
+									recentBookingsInfo.length > 0 && (
+										<Badge badgeContent={recentBookingsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+											size="small" anchorOrigin={{ vertical: 'top', horizontal: 'right', }} variant="dot" />)
+								}
 							</Link>
 						</Box>
 					</Box>
 
-					<Box className={classes.searchResultsContainer}>
-						{
-							show === "pending" ?
-								book.map((ele, idx) => ((ele.status === 1 || ele.status === 2 || ele.status === 0) &&
-									<Box onClick={() => { fetchData(ele);  }} sx={{ marginBottom: '10px' }} key={idx}>
-										<ListItem user={user} result={ele} />
-									</Box>
-								)) :
-								book.map((ele, idx) => ((ele.status === -1 || ele.status === -2 || ele.status === 3) &&
-									<Box onClick={() => { fetchData(ele);  }} sx={{ marginBottom: '10px' }} key={idx}>
-										<ListItem user={user} result={ele} />
-									</Box>
-								))
-						}
+					<Box display='flex' justifyContent='center'>
+						<Box sx={{ maxHeight: ['calc(100vh - 11.5rem)', 'calc(100vh - 11.5rem)', 'calc(100vh - 8rem)'] }} className={classes.searchResultsContainer}>
+							{
+								show === "pending" ?
+									!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
+										pendingBookings?.map(([chargerData, status, timeSlot, bookingId]) => ({ chargerData, status, timeSlot, bookingId })).map((charger, idx) => (
+											<Box sx={{ marginBottom: { xs: '10px', md: '10px' } }} key={idx} onClick={() => { fetchData(charger) }} >
+												<ListItem data={charger} show={show} />
+											</Box>
+										)))
+									:
+									!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
+										recentBookings?.map(([chargerData, status, timeSlot]) => ({ chargerData, status, timeSlot })).map((charger, idx) => (
+											<Box sx={{ marginBottom: { xs: '10px', md: '0px' } }} key={idx} onClick={() => { fetchData(charger) }} >
+												<ListItem data={charger} show={show} />
+											</Box>
+										)))
+							}
+						</Box>
 					</Box>
 				</Box>
 			</Box>
-		</Fragment >
+		</Fragment>
 	);
 };
 

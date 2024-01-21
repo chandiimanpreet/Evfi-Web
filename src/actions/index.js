@@ -47,22 +47,49 @@ const addChargerAction = (res) => ({
     payload: res
 });
 
-const setBooking = (data) => ({
-    type: 'SET_BOOKING',
-    payload: data
+const setUserBooking = (data) => ({
+    type: 'SET_USER_BOOKING',
+    payload: data,
 });
 
-const setProvider = (data) => ({
-    type: 'SET_PROVIDER',
-    payload: data
+// const getBookings = () => ({
+//     type: 'GET_USER_BOOKING',
+// });
+
+// const getRequests = () => ({
+//     type: 'GET_PROVIDER_REQUEST',
+// });
+
+const setProviderRequests = (data) => ({
+    type: 'SET_PROVIDER_REQUEST',
+    payload: data,
 });
 
-const getBook = () => ({
-    type: 'GET_BOOKING',
+const bookingUpdate = (data) => ({
+    type: 'UPDATE_BOOKING',
+    payload: data,       // id, status
 });
 
+const setChargers = (data) => ({
+    type: 'SET_USER_CHARGER',
+    payload: data,
+});
+
+const chargerUpdate = (data) => ({
+    type: 'UPDATE_CHARGER',
+    payload: data,      // id, timeSlot
+});
+
+const getChargersID = () => ({
+    type: 'GET_CHARGERS_ID',
+});
+
+const setChargersID = (data) => ({
+    type: 'SET_CHARGERS_ID',
+    payload: data,
+});
 
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    setBooking, getBook, setProvider
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, getChargersID, setChargersID
 };

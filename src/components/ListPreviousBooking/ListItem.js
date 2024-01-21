@@ -1,69 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import searchedData from '../../utils/searchedData';
+import React from 'react';
 // import Ratings from '../Rating';
 // import { CurrencyRupee } from '@mui/icons-material';
-import { Typography, Box, Button, Chip } from '@mui/material';
-import { updateCharger } from '../../utils/auth/user';
+import { Typography, Box, Button, Chip, Skeleton } from '@mui/material';
+import { decimalToBinary, updateBookedCharger } from '../../utils/auth/user';
 import { useStyles } from './style';
-import { getParticularUser } from '../../utils/auth/user';
+import {
+	STATUS_CANCELED, STATUS_REQUESTED,
+	STATUS_ACCEPTED,
+	STATUS_DECLINED,
+	STATUS_CHARGING_COMPLETED,
+	STATUS_CHARGING,
+} from '../../constants';
 
-const ListItem = ({ result, user }) => {
+const convertTimeforUserUI = (timeSlot) => {
 
-	// States
-	const [requestedChargerData, setRequestedChargerData] = useState(null);
+	let time = decimalToBinary(timeSlot);
+	time = time.length > 0 ? time : 0;
+	let greaterThan12 = false;
+
+	for (let i = 0; i < time.length; i++) {
+		if (time[i] === '1') {
+			time = i;
+		}
+	}
+
+	if (time >= 12) {
+		time = time - 12;
+		greaterThan12 = true;
+	}
+
+	time = `${time === 0 ? 12 : time}:00 - ${(time + 1)}:00`.concat(greaterThan12 ? ' PM' : ' AM');
+	return time;
+}
+
+const ListItem = ({ data, show }) => {
 
 	// Styles
 	const classes = useStyles();
 
-	// Handlers
-	const fetchData = async () => {
-		try {
-			const res = await getParticularUser(result.uId, result.chargerId);
-			setRequestedChargerData(res);
-		} catch (err) {
-			console.log(err)
-		}
-	};
-
-	useEffect(() => {
-		fetchData();
-		// eslint-disable-next-line
-	}, []);
-
-
 	return (
-		<Box className={classes.listItemStyle} sx={{ minWidth: `${searchedData.length > 4 ? '40rem' : '41rem'}`, }}>
-			<Box sx={{ borderRadius: '10px', paddingBottom: 0, display: 'flex', }} >
-				<Box component='img' sx={{ height: 150, width: 250, borderRadius: '10px 0px 0px 10px', }}
-					alt='Charging Station' src={requestedChargerData?.charger?.info?.imageUrl[0]}>
+		<Box className={classes.listItemStyle} sx={{
+			paddingBottom: ['0rem', '0.6rem']
+		}}>
+			<Box display='flex'>
+				<Box component='img' sx={{ height: { xs: "8.5rem", md: "9rem" }, width: { xs: "7rem", md: "10rem" }, borderRadius: '10px 0px 0px 10px', }}
+					alt='Charging Station' src={data.chargerData?.info?.imageUrl[0]}>
 				</Box>
-				<Box className={classes.listItemCardStyle}>
-					<Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#fff', fontFamily: 'Manrope !important' }}>{requestedChargerData?.charger?.info?.stationName}</Typography>
-					<Typography sx={{ fontSize: 13, color: '#bbb', padding: '4px 0px', }}>
-						{requestedChargerData?.charger?.info?.address}
-					</Typography>
-					<Box className={classes.card} sx={{ marginTop: '5px' }}>
-						<Box className={classes.card}>
-							<Typography className={classes.cardTextStyle} sx={{ marginRight: '4px', }}>Charging Type:{' '}</Typography>
-							<Typography className={classes.cardTextStyle} sx={{ fontWeight: 'bold' }}>{requestedChargerData?.charger?.info?.chargerType}</Typography>
-						</Box>
-						<Box className={classes.card}>
-							<Typography className={classes.cardTextStyle} sx={{ marginRight: '4px', }}>Booked Slot:</Typography>
-							<Typography className={classes.cardTextStyle} sx={{ fontWeight: 'bold' }}>{result?.timeSlot}</Typography>
-						</Box>
+
+				<Box sx={{ width: ['11.2rem', '12rem', '15rem'] }} className={classes.listItemCardStyle}>
+					<Typography sx={{ fontSize: { xs: '0.85rem', md: '1.05rem' }, fontWeight: 'bold', color: '#fff', fontFamily: 'Manrope !important' }}>{data.chargerData?.info?.stationName}</Typography>
+
+					<Box><Typography whiteSpace='initial' className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' } }}>
+						{data.chargerData?.info?.address || <Skeleton width={250} animation="wave" />}</Typography>
 					</Box>
-					<Box className={classes.card} sx={{ marginTop: '.8rem', padding: '4px 0px', }}>
-						<Box className={classes.card} sx={{ marginTop: '.8rem', }}>
-							<Chip label={(result?.status === 1 && 'Requested') || (result?.status === 2 && 'Accepted') || (result?.status === 0 && 'Charging...')
-								|| (result?.status === -2 && 'Canceled by you') || (result?.status === -1 && 'Declined by provider') || (result?.status === 3 && 'Charging Completed')}
-								color={(result?.status === 1 && 'success') || (result?.status === 2 && 'primary') || (result?.status === 0 && 'secondary')
-									|| (result?.status === -2 && 'error') || (result?.status === -1 && 'info') || (result?.status === 3 && 'warning')} size="small" variant="contained" />
-						</Box>
-						<Box className={classes.card} sx={{ marginTop: '.8rem', }}>
-							<Button onClick={() => {
-								updateCharger(result.bookingId, -2);
-							}} variant="outlined" className={classes.bookAgainBtn}>Cancel</Button>
-						</Box>
+
+					<Box display="flex" justifyContent="flex-start">
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Type:</Typography>
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
+							{data.chargerData?.info?.chargerType || <Skeleton width={20} animation="wave" />}
+						</Typography>
+					</Box>
+
+					<Box display="flex" justifyContent="flex-start">
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Slot:</Typography>
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
+							{convertTimeforUserUI(data?.timeSlot) || <Skeleton width={50} animation="wave" />}
+						</Typography>
+					</Box>
+
+					<Box >
+						<Box><Chip
+							label={
+								(data?.status === STATUS_REQUESTED && 'Requested') ||
+								(data?.status === STATUS_ACCEPTED && 'Accepted') ||
+								(data?.status === STATUS_CHARGING && 'Charging...') ||
+								(data?.status === STATUS_CANCELED && 'Canceled by you') ||
+								(data?.status === STATUS_DECLINED && 'Declined by provider') ||
+								(data?.status === STATUS_CHARGING_COMPLETED && 'Charging Completed')
+							}
+							color={
+								(data?.status === STATUS_REQUESTED && 'success') ||
+								(data?.status === STATUS_ACCEPTED && 'primary') ||
+								(data?.status === STATUS_CHARGING && 'secondary') ||
+								(data?.status === STATUS_CANCELED && 'error') ||
+								(data?.status === STATUS_DECLINED && 'error') ||
+								(data?.status === STATUS_CHARGING_COMPLETED && 'warning')
+							}
+							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid' }} /></Box>
+						{
+							show === 'pending' && (
+								<Box display='flex' justifyContent='flex-end'>
+									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
+										e.stopPropagation();
+										updateBookedCharger(data.bookingId, STATUS_CANCELED);
+									}} className={classes.cancelBtn}>Cancel</Button></Box>
+							)
+						}
 					</Box>
 				</Box>
 			</Box>

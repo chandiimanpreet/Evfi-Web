@@ -3,12 +3,11 @@ import { BrowserRouter } from "react-router-dom";
 import AnimatedRoutes from "./routes";
 
 const App = () => {
-
-  return (
-      <BrowserRouter>
-        <AnimatedRoutes />
-      </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <AnimatedRoutes />
+        </BrowserRouter>
+    );
 };
 
 export default App;

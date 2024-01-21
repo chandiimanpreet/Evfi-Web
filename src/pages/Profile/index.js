@@ -7,10 +7,7 @@ import Payments from "./Payments/Payments";
 import Settings from "./Settings/Settings";
 import Support from "./Support";
 import { useStyles } from "./styles";
-import {
-    Bolt, PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded,
-    SupportAgentRounded, LogoutRounded
-} from "@mui/icons-material";
+import { Bolt, PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded, SupportAgentRounded, LogoutRounded } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 
@@ -30,8 +27,6 @@ const Profile = ({ direction, logoutUser, userData }) => {
     const handleLogout = () => {
         logoutUser();
     };
-
-    console.log(userData.user);
 
     return (
         <motion.Box key="pr" initial={{ x: direction }} animate={{ x: 0 }}
