@@ -56,29 +56,55 @@ const DashboardMap = ({
 		await requestCharger(charger, user)
 	};
 
-	const setcurrentmarker = useCallback(() => {
-		setCurrentchargers(null);
-		const query = geocollection.near({
-			center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 100
-		});
+	// const setcurrentmarker = useCallback(() => {
+		
+	// 	setCurrentchargers(null);
+	// 	const query = geocollection.near({
+	// 		center: new firebase.firestore.GeoPoint(position.lat, position.lng), radius: 100
+	// 	});
+	
+	// 	query.get().then((value) => {
+	// 		setCurrentchargers(value.docs);
+	// 		console.log(value.docs);
+	// 	});
+	
+	// }, [position,setCurrentchargers]);
 
-		query.get().then((value) => {
+	// useEffect(() => {
+	// 	if (position&&position.lat&&position.lng) {
+	// 		setcurrentmarker();
+	// 	}
+	// 	// Call setcurrentmarker only once when the component mounts
+	// }, [position, setcurrentmarker]);
+
+	const setcurrentmarker = useCallback(() => {
+		if (position && position.lat && position.lng) {
+		  setCurrentchargers(null);
+		  const query = geocollection.near({
+			center: new firebase.firestore.GeoPoint(position.lat, position.lng),
+			radius: 100,
+		  });
+	  
+		  query.get().then((value) => {
 			setCurrentchargers(value.docs);
 			console.log(value.docs);
-		});
-	}, [position]);
-
-	useEffect(() => {
-		console.log(currentLocationChargers)
-		console.log(chargers)
-	}, [currentLocationChargers, chargers])
-
-	useEffect(() => {
-		if (position) {
-			setcurrentmarker();
+		  });
 		}
+	  }, [position, setCurrentchargers]);
+	  
+	  useEffect(() => {
 		// Call setcurrentmarker only once when the component mounts
-	}, [position, setcurrentmarker]);
+		setcurrentmarker();
+	  }, [setcurrentmarker]); // Empty dependency array ensures it runs only once on mount
+	  
+	  useEffect(() => {
+		if (position && position.lat && position.lng) {
+		  // Call setcurrentmarker whenever position changes
+		  setcurrentmarker();
+		}
+	  }, [position, setcurrentmarker]);
+	  
+	  
 
 	const showSearchLocationChargers = useCallback(() => {
 
