@@ -6,18 +6,20 @@ import 'firebase/compat/firestore';
 import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
 import firebaseConfig from "../utils/config/firebaseConfig";
+import { connect } from "react-redux";
+import { setChargers } from "../actions";
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('chargers');
 
-const Home = ({ direction ,user }) => {
+const Home = ({ direction, user, setCharger, chargers, uniqueChargersID }) => {
 
 	// States
 	const [show, setShow] = useState(false);
 	const [showCurrentLocation, setShowCurrentLocation] = useState(false);
-	const [chargers, setChargers] = useState(null);
+	// const [chargers, setChargers] = useState(null);
 	const [searchCoordinates, setSearchCoordinates] = useState({
 		source: { coordinates: null, label: '' },
 		destination: { coordinates: null, label: '' }
@@ -29,7 +31,7 @@ const Home = ({ direction ,user }) => {
 	// Handlers
 	const showRoute = useCallback(() => {
 		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
-			setChargers(null);
+			// setChargers([null]);
 
 			if (searchCoordinates.source.coordinates) {
 				const query = geocollection.near({
@@ -39,20 +41,27 @@ const Home = ({ direction ,user }) => {
 					),
 					radius: 100
 				});
+
+				console.log(query);
 				query.get().then((value) => {
-					setChargers(value.docs);
-					console.log(value.docs);
+					// setChargers(value.docs);
+					// value.docs.map((charger) => charger.data()).map((charger) => setCharger(charger));
+					value.docs.map((charger) => charger.data()).map((charger) => (!uniqueChargersID.includes(charger.chargerId) && setCharger(charger)));
+
 				});
 				setShow(true);
 				setShowCurrentLocation(false);
 			}
 		}
-	}, [searchCoordinates]);
+	}, [searchCoordinates, setCharger,uniqueChargersID]);
+
 
 	const setCurrentLocation = () => {
 		setShow(false);
 		setShowCurrentLocation(true);
 	}
+	console.log(chargers);
+	console.log(uniqueChargersID)
 
 	return (
 
@@ -64,14 +73,22 @@ const Home = ({ direction ,user }) => {
 				<DashboardMap show={show} showCurrentLocation={showCurrentLocation}
 					setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates}
 					setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} card={[null]}
-					chargers={chargers} setShow={setShow}
+					setShow={setShow} chargers={chargers}
 					searchLocationCoordinates={searchLocationCoordinates}
 					setSearchLocationCoordinates={setSearchLocationCoordinates}
-					user={user}
 				/>
 			</Box>
 		</motion.div>
 	);
 }
 
-export default Home;
+
+const mapStateToProps = state => ({
+	uniqueChargersID: state.charger.uniqueChargersID,
+});
+
+const mapDispatchFromProps = dispatch => ({
+	setCharger: (data) => dispatch(setChargers(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchFromProps)(Home);
