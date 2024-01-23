@@ -12,15 +12,15 @@ const PlaceSearchingNavigationbar = ({
 
     return (
         <motion.div>
-            <AppBar className={classes.searchNavigation}>
+            <AppBar className={classes.searchNavigation} sx={{ width: {xs: '100%', sm: '100%', md:'48%'},left: {xs: '0', sm: '0',md:"calc(50% - 23vw)!important"}}} >
                 <Toolbar className={classes.toolbarstyle} >
-                    <BoltIcon className={classes.searchboltIcon} />
+                    <BoltIcon className={classes.searchboltIcon}  sx={{ fontSize: {xs: '2rem!important', sm: '2.3rem!important',md:'2.5rem!important'}}} />
                     <Box className={classes.extendinputroot}>
                         <Autocomplete clearIcon disablePortal id="combo-box-demo"
                             value={searchLocationCoordinates.searchlocation.label}
                             options={distanceData} data-shrink="false!important"
                             className={classes.searchPlaceAutoComplete}
-                            sx={{ right: '2.3rem' }}
+                            sx={{ padding: {xs: '0.1rem  0.1rem 0.5rem 0.1rem', sm: '0.5rem 0.5rem'}}}
                             renderInput={(params) =>
                                 <TextField
                                     value={searchLocationCoordinates.searchlocation.label}
@@ -43,6 +43,7 @@ const PlaceSearchingNavigationbar = ({
                     <DirectionsIcon
                         onClick={handleOnclickSource}
                         className={classes.directionsIcon}
+                        sx={{ fontSize: {xs: '2rem', sm: '2.3rem',md:'2.5rem!important'}}}
                     />
                 </Toolbar>
             </AppBar >
