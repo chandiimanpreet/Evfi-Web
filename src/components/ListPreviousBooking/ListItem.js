@@ -62,14 +62,21 @@ const ListItem = ({ data, show }) => {
 					</Box>
 
 					<Box display="flex" justifyContent="flex-start">
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Price:</Typography>
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
+							{data.chargerData?.info?.price || <Skeleton width={20} animation="wave" />}
+						</Typography>
+					</Box>
+
+					<Box display="flex" justifyContent="flex-start">
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Slot:</Typography>
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
 							{convertTimeforUserUI(data?.timeSlot) || <Skeleton width={50} animation="wave" />}
 						</Typography>
 					</Box>
 
-					<Box >
-						<Box><Chip
+					<Box sx={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+						<Chip
 							label={
 								(data?.status === STATUS_REQUESTED && 'Requested') ||
 								(data?.status === STATUS_ACCEPTED && 'Accepted') ||
@@ -86,14 +93,14 @@ const ListItem = ({ data, show }) => {
 								(data?.status === STATUS_DECLINED && 'error') ||
 								(data?.status === STATUS_CHARGING_COMPLETED && 'warning')
 							}
-							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid' }} /></Box>
-						{
+							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid',  marginRight: 'auto'}} />
+						    {
 							show === 'pending' && (
-								<Box display='flex' justifyContent='flex-end'>
+								
 									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
 										e.stopPropagation();
 										updateBookedCharger(data.bookingId, STATUS_CANCELED);
-									}} className={classes.cancelBtn}>Cancel</Button></Box>
+									}} className={classes.cancelBtn}>Cancel</Button>
 							)
 						}
 					</Box>

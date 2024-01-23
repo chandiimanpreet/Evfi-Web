@@ -1,15 +1,15 @@
 export const chargerTypeOptions = [
     {
-        value: 'type-a',
-        label: 'Type A',
+        value: 'level-1',
+        label: 'Level 1',
     },
     {
-        value: 'type-b',
-        label: 'Type B',
+        value: 'level-2',
+        label: 'Level 2',
     },
     {
-        value: 'type-c',
-        label: 'Type C'
+        value: 'level-3',
+        label: 'Level 3'
     },
 ];
 export const sortByOptions = [
