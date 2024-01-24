@@ -4,7 +4,7 @@ import Registerauth from '../components/Registration/Registerauth';
 import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
-import { bookingUpdate, loadUser, setUserBooking, setProviderRequests, chargerUpdate, setChargers, getChargersID, setChargersID } from '../actions';
+import { bookingUpdate, loadUser, setUserBooking, setProviderRequests, chargerUpdate, setChargers,  } from '../actions';
 import { connect } from 'react-redux';
 import { collection, getFirestore, onSnapshot, } from "firebase/firestore";
 
@@ -19,7 +19,7 @@ const getPageIndex = (path) => {
 }
 
 const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, chargers, setBooking, setProvider, updateBooking, setCharger,
-    updateCharger, getChargerID, setChargerID, chargersID }) => {
+    updateCharger, getChargerID, }) => {
 
     const location = useLocation();
     const currentPageIndex = useRef(getPageIndex(location.pathname));
@@ -29,9 +29,6 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
         setMotionDirection(index > currentPageIndex.current ? "100vw" : "-100vw");
         currentPageIndex.current = index;
     };
-
-    // console.log(userData.user.level3)
-
 
     useEffect(() => {
         const getBooking = (userData) => {
@@ -47,7 +44,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
                 if (change.type === 'added') {
 
                     const bookingDocs = snapshot.docChanges().map((change) => ({ ...change.doc.data(), bookingId: change.doc.id }));
-                    // console.log(bookingDocs);
+
                     // User Booking
                     bookingDocs.filter((book) => book.uId === userData.user?.uid).map((booking) => setBooking(booking));
 
@@ -89,25 +86,11 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
 
                     console.log(chargerDocs);
 
-                    // const uniqueChargersIDs = [];
-
-                    // chargerDocs.forEach(charger => {
-                    //     if (!uniqueChargersIDs.includes(charger)) {
-                    //         uniqueChargersIDs.push(charger.chargerId);
-                    //     }
-                    // });
-
-                    chargerDocs.map((charger) => setChargerID(charger.chargerId));
-
-                    // console.log(uniqueChargersIDs);
-
                 }
                 else {    // modified
                     const id = changes[0].doc.id;
                     const timeSlot = changes[0].doc.data().timeSlot;
-                    console.log(timeSlot);
                     updateCharger({ id, timeSlot });
-
                 }
             };
 
@@ -119,19 +102,15 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
             });
         };
 
-        if (userData?.user?.level3) {
-            updateChargersTimeSlot(userData);
-        }
-    }, [userData, updateCharger, setCharger, setChargerID]);
+        updateChargersTimeSlot(userData);
+    }, [userData, updateCharger, setCharger]);
 
     console.log(chargers)
-    console.log(chargersID)
 
     // 1 for right movement
     // -1 for left movement
     useEffect(() => {
         loadUser();
-        // getChargerID();
     }, [loadUser]);
 
     return (
@@ -160,7 +139,6 @@ const mapStateToProps = state => ({
     booking: state.booking.bookings,
     provider: state.provider.requests,
     chargers: state.charger.chargers,
-    uniqueChargersID: state.charger.uniqueChargersID,
 });
 
 const mapDispatchFromProps = dispatch => ({
@@ -170,8 +148,6 @@ const mapDispatchFromProps = dispatch => ({
     setCharger: (data) => dispatch(setChargers(data)),
     updateBooking: (data) => dispatch(bookingUpdate(data)),
     updateCharger: (data) => dispatch(chargerUpdate(data)),
-    getChargerID: () => dispatch(getChargersID()),
-    setChargerID: (data) => dispatch(setChargersID(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchFromProps)(AnimatedRoutes);

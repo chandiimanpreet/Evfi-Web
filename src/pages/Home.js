@@ -7,19 +7,18 @@ import firebase from "firebase/compat/app";
 import * as geofirestore from 'geofirestore';
 import firebaseConfig from "../utils/config/firebaseConfig";
 import { connect } from "react-redux";
-import { setChargers } from "../actions";
+import { clearChargers, setChargers } from "../actions";
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('chargers');
 
-const Home = ({ direction, user, setCharger, chargers, uniqueChargersID }) => {
+const Home = ({ direction, user, setCharger, chargers, clearCharger, }) => {
 
 	// States
 	const [show, setShow] = useState(false);
 	const [showCurrentLocation, setShowCurrentLocation] = useState(false);
-	// const [chargers, setChargers] = useState(null);
 	const [searchCoordinates, setSearchCoordinates] = useState({
 		source: { coordinates: null, label: '' },
 		destination: { coordinates: null, label: '' }
@@ -31,7 +30,7 @@ const Home = ({ direction, user, setCharger, chargers, uniqueChargersID }) => {
 	// Handlers
 	const showRoute = useCallback(() => {
 		if (searchCoordinates.source.coordinates || searchCoordinates.destination.coordinates) {
-			// setChargers([null]);
+			clearCharger();
 
 			if (searchCoordinates.source.coordinates) {
 				const query = geocollection.near({
@@ -44,24 +43,19 @@ const Home = ({ direction, user, setCharger, chargers, uniqueChargersID }) => {
 
 				console.log(query);
 				query.get().then((value) => {
-					// setChargers(value.docs);
-					// value.docs.map((charger) => charger.data()).map((charger) => setCharger(charger));
-					value.docs.map((charger) => charger.data()).map((charger) => (!uniqueChargersID.includes(charger.chargerId) && setCharger(charger)));
-
+					value.docs.map((charger) => charger.data()).map((charger) => setCharger(charger));
 				});
 				setShow(true);
 				setShowCurrentLocation(false);
 			}
 		}
-	}, [searchCoordinates, setCharger,uniqueChargersID]);
+	}, [searchCoordinates, setCharger, clearCharger]);
 
 
 	const setCurrentLocation = () => {
 		setShow(false);
 		setShowCurrentLocation(true);
 	}
-	console.log(chargers);
-	console.log(uniqueChargersID)
 
 	return (
 
@@ -82,13 +76,9 @@ const Home = ({ direction, user, setCharger, chargers, uniqueChargersID }) => {
 	);
 }
 
-
-const mapStateToProps = state => ({
-	uniqueChargersID: state.charger.uniqueChargersID,
-});
-
 const mapDispatchFromProps = dispatch => ({
 	setCharger: (data) => dispatch(setChargers(data)),
+	clearCharger: (data) => dispatch(clearChargers()),
 });
 
-export default connect(mapStateToProps, mapDispatchFromProps)(Home);
+export default connect(null, mapDispatchFromProps)(Home);

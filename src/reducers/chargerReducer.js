@@ -1,6 +1,5 @@
 const initialState = {
     chargers: [],
-    uniqueChargersID: [],
 }
 
 const chargerReducer = (state = initialState, action) => {
@@ -9,22 +8,11 @@ const chargerReducer = (state = initialState, action) => {
         case 'GET_USER_CHARGER':
             return {
                 ...state,
-                // chargers: [...state.chargers],
-            }
-        case 'GET_CHARGERS_ID':
-            return {
-                ...state,
-                uniqueChargersID: [...state.uniqueChargersID],
-            }
-        case 'SET_CHARGERS_ID':
-            return {
-                ...state,
-                uniqueChargersID: [action.payload, ...state.uniqueChargersID],
             }
         case 'SET_USER_CHARGER':
             return {
                 ...state,
-                chargers: [action.payload , ...state.chargers],
+                chargers: [action.payload, ...state.chargers],
 
             }
         case 'UPDATE_CHARGER':
@@ -36,6 +24,7 @@ const chargerReducer = (state = initialState, action) => {
             }
         case 'CLEAR_CHARGER':
             return {
+                ...state,
                 chargers: [],
             }
         default:
