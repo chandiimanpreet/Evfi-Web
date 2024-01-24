@@ -80,16 +80,12 @@ const chargerUpdate = (data) => ({
     payload: data,      // id, timeSlot
 });
 
-const getChargersID = () => ({
-    type: 'GET_CHARGERS_ID',
-});
+const clearChargers = () => ({
+    type: 'CLEAR_CHARGER'
+})
 
-const setChargersID = (data) => ({
-    type: 'SET_CHARGERS_ID',
-    payload: data,
-});
 
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, getChargersID, setChargersID
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers
 };

@@ -1,6 +1,5 @@
 import { Box, Button, Chip, Typography, Switch } from '@mui/material';
 import React, { Fragment, useState } from 'react'
-// import Ratings from '../Rating';
 import { CurrencyRupee } from '@mui/icons-material';
 import { Popup } from 'react-leaflet';
 import { styled } from '@mui/material/styles';
@@ -61,8 +60,10 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
     const [AMPM, setAMPM] = useState(new Date().getHours() > 12 ? 'PM' : 'AM');
 
     const checkDisabled = (time) => {
+
         let binaryTime = decimalToBinary(chargerData.timeSlot);
         let intTime = parseInt(time.split('-')[0]);
+        console.log(intTime);
 
         if (AMPM === 'PM' && intTime === 12) {
             intTime = 12;
