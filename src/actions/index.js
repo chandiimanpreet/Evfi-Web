@@ -47,7 +47,6 @@ const addChargerAction = (res) => ({
     payload: res
 });
 
-
 const setUserBooking = (data) => ({
     type: 'SET_USER_BOOKING',
     payload: data,
@@ -68,10 +67,25 @@ const setProviderRequests = (data) => ({
 
 const bookingUpdate = (data) => ({
     type: 'UPDATE_BOOKING',
+    payload: data,       // id, status
+});
+
+const setChargers = (data) => ({
+    type: 'SET_USER_CHARGER',
     payload: data,
+});
+
+const chargerUpdate = (data) => ({
+    type: 'UPDATE_CHARGER',
+    payload: data,      // id, timeSlot
+});
+
+const clearChargers = () => ({
+    type: 'CLEAR_CHARGER'
 })
+
 
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-     bookingUpdate, setUserBooking, setProviderRequests, 
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers
 };

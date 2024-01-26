@@ -12,9 +12,9 @@ const Navbar = ({ moveToPageIndex }) => {
 
 	return (
 		<BottomNavigation showLabels={false} className={classes.bottomNavigation}
-			sx={{ gap: { xs: '3.8rem', md: '5rem', lg: '6rem' },
+			sx={{ gap: { xs: '3.5rem', md: '5rem', lg: '8rem' },
 			bottom: { xs: '0', md: '2.5rem' },
-			width: { xs: '100vw', md: 'fit-content'},
+			width: { xs: '100vw', md: 'fit-content',lg:'43rem'},
 			borderRadius: { xs: '0', md: '10px' },
 			padding: { xs: '0 1.5rem', md: '0 1.5rem' },
 			}}>
