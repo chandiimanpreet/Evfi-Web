@@ -1,3 +1,6 @@
+import { initializeApp } from "firebase/app";
+import{ getMessaging } from "firebase/messaging";
+
 // Production Key
 const firebaseConfig = {
 	apiKey: "AIzaSyAM-1D3n2gZfU05D8SKpDT7WWPYQlGH5mk",
@@ -8,6 +11,10 @@ const firebaseConfig = {
 	messagingSenderId: "758735537136",
 	appId: "1:758735537136:web:f0cec73edea6123e55d335"
 };
+
+const app = initializeApp(firebaseConfig);
+export const messaging = getMessaging(app);
+
 export default firebaseConfig;
 
 // // Manpreet Key
