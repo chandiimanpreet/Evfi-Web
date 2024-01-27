@@ -247,15 +247,11 @@ export const useStyles = makeStyles({
       "&  .MuiOutlinedInput-root": {
         height: "3rem!important",
       },
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderRadius: "10px",
-        },
-      },
-
+      
       "& .MuiOutlinedInput-root": {
         "& fieldset": {
           //right:"1rem",
+          borderRadius: "10px",
           width: "91%",
           fontSize: "0.4rem",
           top: "0.1rem",
