@@ -250,11 +250,6 @@ export const useStyles = makeStyles({
       "& .MuiOutlinedInput-root": {
         "& fieldset": {
           borderRadius: "10px",
-        },
-      },
-
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
           //right:"1rem",
           width: "91%",
           fontSize: "0.4rem",

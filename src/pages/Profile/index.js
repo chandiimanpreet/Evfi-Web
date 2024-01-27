@@ -7,7 +7,7 @@ import Payments from "./Payments/Payments";
 import Settings from "./Settings/Settings";
 import Support from "./Support";
 import { useStyles } from "./styles";
-import { Bolt, PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded, SupportAgentRounded, LogoutRounded } from "@mui/icons-material";
+import { PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded, SupportAgentRounded, LogoutRounded } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 
@@ -34,7 +34,6 @@ const Profile = ({ direction, logoutUser, userData }) => {
         >
             <Box className={classes.container}>
                 <Box className={classes.sidebox}>
-                    <Bolt className={classes.boltIcon} />
                     <Card className={classes.profilePictureContainer}>
                         <Box className={classes.profileGreet}>
                             <Avatar alt="Profile Picture" className={classes.profilePicture}
@@ -45,11 +44,9 @@ const Profile = ({ direction, logoutUser, userData }) => {
                                     Hello,
                                 </Typography>
                                 <Typography className={classes.name} variant="h6" gutterBottom>
-                                    {
-                                        userData.user.firstName !== undefined && userData.user.lastName !== undefined
-                                            ? userData.user.firstName + " " + userData.user.lastName : ""
-                                    }
+                                    {userData.user.firstName !== undefined ? userData.user.firstName : ""}
                                 </Typography>
+
                             </Box>
                         </Box>
                     </Card>
@@ -80,7 +77,8 @@ const Profile = ({ direction, logoutUser, userData }) => {
                         </Box>
                     </Card>
                 </Box>
-                <Box className={classes.tabContent}>
+                
+                <Box sx={{ display: {xs: 'none', md: 'fixed'}}}>
                     {activeTab === "My Profile" && <MyProfile user={userData.user} />}
                     {activeTab === "My Chargers" && <MyChargers user={userData.user} />}
                     {activeTab === "Payments" && <Payments />}

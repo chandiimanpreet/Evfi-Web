@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
     container: {
+        width: '100%',
         display: "flex",
         flexDirection: "column",
         rowGap: "20px",
@@ -10,9 +11,6 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         rowGap: "18px",
-        height: "220px",
-        width: "800px",
-        padding: "10px",
         color: "white",
         borderRadius: "10px",
         backdropFilter: "blur(10px)",
@@ -20,7 +18,6 @@ const useStyles = makeStyles({
         boxShadow: "0 0 1.5rem 0 rgba(0,0,0,0.75)",
     },
     editButton: {
-        marginTop: "10px",
         padding: "10px 30px",
         width: "fit-content",
         backdropFilter: "blur(10px)",

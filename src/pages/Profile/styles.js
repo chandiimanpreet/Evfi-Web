@@ -3,10 +3,12 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles({
     root: {
         display: "flex",
+        paddingTop: "3.5rem",
+        alignItems: "center",
         flexDirection: "column",
-        alignItems: "flex-start",
-        padding: "50px 0px 0px 100px",
+        //padding: "50px 0px 0px 100px",
         height: "100vh",
+        width: '100vw',
         backgroundColor: "#000",
         backgroundImage:
             "radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)",
@@ -15,15 +17,6 @@ export const useStyles = makeStyles({
         display: "flex",
         flexDirection: "row",
         columnGap: "120px",
-    },
-    boltIcon: {
-        position: "fixed",
-        top: "30px",
-        right: "40px",
-        backgroundColor: "#282828!important",
-        color: "yellow",
-        borderRadius: "100%",
-        fontSize: "3rem!important",
     },
     outerBox: {
         marginTop: "58px",
@@ -36,7 +29,7 @@ export const useStyles = makeStyles({
         height: "600px",
         display: "flex",
         flexDirection: "column",
-        paddingLeft: "20px",
+        // paddingLeft: "20px",
     },
     buttonGroup: {
         color: "white",

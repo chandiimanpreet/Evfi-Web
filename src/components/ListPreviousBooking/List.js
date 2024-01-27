@@ -94,8 +94,6 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 
 	};
 
-
-
 	const clearFilters = () => {
 		setSelectedFilters(() => ({
 			chargerType: [],

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Grid, Card, CardContent } from "@mui/material";
+import { Typography, Button, Grid, Card, CardContent, Box } from "@mui/material";
 import useStyles from "./styles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import RenderInformation from "./RenderInformation";
@@ -56,20 +56,27 @@ const MyProfile = ({ user }) => {
     }, [isEditing, profile]);
 
     return (
-        <div className={classes.root}>
-            <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" fontFamily='Manrope'
-                color={"white"}            >
-                My Profile
-            </Typography>
+        <Box maxWidth = "40rem" minWidth="10rem">
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" fontFamily='Manrope'
+                    color={"white"} >
+                    My Profile
+                </Typography>
+                <Button className={classes.editButton} variant="contained" startIcon={<BorderColorIcon />}
+                    onClick={isEditing ? handleSaveDetails : handleEditDetails}
+                >
+                    {isEditing ? "Save Details" : "Edit Details"}
+                </Button>
+            </Box>
             <br />
-            <Grid className={classes.container} container spacing={2}>
+            <Box className={classes.container} container spacing={2} >
                 <Card className={classes.infoCard}>
                     <CardContent>
                         <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope'>
                             Personal Information
                         </Typography>
                         <br />
-                        <Grid container spacing={2}>
+                        <Grid container spacing={1}>
                             <RenderInformation field="firstName" label="First Name" value={profile.firstName}
                                 isEditing={isEditing} handleChange={handleChange}
                             />
@@ -92,7 +99,7 @@ const MyProfile = ({ user }) => {
                             Address
                         </Typography>
                         <br />
-                        <Grid container spacing={2} className={classes.content}>
+                        <Grid container spacing={1} >
                             <RenderInformation field="country" label="Country" value={profile.country}
                                 isEditing={isEditing} handleChange={handleChange}
                             />
@@ -108,13 +115,8 @@ const MyProfile = ({ user }) => {
                         </Grid>
                     </CardContent>
                 </Card>
-                <Button className={classes.editButton} variant="contained" startIcon={<BorderColorIcon />}
-                    onClick={isEditing ? handleSaveDetails : handleEditDetails}
-                >
-                    {isEditing ? "Save Details" : "Edit Details"}
-                </Button>
-            </Grid>
-        </div>
+            </Box>
+        </Box>
     );
 };
 
