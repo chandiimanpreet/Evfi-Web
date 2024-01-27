@@ -73,10 +73,17 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
         else if (AMPM === 'AM' && intTime === 12) {
             intTime = 0;
         }
+<<<<<<< Updated upstream
 
+=======
+        if ((intTime >= chargerData.info.start && intTime <= chargerData.info.end) || new Date().getHours()>intTime) {
+            return true;
+        }
+>>>>>>> Stashed changes
         for (let i = 0; i < 24; i++) {
             if (binaryTime[i] === '1' && i === intTime) {
                 return true;
+
             }
         }
         return false;
@@ -91,6 +98,11 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
 
     const timeSlotHandler = (e) => {
         const time = e.target.innerText.split('-');
+<<<<<<< Updated upstream
+=======
+        console.log(parseInt(time[0]));
+        console.log(time);
+>>>>>>> Stashed changes
         if (start === (parseInt(time[1]) - 1) + " " + AMPM) {
             setStart(null);
         } else {
@@ -161,7 +173,10 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
+<<<<<<< Updated upstream
                             // console.log(start.split(" ")[0])
+=======
+>>>>>>> Stashed changes
                             bookingHandler(start.split(" ")[0] === 0 ? 12 : start.split(" ")[0], AMPM, chargerData);
                             setShowSlot(false);
                             setStart(null);
