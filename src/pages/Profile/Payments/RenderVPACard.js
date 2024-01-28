@@ -31,7 +31,7 @@ const SaveVPACard = () => {
     const handleSaveUpiId = () => {
 
         const { upiIdValue, nameValue } = paymentData;
-        
+
         if (!upiIdValue.includes("@")) {
             setPaymentData((prevState) => ({
                 ...prevState,
@@ -65,39 +65,41 @@ const SaveVPACard = () => {
     };
 
     return (
-        <Card className={classes.paymentCard}>
-            <Typography variant="h6" gutterBottom>
+        <Card sx={{padding: {xs: '0.8rem', sm: '2rem'}}} className={classes.paymentCard}>
+            <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope !important'>
                 {upiIds.length === 0 ? "No VPAs saved to be shown" : "Saved VPAs"}
             </Typography>
             <br />
-            <Box>
-                <Grid container spacing={2} className={classes.outerbox}>
+            <Box >
+                <Grid container spacing={2} >
                     {upiIds.map(({ id, name }, index) => (
-                        <Card key={index} className={classes.card}>
-                            <Box className={classes.idLabel}>
-                                <Typography variant="body1" fontSize={14} fontWeight="bold">
-                                    {id}
-                                </Typography>
-                                <PaidIcon fontSize="large" />
-                            </Box>
-                            <br />
-                            <Box>
-                                <Typography variant="caption" fontSize={11}>
-                                    ACCOUNT HOLDER
-                                </Typography>
-                                <Typography variant="body2" fontSize={14}>
-                                    {name}
-                                </Typography>
-                            </Box>
-                            <hr />
-                            <Button onClick={() => handleRemoveUpiId(index)}>REMOVE</Button>
-                        </Card>
+                        <Grid item xs={12} sm={6} sx={{display:"flex", justifyContent: {xs: "center", sm: "flex-start"} }}>
+                            <Card key={index} sx={{ width: { xs: "15rem", md: "15rem", lg: "18.75rem" } }} className={classes.card}>
+                                <Box className={classes.idLabel}>
+                                    <Typography variant="body1" fontSize={14} fontWeight="bold">
+                                        {id}
+                                    </Typography>
+                                    <PaidIcon fontSize="large" />
+                                </Box>
+                                <br />
+                                <Box>
+                                    <Typography variant="caption" fontSize={11}>
+                                        ACCOUNT HOLDER
+                                    </Typography>
+                                    <Typography variant="body2" fontSize={14}>
+                                        {name}
+                                    </Typography>
+                                </Box>
+                                <hr />
+                                <Button onClick={() => handleRemoveUpiId(index)}>REMOVE</Button>
+                            </Card>
+                        </Grid>
                     ))}
                 </Grid>
             </Box>
-            <Button
+            <Button 
                 variant="contained" color="primary" onClick={handleAddUpiId} className={classes.Button}
-                sx={{ borderRadius: '4px !important', }}
+                sx={{ borderRadius: '4px !important', marginTop: "1rem" }}
             >
                 Add VPA
             </Button>
