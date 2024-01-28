@@ -2,34 +2,44 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
     root: {
-        overflow: "auto",
-        height: "635px",
-    },
-    cardContainer: {
+        height: "100vh",
+        width: "100vw",
         display: "flex",
         flexDirection: "column",
-        rowGap: "20px",
+        alignItems: "center",
+        backgroundColor: "#000",
+        backgroundImage:
+            "radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)",
+    },
+    main: {
+        '&::-webkit-scrollbar': {
+            display: 'none',
+        },
+        '&::-ms-overflow-style': 'none',
+        '&::-scrollbar-width': 'none',
+    },
+    cardContainer: {
+        width: '95%',
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "1.6rem",
     },
     paymentCard: {
-        width: "800px",
-        padding: "30px",
+        width: "95%",
         color: "white",
         fontFamily: 'Manrope !important',
-
-        borderRadius: "10px",
-        backdropFilter: "blur(10px)",
+        borderRadius: "0.625rem",
+        backdropFilter: "blur(0.625rem)",
         backgroundColor: " rgba(200, 200, 200, 0.2)",
     },
     card: {
         display: "flex",
         flexDirection: "column",
-        margin: "15px",
-        width: "300px",
-        height: "120px",
-        padding: "12px",
+        height: "7.5rem",
+        padding: "0.75rem",
         background: "rgba( 255, 255, 255, 0.5 )",
-        backdropFilter: "blur( 2px )",
-        boxShadow: '0 0 1.5rem 0 rgba(0,0,0,0.75)',
+        backdropFilter: "blur( 0.125rem )",
+        boxShadow: '0 0 1.875rem 0 rgba(0,0,0,0.75)',
     },
     idLabel: {
         display: "flex",
@@ -38,7 +48,7 @@ const useStyles = makeStyles({
     cardInformation: {
         display: "flex",
         flexDirection: "row",
-        columnGap: "50px",
+        columnGap: "3.125rem",
     },
     datePicker: {
         width: "100%",
@@ -48,7 +58,7 @@ const useStyles = makeStyles({
         color: "white",
         fontFamily: 'Manrope !important',
         fontWeight: '600',
-        borderRadius: '0px',
+        borderRadius: '0rem',
         "&:hover": {
             backgroundColor: "black",
         },

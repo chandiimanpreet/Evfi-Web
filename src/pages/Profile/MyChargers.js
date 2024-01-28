@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 const MyChargers = ({user}) => {
   return (
     <Fragment>
-      <Typography variant='h4' sx={{ color: '#fff',}}>My Chargers</Typography>
+      <Typography width="41rem" variant='h4' sx={{ color: '#fff',}}>My Chargers</Typography>
     </Fragment>
   );
 };

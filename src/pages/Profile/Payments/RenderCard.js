@@ -82,48 +82,50 @@ const RenderCard = () => {
     };
 
     return (
-        <Card className={classes.paymentCard}>
+        <Card sx={{ padding: { xs: '0.8rem', sm: '2rem' } }} className={classes.paymentCard}>
             <Typography variant="h6" gutterBottom fontWeight="bold" fontFamily='Manrope !important'>
                 {cards.length === 0 ? "No Cards saved to be shown" : "Saved Cards"}
             </Typography>
             <br />
             <Box>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} className={classes.outerbox}>
                     {cards.map((card, index) => (
-                        <Card key={index} className={classes.card}>
-                            <Box className={classes.idLabel}>
-                                <Typography variant="body1" fontSize={14} fontWeight="bold">
-                                    {card.cardNumber}
-                                </Typography>
-                                <PaidIcon fontSize="large" />
-                            </Box>
-                            <br />
-                            <Box className={classes.cardInformation}>
-                                <Box>
-                                    <Typography variant="caption" fontSize={11}>
-                                        ACCOUNT HOLDER
+                        <Grid item xs={12} sm={6} sx={{ display: "flex", justifyContent: { xs: "center", sm: "flex-start" } }}>
+                            <Card key={index} sx={{ width: { xs: "15rem", md: "15rem", lg: "18.75rem" } }} className={classes.card}>
+                                <Box className={classes.idLabel}>
+                                    <Typography variant="body1" fontSize={14} fontWeight="bold">
+                                        {card.cardNumber}
                                     </Typography>
-                                    <Typography variant="body2" fontSize={14}>
-                                        {card.name}
-                                    </Typography>
+                                    <PaidIcon fontSize="large" />
                                 </Box>
-                                <Box>
-                                    <Typography variant="caption" fontSize={11}>
-                                        Expiry Date
-                                    </Typography>
-                                    <Typography variant="body2" fontSize={14}>
-                                        {card.expiryDate}
-                                    </Typography>
+                                <br />
+                                <Box className={classes.cardInformation}>
+                                    <Box>
+                                        <Typography variant="caption" fontSize={11}>
+                                            ACCOUNT HOLDER
+                                        </Typography>
+                                        <Typography variant="body2" fontSize={14}>
+                                            {card.name}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography variant="caption" fontSize={11}>
+                                            Expiry Date
+                                        </Typography>
+                                        <Typography variant="body2" fontSize={14}>
+                                            {card.expiryDate}
+                                        </Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
-                            <hr />
-                            <Button onClick={() => handleRemoveCard(index)}>REMOVE</Button>
-                        </Card>
+                                <hr />
+                                <Button onClick={() => handleRemoveCard(index)}>REMOVE</Button>
+                            </Card>
+                        </Grid>
                     ))}
                 </Grid>
             </Box>
             <Button variant="contained" color="primary" onClick={() => handleToggleDialog(true)} className={classes.Button}
-                sx={{ borderRadius: '4px !important', }}
+                sx={{ borderRadius: '4px !important', marginTop: "1rem"}}
             >
                 Add Card
             </Button>
@@ -140,7 +142,7 @@ const RenderCard = () => {
                         <DatePicker label="Expiry Date" value={expiryDateValue} onChange={handleDateChange}
                             className={classes.datePicker}
                             renderInput={(props) => (
-                                <TextField {...props} fullWidth margin="normal" InputProps={{ style: { width: "100%", }, }} />
+                                <TextField {...props} margin="normal" InputProps={{ style: { width: "100%" } }} />
                             )}
                         />
                     </LocalizationProvider>

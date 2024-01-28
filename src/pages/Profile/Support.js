@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { Typography } from '@mui/material';
 
 const Support = () => {
   return (
-    <div>
-      <h1>Support</h1>
-    </div>
+    <Fragment>
+      <Typography width="41rem" variant='h4' sx={{ color: '#fff',}}>Support</Typography>
+    </Fragment>
   );
 };
 

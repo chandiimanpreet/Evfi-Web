@@ -7,7 +7,10 @@ import Payments from "./Payments/Payments";
 import Settings from "./Settings/Settings";
 import Support from "./Support";
 import { useStyles } from "./styles";
-import { Bolt, PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded, SupportAgentRounded, LogoutRounded } from "@mui/icons-material";
+import {
+    PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded,
+    SupportAgentRounded, LogoutRounded
+} from "@mui/icons-material";
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 
@@ -15,12 +18,14 @@ const Profile = ({ direction, logoutUser, userData }) => {
 
     // States
     const [activeTab, setActiveTab] = useState("My Profile");
+    const [activePage, setActivePage] = useState(false);
 
     // Styles
     const classes = useStyles();
 
     // Handlers
     const handleTabChange = (tab) => {
+        setActivePage(true);
         setActiveTab(tab);
     };
 
@@ -28,26 +33,27 @@ const Profile = ({ direction, logoutUser, userData }) => {
         logoutUser();
     };
 
+    console.log(userData.user);
+
     return (
         <motion.Box key="pr" initial={{ x: direction }} animate={{ x: 0 }}
             transition={{ duration: 0.25, delay: 0 }} className={classes.root}
         >
-            <Box className={classes.container}>
-                <Box className={classes.sidebox}>
-                    <Bolt className={classes.boltIcon} />
+            <Box sx={{ gap: { md: "2rem", lg: "7.5rem" }, paddingTop: { xs: "1.5rem", md: "2rem", lg: "3rem" }, display: 'flex' }}>
+                <Box className={classes.sidebox} sx={{ display: { xs: activePage ? "none" : "block", md: "block" }, width: { xs: '17rem', md: '14.375rem' } }}>
                     <Card className={classes.profilePictureContainer}>
                         <Box className={classes.profileGreet}>
                             <Avatar alt="Profile Picture" className={classes.profilePicture}
                                 src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
                             />
-                            <Box className={classes.greet}>
-                                <Typography className={classes.hello} variant="h6" gutterBottom color={"#ffffff"}>
+                            <Box display='flex' flexDirection='column' justifyContent='center' >
+                                <Typography className={classes.greet} variant="h6" color='white' gutterBottom>
                                     Hello,
                                 </Typography>
-                                <Typography className={classes.name} variant="h6" gutterBottom>
+                                <Typography className={classes.greet} fontWeight='bold' variant="h6" color='white'>
                                     {
                                         userData.user.firstName !== undefined && userData.user.lastName !== undefined
-                                            ? userData.user.firstName + " " + userData.user.lastName : ""
+                                            ? userData.user.firstName : ""
                                     }
                                 </Typography>
                             </Box>
@@ -64,10 +70,15 @@ const Profile = ({ direction, logoutUser, userData }) => {
                                 { tab: "Support", icon: <SupportAgentRounded /> },
                                 { tab: "Logout", icon: <LogoutRounded /> },
                             ].map(({ tab, icon }) => (
-                                <Box key={tab} className={`${classes.button} ${activeTab === tab ? classes.activeButton : ""}`}
-                                    onClick={() => tab === "Logout" ? handleLogout() : handleTabChange(tab)}
+                                <Box
+                                    key={tab}
+                                    sx={{
+                                        backgroundColor: activeTab === tab ? { xs: '', md: '#181818' } : {},
+                                    }}
+                                    height= '4rem'
+                                    onClick={() => (tab === "Logout" ? handleLogout() : handleTabChange(tab))}
                                 >
-                                    <Typography className={classes.buttonName}>
+                                    <Typography sx={{ marginLeft: { xs: '4rem', md: '2rem' } }} className={classes.buttonName}>
                                         {icon && (
                                             <Typography className={classes.buttonIcon}>
                                                 {icon}
@@ -80,11 +91,11 @@ const Profile = ({ direction, logoutUser, userData }) => {
                         </Box>
                     </Card>
                 </Box>
-                <Box className={classes.tabContent}>
-                    {activeTab === "My Profile" && <MyProfile user={userData.user} />}
+                <Box sx={{ display: { xs: activePage ? "block" : "none", md: "block" } }} >
+                    {activeTab === "My Profile" && <MyProfile user={userData.user} setActivePage={setActivePage} />}
                     {activeTab === "My Chargers" && <MyChargers user={userData.user} />}
-                    {activeTab === "Payments" && <Payments />}
-                    {activeTab === "Settings" && <Settings />}
+                    {activeTab === "Payments" && <Payments setActivePage={setActivePage} />}
+                    {activeTab === "Settings" && <Settings setActivePage={setActivePage} />}
                     {activeTab === "Support" && <Support />}
                 </Box>
             </Box>
