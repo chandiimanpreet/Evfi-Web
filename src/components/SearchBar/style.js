@@ -242,12 +242,17 @@ export const useStyles = makeStyles({
       },
     },
   },
-  "@media (max-width: 425px)": {
+
+  "@media (max-width: 600px)": {
+    searchNavigation: {
+      top: "1rem !important",
+    },
     popDesign: {
       "&  .MuiOutlinedInput-root": {
         height: "3rem!important",
       },
-      
+
+
       "& .MuiOutlinedInput-root": {
         "& fieldset": {
           //right:"1rem",
@@ -255,9 +260,30 @@ export const useStyles = makeStyles({
           width: "91%",
           fontSize: "0.4rem",
           top: "0.1rem",
-          height: "rem",
+          borderRadius: "10rem!important",
         },
       },
+      searchPlaceAutoComplete: {
+        "& .css-1i2h39m-MuiPaper-root-MuiAppBar-root": {
+          width: "100%!important",
+          left: "0!important",
+          height: "3.5rem!important",
+        },
+        "& .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-root .MuiOutlinedInput-root":
+          {
+            paddingRight: "100px !important",
+            height: "2.5rem !important",
+            right: "0.5rem !important",
+          },
+        "& .MuiOutlinedInput-root.MuiAutocomplete-input": {
+          padding: "1.5px 4px 7.5px 5px!important",
+        },
+      },
+      // "& .MuiOutlinedInput-root": {
+      //   "& MuiAutocomplete-input": {
+      //     padding: "1.5px 4px 7.5px 5px!important",
+      //   },
+      // },
 
       //.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-ejyr7l-MuiAutocomplete-root
       //   '&:hover fieldset': {
