@@ -73,10 +73,13 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
         else if (AMPM === 'AM' && intTime === 12) {
             intTime = 0;
         }
-
+        if ((intTime >= chargerData.info.start && intTime <= chargerData.info.end) || new Date().getHours()>intTime) {
+            return true;
+        }
         for (let i = 0; i < 24; i++) {
             if (binaryTime[i] === '1' && i === intTime) {
                 return true;
+
             }
         }
         return false;
@@ -161,7 +164,6 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
-                            // console.log(start.split(" ")[0])
                             bookingHandler(start.split(" ")[0] === 0 ? 12 : start.split(" ")[0], AMPM, chargerData);
                             setShowSlot(false);
                             setStart(null);
