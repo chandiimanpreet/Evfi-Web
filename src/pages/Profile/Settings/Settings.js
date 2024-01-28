@@ -4,6 +4,7 @@ import {
 } from "@mui/material";
 import { Facebook, Google, Twitter, Instagram, CallMade } from "@mui/icons-material";
 import useStyles from "./styles";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const socialAccounts = [
     { platform: "Google", connected: false, icon: <Google /> },
@@ -12,7 +13,7 @@ const socialAccounts = [
     { platform: "Facebook", connected: true, icon: <Facebook /> },
 ];
 
-const Settings = () => {
+const Settings = ({ setActivePage }) => {
 
     //Styles
     const classes = useStyles();
@@ -26,11 +27,21 @@ const Settings = () => {
         console.log("Password changed");
     };
 
+    const handleBackButton = () => {
+        console.log("click")
+        setActivePage(false);
+
+    };
+
     return (
-        <Box className={classes.root}>
-            <Typography variant="h5" gutterBottom fontWeight="bold" fontSize="25px" color="white" fontFamily='Manrope !important'>
-                Settings
-            </Typography>
+        <Box sx={{ width: { xs: "93vw", md: "41rem", lg: "50rem" }, height: { xs: "39.5rem", md: "35rem", lg: "35rem" }, paddingTop: { xs: '1rem', md: "0rem" }, overflow: "auto" }} className={classes.main}>
+            <Box display="flex" flexDirection="row" marginLeft="0.5rem" alignItems="center">
+                <ArrowBackIcon onClick={handleBackButton} sx={{ color: 'white', display: { xs: 'block', md: 'none' } }} />
+                <Typography variant="h5" margin="0 1rem" gutterBottom fontWeight="bold" fontSize="25px" fontFamily="Manrope"
+                    color={"white"}>
+                    Settings
+                </Typography>
+            </Box>
             <Grid>
                 <Grid item xs={12} className={classes.container}>
                     <Card className={classes.settingsCard}>
@@ -49,7 +60,7 @@ const Settings = () => {
                                         <Button variant="text" className={classes.Button}
                                             onClick={() => handleToggleConnection(account.platform, account.connected)}
                                         >
-                                            {account.connected ? "Disconnect" : "Connect"}
+                                            {account.connected ? "Connected" : "Connect"}
                                         </Button>
                                     </Box>
                                 </ListItem>
@@ -65,7 +76,7 @@ const Settings = () => {
                             {["Notification Popups", "Send notifications by mail", "Notification Sound", "Feature Announcements"]
                                 .map(
                                     (notification) => (
-                                        <ListItem key={notification}>
+                                        <ListItem className={classes.listItem} key={notification}>
                                             <ListItemText primary={notification} />
                                             <Switch color="primary" />
                                         </ListItem>
@@ -79,13 +90,13 @@ const Settings = () => {
                             Privacy and Security
                         </Typography>
                         <List>
-                            <ListItem>
+                            <ListItem className={classes.listItem}>
                                 <ListItemText primary="Change Password" />
-                                <Button variant="text" color="primary" onClick={handlePasswordChange} className={classes.Button}>
-                                    Change Password
+                                <Button onclick={handlePasswordChange} className={classes.Button}>
+                                    <CallMade />
                                 </Button>
                             </ListItem>
-                            <ListItem>
+                            <ListItem className={classes.listItem}>
                                 <ListItemText primary="Privacy Policy" />
                                 <Button className={classes.Button}>
                                     <CallMade />

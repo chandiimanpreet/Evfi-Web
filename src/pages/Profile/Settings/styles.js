@@ -2,21 +2,34 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
     root: {
-        overflow: "auto",
-        height: "635px",
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        backgroundColor: "#000",
+        backgroundImage:
+          "radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)",
+    },
+    main: {
+        '&::-webkit-scrollbar': {
+            display: 'none',
+        },
+        '&::-ms-overflow-style': 'none',
+        '&::-scrollbar-width': 'none', 
     },
     container: {
         display: "flex",
         flexDirection: "column",
-        rowGap: "15px",
+        rowGap: "0.8rem",
     },
     settingsCard: {
-        width: "800px",
-        padding: "20px",
+        margin: "0.5rem",
+        padding: "1rem",
         height: "fit-content",
         color: "white",
-        borderRadius: "10px",
-        backdropFilter: "blur(10px)",
+        borderRadius: "0.625rem",
+        backdropFilter: "blur(0.625rem)",
         backgroundColor: "rgba(200, 200, 200, 0.2)",
     },
     Button: {
@@ -30,12 +43,13 @@ const useStyles = makeStyles({
     listItem: {
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
+        paddingLeft: "0",
+        paddingRight: "0",
+
     },
     platformName: {
         display: "flex",
         alignItems: "center",
-        width: "120px",
     },
 });
 
