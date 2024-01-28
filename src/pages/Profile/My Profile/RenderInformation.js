@@ -8,7 +8,7 @@ const RenderInformation = ({ field, label, value, isEditing, handleChange, }) =>
     const classes = useStyles();
 
     return (
-        <Grid item xs={6} key={field} style={{ marginBottom: "22px", display: 'flex' }}>
+        <Grid item key={field} sx={{ marginBottom: {xs: '1rem', sm: '1.5rem' }, display: 'flex', justifyContent: 'center' }}>
             <TextField label={label} variant="outlined" size="small" value={value} disabled={!isEditing} focused
                 onChange={(e) => handleChange(field, e.target.value)} className={classes.textField}
             />
