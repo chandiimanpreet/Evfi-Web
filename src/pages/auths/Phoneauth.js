@@ -195,7 +195,7 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${userData.phone}`}</Typography>
 
 						<OTPInput inputStyle={otpStyle.inputStyle} containerStyle={{ color: '#fff' }}
-							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-'
+							numInputs={6} value={otp} onChange={setotp}  vrenderSeparator='-' inputType='tel'
 							renderInput={(props) => <input {...props} />}
 						/>
 
