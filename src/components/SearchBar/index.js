@@ -115,7 +115,7 @@ const SearchBar = ({ searchCoordinates, setSearchCoordinates, setCurrentLocation
 				/>
 			)}
 
-			{showExtendedNavigation && (
+			{anchorEl && showExtendedNavigation && (
 				<ExtendedNavigation
 					anchorEl={anchorEl}
 					handleClose={handleClose}

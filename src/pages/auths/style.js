@@ -224,7 +224,7 @@ export const otpStyle = {
     companylogo: {
         display: 'flex',
         alignItems: 'center',
-        width: '3rem',
+        width: '2rem',
         margin: '0 auto'
     },
     registerTextfieldStyle: {

@@ -91,7 +91,7 @@ const ExtendedNavigation = ({
               disablePortal
               id="combo-box-demo"
               options={distanceData}
-              value={searchCoordinates.source.label}
+              value={searchCoordinates.source.label || ""}
               className={classes.autocompletestyle}
               sx={{
                 position: { xs: "sticky", sm: "relative", md: "relative" },
@@ -139,8 +139,7 @@ const ExtendedNavigation = ({
               disablePortal
               id="combo-box-demo"
               options={distanceData}
-              value={searchCoordinates.destination.label}
-              data-shrink="false!important"
+              value={searchCoordinates.destination.label || ""}
               className={classes.autocompletestyle}
               //fullWidth={["89rem","89rem","89rem","33rem"]}
               sx={{

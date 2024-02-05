@@ -159,7 +159,7 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 				{!showOtpForm ?
 					<Grid gap={3} display='flex' flexDirection='column' alignContent='center'
 						textAlign='center' padding='4rem 2rem' >
-						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+						<img style={otpStyle.companylogo} src='/newlogo.png' alt='' />
 
 						<Typography
 							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
@@ -181,12 +181,12 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 							label='Remember me' style={{ color: 'white' }}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth}> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitPhoneNumberAuth}> {util.loading ? 'Please wait...' : 'Send OTP'}</LoadingButton>
 					</Grid>
 					:
 					<Grid gap={2} display='flex' flexDirection='column' padding={2} textAlign='center' >
 
-						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+						<img style={otpStyle.companylogo} src='/newlogo.png' alt='' />
 
 						<Typography color='#fff' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
@@ -195,7 +195,7 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 						<Typography color='#fff' fontSize='1rem' marginBottom='1.5rem'>{`OTP sent to +${userData.phone}`}</Typography>
 
 						<OTPInput inputStyle={otpStyle.inputStyle} containerStyle={{ color: '#fff' }}
-							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-'
+							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-' inputType='tel'
 							renderInput={(props) => <input {...props} />}
 						/>
 

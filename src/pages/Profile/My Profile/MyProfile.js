@@ -11,14 +11,14 @@ const MyProfile = ({ user, setActivePage }) => {
     //States
     const [isEditing, setIsEditing] = useState(false);
     const [profile, setProfile] = useState({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        country: user.country,
-        state: user.state,
-        city: user.city,
-        pinCode: user.pinCode,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        phoneNumber: user.phoneNumber || '',
+        country: user.country || '',
+        state: user.state || '',
+        city: user.city || '',
+        pinCode: user.pinCode || '',
     });
     console.log(profile);
     //Styles
