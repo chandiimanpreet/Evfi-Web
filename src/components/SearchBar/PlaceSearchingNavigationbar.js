@@ -1,8 +1,5 @@
 import { AppBar, Toolbar, TextField, Autocomplete, Box } from "@mui/material";
-import {
-  Bolt as BoltIcon,
-  Directions as DirectionsIcon,
-} from "@mui/icons-material";
+import { Bolt as BoltIcon, Directions as DirectionsIcon, Clear as ClearIcon} from "@mui/icons-material";
 import { useStyles } from "./style";
 import { motion } from "framer-motion";
 
@@ -43,7 +40,7 @@ const PlaceSearchingNavigationbar = ({
           />
           <Box className={classes.extendinputroot}>
             <Autocomplete
-              clearIcon
+              clearIcon={<ClearIcon/>}
               disablePortal
               id="combo-box-demo"
               value={searchLocationCoordinates.searchlocation.label}
