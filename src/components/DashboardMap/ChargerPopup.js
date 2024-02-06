@@ -73,16 +73,15 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
         else if (AMPM === 'AM' && intTime === 12) {
             intTime = 0;
         }
-        if ((intTime >= chargerData.info.start && intTime <= chargerData.info.end) || new Date().getHours()>intTime) {
-            return true;
-        }
         for (let i = 0; i < 24; i++) {
             if (binaryTime[i] === '1' && i === intTime) {
-                return true;
-
+                return { disable: true, booked: true };
             }
         }
-        return false;
+        if (intTime < chargerData.info.start || intTime >= chargerData.info.end || new Date().getHours() >= intTime) {
+            return { disable: true, booked: false };
+        }
+        return { disable: false, booked: false };
     }
 
     const timing = [
@@ -123,11 +122,11 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
                                 <Box sx={{ display: 'flex' }}>
                                     <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.start}</Typography>
+                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.start > 12 ? parseInt(chargerData.info.start)-12 : chargerData.info.start}:00 {chargerData.info.start > 12 ? "PM" : "AM"}</Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex' }} >
                                     <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>{chargerData.info.end}</Typography>
+                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>{chargerData.info.end > 12 ? parseInt(chargerData.info.end)-12 : chargerData.info.end}:00 {chargerData.info.end > 12 ? "PM" : "AM"}</Typography>
                                 </Box>
                             </Box>
 
@@ -153,8 +152,9 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                                 <Box sx={{ display: 'grid', gridTemplateColumns: '6rem 6rem 6rem', gridGap: '9px', marginBottom: '2rem' }}>
                                     {
                                         timing.map((time, idx) => {
+                                            const { disable, booked } = checkDisabled(time);
                                             return <Chip key={idx} size='small' onClick={(e) => timeSlotHandler(e)}
-                                                disabled={checkDisabled(time)} color={start === idx + " " + AMPM ? "success" : "default"} label={time} variant={start === idx + " " + AMPM ? "filled" : "outlined"} />
+                                                disabled={disable} color={start === idx + " " + AMPM ? "success" : booked ? "primary" : "default"} label={time} variant={(start === idx + " " + AMPM) || (booked) ? "filled" : "outlined"} />
                                         })
                                     }
                                 </Box>
