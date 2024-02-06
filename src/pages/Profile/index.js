@@ -78,14 +78,14 @@ const Profile = ({ direction, logoutUser, userData }) => {
                                     height= '4rem'
                                     onClick={() => (tab === "Logout" ? handleLogout() : handleTabChange(tab))}
                                 >
-                                    <div sx={{ marginLeft: { xs: '4rem', md: '2rem' } }} className={classes.buttonName}>
+                                    <Box sx={{ marginLeft: { xs: '4rem', md: '2rem' } }} className={classes.buttonName}>
                                         {icon && (
                                             <Typography className={classes.buttonIcon}>
                                                 {icon}
                                             </Typography>
                                         )}
                                         &nbsp; &nbsp; &nbsp; {tab}
-                                    </div>
+                                    </Box>
                                 </Box>
                             ))}
                         </Box>

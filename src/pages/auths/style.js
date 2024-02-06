@@ -221,10 +221,34 @@ export const otpStyle = {
         },
     },
 
+    boltIcon: {
+        color: "yellow",
+        border: "2px solid yellow",
+        borderRadius: "100%",
+    },
+    // bigboltIconRoot: {
+    //     display: "flex",
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     position: "relative",
+    //     marginTop: "2rem",
+    //     right: "5rem",
+    //   },
+    
+    //   bigboltIcon: {
+    //     //top: '-2.3rem',
+    //     color: "yellow",
+    //     //border: '4px solid yellow',
+    //     position: "absolute",
+    //     //fontSize: '2.3rem!important',
+    //     borderRadius: "100%",
+    //     //left: '6rem',
+    //     zIndex: 1500,
+    //   },
     companylogo: {
         display: 'flex',
         alignItems: 'center',
-        width: '2rem',
+        width: '3rem',
         margin: '0 auto'
     },
     registerTextfieldStyle: {

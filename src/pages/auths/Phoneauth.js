@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router';
 import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid ,Snackbar} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import BoltIcon from '@mui/icons-material/Bolt';
 import PhoneInput from 'react-phone-input-2';
 import OTPInput from 'react-otp-input';
 import { initializeApp } from 'firebase/app';
@@ -159,7 +160,16 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 				{!showOtpForm ?
 					<Grid gap={3} display='flex' flexDirection='column' alignContent='center'
 						textAlign='center' padding='4rem 2rem' >
-						<img style={otpStyle.companylogo} src='/newlogo.png' alt='' />
+						<Box>
+							<BoltIcon
+							sx={{ 
+								color: "yellow",
+								width: "3rem",
+								height:"3rem",
+								fontSize: { xs: "1.3rem", sm: "2.3rem" },
+							}}
+							/>
+					    </Box>
 
 						<Typography
 							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
@@ -186,7 +196,17 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 					:
 					<Grid gap={2} display='flex' flexDirection='column' padding={2} textAlign='center' >
 
-						<img style={otpStyle.companylogo} src='/newlogo.png' alt='' />
+						<Box>
+							<BoltIcon
+							sx={{ 
+								color: "yellow",
+								width: "3rem",
+								height:"3rem",
+								fontSize: { xs: "1.3rem", sm: "2.3rem" },
+							}}
+							/>
+					    </Box>
+
 
 						<Typography color='#fff' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
