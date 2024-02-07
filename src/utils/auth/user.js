@@ -120,7 +120,6 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                 const chargersImageRef = ref(storage, `chargers/${auth.currentUser.uid}/${img.name}`);
                 const uploadResult = await uploadBytes(chargersImageRef, img);
                 imageUrl.push(await getDownloadURL(uploadResult.ref));
-                imageUrl.push(await getDownloadURL(uploadResult.ref));
             }
 
             const aadharImages = [];

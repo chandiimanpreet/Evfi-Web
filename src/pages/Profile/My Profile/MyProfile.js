@@ -104,7 +104,7 @@ const MyProfile = ({ user, setActivePage }) => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <RenderInformation field="PhoneNumber" label="Phone Number" value={profile.phoneNumber}
+                                <RenderInformation field="phoneNumber" label="Phone Number" value={profile.phoneNumber}
                                     isEditing={isEditing} handleChange={handleChange}
                                 />
                             </Grid>

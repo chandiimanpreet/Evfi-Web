@@ -78,9 +78,9 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                 return { disable: true, booked: true };
             }
         }
-        if (intTime < chargerData.info.start || intTime >= chargerData.info.end || new Date().getHours() >= intTime) {
-            return { disable: true, booked: false };
-        }
+        // if (intTime < chargerData.info.start || intTime >= chargerData.info.end || new Date().getHours() >= intTime) {
+            // return { disable: true, booked: false };
+        // }
         return { disable: false, booked: false };
     }
 
