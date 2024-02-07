@@ -7,14 +7,14 @@ import {
 import { useStyles, otpStyle } from '../../pages/auths/style';
 import { addCharger } from '../../utils/auth/user';
 import ModalMap from './ModalMap';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DemoContainer,  } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimeField } from '@mui/x-date-pickers/TimeField';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { countriesStateCitiesData } from '../../utils/timezone/countriesStateCitiesData';
 import { connect } from 'react-redux';
 import { addChargerAction, addUserData, setError } from '../../actions';
+import {  TimePicker } from '@mui/x-date-pickers';
 
 const Provider = ({ userData, addChargerAction, setError }) => {
 
@@ -30,6 +30,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		state: "",
 		city: "",
 		pinCode: "",
+		amenities: "",
 		chargerLocation: null,
 		chargerType: [],
 		price: "",
@@ -76,9 +77,29 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		if (data.chargerLocation !== null && data.openingTime !== null && data.openingTime !== null) {
 			setShow("Uploading Data...")
 			try {
+				console.log(data)
+
 				const timeFormat = new Intl.DateTimeFormat('en-In', { timeStyle: 'short' });
 				data.start = timeFormat.format(data.start['$d']).toUpperCase();
 				data.end = timeFormat.format(data.end['$d']).toUpperCase();
+
+				console.log(data)
+				const startTime = data.start.split(' ');
+				const endTime = data.end.split(' ');
+
+				if (startTime[1] === 'AM') {
+					data.start = parseInt(startTime[0]);
+				} else {
+					data.start = parseInt(startTime[0]) + 12;
+				}
+
+				if (endTime[1] === 'AM') {
+					data.end = parseInt(endTime[0]);
+				} else {
+					data.end = parseInt(endTime[0]) + 12;
+				}
+
+				console.log(data)
 				const res = await addCharger(data, chargerArea, aadhaarCard);
 				addChargerAction(res.chargerId);
 			} catch (error) {
@@ -87,7 +108,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		}
 	};
 
-	if (userData.level3 && !searchParams.has('addCharger','true')) {
+	if (userData.level3 && !searchParams.has('addCharger', 'true')) {
 		return <Navigate to={'/requests'} />
 	}
 	else {
@@ -105,20 +126,20 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 
 					<Box>
 						<Grid container spacing={2} sx={{ marginBottom: '7px', marginTop: '0.1px' }}>
-							<Grid item xs={12} sm={6} lg={3}>
+							<Grid item xs={12} sm={6} lg={4.5}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='text' label='Station Name' name='stationName' value={data.stationName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3}>
+							<Grid item xs={12} sm={6} lg={4.5}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Host Name' name='hostName' value={data.hostName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={3}>
-								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
-									<InputLabel id="types">Charger Type</InputLabel>
-									<Select required sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
+							<Grid item xs={6} lg={3}>
+								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle} >
+									<InputLabel id="types" required>Charger Type</InputLabel>
+									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
 										label="Charger Type" onChange={changeDataHandler} multiple >
 										<MenuItem value={'Level 1'}>Level 1</MenuItem>
 										<MenuItem value={'Level 2'}>Level 2</MenuItem>
@@ -126,7 +147,12 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3}>
+							<Grid item xs={12} sm={6} lg={9}>
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='text' label='Address' name='address' value={data.address}
+									InputProps={{ inputProps: { maxLength: 30, } }} />
+							</Grid>
+							<Grid item xs={6} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='number' label='Price' name='price' value={data.price}
 									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
@@ -134,12 +160,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 						</Grid>
 
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-							<Grid item xs={12} sm={6} lg={6}>
-								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
-									variant='outlined' type='text' label='Address' name='address' value={data.address}
-									InputProps={{ inputProps: { maxLength: 30, } }} />
-							</Grid>
-							<Grid item xs={2} >
+							<Grid item xs={4} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
@@ -154,7 +175,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={2} >
+							<Grid item xs={4} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="state">State</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
@@ -170,7 +191,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={2} >
+							<Grid item xs={4} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="city">City</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
@@ -195,21 +216,27 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									onInput={(e) => { e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 6) }}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
+							<Grid item xs={6} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
-									<DemoContainer components={['TimeField']}>
-										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={(e) => { timingHandler(e, true) }}
-											variant='outlined' label='Opening Time' value={data.start} />
+									<DemoContainer components={['TimePicker']}>
+										<TimePicker views={['hours']} label='Opening Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
+											onChange={(e) => { timingHandler(e, true) }} variant='outlined' value={data.start} />
+
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
+							<Grid item xs={6} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
-									<DemoContainer components={['TimeField']}>
-										<TimeField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={(e) => { timingHandler(e, false) }}
-											variant='outlined' label='Closing Time' value={data.end} />
+									<DemoContainer components={['TimePicker']}>
+										<TimePicker views={['hours']} label='Closing Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
+											onChange={(e) => { timingHandler(e, false) }} variant='outlined' value={data.end} />
 									</DemoContainer>
 								</LocalizationProvider>
+							</Grid>
+							<Grid item xs={12} sm={6} lg={3}>
+								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
+									variant='outlined' type='text' label='Amenities' name='amenities' value={data.amenities}
+									InputProps={{ inputProps: { maxLength: 50, } }} />
 							</Grid>
 							<Grid item xs={12} sm={6} lg={3}>
 								<Button fullWidth required className={classes.setChargerLocationBtn} onClick={handleOpen}
