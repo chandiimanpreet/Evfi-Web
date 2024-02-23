@@ -11,6 +11,7 @@ import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../../utils/config/firebaseConfig';
 import { addUserData } from '../../actions';
 import { connect } from 'react-redux';
+import BoltIcon from '@mui/icons-material/Bolt';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -105,7 +106,17 @@ const Registerauth = ({ addUserData, userData }) => {
 				</Box>
 
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
-					<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+				        <Box>
+							<BoltIcon
+							sx={{ 
+								marginLeft: "7.5rem",
+								color: "yellow",
+								width: "3rem",
+								height:"3rem",
+								fontSize: { xs: "1.3rem", sm: "2.3rem" },
+							}}
+							/>
+					    </Box>
 
 					<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 

@@ -7,7 +7,7 @@ import { decimalToBinary } from '../../utils/auth/user';
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-    width: 59,
+    width: 60,
     height: 30,
     padding: 7,
     '& .MuiSwitch-switchBase': {
@@ -16,7 +16,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
         transform: 'translateX(6px)',
         '&.Mui-checked': {
             color: '#fff',
-            transform: 'translateX(22px)',
+            transform: 'translateX(28px)',
             '& .MuiSwitch-thumb:before': {
                 content: '"AM"',
                 margin: '5px',
@@ -30,8 +30,8 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
     '& .MuiSwitch-thumb': {
         backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
-        width: 28,
-        height: 28,
+        width: 29,
+        height: 29,
         '&:before': {
             position: 'absolute',
             width: '100%',
@@ -55,7 +55,7 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
 
     const [showSlot, setShowSlot] = useState(false);
     const [start, setStart] = useState(null);
-    // const [end, setEnd] = useState(null);
+    var count=0;
 
     const [AMPM, setAMPM] = useState(new Date().getHours() > 12 ? 'PM' : 'AM');
 
@@ -75,12 +75,10 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
         }
         for (let i = 0; i < 24; i++) {
             if (binaryTime[i] === '1' && i === intTime) {
+                
                 return { disable: true, booked: true };
             }
         }
-        // if (intTime < chargerData.info.start || intTime >= chargerData.info.end || new Date().getHours() >= intTime) {
-            // return { disable: true, booked: false };
-        // }
         return { disable: false, booked: false };
     }
 
@@ -91,6 +89,8 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
         '11:00-12:00'
     ];
 
+   
+
     const timeSlotHandler = (e) => {
         const time = e.target.innerText.split('-');
         if (start === (parseInt(time[1]) - 1) + " " + AMPM) {
@@ -99,6 +99,8 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
             setStart((parseInt(time[1]) - 1) + " " + AMPM);
         }
     }
+    console.log("Charger time: ");
+    console.log("count: ",count);
 
     return (
         <Popup>
@@ -106,53 +108,66 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                 {
                     !showSlot ? (
                         <Fragment>
-                            <Box component='img' sx={{ height: '8rem', width: "16rem", borderRadius: '12px', display: 'flex', justifyContent: 'center' }} alt='Charging Station' src={chargerData.info.imageUrl[0]}></Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-                                <Typography sx={{ fontSize: 16, fontWeight: 'bold', color: '#454242', margin: '0px !important' }}>{chargerData.info.stationName}</Typography>
-                                <Chip label="Available" color="success" size="small" variant="contained" />
+                            <Box component='img' sx={{ height: '8rem', width: "17rem", borderRadius: '12px', marginLeft: '0rem',display: 'flex', justifyContent: 'center', alignItems:'center' }} alt='Charging Station' src={chargerData.info.imageUrl[0]}></Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
+                                <Typography sx={{ fontSize: 18, fontWeight: 'bold', color: '#454242', margin: '0px !important', marginTop: '0.5px !important' }}>{chargerData.info.stationName}</Typography>
+                                <Chip label="Available" color="success" size="small" variant="contained" sx={{marginTop: "0.2rem"}}/>
                             </Box>
-                            <Typography sx={{ fontSize: '12.7px', color: '#797575', marginTop: '4px !important', marginBottom: '2px !important' }}>{chargerData.info.address}</Typography>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px !important' }}>
-                                <Box sx={{ display: 'flex', }}>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Type:{' '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.chargerType}</Typography>
-                                </Box>
+                            
+                            <Box sx={{ display: 'flex'}}>
+                                <Typography sx={{ fontSize: '16px', color: '#797575',fontWeight: 'bold', margin: '0px !important', marginTop: '0.5px !important'  }}>{chargerData.info.address}</Typography>
                             </Box>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px !important' }}>
-                                <Box sx={{ display: 'flex' }}>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Opening Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.start > 12 ? parseInt(chargerData.info.start)-12 : chargerData.info.start}:00 {chargerData.info.start > 12 ? "PM" : "AM"}</Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex' }} >
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Closing Time:  {'   '}</Typography>
-                                    <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold', }}>{chargerData.info.end > 12 ? parseInt(chargerData.info.end)-12 : chargerData.info.end}:00 {chargerData.info.end > 12 ? "PM" : "AM"}</Typography>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Box sx={{ display: 'flex'}}>
+                                    <Typography sx={{ fontSize: '.80rem' ,margin: '0px !important'}}>Type:{'\u00A0\u00A0'}</Typography>
+                                    <Typography sx={{ fontSize: '.80rem', fontWeight: 'bold',margin: '0px !important' }}>{chargerData.info.chargerType}</Typography>
                                 </Box>
                             </Box>
-
+                            <Box sx={{display:'flex'}}>
+                                <Typography sx={{ fontSize: '.75rem', margin: '0px !important' }}>Timing:  {'\u00A0\u00A0'}</Typography>
+                                <Typography sx={{ fontSize: '.75rem', margin: '0px !important', fontWeight: 'bold' }}>{chargerData.info.start > 12 ? parseInt(chargerData.info.start)-12 : chargerData.info.start}:00 {chargerData.info.start > 12 ? "PM" : "AM"} - {chargerData.info.end > 12 ? parseInt(chargerData.info.end)-12 : chargerData.info.end}:00 {chargerData.info.end > 12 ? "PM" : "AM"}</Typography>
+                            </Box> 
+                                                      
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', }}>
                                 <Box sx={{ display: 'flex' }} >
+                                <Typography sx={{ fontSize: '0.80rem', margin: '0px !important' }}>Price : {' '}</Typography>
                                     <CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
                                     <Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
                                         {chargerData.info.price}
                                     </Typography>
+                                
                                 </Box>
+                                <Box sx={{display: 'flex'}}>
+                                    <Typography sx={{ fontSize: '0.80rem', margin: '0px !important' }}>{
+                                             timing.forEach((time) => {
+                                                for (let i = 0; i < 2; i++){
+                                                    const { disable } = checkDisabled(`${time}-${i === 0 ? 'AM' : 'PM'}`);
+                                                    if (!disable) {
+                                                        count = count + 1;
+                                                    }
+                                                }
+                                            })
+                                    } <br/>{count} Available slots</Typography>
+                                </Box> 
                             </Box>
                         </Fragment>
                     )
                         :
                         (
                             <Fragment>
-                                <Typography>Select Charging Slot</Typography>
-
+                                <Box sx={{Display:'flex', marginLeft:'3.5rem'}}>
+                                     <Typography sx={{fontWeight:'bold'}}>Select Charging Slot</Typography>
+                                </Box>
                                 <MaterialUISwitch sx={{ mb: 1 }} defaultChecked={(new Date().getHours()) > 12 ? false : true} onChange={(e) => {
                                     e.target.checked ? setAMPM('AM') : setAMPM('PM');
                                 }} />
 
-                                <Box sx={{ display: 'grid', gridTemplateColumns: '6rem 6rem 6rem', gridGap: '9px', marginBottom: '2rem' }}>
+                                <Box sx={{ display: 'grid', gridTemplateColumns: '5.5rem 5.5rem 5.5rem', gridGap: '7px', marginBottom: '2rem' }}>
                                     {
                                         timing.map((time, idx) => {
                                             const { disable, booked } = checkDisabled(time);
+                                          
                                             return <Chip key={idx} size='small' onClick={(e) => timeSlotHandler(e)}
                                                 disabled={disable} color={start === idx + " " + AMPM ? "success" : booked ? "primary" : "default"} label={time} variant={(start === idx + " " + AMPM) || (booked) ? "filled" : "outlined"} />
                                         })
@@ -171,9 +186,9 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                             setShowSlot(true);
                         }
                     }
-                    } variant="contained" sx={{
-                        backgroundColor: '#FCDD13', color: '#292929', fontSize: '11px', fontFamily: 'Manrope !important',
-                        textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '10px', padding: '0px 10px',
+                    } variant="contained" sx={{height:'2rem', width:'20rem',
+                        backgroundColor: '#FCDD13', color: '#000000', fontSize: '13px', fontFamily: 'Manrope !important',
+                        textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '20px', padding: '0px 10px'
                     }}>{showSlot ? "Book now" : "Select Charging Slot"}</Button>
                 </Box>
             </Box>

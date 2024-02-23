@@ -15,6 +15,7 @@ import { countriesStateCitiesData } from '../../utils/timezone/countriesStateCit
 import { connect } from 'react-redux';
 import { addChargerAction, addUserData, setError } from '../../actions';
 import {  TimePicker } from '@mui/x-date-pickers';
+import BoltIcon from '@mui/icons-material/Bolt';
 
 const Provider = ({ userData, addChargerAction, setError }) => {
 
@@ -118,8 +119,17 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
 				</Box>
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
-					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
-						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+					<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" ,justifyContent: "center" }}>
+					<Box>
+							<BoltIcon
+							sx={{ 
+								color: "yellow",
+								width: "3rem",
+								height:"3rem",
+								fontSize: { xs: "1.3rem", sm: "2.3rem" },
+							}}
+							/>
+					    </Box>
 						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold'
 							fontSize='1.5rem'>Become a Provider</Typography>
 					</Box>
