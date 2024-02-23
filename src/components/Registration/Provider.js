@@ -126,17 +126,18 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 
 					<Box>
 						<Grid container spacing={2} sx={{ marginBottom: '7px', marginTop: '0.1px' }}>
-							<Grid item xs={12} sm={6} lg={4.5}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='text' label='Station Name' name='stationName' value={data.stationName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={12} sm={6} lg={4.5}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Host Name' name='hostName' value={data.hostName}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={6} lg={3}>
+
+							<Grid item xs={12} lg={3}>
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle} >
 									<InputLabel id="types" required>Charger Type</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
@@ -147,12 +148,14 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={9}>
+
+							<Grid item xs={12} sm={6} lg={6}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Address' name='address' value={data.address}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
-							<Grid item xs={6} sm={6} lg={3}>
+
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='number' label='Price' name='price' value={data.price}
 									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
@@ -160,7 +163,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 						</Grid>
 
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-							<Grid item xs={4} >
+							<Grid item xs={12} sm={6} lg={2} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="country" name='country' value={data.country}
@@ -175,7 +178,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={4} >
+							<Grid item xs={12} sm={6} lg={2}  >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="state">State</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="state" name='state' value={data.state}
@@ -191,7 +194,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-							<Grid item xs={4} >
+							<Grid item xs={12} sm={6} lg={2}  >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="city">City</InputLabel>
 									<Select required sx={{ color: '#fff', }} labelId="city" name='city' value={data.city}
@@ -216,7 +219,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									onInput={(e) => { e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 6) }}
 								/>
 							</Grid>
-							<Grid item xs={6} sm={6} lg={3} marginTop='-0.5rem'>
+							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimePicker']}>
 										<TimePicker views={['hours']} label='Opening Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
@@ -225,7 +228,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
-							<Grid item xs={6} sm={6} lg={3} marginTop='-0.5rem'>
+							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimePicker']}>
 										<TimePicker views={['hours']} label='Closing Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}

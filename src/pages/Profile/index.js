@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Avatar, Box, Card, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import MyProfile from "./My Profile/MyProfile";
-import MyChargers from "./MyChargers";
+import MyChargers from "./My Chargers/MyChargers";
 import Payments from "./Payments/Payments";
 import Settings from "./Settings/Settings";
-import Support from "./Support";
+import Support from "./Support/Support";
 import { useStyles } from "./styles";
 import {
     PersonRounded, DockRounded, AccountBalanceWalletRounded, SettingsRounded,
@@ -14,7 +14,7 @@ import {
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 
-const Profile = ({ direction, logoutUser, userData }) => {
+const Profile = ({ direction, logoutUser, userData, chargers }) => {
 
     // States
     const [activeTab, setActiveTab] = useState("My Profile");
@@ -40,17 +40,17 @@ const Profile = ({ direction, logoutUser, userData }) => {
             transition={{ duration: 0.25, delay: 0 }} className={classes.root}
         >
             <Box sx={{ gap: { md: "2rem", lg: "7.5rem" }, paddingTop: { xs: "1.5rem", md: "2rem", lg: "3rem" }, display: 'flex' }}>
-                <Box className={classes.sidebox} sx={{ display: { xs: activePage ? "none" : "block", md: "block" }, width: { xs: '17rem', md: '14.375rem' } }}>
+                <Box className={classes.sidebox} sx={{ display: { xs: activePage ? "none" : "block", md: "block" }, width: { xs: '17rem', md: '15rem' } }}>
                     <Card className={classes.profilePictureContainer}>
-                        <Box className={classes.profileGreet}>
+                        <Box className={classes.profileGreet} sx ={{gap: {xs: '1.5rem', md: '0.5rem' }}}>
                             <Avatar alt="Profile Picture" className={classes.profilePicture}
                                 src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
                             />
                             <Box display='flex' flexDirection='column' justifyContent='center' >
-                                <Typography className={classes.greet} variant="h6" color='white' gutterBottom>
+                                <Typography fontSize='100%' color='white' gutterBottom>
                                     Hello,
                                 </Typography>
-                                <Typography className={classes.greet} fontWeight='bold' variant="h6" color='white'>
+                                <Typography fontWeight='bold' fontSize='100%' color='white'>
                                     {
                                         userData.user.firstName !== undefined && userData.user.lastName !== undefined
                                             ? userData.user.firstName : ""
@@ -93,7 +93,7 @@ const Profile = ({ direction, logoutUser, userData }) => {
                 </Box>
                 <Box sx={{ display: { xs: activePage ? "block" : "none", md: "block" } }} >
                     {activeTab === "My Profile" && <MyProfile user={userData.user} setActivePage={setActivePage} />}
-                    {activeTab === "My Chargers" && <MyChargers user={userData.user} />}
+                    {activeTab === "My Chargers" && <MyChargers  user={userData.user} setActivePage={setActivePage} />}
                     {activeTab === "Payments" && <Payments setActivePage={setActivePage} />}
                     {activeTab === "Settings" && <Settings setActivePage={setActivePage} />}
                     {activeTab === "Support" && <Support />}

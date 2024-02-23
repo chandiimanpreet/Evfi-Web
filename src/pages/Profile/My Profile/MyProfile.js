@@ -63,10 +63,10 @@ const MyProfile = ({ user, setActivePage }) => {
     }, [isEditing, profile]);
 
     return (
-        <Box sx={{ maxWidth: { md: "40rem", lg: "50rem" }, padding: { xs: "0rem 1rem", sm: "1rem 3rem", md: "0rem" },height: { xs: "41rem", md: "38rem", lg: "38rem" }, overflow: {xs: 'auto', sm: 'hidden'}, marginLeft:{xs:'0', md:'1rem'} }} className={classes.main}>
+        <Box sx={{ width: { xs: "93vw", md: "41rem", lg: "50rem" }, height: { xs: "41rem", md: "38rem", lg: "38rem" }, overflow: { xs: 'auto', sm: 'hidden' } }} className={classes.main}>
             <Grid container sx={{ display: "flex", flexDirection: "row", justifyContent: { xs: "flex-start", sm: "space-between" } }}>
                 <Box display="flex" flexDirection="row" alignItems="center">
-                    <ArrowBackIcon onClick={handleBackButton} sx={{ color: 'white', display: {xs: 'block', md: 'none'} }} />
+                    <ArrowBackIcon onClick={handleBackButton} sx={{ color: 'white', display: { xs: 'block', md: 'none' } }} />
                     <Typography variant="h5" margin="0 1rem" gutterBottom fontWeight="bold" fontSize="25px" fontFamily='Manrope' color={"white"}>
                         My Profile
                     </Typography>
