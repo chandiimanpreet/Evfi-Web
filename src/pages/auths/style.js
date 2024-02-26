@@ -7,7 +7,7 @@ export const useStyles = makeStyles({
         height: '100vh',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
         backgroundColor: '#000',
         backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)',
     },
@@ -30,10 +30,10 @@ export const useStyles = makeStyles({
         fontWeight: '600',
         fontSize: '1rem',
         width: '100%',
-        color: 'white',
+        color: 'yellow',
         "&:hover": {
             backgroundColor: 'black',
-            color: 'white',
+            color: 'yellow',
         }
     },
     btn: {
@@ -73,15 +73,6 @@ export const useStyles = makeStyles({
             color: '#aaa',
         }
     },
-    boxBehindImgStyle: {
-        maxWidth: '31rem',
-        width: '100%',
-        position: 'absolute',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        filter: 'blur(20px)',
-    },
     setChargerLocationBtn: {
         backgroundColor: '#282828 !important',
         fontSize: '14px',
@@ -94,27 +85,29 @@ export const useStyles = makeStyles({
     },
     upLoadBtns: {
         backgroundColor: '#282828 !important',
-        fontSize: '12px !important',
-        color: '#fff !important',
-        textTransform: 'capitalize !important',
-        marginTop: '8px !important',
+        fontSize: '14px',
+        color: '#fff',
+        textTransform: 'capitalize',
+        padding: '16px 14px',
         ':hover': {
-            backgroundColor: '#000 !important',
+            backgroundColor: '#000 !important'
         },
+        width: '100%',
     },
     upLoadBtnChips: {
-        color: 'white !important',
-        marginRight: '8px',
-        marginTop: '8px',
-        '& .MuiChip-deleteIcon': {
-            color: 'white !important',
-            ':hover': {
-                color: 'white !important'
-            },
+        backgroundColor: '#282828 !important',
+        fontSize: '14px',
+        color: '#fff',
+        textTransform: 'capitalize',
+        padding: '16px 14px',
+        ':hover': {
+            backgroundColor: '#000 !important'
         },
+        margin: '0.4rem',
     },
 
     /////////////////////////////////////////   ModalMap Styling    ////////////////////////
+
     setLocationBtn: {
         position: 'absolute',
         bottom: '1rem ',
@@ -192,14 +185,10 @@ export const otpStyle = {
         },
     },
     registerBox2: {
-        height: '86vh',
-        maxHeight: '39rem',
         width: '80vw',
         maxWidth: '55rem',
         display: 'flex',
         flexDirection: 'column',
-        margin: 'auto',
-        gap: '1.1rem',
         padding: '1rem',
         boxShadow: '0 0 1.5rem 0 rgba(0, 0, 0, 0.75)',
         backdropFilter: 'blur(40px)',
@@ -226,25 +215,6 @@ export const otpStyle = {
         border: "2px solid yellow",
         borderRadius: "100%",
     },
-    // bigboltIconRoot: {
-    //     display: "flex",
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     position: "relative",
-    //     marginTop: "2rem",
-    //     right: "5rem",
-    //   },
-    
-    //   bigboltIcon: {
-    //     //top: '-2.3rem',
-    //     color: "yellow",
-    //     //border: '4px solid yellow',
-    //     position: "absolute",
-    //     //fontSize: '2.3rem!important',
-    //     borderRadius: "100%",
-    //     //left: '6rem',
-    //     zIndex: 1500,
-    //   },
     companylogo: {
         display: 'flex',
         alignItems: 'center',
@@ -261,6 +231,12 @@ export const otpStyle = {
         },
         '& .MuiInputLabel-root': {
             color: '#fff !important',
+        }
+    },
+    gridItem: {
+        marginBottom: '0.8rem',
+        '& .MuiStack-root':{
+            paddingTop: '0rem',
         }
     },
     getOtpStyle: {

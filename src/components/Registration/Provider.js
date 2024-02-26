@@ -7,14 +7,14 @@ import {
 import { useStyles, otpStyle } from '../../pages/auths/style';
 import { addCharger } from '../../utils/auth/user';
 import ModalMap from './ModalMap';
-import { DemoContainer,  } from '@mui/x-date-pickers/internals/demo';
+import { DemoContainer, } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { countriesStateCitiesData } from '../../utils/timezone/countriesStateCitiesData';
 import { connect } from 'react-redux';
 import { addChargerAction, addUserData, setError } from '../../actions';
-import {  TimePicker } from '@mui/x-date-pickers';
+import { TimePicker } from '@mui/x-date-pickers';
 
 const Provider = ({ userData, addChargerAction, setError }) => {
 
@@ -113,11 +113,8 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 	}
 	else {
 		return (
-			<Box className={classes.bodyPage}>
-				<Box sx={{ position: 'relative' }}>
-					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
-				</Box>
-				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
+			<Box sx= {{alignItems: {xs: 'flex-start', md:'center'}}} className={classes.bodyPage}>
+				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={{ ...otpStyle.registerBox2, marginTop: {xs: '6%',sm:'2%'}, height: {xs: '82vh', md: '32rem'} }}>
 					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold'
@@ -137,7 +134,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 
-							<Grid item xs={12} lg={3}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle} >
 									<InputLabel id="types" required>Charger Type</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
@@ -149,20 +146,23 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 								</FormControl>
 							</Grid>
 
-							<Grid item xs={12} sm={6} lg={6}>
+							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Address' name='address' value={data.address}
 									InputProps={{ inputProps: { maxLength: 30, } }} />
 							</Grid>
 
-							<Grid item xs={12} sm={6} lg={3}>
+
+						</Grid>
+
+						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
+
+							<Grid item xs={12} sm={6} lg={6}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
 									type='number' label='Price' name='price' value={data.price}
 									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
 							</Grid>
-						</Grid>
 
-						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={12} sm={6} lg={2} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>
@@ -212,23 +212,22 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 							</Grid>
 						</Grid>
 
-						<Grid container spacing={2}>
-							<Grid item xs={12} sm={6} lg={3}>
+						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
+							<Grid item xs={12} sm={6} lg={3} >
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode}
 									onInput={(e) => { e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 6) }}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
+							<Grid item xs={12} sm={6} lg={3} sx={otpStyle.gridItem}>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
-									<DemoContainer components={['TimePicker']}>
+									<DemoContainer  components={['TimePicker']}>
 										<TimePicker views={['hours']} label='Opening Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
 											onChange={(e) => { timingHandler(e, true) }} variant='outlined' value={data.start} />
-
 									</DemoContainer>
 								</LocalizationProvider>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3} marginTop='-0.5rem'>
+							<Grid item xs={12} sm={6} lg={3} sx={otpStyle.gridItem}>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
 									<DemoContainer components={['TimePicker']}>
 										<TimePicker views={['hours']} label='Closing Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
@@ -241,7 +240,11 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									variant='outlined' type='text' label='Amenities' name='amenities' value={data.amenities}
 									InputProps={{ inputProps: { maxLength: 50, } }} />
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3}>
+						</Grid>
+
+
+						<Grid container spacing={2} >
+							<Grid item xs={12} sm={4} lg={4}>
 								<Button fullWidth required className={classes.setChargerLocationBtn} onClick={handleOpen}
 									name='chargerLocation' value={data.chargerLocation}
 								>
@@ -261,10 +264,10 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 									</Fade>
 								</Modal>
 							</Grid>
-						</Grid>
-						<Grid container spacing={1}>
-							<Grid item xs={12} >
-								<div style={{ display: 'flex', columnGap: '12px' }}>
+
+
+							<Grid item xs={12} sm={4} lg={4} >
+								<Box>
 									<input name='idProof' multiple onChange={fileDataHandler} accept="image/*" style={{ display: 'none' }} id="raised-button-file"
 										type="file"
 									/>
@@ -273,43 +276,44 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 											Upload Aadhaar Card
 										</Button>
 									</label>
-									<Box>
-										{aadhaarCard.length > 0 &&
-											aadhaarCard.map((item, idx) =>
-												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle(item, true)}
-													className={classes.upLoadBtnChips} size='medium' variant="outlined"
-												/>
-											)
-										}
-									</Box>
-								</div>
+								</Box>
 							</Grid>
-						</Grid>
-						<Grid container spacing={1}>
-							<Grid item xs={12} >
-								<div style={{ display: 'flex', columnGap: '12px' }}>
+
+							<Grid item xs={12} sm={4} lg={4}>
+								<Box>
 									<input name='chargerArea' multiple onChange={fileDataHandler} accept="image/*" style={{ display: 'none' }} id="button-file"
 										type="file"
 									/>
 									<label htmlFor="button-file">
 										<Button variant="raised" component="span" className={classes.upLoadBtns} >
-											Upload Charger Area Image
+											Upload Charger Area
 										</Button>
 									</label>
-									<Box>
-										{chargerArea.length > 0 &&
-											chargerArea.map((item, idx) =>
-												<Chip key={idx} label={item.name} onDelete={chipDeleteHandle(item, false)}
-													className={classes.upLoadBtnChips} size='medium' variant="outlined"
-												/>
-											)
-										}
-									</Box>
-								</div>
+								</Box>
 							</Grid>
+						</Grid><br />
+
+						<Grid container  sx={{ }}>
+								{aadhaarCard.length > 0 &&
+									aadhaarCard.map((item, idx) =>
+										<Chip key={idx} label={item.name.slice(0, 15)} onDelete={chipDeleteHandle(item, true)}
+											className={classes.upLoadBtnChips} size='medium' variant="outlined"
+										/>
+									)
+								}
+							
+								{chargerArea.length > 0 &&
+									chargerArea.map((item, idx) =>
+										<Chip key={idx} label={item.name.slice(0, 15)} onDelete={chipDeleteHandle(item, false)}
+											className={classes.upLoadBtnChips} size='medium' variant="outlined"
+										/>
+									)
+								}
+							
 						</Grid>
 					</Box>
-					<Button sx={{ width: '30%', margin: '0 auto', marginTop: '10px', }} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
+					
+					<Button sx={{ width: '30%', margin: '0 auto', marginTop: '10px'}} size='medium' type='submit' className={classes.sbmtOtp} variant='contained'>{showOnBtn}</Button>
 				</Box>
 			</Box>
 		)
