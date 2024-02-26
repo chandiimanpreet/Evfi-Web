@@ -32,7 +32,7 @@ const Profile = ({ direction, logoutUser, userData, chargers }) => {
     const handleLogout = () => {
         logoutUser();
     };
-
+    console.log(chargers)
     console.log(userData.user);
 
     return (
@@ -93,7 +93,7 @@ const Profile = ({ direction, logoutUser, userData, chargers }) => {
                 </Box>
                 <Box sx={{ display: { xs: activePage ? "block" : "none", md: "block" } }} >
                     {activeTab === "My Profile" && <MyProfile user={userData.user} setActivePage={setActivePage} />}
-                    {activeTab === "My Chargers" && <MyChargers  user={userData.user} setActivePage={setActivePage} />}
+                    {activeTab === "My Chargers" && <MyChargers  user={userData.user}   chargers = {chargers} setActivePage={setActivePage} />}
                     {activeTab === "Payments" && <Payments setActivePage={setActivePage} />}
                     {activeTab === "Settings" && <Settings setActivePage={setActivePage} />}
                     {activeTab === "Support" && <Support />}

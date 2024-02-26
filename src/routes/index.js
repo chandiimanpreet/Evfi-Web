@@ -84,8 +84,6 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
                     const chargerDocs = snapshot.docChanges().map((change) => ({ ...change.doc.data() }));
                     chargerDocs.map((charger) => setCharger(charger));
 
-                    console.log(chargerDocs);
-
                 }
                 else {    // modified
                     const id = changes[0].doc.id;
@@ -122,7 +120,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
                             <Route path="/" element={<Home direction={motionDirection} user={userData.user} chargers={chargers} />} />
                             <Route path="previousBooking" element={<PreviousBooking direction={motionDirection} user={userData.user} userBooking={booking} />} />
                             <Route path="requests" element={<Request moveToPageIndex={moveToPageIndex} user={userData.user} bookingRequests={provider} direction={motionDirection} />} />
-                            <Route path="profile" element={<Profile direction={motionDirection} />} />
+                            <Route path="profile" element={<Profile direction={motionDirection} chargers={chargers} />} />
                         </Route>
                         <Route path='register/:level' element={<Registerauth />} />
                         <Route path='auth' element={<Phoneauth />} />
