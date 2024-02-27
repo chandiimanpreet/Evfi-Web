@@ -7,7 +7,7 @@ export const useStyles = makeStyles({
         height: '100vh',
         display: 'flex',
         justifyContent: 'center',
-        // alignItems: 'center',
+        alignItems: 'center',
         backgroundColor: '#000',
         backgroundImage: 'radial-gradient(circle at 6% 100%, #e2b714, transparent 30%), radial-gradient(circle at 90% -9%, #e2b714, transparent 30%)',
     },
@@ -72,6 +72,15 @@ export const useStyles = makeStyles({
         '&:disabled': {
             color: '#aaa',
         }
+    },
+    boxBehindImgStyle: {
+        maxWidth: '31rem',
+        width: '100%',
+        position: 'absolute',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        filter: 'blur(20px)',
     },
     setChargerLocationBtn: {
         backgroundColor: '#282828 !important',

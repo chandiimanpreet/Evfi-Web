@@ -113,8 +113,8 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 	}
 	else {
 		return (
-			<Box sx= {{alignItems: {xs: 'flex-start', md:'center'}}} className={classes.bodyPage}>
-				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={{ ...otpStyle.registerBox2, marginTop: {xs: '6%',sm:'2%'}, height: {xs: '82vh', md: '32rem'} }}>
+			<Box sx = {{alignItems: 'flex-start !important'}} className={classes.bodyPage}>
+				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={{ ...otpStyle.registerBox2, marginTop: {xs: '1.5rem', md: '4rem'}, height: {xs: '82vh', md: '32rem'} }}>
 					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
 						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
 						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold'
