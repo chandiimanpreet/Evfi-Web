@@ -14,7 +14,9 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { countriesStateCitiesData } from '../../utils/timezone/countriesStateCitiesData';
 import { connect } from 'react-redux';
 import { addChargerAction, addUserData, setError } from '../../actions';
-import { TimePicker } from '@mui/x-date-pickers';
+import {  TimePicker } from '@mui/x-date-pickers';
+import BoltIcon from '@mui/icons-material/Bolt';
+
 
 const Provider = ({ userData, addChargerAction, setError }) => {
 
@@ -113,10 +115,24 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 	}
 	else {
 		return (
-			<Box sx = {{alignItems: 'flex-start !important'}} className={classes.bodyPage}>
-				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={{ ...otpStyle.registerBox2, marginTop: {xs: '1.5rem', md: '4rem'}, height: {xs: '82vh', md: '32rem'} }}>
-					<Box sx={{ display: 'flex', flexDirection: 'column' }}>
-						<img style={otpStyle.companylogo} src='/resources/light.png' alt='' />
+
+			<Box className={classes.bodyPage}>
+				<Box sx={{ position: 'relative' }}>
+					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
+				</Box>
+				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
+					<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" ,justifyContent: "center" }}>
+					<Box>
+							<BoltIcon
+							sx={{ 
+								color: "yellow",
+								width: "3rem",
+								height:"3rem",
+								fontSize: { xs: "1.3rem", sm: "2.3rem" },
+							}}
+							/>
+					    </Box>
+
 						<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold'
 							fontSize='1.5rem'>Become a Provider</Typography>
 					</Box>
