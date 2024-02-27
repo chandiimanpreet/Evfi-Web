@@ -15,7 +15,7 @@ const GeoFirestore = geofirestore.initializeApp(firestore);
 const geocollection = GeoFirestore.collection('chargers');
 
 const Home = ({ direction, user, setCharger, chargers, clearCharger, }) => {
-
+	console.log(chargers)
 	// States
 	const [show, setShow] = useState(false);
 	const [showCurrentLocation, setShowCurrentLocation] = useState(false);

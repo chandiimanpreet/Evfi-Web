@@ -260,7 +260,7 @@ export const useStyles = makeStyles({
           width: "91%",
           fontSize: "0.4rem",
           top: "0.1rem",
-          borderRadius: "10rem!important",
+          // borderRadius: "10rem!important",
         },
       },
       searchPlaceAutoComplete: {
