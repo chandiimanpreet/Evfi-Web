@@ -30,10 +30,10 @@ export const useStyles = makeStyles({
         fontWeight: '600',
         fontSize: '1rem',
         width: '100%',
-        color: 'white',
+        color: 'yellow',
         "&:hover": {
             backgroundColor: 'black',
-            color: 'white',
+            color: 'yellow',
         }
     },
     btn: {
@@ -94,27 +94,29 @@ export const useStyles = makeStyles({
     },
     upLoadBtns: {
         backgroundColor: '#282828 !important',
-        fontSize: '12px !important',
-        color: '#fff !important',
-        textTransform: 'capitalize !important',
-        marginTop: '8px !important',
+        fontSize: '14px',
+        color: '#fff',
+        textTransform: 'capitalize',
+        padding: '16px 14px',
         ':hover': {
-            backgroundColor: '#000 !important',
+            backgroundColor: '#000 !important'
         },
+        width: '100%',
     },
     upLoadBtnChips: {
-        color: 'white !important',
-        marginRight: '8px',
-        marginTop: '8px',
-        '& .MuiChip-deleteIcon': {
-            color: 'white !important',
-            ':hover': {
-                color: 'white !important'
-            },
+        backgroundColor: '#282828 !important',
+        fontSize: '14px',
+        color: '#fff',
+        textTransform: 'capitalize',
+        padding: '16px 14px',
+        ':hover': {
+            backgroundColor: '#000 !important'
         },
+        margin: '0.4rem',
     },
 
     /////////////////////////////////////////   ModalMap Styling    ////////////////////////
+
     setLocationBtn: {
         position: 'absolute',
         bottom: '1rem ',
@@ -192,14 +194,10 @@ export const otpStyle = {
         },
     },
     registerBox2: {
-        height: '86vh',
-        maxHeight: '39rem',
         width: '80vw',
         maxWidth: '55rem',
         display: 'flex',
         flexDirection: 'column',
-        margin: 'auto',
-        gap: '1.1rem',
         padding: '1rem',
         boxShadow: '0 0 1.5rem 0 rgba(0, 0, 0, 0.75)',
         backdropFilter: 'blur(40px)',
@@ -242,6 +240,12 @@ export const otpStyle = {
         },
         '& .MuiInputLabel-root': {
             color: '#fff !important',
+        }
+    },
+    gridItem: {
+        marginBottom: '0.8rem',
+        '& .MuiStack-root':{
+            paddingTop: '0rem',
         }
     },
     getOtpStyle: {

@@ -51,11 +51,10 @@ export const useStyles = makeStyles({
     flexDirection: "row",
     padding: "0.5rem",
     justifyContent: 'flex-start',
-    gap: '1.5rem',
   },
   profilePicture: {
-    width: "6.25rem",
-    height: "6.25rem",
+    width: "5rem",
+    height: "5rem",
     display: 'flex',
     
   },
