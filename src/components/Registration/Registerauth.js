@@ -47,12 +47,11 @@ const Registerauth = ({ addUserData, userData }) => {
 
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
-console.log(level)
+console.log(userData)
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
 
 	const [data, setUserData] = useState({
-		name: userData.name,
 		vehicleManufacturer: "",
 		chargingRequirements: "",
 		vehicleNumber: '',

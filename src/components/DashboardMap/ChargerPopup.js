@@ -53,6 +53,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ChargerPopup({ chargerData, bookingHandler ,userData}) {
+    console.log(userData)
 const navigate=useNavigate()
     const [showSlot, setShowSlot] = useState(false);
     const [start, setStart] = useState(null);
@@ -179,7 +180,7 @@ const navigate=useNavigate()
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
-                            if(!userData.user.level3){
+                            if(userData.user.level2.batteryCapacity==="" && userData.user.level2.vehicleManufacturer==="" && userData.user.level2.vehicleRegistrationNumber==="" && userData.user.level2.mileage==="" && userData.user.level2.chargerInfo===""){
                                 navigate('/register/level1');
                                 return;
                             }
