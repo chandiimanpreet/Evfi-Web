@@ -103,7 +103,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
         updateChargersTimeSlot(userData);
     }, [userData, updateCharger, setCharger]);
 
-    console.log(chargers)
+    // console.log(chargers)
 
     // 1 for right movement
     // -1 for left movement

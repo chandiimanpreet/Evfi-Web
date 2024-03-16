@@ -47,7 +47,7 @@ const Registerauth = ({ addUserData, userData }) => {
 
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
-
+console.log(level)
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
 
@@ -91,12 +91,15 @@ const Registerauth = ({ addUserData, userData }) => {
 			addUserData({ ...data, idImageURL: downloadURL, level2: data })
 		}
 	}
-
 	if (!userData) {
 		return <Navigate to={'/auth'} />
 	} else if (level === "level1" && userData.level1) {
+		if(userData.level2.batteryCapacity==="" && userData.level2.vehicleManufacturer==="" && userData.level2.vehicleRegistrationNumber==="" && userData.level2.mileage==="" && userData.level2.chargerInfo===""){
+			return <Navigate to={'/register/level2'} />
+		}
+		console.log("first level")
 		return <Navigate to={'/'} />
-	} else if (level === "level2" && userData.level2) {
+	} else if (level === "level2" && (userData.level2.batteryCapacity!=="" || userData.level2.vehicleManufacturer!=="" || userData.level2.vehicleRegistrationNumber!=="" || userData.level2.mileage!=="" || userData.level2.chargerInfo!=="")) {
 		return <Navigate to={`/${searchParams.has("redirectTo") ? searchParams.get("redirectTo") : ""}`} />
 	} else {
 		return (
