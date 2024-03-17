@@ -4,7 +4,8 @@ import { CurrencyRupee } from '@mui/icons-material';
 import { Popup } from 'react-leaflet';
 import { styled } from '@mui/material/styles';
 import { decimalToBinary } from '../../utils/auth/user';
-
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 60,
@@ -51,19 +52,19 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
 }));
 
-export default function ChargerPopup({ chargerData, bookingHandler }) {
-
+export default function ChargerPopup({ chargerData, bookingHandler ,userData}) {
+    console.log(userData)
+const navigate=useNavigate()
     const [showSlot, setShowSlot] = useState(false);
     const [start, setStart] = useState(null);
     var count=0;
-
     const [AMPM, setAMPM] = useState(new Date().getHours() > 12 ? 'PM' : 'AM');
 
     const checkDisabled = (time) => {
 
         let binaryTime = decimalToBinary(chargerData.timeSlot);
         let intTime = parseInt(time.split('-')[0]);
-        console.log(intTime);
+        // console.log(intTime);
 
         if (AMPM === 'PM' && intTime === 12) {
             intTime = 12;
@@ -99,8 +100,8 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
             setStart((parseInt(time[1]) - 1) + " " + AMPM);
         }
     }
-    console.log("Charger time: ");
-    console.log("count: ",count);
+    // console.log("Charger time: ");
+    // console.log("count: ",count);
 
     return (
         <Popup>
@@ -179,9 +180,15 @@ export default function ChargerPopup({ chargerData, bookingHandler }) {
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
+                            if(userData.user.level2.batteryCapacity==="" && userData.user.level2.vehicleManufacturer==="" && userData.user.level2.vehicleRegistrationNumber==="" && userData.user.level2.mileage==="" && userData.user.level2.chargerInfo===""){
+                                navigate('/register/level1');
+                                return;
+                            }
+                            console.log("first")
                             bookingHandler(start.split(" ")[0] === 0 ? 12 : start.split(" ")[0], AMPM, chargerData);
                             setShowSlot(false);
                             setStart(null);
+                            toast.success('Booking Request Successful');
                         } else {
                             setShowSlot(true);
                         }

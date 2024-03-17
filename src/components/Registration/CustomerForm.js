@@ -33,18 +33,15 @@ const CustomerForm = ({ user, data, classes, theme, changeDataHandler, idType, M
         <Fragment>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
-                type='text' label='Username' name='Name' disabled value={user.Name} />
+                type='text' label='Username' name='name' disabled value={user.name} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
-                label='Vehicle Company' type='text' name='VehicleManufacturer' value={data.VehicleManufacturer} />
-
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
-                type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
+                label='Vehicle Company' type='text' name='vehicleManufacturer' value={data.VehicleManufacturer} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='VehicleNumber' value={data.VehicleNumber} />
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Battery Capacity(kWh)' name='batterycapacity' value={data.batterycapacity} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNumber' value={data.VehicleNumber} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Battery Capacity(kWh)' name='batteryCapacity' value={data.batteryCapacity} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Mileage' name='mileage' value={data.mileage} />
             <div>
                 <FormControl sx={{ width: '100%' }}>

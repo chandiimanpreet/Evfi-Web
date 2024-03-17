@@ -37,6 +37,7 @@ const DashboardMap = ({
 	setCharger,
 	uniqueChargersID,
 	clearCharger,
+	userData
 }) => {
 	// Constants
 	const location = useLocation();
@@ -161,6 +162,7 @@ const DashboardMap = ({
 										<ChargerPopup
 											chargerData={charger}
 											bookingHandler={bookingHandler}
+											userData={userData}
 										/>
 									</Marker>
 								);
@@ -387,10 +389,12 @@ const LocationMarker = ({ setPosition, position, markerIcon }) => {
 	);
 };
 
-
+const mapStateToProps = state => ({
+	userData: state.userData,
+});
 const mapDispatchFromProps = (dispatch) => ({
 	setCharger: (data) => dispatch(setChargers(data)),
 	clearCharger: (data) => dispatch(clearChargers()),
 });
 
-export default connect(null, mapDispatchFromProps)(DashboardMap);
+export default connect(mapStateToProps, mapDispatchFromProps)(DashboardMap);
