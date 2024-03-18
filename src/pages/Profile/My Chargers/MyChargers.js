@@ -30,8 +30,8 @@ const convertTimeforUserUI = (timeSlot) => {
 const MyChargers = ({ user, chargers, setActivePage }) => {
     const classes = useStyles();
 
-    const charger = user?.chargers[0];
-    console.log(charger);
+    const chargerId = user.chargers[0]?user.chargers[0]:false;
+    const charger = chargerId ? chargers.find(charger => charger.chargerId === chargerId) : null;
 
     const handleBackButton = () => {
         setActivePage(false);
@@ -51,11 +51,11 @@ const MyChargers = ({ user, chargers, setActivePage }) => {
 
             <br />
 
-            <Box className={classes.listItemStyle} sx={{
-                paddingBottom: ['0rem', '0.6rem'], justifyContent: {xs: 'center', md: 'flex-start'}, display: 'flex'
+            {charger && (<Box className={classes.listItemStyle} sx={{
+                paddingBottom: ['0rem', '0.6rem'], justifyContent: { xs: 'center', md: 'flex-start' }, display: 'flex'
             }}>
                 <Box display='flex'>
-                    <Box component='img' sx={{ height: { xs: "8.5rem", md: "9rem" }, width: { xs: "7rem",sm:"10rem", md: "10rem" }, borderRadius: '10px 0px 0px 10px', }}
+                    <Box component='img' sx={{ height: { xs: "8.5rem", md: "9rem" }, width: { xs: "7rem", sm: "10rem", md: "10rem" }, borderRadius: '10px 0px 0px 10px', }}
                         alt='Charging Station' src={charger?.info?.imageUrl[0]}>
                     </Box>
 
@@ -92,7 +92,12 @@ const MyChargers = ({ user, chargers, setActivePage }) => {
 
                     </Box>
                 </Box>
-            </Box>
+            </Box>)}
+            {!charger && (
+                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <Typography sx={{ color: '#b5b3b3', fontSize: '1.2rem', fontWeight: 'bold' }}>You have no chargers.</Typography>
+                </Box>
+            )}
         </Box>
     );
 };
