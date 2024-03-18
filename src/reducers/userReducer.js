@@ -38,6 +38,14 @@ const userReducer = (state = initialState, action) => {
                     level3: true,
                 }
             }
+        case 'UPDATE_PROFILE':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    ...action.payload
+                }
+            }
         default:
             return state
     }
