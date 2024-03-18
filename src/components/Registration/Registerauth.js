@@ -55,7 +55,6 @@ const Registerauth = ({ addUserData, userData }) => {
 		vehicleManufacturer: "",
 		chargingRequirements: "",
 		vehicleNumber: '',
-		idImageUrl: null,
 		mileage: '',
 		batteryCapacity: ''
 	});
