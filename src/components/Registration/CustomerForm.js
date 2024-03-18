@@ -36,11 +36,10 @@ const CustomerForm = ({ user, data, classes, theme, changeDataHandler, idType, M
                 type='text' label='Username' name='name' disabled value={user.name} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
-                label='Vehicle Company' type='text' name='vehicleManufacturer' value={data.VehicleManufacturer} />
+                label='Vehicle Company' type='text' name='vehicleManufacturer' value={data.vehicleManufacturer} />
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='ChargingRequirements' value={data.ChargingRequirements} />
-
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNumber' value={data.VehicleNumber} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='chargingRequirements' value={data.chargingRequirements} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNumber' value={data.vehicleNumber} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Battery Capacity(kWh)' name='batteryCapacity' value={data.batteryCapacity} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Mileage' name='mileage' value={data.mileage} />
             <div>

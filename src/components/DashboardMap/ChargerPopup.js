@@ -180,7 +180,7 @@ const navigate=useNavigate()
                 <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
                     <Button type='button' onClick={(e) => {
                         if (showSlot) {
-                            if(userData.user.level2.batteryCapacity==="" && userData.user.level2.vehicleManufacturer==="" && userData.user.level2.vehicleRegistrationNumber==="" && userData.user.level2.mileage==="" && userData.user.level2.chargerInfo===""){
+                            if(!userData.user.level2){
                                 navigate('/register/level1');
                                 return;
                             }

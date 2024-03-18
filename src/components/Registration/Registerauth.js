@@ -47,7 +47,7 @@ const Registerauth = ({ addUserData, userData }) => {
 
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
-console.log(userData)
+	console.log(userData)
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
 
@@ -83,22 +83,22 @@ console.log(userData)
 				const uploadResult = await uploadBytes(imageRef, image);
 				downloadURL = await getDownloadURL(uploadResult.ref);
 			}
-			const temp = await registerUser({ ...data, idImageURL: downloadURL, level2: data })
+			const temp = await registerUser({ level2: { ...data, userIdProofURL: downloadURL } })
 			if (temp.error) {
 				console.log(temp.error);
 			}
-			addUserData({ ...data, idImageURL: downloadURL, level2: data })
+			addUserData({ level2: { ...data, userIdProofURL: downloadURL } })
 		}
 	}
 	if (!userData) {
 		return <Navigate to={'/auth'} />
 	} else if (level === "level1" && userData.level1) {
-		if(userData.level2.batteryCapacity==="" && userData.level2.vehicleManufacturer==="" && userData.level2.vehicleRegistrationNumber==="" && userData.level2.mileage==="" && userData.level2.chargerInfo===""){
+		if (!userData.level2) {
 			return <Navigate to={'/register/level2'} />
 		}
 		console.log("first level")
 		return <Navigate to={'/'} />
-	} else if (level === "level2" && (userData.level2.batteryCapacity!=="" || userData.level2.vehicleManufacturer!=="" || userData.level2.vehicleRegistrationNumber!=="" || userData.level2.mileage!=="" || userData.level2.chargerInfo!=="")) {
+	} else if (level === "level2" && userData.level2) {
 		return <Navigate to={`/${searchParams.has("redirectTo") ? searchParams.get("redirectTo") : ""}`} />
 	} else {
 		return (
@@ -106,19 +106,18 @@ console.log(userData)
 				<Box sx={{ position: 'relative' }}>
 					<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
 				</Box>
-
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>
-				        <Box>
-							<BoltIcon
-							sx={{ 
+					<Box>
+						<BoltIcon
+							sx={{
 								marginLeft: "7.5rem",
 								color: "yellow",
 								width: "3rem",
-								height:"3rem",
+								height: "3rem",
 								fontSize: { xs: "1.3rem", sm: "2.3rem" },
 							}}
-							/>
-					    </Box>
+						/>
+					</Box>
 
 					<Typography color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
 
