@@ -85,7 +85,12 @@ const clearChargers = () => ({
 })
 
 
+const updateuserProfile=(data)=>({
+    type:'UPDATE_PROFILE',
+    payload:data
+})
+
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers,updateuserProfile
 };

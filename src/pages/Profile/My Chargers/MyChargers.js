@@ -30,15 +30,7 @@ const convertTimeforUserUI = (timeSlot) => {
 const MyChargers = ({ user, chargers, setActivePage }) => {
     const classes = useStyles();
 
-    const uniqueChargerIds = new Set();
-    
-    const charger = chargers.find(charger => {
-        if (!uniqueChargerIds.has(charger.chargerId) && charger.chargerId === user.chargers[0]) {
-            uniqueChargerIds.add(charger.chargerId);
-            return true;
-        }
-        return false;
-    });
+    const charger = user?.chargers[0];
     console.log(charger);
 
     const handleBackButton = () => {
