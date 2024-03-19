@@ -90,7 +90,12 @@ const updateuserProfile=(data)=>({
     payload:data
 })
 
+const updateProfilePicture = (image) => ({
+    type: 'UPDATE_PROFILE_PICTURE',
+    payload: image
+});
+
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers,updateuserProfile
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers,updateuserProfile,updateProfilePicture
 };

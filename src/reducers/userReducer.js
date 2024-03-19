@@ -46,6 +46,14 @@ const userReducer = (state = initialState, action) => {
                     ...action.payload
                 }
             }
+        case 'UPDATE_PROFILE_PICTURE':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    profilePicture: action.payload
+                }
+            };
         default:
             return state
     }
