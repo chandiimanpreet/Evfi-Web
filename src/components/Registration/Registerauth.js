@@ -47,7 +47,6 @@ const Registerauth = ({ addUserData, userData }) => {
 
 	const { level } = useParams();
 	const [searchParams] = useSearchParams();
-	console.log(userData)
 	const app = initializeApp(firebaseConfig)
 	const storage = getStorage(app);
 

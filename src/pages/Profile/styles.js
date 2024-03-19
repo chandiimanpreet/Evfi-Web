@@ -13,11 +13,11 @@ export const useStyles = makeStyles({
   },
   main: {
     '&::-webkit-scrollbar': {
-        display: 'none',
+      display: 'none',
     },
     '&::-ms-overflow-style': 'none',
     '&::-scrollbar-width': 'none',
-},
+  },
   outerBox: {
     marginTop: "3.625rem",
     borderRadius: "0.625rem",
@@ -25,7 +25,7 @@ export const useStyles = makeStyles({
     backgroundColor: "rgba(200, 200, 200, 0.2)",
   },
   sidebox: {
-    height: "37.5rem", 
+    height: "37.5rem",
     flexDirection: "column",
   },
   buttonGroup: {
@@ -56,6 +56,17 @@ export const useStyles = makeStyles({
     width: "5rem",
     height: "5rem",
     display: 'flex',
-    
-  },
+    position: 'relative',
+    '&:hover': {
+        '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+    },
+}
 });
