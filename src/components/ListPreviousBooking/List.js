@@ -17,13 +17,12 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 import { Search, FilterList, Clear, } from '@mui/icons-material';
 import { useStyles } from './style';
 import { getUserAndChargers } from '../../utils/auth/user';
 import { useSearchParams } from 'react-router-dom';
 
-const List = ({ setFetchChargerFromList, user, userBooking }) => {
+const List = ({ setFetchChargerFromList, user , userBooking}) => {
 
 	//States
 	const [show, setShow] = useState("pending");
@@ -45,6 +44,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 	//Handlers
 	const toggleFilter = () => setShowFilter(!showFilter);
 
+	
 	const filterHandler = (key, value) => {
 		if (key === 'chargerType') {
 			setSelectedFilters((filter) => ({
@@ -122,25 +122,26 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 			charger.status === STATUS_DECLINED || charger.status === STATUS_CANCELED || charger.status === STATUS_CHARGING_COMPLETED
 		);
 	}, [userBooking]);
-
+    
 	useEffect(() => {
 		const helperFunction = async () => {
 			const response1 = await Promise.all(pendingBookingsInfo.map(async (charger) => {
+				console.log("",charger);
 				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
-				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId,charger.bookingDate];
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId,charger.bookingDate,charger.providerId];
 			}));
 			setPendingBookings(response1);
 			const response2 = await Promise.all(recentBookingsInfo.map(async (charger) => {
 				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
-				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot,charger.bookingDate];
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot,charger.bookingDate,charger.providerId];
 			}));
 			setRecentBookings(response2);
 		}
 		helperFunction();
 	}, [pendingBookingsInfo, recentBookingsInfo]);
 
- 
-   
+    
+    
 	//function to perform search operation
 	const filteredBookings = useMemo(() => {
 		if (!searchQuery.trim() && !searchParams.get("chargerType") && !searchParams.get("sortBy") && (!searchParams.get('from') && !searchParams.get('to'))) {
@@ -227,7 +228,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 		
 		return filtered;
 	}, [searchQuery, show, pendingBookings, recentBookings, searchParams, selectedFilters]);
-
+console.log(filteredBookings)
 	return (
 		<Fragment>
 			<Box sx={{ width: ['100vw', '100vw', '60vw'] }} className={classes.outerBox}>
@@ -333,16 +334,16 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 							{
 								show === "pending" ?
 									!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
-										filteredBookings?.map(([chargerData, status, timeSlot, bookingId]) => ({ chargerData, status, timeSlot, bookingId })).map((charger, idx) => (
+										filteredBookings?.map(([chargerData, status, timeSlot, bookingId,bookingDate,providerId]) => ({ chargerData, status, timeSlot, bookingId,bookingDate ,providerId	})).map((charger, idx) => (
 											<Box sx={{ marginBottom: { xs: '10px', md: '10px' } }} key={idx} onClick={() => { fetchData(charger) }} >
-												<ListItem data={charger} show={show} />
+												<ListItem data={charger} show={show} user={user} />
 											</Box>
 										)))
 									:
 									!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
 										filteredBookings?.map(([chargerData, status, timeSlot]) => ({ chargerData, status, timeSlot })).map((charger, idx) => (
 											<Box sx={{ marginBottom: { xs: '10px', md: '0px' } }} key={idx} onClick={() => { fetchData(charger) }} >
-												<ListItem data={charger} show={show} />
+												<ListItem data={charger} show={show} user={user}/>
 											</Box>
 										)))
 							}

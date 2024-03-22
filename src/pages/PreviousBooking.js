@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import List from '../components/ListPreviousBooking/List';
 import DashboardMap from '../components/DashboardMap';
 
-const PreviousBooking = ({ direction, user, userBooking }) => {
+const PreviousBooking = ({ direction, user, userBooking ,alluser}) => {
 
 	// States
 	const [fetchChargerFromList, setFetchChargerFromList] = useState('');
@@ -20,7 +20,8 @@ const PreviousBooking = ({ direction, user, userBooking }) => {
 		>
 			<Box sx={{ display: 'flex', width: "100%" }}>
 				<Box sx={{ display: { xs: fetchChargerFromList !== '' ? 'none' : 'flex', md: 'flex' }, width: { xs: '100vw', md: '28rem' } }}>
-					<List user={user} setFetchChargerFromList={setFetchChargerFromList} userBooking={userBooking} />
+					<List user={user} setFetchChargerFromList={setFetchChargerFromList} userBooking={userBooking}/>
+
 				</Box>
 
 				<Box width="100vw" sx={{ display: 'flex', position: { xs: 'fixed', md: 'relative' } }} className="previousBookingPage">

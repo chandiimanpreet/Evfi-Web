@@ -30,6 +30,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
         currentPageIndex.current = index;
     };
 
+
     useEffect(() => {
         const getBooking = (userData) => {
 

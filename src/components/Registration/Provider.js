@@ -154,7 +154,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle} >
 									<InputLabel id="types" required>Charger Type</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
-										label="Charger Type" onChange={changeDataHandler} multiple >
+										label="Charger Type" onChange={changeDataHandler} >
 										<MenuItem value={'Level 1'}>Level 1</MenuItem>
 										<MenuItem value={'Level 2'}>Level 2</MenuItem>
 										<MenuItem value={'Level 3'}>Level 3</MenuItem>

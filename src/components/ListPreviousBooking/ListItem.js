@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // import Ratings from '../Rating';
 // import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button, Chip, Skeleton } from '@mui/material';
-import { decimalToBinary, updateBookedCharger } from '../../utils/auth/user';
+import { decimalToBinary, updateBookedCharger, getUser, getProviderPhoneNumber } from '../../utils/auth/user';
 import { useStyles } from './style';
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
@@ -33,10 +33,40 @@ const convertTimeforUserUI = (timeSlot) => {
 	return time;
 }
 
-const ListItem = ({ data, show }) => {
+const ListItem = ({ data, show, user }) => {
 
 	// Styles
 	const classes = useStyles();
+
+	console.log("fsdfgshdf", data);
+
+	const [userPhoneNumber, setUserPhoneNumber] = useState('');
+	const getPhoneNumber = async () => {
+		const number = await getProviderPhoneNumber(data.providerId);
+		setUserPhoneNumber(number);
+	}
+	useEffect(() => {
+		getPhoneNumber();
+	}, [])
+
+	useEffect(() => {
+		const fetchUserPhoneNumber = async () => {
+			console.log("+++++", data?.chargerData?.uid);
+			try {
+				const userData = await getUser();
+				// console.log("data wala part",data.uid);
+				console.log("user wala part", user)
+				if (user.uid === data?.uid) {
+					setUserPhoneNumber(userData?.user?.phoneNumber || '');
+				}
+			} catch (error) {
+				console.error('Error fetching user:', error);
+			}
+		};
+
+		fetchUserPhoneNumber();
+	}, [data, user]);
+
 
 	return (
 		<Box className={classes.listItemStyle} sx={{
@@ -62,6 +92,13 @@ const ListItem = ({ data, show }) => {
 					</Box>
 
 					<Box display="flex" justifyContent="flex-start">
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Ph:</Typography>
+						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
+							{userPhoneNumber || <Skeleton width={20} animation="wave" />}
+						</Typography>
+					</Box>
+
+					<Box display="flex" justifyContent="flex-start">
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Price:</Typography>
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
 							{data.chargerData?.info?.price || <Skeleton width={20} animation="wave" />}
@@ -75,7 +112,7 @@ const ListItem = ({ data, show }) => {
 						</Typography>
 					</Box>
 
-					<Box sx={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+					<Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 						<Chip
 							label={
 								(data?.status === STATUS_REQUESTED && 'Requested') ||
@@ -93,14 +130,14 @@ const ListItem = ({ data, show }) => {
 								(data?.status === STATUS_DECLINED && 'error') ||
 								(data?.status === STATUS_CHARGING_COMPLETED && 'warning')
 							}
-							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid',  marginRight: 'auto'}} />
-						    {
+							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid', marginRight: 'auto' }} />
+						{
 							show === 'pending' && (
-								
-									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
-										e.stopPropagation();
-										updateBookedCharger(data.bookingId, STATUS_CANCELED);
-									}} className={classes.cancelBtn}>Cancel</Button>
+
+								<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
+									e.stopPropagation();
+									updateBookedCharger(data.bookingId, STATUS_CANCELED);
+								}} className={classes.cancelBtn}>Cancel</Button>
 							)
 						}
 					</Box>

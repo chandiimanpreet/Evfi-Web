@@ -67,7 +67,10 @@ const DashboardMap = ({
 	function handleBackButton() {
 		collectCardData("");
 	}
-
+	// function bitCount (n) {
+	// 	return n.toString(2).match(/1/g).length
+	//   }
+	  
 	const bookingHandler = async (time, AMPM, charger) => {
 		try {
 			await requestCharger(charger, parseInt(time), AMPM);
@@ -130,7 +133,7 @@ const DashboardMap = ({
 	]);
 
 	console.log(chargers);
-
+	
 	return (
 		<Fragment>
 			<MapContainer
@@ -163,6 +166,8 @@ const DashboardMap = ({
 											chargerData={charger}
 											bookingHandler={bookingHandler}
 											userData={userData}
+											tempValue = {charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}		
+
 										/>
 									</Marker>
 								);
@@ -199,6 +204,7 @@ const DashboardMap = ({
 											<ChargerPopup
 												chargerData={charger}
 												bookingHandler={bookingHandler}
+												tempValue = {charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
 											/>
 										</Marker>
 									);
@@ -243,6 +249,7 @@ const DashboardMap = ({
 											<ChargerPopup
 												chargerData={charger}
 												bookingHandler={bookingHandler}
+												tempValue = {charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
 											/>
 										</Marker>
 									);
@@ -332,7 +339,7 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 			]}
 			ref={markerRef}
 		>
-			<ChargerPopup chargerData={cardDetails} bookingHandler={bookingHandler} />
+			<ChargerPopup chargerData={cardDetails} bookingHandler={bookingHandler} tempValue={24- cardDetails.timeSlot.toString(2).match(/1/g).length} />
 		</Marker>
 	);
 };
