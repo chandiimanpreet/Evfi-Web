@@ -52,7 +52,6 @@ export const logInUser = (mobile) => {
                     level1: false,
                     level2: false,
                     level3: false,
-                    name: '',
                     chargers: [],
                     firstName: "",
                     lastName: "",

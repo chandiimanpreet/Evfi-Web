@@ -51,7 +51,7 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 user: {
                     ...state.user,
-                    profilePicture: action.payload
+                    imageUrl: action.payload
                 }
             };
         default:
