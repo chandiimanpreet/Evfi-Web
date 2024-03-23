@@ -67,7 +67,7 @@ const Home = ({ direction, user, setCharger, chargers, clearCharger, }) => {
 				<DashboardMap show={show} showCurrentLocation={showCurrentLocation}
 					setCurrentLocation={setCurrentLocation} searchCoordinates={searchCoordinates}
 					setSearchCoordinates={setSearchCoordinates} showRoute={showRoute} card={[null]}
-					setShow={setShow} chargers={chargers}
+					setShow={setShow} chargers={chargers} user={user}
 					searchLocationCoordinates={searchLocationCoordinates}
 					setSearchLocationCoordinates={setSearchLocationCoordinates}
 				/>

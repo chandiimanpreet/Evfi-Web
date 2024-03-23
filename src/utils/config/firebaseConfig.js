@@ -12,12 +12,9 @@ const firebaseConfig = {
 	appId: "1:758735537136:web:f0cec73edea6123e55d335"
 };
 
-const app = initializeApp(firebaseConfig);
-export const messaging = getMessaging(app);
 
-export default firebaseConfig;
+// Personal Key
 
-// // Manpreet Key
 // const firebaseConfig = {
 // 	apiKey: "AIzaSyDd-qvMFwNEFpUz-iBpkz9bdeRC6xrQoSg",
 // 	authDomain: "evfi-test.firebaseapp.com",
@@ -27,4 +24,12 @@ export default firebaseConfig;
 // 	appId: "1:656000451427:web:5c8973f5e38b0f829ec956",
 // 	measurementId: "G-3FG0EWB6SX"
 // };
+
+const app = initializeApp(firebaseConfig);
+export const messaging = getMessaging(app);
+
+export default firebaseConfig;
+
+// // Manpreet Key
+
 // export default firebaseConfig;

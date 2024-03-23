@@ -35,7 +35,6 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 		amenities: "",
 		chargerLocation: null,
 		chargerType: [],
-		price: "",
 		hostName: "",
 		start: null,
 		end: null,
@@ -172,13 +171,6 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 						</Grid>
 
 						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
-
-							<Grid item xs={12} sm={6} lg={6}>
-								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} variant='outlined'
-									type='number' label='Price' name='price' value={data.price}
-									InputProps={{ inputProps: { min: 100, max: 2000, step: 50, } }} />
-							</Grid>
-
 							<Grid item xs={12} sm={6} lg={2} >
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle}>
 									<InputLabel id="country">Country</InputLabel>

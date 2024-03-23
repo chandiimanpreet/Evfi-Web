@@ -2,7 +2,7 @@ import React from 'react';
 // import Ratings from '../Rating';
 // import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button, Chip, Skeleton } from '@mui/material';
-import { decimalToBinary, updateBookedCharger } from '../../utils/auth/user';
+import { convertTimeforUserUI, updateBookedCharger } from '../../utils/auth/user';
 import { useStyles } from './style';
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
@@ -12,28 +12,8 @@ import {
 	STATUS_CHARGING,
 } from '../../constants';
 
-const convertTimeforUserUI = (timeSlot) => {
-
-	let time = decimalToBinary(timeSlot);
-	time = time.length > 0 ? time : 0;
-	let greaterThan12 = false;
-
-	for (let i = 0; i < time.length; i++) {
-		if (time[i] === '1') {
-			time = i;
-		}
-	}
-
-	if (time >= 12) {
-		time = time - 12;
-		greaterThan12 = true;
-	}
-
-	time = `${time === 0 ? 12 : time}:00 - ${(time + 1)}:00`.concat(greaterThan12 ? ' PM' : ' AM');
-	return time;
-}
-
 const ListItem = ({ data, show }) => {
+	console.log(data)
 
 	// Styles
 	const classes = useStyles();
@@ -64,7 +44,7 @@ const ListItem = ({ data, show }) => {
 					<Box display="flex" justifyContent="flex-start">
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Price:</Typography>
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
-							{data.chargerData?.info?.price || <Skeleton width={20} animation="wave" />}
+							{data.price || <Skeleton width={20} animation="wave" />}
 						</Typography>
 					</Box>
 
@@ -75,7 +55,7 @@ const ListItem = ({ data, show }) => {
 						</Typography>
 					</Box>
 
-					<Box sx={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+					<Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 						<Chip
 							label={
 								(data?.status === STATUS_REQUESTED && 'Requested') ||
@@ -93,14 +73,14 @@ const ListItem = ({ data, show }) => {
 								(data?.status === STATUS_DECLINED && 'error') ||
 								(data?.status === STATUS_CHARGING_COMPLETED && 'warning')
 							}
-							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid',  marginRight: 'auto'}} />
-						    {
+							size="small" variant='outlined' sx={{ fontSize: { xs: '0.6rem', md: '0.8rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold', border: '2.5px solid', marginRight: 'auto' }} />
+						{
 							show === 'pending' && (
-								
-									<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
-										e.stopPropagation();
-										updateBookedCharger(data.bookingId, STATUS_CANCELED);
-									}} className={classes.cancelBtn}>Cancel</Button>
+
+								<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
+									e.stopPropagation();
+									updateBookedCharger(data.bookingId, STATUS_CANCELED);
+								}} className={classes.cancelBtn}>Cancel</Button>
 							)
 						}
 					</Box>
