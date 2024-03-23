@@ -57,10 +57,17 @@ const Registerauth = ({ addUserData, userData }) => {
 		mileage: '',
 		batteryCapacity: ''
 	});
+
 	const [image, setImage] = useState(null);
 	const [idType, setIdType] = useState('');
-
-
+	
+	const handleNameChange = async (name) => {
+        console.log('Name changed:', name);
+		await registerUser({ firstName: name, level1: true });
+    	addUserData({ firstName: name, level1: true });
+		console.log(data)
+		console.log(userData)
+    };
 
 	const handleChange = (event) => {
 		setIdType(event.target.value);
@@ -68,13 +75,11 @@ const Registerauth = ({ addUserData, userData }) => {
 
 	const changeDataHandler = (e) => {
 		setUserData({ ...data, [e.target.name]: e.target.value })
+		console.log(data)
+		console.log(userData)
 	};
 
 	const saveData = async () => {
-		if (!userData.level1) {
-			await registerUser({ name: data.name, level1: true });
-			addUserData({ name: data.name, level1: true });
-		} else {
 			let downloadURL = null;
 			if (image !== null) {
 				const imageRef = ref(storage, `id_proofs/${image.name}`);
@@ -86,7 +91,7 @@ const Registerauth = ({ addUserData, userData }) => {
 				console.log(temp.error);
 			}
 			addUserData({ level2: { ...data, userIdProofURL: downloadURL } })
-		}
+		// }
 	}
 	if (!userData) {
 		return <Navigate to={'/auth'} />
@@ -121,7 +126,7 @@ const Registerauth = ({ addUserData, userData }) => {
 
 					<Typography color='#fff' textAlign='center' fontSize='1.4rem' fontWeight='500' marginBottom='1.5rem'>Welcome Back</Typography>
 					{
-						level === "level1" ? <NameInput data={data} changeDataHandler={changeDataHandler} />
+						level === "level1" ? <NameInput onNameChange={handleNameChange} />
 							:
 							level === "level2" ? <CustomerForm user={userData} data={data} getStyles={getStyles} classes={classes}
 								theme={theme} changeDataHandler={changeDataHandler} idType={idType} MenuProps={MenuProps}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate } from 'react-router';
-import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid ,Snackbar} from '@mui/material';
+import { Box, Button, Divider, Alert, Typography, Checkbox, FormControlLabel, Grid, Snackbar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import BoltIcon from '@mui/icons-material/Bolt';
 import PhoneInput from 'react-phone-input-2';
@@ -18,7 +18,7 @@ const auth = getAuth(app);
 
 let appVerifier;
 
-const Phoneauth = ({ login, userData, setPhoneNo}) => {
+const Phoneauth = ({ login, userData, setPhoneNo }) => {
 	const classes = useStyles();
 	const [timer, setTimer] = useState(30);
 	const [showOtpForm, setShowOtpForm] = useState(false);
@@ -162,14 +162,14 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 						textAlign='center' padding='4rem 2rem' >
 						<Box>
 							<BoltIcon
-							sx={{ 
-								color: "yellow",
-								width: "3rem",
-								height:"3rem",
-								fontSize: { xs: "1.3rem", sm: "2.3rem" },
-							}}
+								sx={{
+									color: "yellow",
+									width: "3rem",
+									height: "3rem",
+									fontSize: { xs: "1.3rem", sm: "2.3rem" },
+								}}
 							/>
-					    </Box>
+						</Box>
 
 						<Typography
 							color='#fff' textAlign='center' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
@@ -185,6 +185,11 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 							inputStyle={{ width: '100%', backgroundColor: '#ffffff26', borderColor: '#282828', color: '#fff' }}
 							onChange={num => { setPhoneNo(num); }}
 							specialLabel=''
+							onKeyDown={(e) => {
+								if (e.key === 'Enter') {
+									submitPhoneNumberAuth();
+								}
+							}}
 						/>
 
 						<FormControlLabel control={<Checkbox defaultChecked onChange={(e) => setRemember(e.target.checked)} />}
@@ -198,14 +203,14 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 
 						<Box>
 							<BoltIcon
-							sx={{ 
-								color: "yellow",
-								width: "3rem",
-								height:"3rem",
-								fontSize: { xs: "1.3rem", sm: "2.3rem" },
-							}}
+								sx={{
+									color: "yellow",
+									width: "3rem",
+									height: "3rem",
+									fontSize: { xs: "1.3rem", sm: "2.3rem" },
+								}}
 							/>
-					    </Box>
+						</Box>
 
 
 						<Typography color='#fff' fontFamily='Manrope !important' fontWeight='bold' fontSize='1.8rem'>EVFI</Typography>
@@ -216,10 +221,16 @@ const Phoneauth = ({ login, userData, setPhoneNo}) => {
 
 						<OTPInput inputStyle={otpStyle.inputStyle} containerStyle={{ color: '#fff' }}
 							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-' inputType='tel'
-							renderInput={(props) => <input {...props} />}
+							renderInput={(props) => <input {...props}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										submitCode();
+									}
+								}}
+							/>}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode}> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} > {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 
 						<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 							<Typography color='#fff' paddingTop={1.5}>Resend OTP</Typography>

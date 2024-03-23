@@ -53,7 +53,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function ChargerPopup({ chargerData, bookingHandler ,userData}) {
-    console.log(userData)
 const navigate=useNavigate()
     const [showSlot, setShowSlot] = useState(false);
     const [start, setStart] = useState(null);
