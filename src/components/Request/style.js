@@ -27,7 +27,6 @@ export const useStyles = makeStyles({
     charger: {
         fontSize: '0.8rem',
         width: 'fit-content',
-        marginBottom: '0.3rem',
         color: 'antiquewhite',
     },
     phone: {

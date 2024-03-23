@@ -4,10 +4,7 @@ import { Geohash } from "../queries/searchQueries";
 import { initializeApp } from "firebase/app";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import firebaseConfig from "../config/firebaseConfig";
-// import { getMessaging } from "firebase/messaging";
 import { STATUS_REQUESTED } from "../../constants";
-// import { fun } from "../../help";
-
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app);
@@ -53,6 +50,7 @@ export const logInUser = (mobile) => {
                     level2: false,
                     level3: false,
                     chargers: [],
+                    bookings: [],
                     firstName: "",
                     lastName: "",
                     email: "",
@@ -102,7 +100,6 @@ export const logoutUser = () => {
 };
 
 export const addCharger = (chargerData, chargerImages, idproofImages) => {
-    console.log(chargerData);
     return new Promise(async (resolve, reject) => {
         const auth = getAuth();
         const db = getFirestore();
@@ -150,33 +147,6 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
     })
 };
 
-export const decimalToBinary = (decimalNumber) => {
-
-    const binaryNo = decimalNumber > 0 ? decimalNumber.toString(2) : 0;
-    const addZeros = Math.max(0, 24 - binaryNo.length);
-
-    const zeroPadding = "0".repeat(addZeros);
-
-    return zeroPadding.concat(binaryNo);
-}
-
-const binaryToDecimal = (num) => {
-    return parseInt(num, 2);
-};
-
-const newTimeSlots = (prevTimeSlot, bookedTimeSlot) => {
-
-    const prevBin = decimalToBinary(prevTimeSlot).padStart(24, '0');
-
-    let newTimeSlot = "";
-
-    for (let i = 0; i < 24; i++) {
-        newTimeSlot += (i === bookedTimeSlot) ? "1" : prevBin[i];
-    }
-
-    return newTimeSlot;
-};
-
 const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
     return new Promise(async (resolve, reject) => {
 
@@ -208,7 +178,7 @@ const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
     });
 }
 
-export const requestCharger = (chargerData, bookedTimeSlot, AMPM) => {
+export const requestCharger = (chargerData, bookedTimeSlot, AMPM, price) => {
     return new Promise(async (resolve, reject) => {
         try {
             const auth = getAuth().currentUser.uid;
@@ -217,7 +187,7 @@ export const requestCharger = (chargerData, bookedTimeSlot, AMPM) => {
             let prevTimeSlot;
 
             try {
-                prevTimeSlot = await getORUpdateTimeSlotOFCharger(chargerData.chargerId, -1);
+                prevTimeSlot = await getORUpdateTimeSlotOFCharger(chargerData.chargerId, -1);       // getting already existed timeSlot
             } catch (err) {
                 reject({ error: err.message });
             }
@@ -233,16 +203,20 @@ export const requestCharger = (chargerData, bookedTimeSlot, AMPM) => {
                 status: STATUS_REQUESTED,
                 chargerId: chargerData.chargerId,
                 providerId: chargerData.uid,
-                price: chargerData.info.price,
+                price: price,
                 bookingDate: dateFormat.format(new Date()),
-                timeSlot: binaryToDecimal(newTimeSlots(0, bookedTimeSlot)),
+                timeSlot: bookedTimeSlot
             }
 
             try {
-                await addDoc(collection(db, "booking"), data);
+                const booking = await addDoc(collection(db, "booking"), data);
+
+                await setDoc(doc(db, 'user', auth), {
+                    bookings: arrayUnion(booking.id),
+                }, { merge: true });
 
                 await getORUpdateTimeSlotOFCharger(chargerData.chargerId,
-                    binaryToDecimal(newTimeSlots(prevTimeSlot, bookedTimeSlot)));
+                    newTimeSlots(prevTimeSlot, bookedTimeSlot));
 
                 resolve({ message: "success" });
             } catch (error) {
@@ -252,6 +226,7 @@ export const requestCharger = (chargerData, bookedTimeSlot, AMPM) => {
             reject({ error: error.message });
         }
     });
+
 };
 
 export const updateBookedCharger = (id, status) => {
@@ -295,5 +270,122 @@ export const getUserAndChargers = (userId, chargerId) => {
     });
 };
 
+export const getBooking = (bookingId) => {
+    return new Promise(async (resolve, reject) => {
+        const db = getFirestore();
+        try {
+            const docRef = doc(db, "booking", bookingId);
+            const docSnap = await getDoc(docRef);
 
-// fun();
+            if (docSnap.exists()) {
+                resolve(docSnap.data())
+            } else {
+                reject({ error: "Booking id " + bookingId + "doesn't exist" });
+            }
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    });
+};
+
+const StatesVsPrice = {
+    'Andhra Pradesh': 9.95, 'Assam': 7.15, 'Bihar': 8.05, 'Chhattisgarh': 4.85,
+    'Delhi': 8.00, 'Goa': 4.25, 'Gujarat': 5.20, 'Haryana': 7.10, 'Himachal Pradesh': 5.45,
+    'Jharkhand': 4.25, 'Karnataka': 8.15, 'Kerala': 7.90, 'Madhya Pradesh': 6.65, 'Maharashtra': 11.82,
+    'Manipur': 6.75, 'Meghalaya': 5.90, 'Mizoram': 6.00, 'Nagaland': 7.00, 'Odisha': 6.20,
+    'Punjab': 6.63, 'Rajasthan': 7.95, 'Sikkim': 4.00, 'Tamil Nadu': 6.60, 'Telangana': 9.50,
+    'Tripura': 7.20, 'Uttar Pradesh': 7.00, 'Uttarakhand': 6.25, 'West Bengal': 8.99,
+};
+
+
+// const EVs = [
+//     'Kia Soul', 'Tata Tiago',
+//     'Tata Tigor',
+//     'Tata Nexon',
+//     'MG Comet'
+// ];
+
+// const MyPricing = () => {
+//     for (var i = 0; i < states.values.length; i++) {
+//         // st = states.values[i];
+//         // costPerKWH[st] = Tarrifs[i];
+//     }
+// }
+
+// const xDistCost = (batteryCap, state, range, dist) => {
+//     const myState = States.Delhi;
+//     for (var i = 0; i < States.values.length; i++) {
+//         if (States.values[i].toString() == state) {
+//             myState = States.values[i];
+//         }
+//     }
+//     return (batteryCap / range) * dist * (costPerKWH[myState]!);
+// }
+
+export const fullChargeCost = (batteryCap, state) => {
+    return Math.round(parseInt(batteryCap) * StatesVsPrice[state]);
+}
+
+
+// var batteryCapacity = TextEditingController();
+
+// var mileage = TextEditingController();
+
+// var distance = TextEditingController();
+
+// title: const Text('Home EV Charging Calculator'),
+//     _makeField('Battery Capacity', 'kWh', batteryCapacity),
+//     _makeField('Mileage/Range', 'Km', mileage),
+//     _makeField('Distance', 'Km', distance),
+//     double bCap = double.parse(batteryCapacity.text);
+//     double range = double.parse(mileage.text);
+//     double dist = double.parse(distance.text);
+// print(
+//     '-----------Using standard 3.2 kWh charger for Andhra Pradesh ');
+//     double priceForDist = 0, priceForFullCharge = 0;
+// priceForDist =
+//     (bCap / range) * dist * costPerKWH[States.AndhraPradesh]!;
+// priceForFullCharge = bCap * costPerKWH[States.AndhraPradesh]!;
+// debugPrint(
+//     '**Price to travel $dist km using any EV: ${priceForDist.toStringAsFixed(2)}');
+// debugPrint(
+//     '**Price for a full charge of $bCap kWh battery EV: ${priceForFullCharge.toStringAsFixed(2)}');
+//             },
+
+
+// Helpers
+export const convertTimeforUserUI = (timeSlot) => {
+
+    let time;
+    let greaterThan12 = timeSlot >= 12 ? true : false;
+
+    let zeroString = '0'.repeat(24);
+
+    if (timeSlot >= 0)
+        time = zeroString.substring(0, timeSlot) + '1' + zeroString.substring(timeSlot + 1);
+
+    for (let i = 0; i < time.length; i++) {
+        if (time[i] === '1') {
+            time = i;
+        }
+    }
+
+    time = time >= 12 ? time - 12 : time;
+    time = `${time === 0 ? 12 : time}:00 - ${(time + 1)}:00`.concat(greaterThan12 ? ' PM' : ' AM');
+    return time;
+}
+
+export const decimalToBinary = (decimalNumber) => {
+
+    const binaryNo = decimalNumber >= 0 ? decimalNumber.toString(2) : 0;
+    const addZeros = Math.max(0, 24 - binaryNo.length);
+
+    const zeroPadding = "0".repeat(addZeros);
+    return zeroPadding.concat(binaryNo);
+}
+
+const newTimeSlots = (prevTimeSlot, bookedTimeSlot) => {
+
+    const setDesiredBit = 1 << bookedTimeSlot;      // making the desired bit one
+    return prevTimeSlot | setDesiredBit;
+};

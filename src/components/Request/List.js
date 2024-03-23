@@ -1,16 +1,17 @@
 import { Done, Close } from '@mui/icons-material';
-import { Box, Card, CardMedia, Chip, Typography } from '@mui/material';
+import { Box, Card, CardMedia, Chip, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './style';
-import { updateBookedCharger } from '../../utils/auth/user';
+import { convertTimeforUserUI, updateBookedCharger } from '../../utils/auth/user';
 import { STATUS_ACCEPTED, STATUS_CANCELED, STATUS_DECLINED } from '../../constants';
 
 const List = ({ data, show }) => {
 
+    // console.log(data?.userData.level2.vehicleRegistrationNumber)
+    console.log(data)
+
     //Styles
     const classes = useStyles();
-
-    console.log(data)
 
     return (
         <Box>
@@ -28,14 +29,16 @@ const List = ({ data, show }) => {
                     </Box>
                     <Box padding='0.5rem'>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography className={classes.cardName} variant="h6"  >
+                            <Typography className={classes.cardName}>
                                 {data?.userData?.firstName + ' ' + data?.userData?.lastName}
                             </Typography>
                             <Chip className={classes.cardChip} label={data?.chargerType} size="small" />
                         </Box>
                         <Typography className={classes.charger} >{data?.socketName}</Typography>
+                        <Typography sx={{color: 'antiquewhite', fontSize: '.9rem', fontWeight: '500'}}>{data?.userData.level2.vehicleRegistrationNumber}</Typography>
+                        
                         <Typography className={classes.charger}>
-                            {data?.timeSlot}&nbsp;|&nbsp;
+                            {convertTimeforUserUI(data?.timeSlot) || <Skeleton width={50} animation="wave" />}
                         </Typography>
                         <Typography className={classes.phone}>Ph&nbsp;:&nbsp;{data?.userData?.phoneNumber}</Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'row' }}>

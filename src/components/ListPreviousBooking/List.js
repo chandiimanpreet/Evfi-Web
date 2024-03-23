@@ -65,11 +65,11 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 				...filter,
 				sortBy: value,
 			}));
-			if(searchParams.has('sortBy')){
+			if (searchParams.has('sortBy')) {
 				searchParams.delete('sortBy');
 			}
-			if(value!=="none"){
-				searchParams.append('sortBy',value+"");
+			if (value !== "none") {
+				searchParams.append('sortBy', value + "");
 			}
 			setSearchParams(searchParams);
 		}
@@ -84,7 +84,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 				searchParams.delete(key);
 			}
 			setSearchParams(searchParams);
-		} 
+		}
 		else {
 			setSelectedFilters((filter) => ({
 				...filter,
@@ -127,27 +127,27 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 		const helperFunction = async () => {
 			const response1 = await Promise.all(pendingBookingsInfo.map(async (charger) => {
 				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
-				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId,charger.bookingDate];
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId, charger.price, charger.bookingDate];
 			}));
 			setPendingBookings(response1);
 			const response2 = await Promise.all(recentBookingsInfo.map(async (charger) => {
 				const fetchedChargerRequest = await getUserAndChargers(charger?.uId, charger?.chargerId);
-				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot,charger.bookingDate];
+				return [fetchedChargerRequest.charger, charger.status, charger.timeSlot, charger.bookingId, charger.price, charger.bookingDate];
 			}));
 			setRecentBookings(response2);
 		}
 		helperFunction();
 	}, [pendingBookingsInfo, recentBookingsInfo]);
 
- 
-   
+
+
 	//function to perform search operation
 	const filteredBookings = useMemo(() => {
 		if (!searchQuery.trim() && !searchParams.get("chargerType") && !searchParams.get("sortBy") && (!searchParams.get('from') && !searchParams.get('to'))) {
 			return show === 'pending' ? pendingBookings : recentBookings;
 		}
 		let filtered = show === 'pending' ? pendingBookings : recentBookings;
-		
+
 
 		if (searchQuery.trim()) {
 			filtered = filtered?.filter((charger) => {
@@ -164,7 +164,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 			});
 		}
 
-        
+
 		if (searchParams.get("chargerType")) {
 			const filterTypes = searchParams.get('chargerType').split(',');
 			filtered = filtered.filter(([charger]) => {
@@ -181,30 +181,30 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 			);
 		}
 
-        
+
 		if (searchParams.get("sortBy") === 'price') {
 			filtered.sort((charger1, charger2) => {
 				return Number(charger1[0]?.info?.price) - Number(charger2[0]?.info?.price);
 			});
 		}
-		else if(searchParams.get("sortBy") === 'mostRecent'){
+		else if (searchParams.get("sortBy") === 'mostRecent') {
 			console.log("inside recent");
-			filtered.sort((charger1,charger2) => {				
-                const d1 = new Date(charger1[4]);
+			filtered.sort((charger1, charger2) => {
+				const d1 = new Date(charger1[4]);
 				const d2 = new Date(charger2[4]);
-				return d2-d1;
+				return d2 - d1;
 			});
 		}
 
 
-       
-		if(searchParams.get('from')||searchParams.get('to')){
+
+		if (searchParams.get('from') || searchParams.get('to')) {
 			let fromDate = selectedFilters.to ? new Date(selectedFilters.to) : null;
 			let toDate = selectedFilters.from ? new Date(selectedFilters.from) : null;
 			if (fromDate || toDate) {
 				filtered = filtered?.filter((charger) => {
 					const chargerDate = new Date(charger[4]);
-			
+
 					if (fromDate && toDate) {
 						if (chargerDate.getTime() >= fromDate.getTime() && chargerDate.getTime() <= toDate.getTime()) {
 							return true;
@@ -218,15 +218,15 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 							return true;
 						}
 					}
-			
+
 					return false;
 				});
 			}
 		}
-		console.log(filtered);
-		
+
 		return filtered;
 	}, [searchQuery, show, pendingBookings, recentBookings, searchParams, selectedFilters]);
+
 
 	return (
 		<Fragment>
@@ -333,14 +333,14 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 							{
 								show === "pending" ?
 									!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
-										filteredBookings?.map(([chargerData, status, timeSlot, bookingId]) => ({ chargerData, status, timeSlot, bookingId })).map((charger, idx) => (
+										filteredBookings?.map(([chargerData, status, timeSlot, bookingId, price]) => ({ chargerData, status, timeSlot, bookingId, price })).map((charger, idx) => (
 											<Box sx={{ marginBottom: { xs: '10px', md: '10px' } }} key={idx} onClick={() => { fetchData(charger) }} >
 												<ListItem data={charger} show={show} />
 											</Box>
 										)))
 									:
 									!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
-										filteredBookings?.map(([chargerData, status, timeSlot]) => ({ chargerData, status, timeSlot })).map((charger, idx) => (
+										filteredBookings?.map(([chargerData, status, timeSlot, price]) => ({ chargerData, status, timeSlot, price })).map((charger, idx) => (
 											<Box sx={{ marginBottom: { xs: '10px', md: '0px' } }} key={idx} onClick={() => { fetchData(charger) }} >
 												<ListItem data={charger} show={show} />
 											</Box>

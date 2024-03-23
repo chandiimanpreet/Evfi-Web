@@ -9,12 +9,13 @@ import "firebase/compat/firestore";
 import firebase from "firebase/compat/app";
 import * as geofirestore from "geofirestore";
 import firebaseConfig from "../../utils/config/firebaseConfig";
-import { requestCharger } from "../../utils/auth/user";
+import { fullChargeCost, getBooking, requestCharger } from "../../utils/auth/user";
 import ChargerPopup from "./ChargerPopup";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Box } from "@mui/material";
 import { clearChargers, setChargers } from "../../actions";
 import { connect } from "react-redux";
+import { STATUS_ACCEPTED } from "../../constants";
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
@@ -35,9 +36,8 @@ const DashboardMap = ({
 	setSearchLocationCoordinates,
 	chargers,
 	setCharger,
-	uniqueChargersID,
+	user,
 	clearCharger,
-	userData
 }) => {
 	// Constants
 	const location = useLocation();
@@ -45,6 +45,7 @@ const DashboardMap = ({
 	// States
 	const uselocation = useLocation();
 	const [position, setPosition] = useState(null);
+	const [userCurrentBookingGoingOn, setUserCurrentBookingGoingOn] = useState({});
 
 	const markerIcon = new L.icon({
 		iconUrl: require("./locationmarker.png"),
@@ -70,7 +71,8 @@ const DashboardMap = ({
 
 	const bookingHandler = async (time, AMPM, charger) => {
 		try {
-			await requestCharger(charger, parseInt(time), AMPM);
+			const price = fullChargeCost(user.level2.batteryCapacity, charger.info.state);
+			await requestCharger(charger, parseInt(time), AMPM, price);
 		} catch (err) {
 			console.log(err);
 		}
@@ -129,7 +131,20 @@ const DashboardMap = ({
 		uselocation.pathname,
 	]);
 
-	console.log(chargers);
+	useEffect(() => {
+
+	if (user?.bookings.length > 0) {
+
+		const fetchData = async () => {
+			const res = user?.bookings?.map(async (booking) => await getBooking(booking));
+			const resolvedBooking = await Promise.all(res);
+			const acceptedBooking = resolvedBooking.filter((booking) => booking.status === STATUS_ACCEPTED && booking.timeSlot=== new Date().getHours());
+
+			setUserCurrentBookingGoingOn(acceptedBooking[0]);
+		}
+		fetchData();
+	}
+	}, [user?.bookings]);
 
 	return (
 		<Fragment>
@@ -160,9 +175,10 @@ const DashboardMap = ({
 										position={[charger.g.geopoint.latitude, charger.g.geopoint.longitude,]}
 									>
 										<ChargerPopup
+											user={user}
 											chargerData={charger}
 											bookingHandler={bookingHandler}
-											userData={userData}
+											userCurrentBookingGoingOn={userCurrentBookingGoingOn}
 										/>
 									</Marker>
 								);
@@ -196,9 +212,10 @@ const DashboardMap = ({
 												charger?.g?.geopoint.longitude,
 											]}
 										>
-											<ChargerPopup
+											<ChargerPopup user={user}
 												chargerData={charger}
 												bookingHandler={bookingHandler}
+												userCurrentBookingGoingOn={userCurrentBookingGoingOn}
 											/>
 										</Marker>
 									);
@@ -240,9 +257,10 @@ const DashboardMap = ({
 												charger?.g?.geopoint.longitude,
 											]}
 										>
-											<ChargerPopup
+											<ChargerPopup user={user}
 												chargerData={charger}
 												bookingHandler={bookingHandler}
+												userCurrentBookingGoingOn={userCurrentBookingGoingOn}
 											/>
 										</Marker>
 									);
@@ -265,8 +283,11 @@ const DashboardMap = ({
 				)}
 				{card.chargerData?.g && card.chargerData?.g && (
 					<Mark
+						user={user}
 						cardDetails={card.chargerData}
 						bookingHandler={bookingHandler}
+						userCurrentBookingGoingOn={userCurrentBookingGoingOn}
+
 					/>
 				)}
 				<Box
@@ -301,7 +322,7 @@ const DashboardMap = ({
 	);
 };
 
-const Mark = ({ cardDetails, bookingHandler }) => {
+const Mark = ({ cardDetails, bookingHandler, user, userCurrentBookingGoingOn, }) => {
 	const latitude = cardDetails?.g.geopoint.latitude;
 	const longitude = cardDetails?.g.geopoint.longitude;
 
@@ -332,7 +353,7 @@ const Mark = ({ cardDetails, bookingHandler }) => {
 			]}
 			ref={markerRef}
 		>
-			<ChargerPopup chargerData={cardDetails} bookingHandler={bookingHandler} />
+			<ChargerPopup user={user} chargerData={cardDetails} bookingHandler={bookingHandler} userCurrentBookingGoingOn={userCurrentBookingGoingOn} />
 		</Marker>
 	);
 };
