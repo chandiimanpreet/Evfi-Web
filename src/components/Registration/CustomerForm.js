@@ -33,9 +33,6 @@ const CustomerForm = ({ user, data, classes, theme, changeDataHandler, idType, M
         <Fragment>
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
-                type='text' label='Username' name='name' disabled value={user.name} />
-
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
                 label='Vehicle Company' type='text' name='vehicleManufacturer' value={data.vehicleManufacturer} />
 
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='chargingRequirements' value={data.chargingRequirements} />

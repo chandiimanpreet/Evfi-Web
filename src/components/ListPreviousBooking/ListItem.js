@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 // import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button, Chip, Skeleton } from '@mui/material';
 import { decimalToBinary, updateBookedCharger, getUser, getProviderPhoneNumber } from '../../utils/auth/user';
+
 import { useStyles } from './style';
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
@@ -34,6 +35,7 @@ const convertTimeforUserUI = (timeSlot) => {
 }
 
 const ListItem = ({ data, show, user }) => {
+
 
 	// Styles
 	const classes = useStyles();
@@ -101,7 +103,7 @@ const ListItem = ({ data, show, user }) => {
 					<Box display="flex" justifyContent="flex-start">
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Price:</Typography>
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
-							{data.chargerData?.info?.price || <Skeleton width={20} animation="wave" />}
+							{data.price || <Skeleton width={20} animation="wave" />}
 						</Typography>
 					</Box>
 
