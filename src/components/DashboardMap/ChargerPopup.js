@@ -3,10 +3,11 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { CurrencyRupee } from '@mui/icons-material';
 import { Popup } from 'react-leaflet';
 import { styled } from '@mui/material/styles';
-import { decimalToBinary, fullChargeCost } from '../../utils/auth/user';
+import { decimalToBinary, fullChargeCost, updateBookedCharger, getORUpdateTimeSlotOFCharger } from '../../utils/auth/user';
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
+import { STATUS_CHARGING_COMPLETED } from '../../constants';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 60,
@@ -127,17 +128,22 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
         }
     }
 
-    console.log(userCurrentBookingGoingOn)
-
     const chargingSuccessfullyCompleted = () => {
+        updateBookedCharger(userCurrentBookingGoingOn.id, STATUS_CHARGING_COMPLETED);
+        
+        const unSetDesiredBit = 1 << userCurrentBookingGoingOn.timeSlot; 
+        const newTiming = unSetDesiredBit ^ chargerData.timeSlot;
+        getORUpdateTimeSlotOFCharger(chargerData.chargerId, newTiming);
+        
         toast.success('Charging Completed Successfully!');
         setStopInterval(true);
+        return;
     }
-    // userCurrentBookingGoingOn?.timeSlot === new Date().getHours()
+
     // Progress Bar
     useEffect(() => {
         const timer = setInterval(() => {
-            if (stopInterval) {
+            if (!stopInterval) {
                 setProgress(() => (new Date().getHours() === userCurrentBookingGoingOn?.timeSlot + 1 ? chargingSuccessfullyCompleted()
                     : new Date().getMinutes() > 30 ? new Date().getMinutes() + 40 : new Date().getMinutes()));
             }
@@ -146,7 +152,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
             clearInterval(timer);
         };
         // eslint-disable-next-line 
-    }, []);
+    }, [ stopInterval, userCurrentBookingGoingOn]);
 
     return (
         <Popup>

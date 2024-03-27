@@ -4,7 +4,7 @@ import Registerauth from '../components/Registration/Registerauth';
 import { Route, Routes, useLocation } from 'react-router';
 import { AnimatePresence } from 'framer-motion';
 import { CircularProgress } from '@mui/material';
-import { bookingUpdate, loadUser, setUserBooking, setProviderRequests, chargerUpdate, setChargers,  } from '../actions';
+import { bookingUpdate, loadUser, setUserBooking, setProviderRequests, chargerUpdate, setChargers, } from '../actions';
 import { connect } from 'react-redux';
 import { collection, getFirestore, onSnapshot, } from "firebase/firestore";
 
@@ -19,7 +19,7 @@ const getPageIndex = (path) => {
 }
 
 const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, chargers, setBooking, setProvider, updateBooking, setCharger,
-    updateCharger, getChargerID, }) => {
+    updateCharger, }) => {
 
     const location = useLocation();
     const currentPageIndex = useRef(getPageIndex(location.pathname));
@@ -40,6 +40,7 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
                 if (!change) {
                     return;
                 }
+                console.log('object   ' + change.type)
 
                 if (change.type === 'added') {
 
@@ -65,8 +66,11 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
                 console.log(error);
             });
         };
+
         getBooking(userData);
     }, [userData, setBooking, setProvider, updateBooking]);
+
+    console.log(userData)
 
     useEffect(() => {
         const updateChargersTimeSlot = (userData) => {
@@ -74,6 +78,8 @@ const AnimatedRoutes = ({ userData, loadingData, loadUser, booking, provider, ch
             const handleSnapshot = (snapshot) => {
                 const changes = snapshot.docChanges();
                 const change = changes[0];
+
+                // console.log('object   ' + change.type)
 
                 if (!change) {
                     return;

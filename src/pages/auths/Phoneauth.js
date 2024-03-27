@@ -221,16 +221,15 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 
 						<OTPInput inputStyle={otpStyle.inputStyle} containerStyle={{ color: '#fff' }}
 							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-' inputType='tel'
-							renderInput={(props) => <input {...props}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') {
+							renderInput={(props) => <input {...props} 
+								onKeyDown={(e) => {									if (e.key === 'Enter') {
 										submitCode();
 									}
 								}}
 							/>}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} > {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode}> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 
 						<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 							<Typography color='#fff' paddingTop={1.5}>Resend OTP</Typography>

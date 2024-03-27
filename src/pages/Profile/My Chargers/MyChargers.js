@@ -1,31 +1,8 @@
 import React from 'react';
 import { Typography, Box, Skeleton } from '@mui/material';
-import { decimalToBinary } from '../../../utils/auth/user';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-
 import useStyles from './styles';
-
-const convertTimeforUserUI = (timeSlot) => {
-
-    let time = decimalToBinary(timeSlot);
-    time = time.length > 0 ? time : 0;
-    let greaterThan12 = false;
-
-    for (let i = 0; i < time.length; i++) {
-        if (time[i] === '1') {
-            time = i;
-        }
-    }
-
-    if (time >= 12) {
-        time = time - 12;
-        greaterThan12 = true;
-    }
-
-    time = `${time === 0 ? 12 : time}:00 - ${(time + 1)}:00`.concat(greaterThan12 ? ' PM' : ' AM');
-    return time;
-}
 
 const MyChargers = ({ user, chargers, setActivePage }) => {
     const classes = useStyles();
@@ -85,7 +62,7 @@ const MyChargers = ({ user, chargers, setActivePage }) => {
                         <Box display="flex" justifyContent="flex-start">
                             <Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Slot:</Typography>
                             <Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
-                                {convertTimeforUserUI(charger?.timeSlot) || <Skeleton width={50} animation="wave" />}
+                                { <Skeleton width={50} animation="wave" />}
                             </Typography>
                         </Box>
 

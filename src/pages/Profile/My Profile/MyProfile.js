@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import { Typography, Button, Grid, Card, Box } from "@mui/material";
 import useStyles from "./styles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import RenderInformation from "./RenderInformation";
-import { registerUser } from '../../../utils/auth/user';
+import {  updateUser } from '../../../utils/auth/user';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { connect } from "react-redux";
 import { updateuserProfile } from "../../../actions";
 
-const MyProfile = ({ user, setActivePage ,updateProfileAction}) => {
+const MyProfile = ({ user, setActivePage, updateProfileAction }) => {
 
     //States
     const [isEditing, setIsEditing] = useState(false);
@@ -30,9 +30,16 @@ const MyProfile = ({ user, setActivePage ,updateProfileAction}) => {
     const handleEditDetails = () => {
         setIsEditing(true);
     };
-
-    const handleSaveDetails = () => {
+    console.log(user)
+    const handleSaveDetails = async () => {
         setIsEditing(false);
+
+        try {
+            await updateUser(user.uid, profile);
+        } catch (err) {
+            console.log(err);
+        }
+        updateProfileAction(profile);
     };
 
     const handleBackButton = () => {
@@ -47,35 +54,6 @@ const MyProfile = ({ user, setActivePage ,updateProfileAction}) => {
             [field]: value,
         }));
     };
-
-    const updateProfile=async ()=>{
-        await registerUser({
-                firstName: profile.firstName,
-                lastName: profile.lastName,
-                email: profile.email,
-                phoneNumber: profile.phoneNumber,
-                country: profile.country,
-                state: profile.state,
-                city: profile.city,
-                pinCode: profile.pinCode,
-            });
-            updateProfileAction({
-                firstName: profile.firstName,
-                lastName: profile.lastName,
-                email: profile.email,
-                phoneNumber: profile.phoneNumber,
-                country: profile.country,
-                state: profile.state,
-                city: profile.city,
-                pinCode: profile.pinCode,
-            });
-    }
-    useEffect(() => {
-        if (!isEditing) {
-            updateProfile()
-        }
-        // eslint-disable-next-line
-    }, [isEditing]);
 
     return (
         <Box sx={{ width: { xs: "93vw", md: "41rem", lg: "50rem" }, height: { xs: "41rem", md: "38rem", lg: "38rem" }, overflow: { xs: 'auto', sm: 'hidden' } }} className={classes.main}>
@@ -171,7 +149,7 @@ const MyProfile = ({ user, setActivePage ,updateProfileAction}) => {
 
 
 const mapDispatchFromProps = dispatch => ({
-    updateProfileAction:(data)=>dispatch(updateuserProfile(data))
+    updateProfileAction: (data) => dispatch(updateuserProfile(data))
 })
 
-export default connect(null,mapDispatchFromProps)(MyProfile);
+export default connect(null, mapDispatchFromProps)(MyProfile);

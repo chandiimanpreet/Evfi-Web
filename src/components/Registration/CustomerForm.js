@@ -34,8 +34,17 @@ const CustomerForm = ({ user, data, classes, theme, changeDataHandler, idType, M
             <Typography style={{ textAlign: 'center', color: '#fff', }}>Please enter your details.</Typography>
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined'
                 label='Vehicle Company' type='text' name='vehicleManufacturer' value={data.vehicleManufacturer} />
+            
+            <FormControl fullWidth sx={otpStyle.registerTextfieldStyle} >
+                <InputLabel id="types" required>Charger Type</InputLabel>
+                <Select sx={{ color: '#fff', }} labelId="types" name='chargingRequirements' value={data.chargingRequirements}
+                    label="Charger Type" onChange={changeDataHandler}  >
+                    <MenuItem value={'Level 1'}>Level 1</MenuItem>
+                    <MenuItem value={'Level 2'}>Level 2</MenuItem>
+                    <MenuItem value={'Level 3'}>Level 3</MenuItem>
+                </Select>
+            </FormControl>
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Charger Type' name='chargingRequirements' value={data.chargingRequirements} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNumber' value={data.vehicleNumber} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Battery Capacity(kWh)' name='batteryCapacity' value={data.batteryCapacity} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Mileage' name='mileage' value={data.mileage} />

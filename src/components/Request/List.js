@@ -3,7 +3,7 @@ import { Box, Card, CardMedia, Chip, Skeleton, Typography } from '@mui/material'
 import React from 'react';
 import { useStyles } from './style';
 import { convertTimeforUserUI, updateBookedCharger } from '../../utils/auth/user';
-import { STATUS_ACCEPTED, STATUS_CANCELED, STATUS_DECLINED } from '../../constants';
+import { STATUS_ACCEPTED, STATUS_CANCELED, STATUS_CHARGING_COMPLETED, STATUS_DECLINED } from '../../constants';
 
 const List = ({ data, show }) => {
 
@@ -69,7 +69,8 @@ const List = ({ data, show }) => {
                                         fontSize: '1rem',
                                         marginRight: '5rem',
                                     }}
-                                    label={(data.status === STATUS_DECLINED && "Declined by Provider") || (data.status === STATUS_CANCELED && "Declined by User")}
+                                        label={(data.status === STATUS_DECLINED && "Declined by Provider") ||
+                                            (data.status === STATUS_CANCELED && "Declined by User") || (data.status === STATUS_CHARGING_COMPLETED && "Charging Completed")}
                                     icon={data.status === "Accepted" ? <Done style={{ color: 'white' }} /> : <Close style={{ color: 'white' }} />}
                                     size='small'
                                     color={data.status === "Accepted" ? 'success' : 'error'}
