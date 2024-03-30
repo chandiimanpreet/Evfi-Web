@@ -85,9 +85,9 @@ const clearChargers = () => ({
 })
 
 
-const updateuserProfile=(data)=>({
-    type:'UPDATE_PROFILE',
-    payload:data
+const updateuserProfile = (data) => ({
+    type: 'UPDATE_PROFILE',
+    payload: data
 })
 
 const updateProfilePicture = (image) => ({
@@ -97,5 +97,5 @@ const updateProfilePicture = (image) => ({
 
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers,updateuserProfile,updateProfilePicture
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers, updateuserProfile, updateProfilePicture
 };

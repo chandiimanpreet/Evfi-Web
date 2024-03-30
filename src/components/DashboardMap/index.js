@@ -133,18 +133,22 @@ const DashboardMap = ({
 
 	useEffect(() => {
 
-	if (user?.bookings.length > 0) {
+		if (user?.bookings?.length > 0) {
 
-		const fetchData = async () => {
-			const res = user?.bookings?.map(async (booking) => await getBooking(booking));
-			const resolvedBooking = await Promise.all(res);
-			const acceptedBooking = resolvedBooking.filter((booking) => booking.status === STATUS_ACCEPTED && booking.timeSlot=== new Date().getHours());
+			const fetchData = async () => {
+				const res = user?.bookings?.map(async (booking) => await getBooking(booking));
+				const resolvedBooking = await Promise.all(res);
+				const acceptedBooking = resolvedBooking.filter((booking) => booking.status === STATUS_ACCEPTED && booking.timeSlot === new Date().getHours());
 
-			setUserCurrentBookingGoingOn(acceptedBooking[0]);
+				setUserCurrentBookingGoingOn(acceptedBooking[0]);
+			}
+			fetchData();
 		}
-		fetchData();
-	}
-	}, [user?.bookings]);
+	}, [user]);
+
+	useEffect(() => {		// necessary to do this because userCurrentBooking is undefined in ChargerPop
+		// console.log(userCurrentBookingGoingOn);			// bcz it was not rendering here
+	}, [userCurrentBookingGoingOn]);
 
 	return (
 		<Fragment>

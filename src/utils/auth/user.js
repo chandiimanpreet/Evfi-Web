@@ -86,6 +86,36 @@ export const registerUser = (data) => {
     });
 };
 
+export const updateUser = (id, user) => {
+
+    return new Promise(async (resolve, reject) => {
+        const db = getFirestore();
+        try {
+            const docRef = doc(db, "user", id);
+
+            const { firstName, lastName, email, phoneNumber,
+                country, state, city, pinCode, } = user
+
+            await updateDoc(docRef, {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phoneNumber: phoneNumber,
+                country: country,
+                state: state,
+                city: city,
+                pinCode: pinCode,
+
+            },)
+
+            resolve({ msg: "success" });
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    });
+};
+
+
 export const logoutUser = () => {
     return new Promise(async (resolve, reject) => {
         const auth = getAuth();
@@ -147,7 +177,7 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
     })
 };
 
-const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
+export const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
     return new Promise(async (resolve, reject) => {
 
         const db = getFirestore();
@@ -278,7 +308,9 @@ export const getBooking = (bookingId) => {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                resolve(docSnap.data())
+                let obj = docSnap.data();
+                obj = { ...obj, 'id': docSnap.id };
+                resolve(obj);
             } else {
                 reject({ error: "Booking id " + bookingId + "doesn't exist" });
             }
@@ -356,19 +388,19 @@ export const fullChargeCost = (batteryCap, state) => {
 // Helpers
 export const convertTimeforUserUI = (timeSlot) => {
 
-    let time;
+    let time = timeSlot;
     let greaterThan12 = timeSlot >= 12 ? true : false;
 
-    let zeroString = '0'.repeat(24);
+    // let zeroString = '0'.repeat(24);
 
-    if (timeSlot >= 0)
-        time = zeroString.substring(0, timeSlot) + '1' + zeroString.substring(timeSlot + 1);
+    // if (timeSlot >= 0)
+    //     time = zeroString.substring(0, timeSlot) + '1' + zeroString.substring(timeSlot + 1);
 
-    for (let i = 0; i < time.length; i++) {
-        if (time[i] === '1') {
-            time = i;
-        }
-    }
+    // for (let i = 0; i < time.length; i++) {
+    //     if (time[i] === '1') {
+    //         time = i;
+    //     }
+    // }
 
     time = time >= 12 ? time - 12 : time;
     time = `${time === 0 ? 12 : time}:00 - ${(time + 1)}:00`.concat(greaterThan12 ? ' PM' : ' AM');

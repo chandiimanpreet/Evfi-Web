@@ -24,7 +24,7 @@ const PreviousBooking = ({ direction, user, userBooking }) => {
 				</Box>
 
 				<Box width="100vw" sx={{ display: 'flex', position: { xs: 'fixed', md: 'relative' } }} className="previousBookingPage">
-					<DashboardMap collectCardData={setFetchChargerFromList} card={fetchChargerFromList} />
+					<DashboardMap collectCardData={setFetchChargerFromList} card={fetchChargerFromList} user={user} />
 				</Box>
 			</Box>
 		</motion.div>
