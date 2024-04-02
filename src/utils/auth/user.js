@@ -191,7 +191,7 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
     })
 };
 
-const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
+export const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
     return new Promise(async (resolve, reject) => {
 
         const db = getFirestore();
