@@ -12,6 +12,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CircularProgress from '@mui/material/CircularProgress';
 import { STATUS_CHARGING_COMPLETED } from '../../constants';
+import { SlArrowLeft } from "react-icons/sl";
+import RatingFormPopup from './RatingFormPopup';
+
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 60,
@@ -92,7 +95,10 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
     const [AMPM, setAMPM] = useState(new Date().getHours() > 12 ? 'PM' : 'AM');
     const [progress, setProgress] = useState(0);
     const [stopInterval, setStopInterval] = useState(false);
+    // const [showReview, setShowReview] = useState(false);
+    const [openReview, setOpenReview] = useState(false);
 
+  
 
     const timing = [
         '12:00-1:00', '1:00-2:00', '2:00-3:00',
@@ -140,6 +146,10 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
 
 
     const handleDescriptionChange = (event) => setDescription(event.target.value);
+
+    const handleOpenReview= () => {
+        setOpenReview(true);
+      };
 
     const handleImageChange = (event) => {
         [...event.target.files].forEach(file => {
@@ -234,6 +244,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
 
         toast.success('Charging Completed Successfully!');
         setStopInterval(true);
+        handleOpenReview();
         return;
     }
     // userCurrentBookingGoingOn?.timeSlot === new Date().getHours()
@@ -311,6 +322,11 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                                     userCurrentBookingGoingOn?.timeSlot === new Date().getHours() &&
                                     <CircularProgressWithLabel value={progress} color="success" size={70} />
                                 }
+                                {
+                                    openReview && (
+                                        <RatingFormPopup open={openReview} setOpen={setOpenReview} user={user} chargerData={chargerData} />
+                                    )
+                                }
                             </Box>
 
                             <Box sx={{ display: 'flex' }} >
@@ -372,8 +388,15 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                         ) : (
 
                             <Fragment>
-                                <Box sx={{ Display: 'flex', marginLeft: '3.5rem' }}>
-                                    <Typography sx={{ fontWeight: 'bold' }}>Select Charging Slot</Typography>
+                                <Box sx={{ display: 'flex' }}>
+                                    <IconButton onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowSlot(false);
+                                        setComplaintBox(false);
+                                    }} aria-label="Back" size="small">
+                                        <SlArrowLeft fontSize="small" />
+                                    </IconButton>
+                                    <Typography sx={{ fontWeight: 'bold', marginLeft: '2.5rem!important' }}>Select Charging Slot</Typography>
                                 </Box>
 
                                 <MaterialUISwitch sx={{ mb: 1 }} defaultChecked={(new Date().getHours()) > 12 ? false : true} onChange={(e) => {

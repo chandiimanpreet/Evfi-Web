@@ -435,6 +435,8 @@ const newTimeSlots = (prevTimeSlot, bookedTimeSlot) => {
     const setDesiredBit = 1 << bookedTimeSlot;      // making the desired bit one
     return prevTimeSlot | setDesiredBit;
 };
+
+
 export const addComplaint = (chargerId, complaintData) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -470,4 +472,27 @@ export const addComplaint = (chargerId, complaintData) => {
             reject({ error: error.message });
         }
     });
+};
+
+
+
+export const addReview = async (userId, chargerId, review, starRating) => {
+    try {
+
+        const db = getFirestore();
+
+        const docRef = await addDoc(collection(db, "reviews"), {
+            userId: userId,
+            chargerId: chargerId,
+            review: review,
+            starRating: starRating,
+            timestamp: new Date()
+        });
+        
+        console.log("Rating and review added with ID: ", docRef.id);
+        return { message: "Rating and review added successfully", id: docRef.id };
+    } catch (error) {
+        console.error("Error adding rating and review: ", error);
+        throw error;
+    }
 };

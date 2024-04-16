@@ -147,8 +147,15 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 				<div id="recaptcha-container"></div>
 			</div>
 
-			<img className={classes.boxBehindImgStyle}
-				src='/resources/light.png' alt='' />
+			<BoltIcon
+				sx={{
+					color: "yellow",
+					width: '100%',
+					height: '100%',
+					position: 'absolute',
+					filter: 'blur(5px)',
+				}}
+			/>
 			{util.error && <Snackbar open={true} anchorOrigin={{ horizontal: 'right', vertical: 'top' }} autoHideDuration={6000} ClickAwayListenerProps={{ onClickAway: () => null }} onClose={() => {
 				setUtils({ ...util, error: null });
 			}}>
