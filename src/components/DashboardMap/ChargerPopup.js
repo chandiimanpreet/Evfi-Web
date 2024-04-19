@@ -151,23 +151,32 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
         setOpenReview(true);
       };
 
-    const handleImageChange = (event) => {
-        [...event.target.files].forEach(file => {
-            console.log("file >>> ", file)
-
-            setPictures([
-                ...pictures,
-                {
+      const handleImageChange = (event) => {
+        const files = event.target.files;
+        const newPictures = [...pictures];
+    
+        if (files) {
+            if (pictures.length === 0) {
+                const file = files[0];
+                newPictures.push({
                     data: file,
                     url: URL.createObjectURL(file)
-                }
-            ])
-
-            console.log("pictures >> ", pictures)
-        })
+                });
+            } else {
+                [...files].forEach(file => {
+                    newPictures.push({
+                        data: file,
+                        url: URL.createObjectURL(file)
+                    });
+                });
+            }
+    
+            setPictures(newPictures);
+            console.log("Selected images:", newPictures);
+        }
+        
     };
 
-    //  console.log("oh shit this is not working",);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -251,7 +260,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
     // Progress Bar
     useEffect(() => {
         const timer = setInterval(() => {
-            if (!stopInterval) {
+            if (stopInterval) {
                 setProgress(() => (new Date().getHours() === userCurrentBookingGoingOn?.timeSlot + 1 ? chargingSuccessfullyCompleted()
                     : new Date().getMinutes() > 30 ? new Date().getMinutes() + 40 : new Date().getMinutes()));
             }
@@ -346,8 +355,15 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                         (
                         complaintBox ? (
                             <Fragment>
-                                <Box sx={{ Display: 'flex', marginLeft: '3.5rem' }}>
-                                    <Typography sx={{ fontWeight: 'bold' }}>Report this charger</Typography>
+                                <Box sx={{ display: 'flex'}}>
+                                    <IconButton onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowSlot(false);
+                                        setComplaintBox(false);
+                                    }} aria-label="Back" size="small">
+                                        <SlArrowLeft fontSize="small" />
+                                    </IconButton>
+                                    <Typography sx={{ fontWeight: 'bold', marginLeft: '2.5rem!important' }}>Report this charger</Typography>
                                 </Box>
                                 <form onSubmit={handleSubmit}>
                                     <TextField
@@ -361,26 +377,8 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                                         required
                                     />
                                     <br />
-                                    <input type="file" accept="image/*" onChange={handleImageChange} multiple />
+                                    <input type="file" accept="image/*" onChange={handleImageChange} multiple={pictures.length < 1}/>
                                     <br />
-                                    <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            sx={{
-                                                height: '2rem',
-                                                width: '20rem',
-                                                backgroundColor: '#4cbb17',
-                                                color: '#000000',
-                                                fontSize: '13px',
-                                                fontFamily: 'Manrope !important',
-                                                textTransform: 'capitalize',
-                                                fontWeight: 'bold',
-                                                borderRadius: '20px',
-                                                padding: '0px 10px'
-                                            }}
-                                        >Submit</Button>
-                                    </Box>
                                 </form>
 
 
@@ -435,6 +433,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                             toast.success('Booking Request Successful');
                         } else {
                             if (complaintBox) {
+                                handleSubmit(e);
                                 setComplaintBox(false);
                                 setShowSlot(false);
                             }
@@ -449,7 +448,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                         height: '2rem', width: '20rem',
                         backgroundColor: '#FCDD13', color: '#000000', fontSize: '13px', fontFamily: 'Manrope !important',
                         textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '20px', padding: '0px 10px'
-                    }}>{showSlot ? "Book now" : (complaintBox ? "Back" : "Select Charging Slot")}</Button>
+                    }}>{showSlot ? "Book now" : (complaintBox ? "Submit" : "Select Charging Slot")}</Button>
                 </Box>
 
 

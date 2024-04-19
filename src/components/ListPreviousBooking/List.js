@@ -340,7 +340,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 										)))
 									:
 									!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
-										filteredBookings?.map(([chargerData, status, timeSlot,bookingId, price]) => ({ chargerData, status, timeSlot, bookingId,price })).map((charger, idx) => (
+										filteredBookings?.map(([chargerData, status, timeSlot, bookingId, price]) => ({ chargerData, status, timeSlot, bookingId, price })).map((charger, idx) => (
 											<Box sx={{ marginBottom: { xs: '10px', md: '0px' } }} key={idx} onClick={() => { fetchData(charger) }} >
 												<ListItem data={charger} show={show} />
 											</Box>
