@@ -34,6 +34,20 @@ export const getUser = () => {
     });
 };
 
+export const getProviderPhoneNumber=(id)=>{
+    return new Promise(async (resolve,reject)=>{
+        try {
+            const db = getFirestore();
+            const snapshot=await getDoc(doc(db,"user",id));
+            if(snapshot.exists()){
+                resolve(snapshot.data().phoneNumber);
+            }
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    })
+}
+
 export const logInUser = (mobile) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -420,4 +434,65 @@ const newTimeSlots = (prevTimeSlot, bookedTimeSlot) => {
 
     const setDesiredBit = 1 << bookedTimeSlot;      // making the desired bit one
     return prevTimeSlot | setDesiredBit;
+};
+
+
+export const addComplaint = (chargerId, complaintData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const db = getFirestore();
+            const storage = getStorage();
+
+            const imgs = [];
+            for (const image of complaintData.images) {
+                const imageRef = ref(storage, `complaints/${chargerId}/${image.name}`);
+                const uploadResult = await uploadBytes(imageRef, image);
+                const imageUrl = await getDownloadURL(uploadResult.ref);
+                imgs.push(imageUrl);
+            }
+
+            const complaintCollectionRef = collection(db, 'complaints');
+            const newComplaintRef = await addDoc(complaintCollectionRef, {
+                chargerId: chargerId,
+                userId: complaintData.userId,
+                providerId: complaintData.providerId,
+                description: complaintData.description,
+                images: imgs,
+            });
+
+            const chargerDocRef = doc(db, 'chargers', chargerId);
+            await updateDoc(chargerDocRef, {
+                complaints: arrayUnion(newComplaintRef.id)
+            });
+
+            console.log("Complaint added successfully");
+            resolve({ message: "Complaint added successfully" });
+        } catch (error) {
+            console.error("Error adding complaint:", error);
+            reject({ error: error.message });
+        }
+    });
+};
+
+
+
+export const addReview = async (userId, chargerId, review, starRating) => {
+    try {
+
+        const db = getFirestore();
+
+        const docRef = await addDoc(collection(db, "reviews"), {
+            userId: userId,
+            chargerId: chargerId,
+            review: review,
+            starRating: starRating,
+            timestamp: new Date()
+        });
+        
+        console.log("Rating and review added with ID: ", docRef.id);
+        return { message: "Rating and review added successfully", id: docRef.id };
+    } catch (error) {
+        console.error("Error adding rating and review: ", error);
+        throw error;
+    }
 };

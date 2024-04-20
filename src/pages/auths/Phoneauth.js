@@ -147,8 +147,15 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 				<div id="recaptcha-container"></div>
 			</div>
 
-			<img className={classes.boxBehindImgStyle}
-				src='/resources/light.png' alt='' />
+			<BoltIcon
+				sx={{
+					color: "yellow",
+					width: '100%',
+					height: '100%',
+					position: 'absolute',
+					filter: 'blur(5px)',
+				}}
+			/>
 			{util.error && <Snackbar open={true} anchorOrigin={{ horizontal: 'right', vertical: 'top' }} autoHideDuration={6000} ClickAwayListenerProps={{ onClickAway: () => null }} onClose={() => {
 				setUtils({ ...util, error: null });
 			}}>
@@ -221,15 +228,16 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 
 						<OTPInput inputStyle={otpStyle.inputStyle} containerStyle={{ color: '#fff' }}
 							numInputs={6} value={otp} onChange={setotp} vrenderSeparator='-' inputType='tel'
-							renderInput={(props) => <input {...props} 
-								onKeyDown={(e) => {									if (e.key === 'Enter') {
+							renderInput={(props) => <input {...props}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
 										submitCode();
 									}
 								}}
 							/>}
 						/>
 
-						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode}> {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
+						<LoadingButton size='large' variant='contained' style={otpStyle.getOtpStyle} loading={util.loading} onClick={submitCode} > {util.loading ? 'Please wait...' : 'Verify OTP'}</LoadingButton>
 
 						<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
 							<Typography color='#fff' paddingTop={1.5}>Resend OTP</Typography>

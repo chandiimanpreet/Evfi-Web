@@ -68,7 +68,10 @@ const DashboardMap = ({
 	function handleBackButton() {
 		collectCardData("");
 	}
-
+	// function bitCount (n) {
+	// 	return n.toString(2).match(/1/g).length
+	//   }
+	  
 	const bookingHandler = async (time, AMPM, charger) => {
 		try {
 			const price = fullChargeCost(user.level2.batteryCapacity, charger.info.state);
@@ -133,23 +136,19 @@ const DashboardMap = ({
 
 	useEffect(() => {
 
-		if (user?.bookings?.length > 0) {
+	if (user?.bookings.length > 0) {
 
-			const fetchData = async () => {
-				const res = user?.bookings?.map(async (booking) => await getBooking(booking));
-				const resolvedBooking = await Promise.all(res);
-				const acceptedBooking = resolvedBooking.filter((booking) => booking.status === STATUS_ACCEPTED && booking.timeSlot === new Date().getHours());
+		const fetchData = async () => {
+			const res = user?.bookings?.map(async (booking) => await getBooking(booking));
+			const resolvedBooking = await Promise.all(res);
+			const acceptedBooking = resolvedBooking.filter((booking) => booking.status === STATUS_ACCEPTED && booking.timeSlot=== new Date().getHours());
 
-				setUserCurrentBookingGoingOn(acceptedBooking[0]);
-			}
-			fetchData();
+			setUserCurrentBookingGoingOn(acceptedBooking[0]);
 		}
-	}, [user]);
-
-	useEffect(() => {		// necessary to do this because userCurrentBooking is undefined in ChargerPop
-		// console.log(userCurrentBookingGoingOn);			// bcz it was not rendering here
-	}, [userCurrentBookingGoingOn]);
-
+		fetchData();
+	}
+	}, [user?.bookings]);
+	
 	return (
 		<Fragment>
 			<MapContainer
@@ -183,6 +182,8 @@ const DashboardMap = ({
 											chargerData={charger}
 											bookingHandler={bookingHandler}
 											userCurrentBookingGoingOn={userCurrentBookingGoingOn}
+											tempValue = {charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}		
+
 										/>
 									</Marker>
 								);
@@ -219,6 +220,7 @@ const DashboardMap = ({
 											<ChargerPopup user={user}
 												chargerData={charger}
 												bookingHandler={bookingHandler}
+												tempValue = {charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
 												userCurrentBookingGoingOn={userCurrentBookingGoingOn}
 											/>
 										</Marker>
@@ -264,6 +266,7 @@ const DashboardMap = ({
 											<ChargerPopup user={user}
 												chargerData={charger}
 												bookingHandler={bookingHandler}
+												tempValue = {charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
 												userCurrentBookingGoingOn={userCurrentBookingGoingOn}
 											/>
 										</Marker>
@@ -357,7 +360,7 @@ const Mark = ({ cardDetails, bookingHandler, user, userCurrentBookingGoingOn, })
 			]}
 			ref={markerRef}
 		>
-			<ChargerPopup user={user} chargerData={cardDetails} bookingHandler={bookingHandler} userCurrentBookingGoingOn={userCurrentBookingGoingOn} />
+			<ChargerPopup user={user} chargerData={cardDetails} bookingHandler={bookingHandler} tempValue={24- cardDetails.timeSlot.toString(2).match(/1/g).length} userCurrentBookingGoingOn={userCurrentBookingGoingOn} />
 		</Marker>
 	);
 };
