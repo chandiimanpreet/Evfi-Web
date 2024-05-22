@@ -82,8 +82,11 @@ const chargerUpdate = (data) => ({
 
 const clearChargers = () => ({
     type: 'CLEAR_CHARGER'
-})
+});
 
+const clearBookings = () => ({
+    type: 'CLEAR_CHARGER'
+});
 
 const updateuserProfile = (data) => ({
     type: 'UPDATE_PROFILE',
@@ -97,5 +100,6 @@ const updateProfilePicture = (image) => ({
 
 export {
     setLoading, setError, loadUser, setUser, logout, clearUser, clearError, addUserData, login, setPhoneNo, addChargerAction,
-    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers, updateuserProfile, updateProfilePicture
+    bookingUpdate, setUserBooking, setProviderRequests, chargerUpdate, setChargers, clearChargers, updateuserProfile, updateProfilePicture,
+    clearBookings
 };
