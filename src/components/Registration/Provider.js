@@ -13,12 +13,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { countriesStateCitiesData } from '../../utils/timezone/countriesStateCitiesData';
 import { connect } from 'react-redux';
-import { addChargerAction, addUserData, setError } from '../../actions';
+import { addChargerAction, addUserData, clearBookings, setError } from '../../actions';
 import {  TimePicker } from '@mui/x-date-pickers';
 import BoltIcon from '@mui/icons-material/Bolt';
 
 
-const Provider = ({ userData, addChargerAction, setError }) => {
+const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 
 	// States
 	const [open, setOpen] = useState(false);
@@ -102,6 +102,7 @@ const Provider = ({ userData, addChargerAction, setError }) => {
 
 				console.log(data)
 				const res = await addCharger(data, chargerArea, aadhaarCard);
+				clearBooking();
 				addChargerAction(res.chargerId);
 			} catch (error) {
 				setError(error.msg);
@@ -334,6 +335,7 @@ const mapStateToProps = state => ({
 const mapDispatchFromprops = dispatch => ({
 	addUserData: (data) => dispatch(addUserData(data)),
 	addChargerAction: (id) => dispatch(addChargerAction(id)),
+	clearBooking: ()=> dispatch(clearBookings()),
 	setError: (error) => dispatch(setError(error))
 })
 export default connect(mapStateToProps, mapDispatchFromprops)(Provider);

@@ -34,12 +34,12 @@ export const getUser = () => {
     });
 };
 
-export const getProviderPhoneNumber=(id)=>{
-    return new Promise(async (resolve,reject)=>{
+export const getProviderPhoneNumber = (id) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const db = getFirestore();
-            const snapshot=await getDoc(doc(db,"user",id));
-            if(snapshot.exists()){
+            const snapshot = await getDoc(doc(db, "user", id));
+            if (snapshot.exists()) {
                 resolve(snapshot.data().phoneNumber);
             }
         } catch (error) {
@@ -165,7 +165,9 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
             }
             const chargerLocation = chargerData.chargerLocation;
             delete chargerData.chargerLocation;
+
             const docRef = doc(collection(db, 'chargers'));
+
             await setDoc(docRef, {
                 uid: auth.currentUser.uid,
                 chargerId: docRef.id,
@@ -180,6 +182,7 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                 },
                 timeSlot: 0,
             });
+
             await setDoc(doc(db, 'user', auth.currentUser.uid), {
                 chargers: arrayUnion(docRef.id),
                 level3: true
@@ -225,8 +228,11 @@ export const getORUpdateTimeSlotOFCharger = (chargerId, newTiming) => {
 export const requestCharger = (chargerData, bookedTimeSlot, AMPM, price) => {
     return new Promise(async (resolve, reject) => {
         try {
+
             const auth = getAuth().currentUser.uid;
             const db = getFirestore();
+            const docRef = doc(collection(db, 'booking'));
+
             const dateFormat = Intl.DateTimeFormat('en-In', { day: 'numeric', month: 'long', year: 'numeric' });
             let prevTimeSlot;
 
@@ -247,16 +253,17 @@ export const requestCharger = (chargerData, bookedTimeSlot, AMPM, price) => {
                 status: STATUS_REQUESTED,
                 chargerId: chargerData.chargerId,
                 providerId: chargerData.uid,
+                bookingId: docRef.id,
                 price: price,
                 bookingDate: dateFormat.format(new Date()),
                 timeSlot: bookedTimeSlot
             }
 
             try {
-                const booking = await addDoc(collection(db, "booking"), data);
+                await setDoc(docRef, data);
 
                 await setDoc(doc(db, 'user', auth), {
-                    bookings: arrayUnion(booking.id),
+                    bookings: arrayUnion(docRef.id),
                 }, { merge: true });
 
                 await getORUpdateTimeSlotOFCharger(chargerData.chargerId,
@@ -305,8 +312,11 @@ export const getUserAndChargers = (userId, chargerId) => {
                     user: docSnap1.data(),
                     charger: docSnap2.data(),
                 })
-            } else {
+            } else if (!docSnap1.exists()) {
                 reject({ error: "User doesn't exist" });
+            }
+            else {
+                reject({ error: `charger ${chargerId} doesn't exist` });
             }
         } catch (error) {
             reject({ error: error.message });
@@ -369,7 +379,8 @@ const StatesVsPrice = {
 // }
 
 export const fullChargeCost = (batteryCap, state) => {
-    return Math.round(parseInt(batteryCap) * StatesVsPrice[state]);
+    const res = Math.round(parseInt(batteryCap) * StatesVsPrice[state]);
+    return isNaN(res) ? 0 : res;
 }
 
 
@@ -488,7 +499,7 @@ export const addReview = async (userId, chargerId, review, starRating) => {
             starRating: starRating,
             timestamp: new Date()
         });
-        
+
         console.log("Rating and review added with ID: ", docRef.id);
         return { message: "Rating and review added successfully", id: docRef.id };
     } catch (error) {

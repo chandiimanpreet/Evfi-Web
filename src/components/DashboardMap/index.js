@@ -70,25 +70,22 @@ const DashboardMap = ({
     draggable: false,
   });
 
-  // Handlers
-  function handleBackButton() {
-    collectCardData("");
-  }
-  // function bitCount (n) {
-  // 	return n.toString(2).match(/1/g).length
-  //   }
+	// Handlers
+	function handleBackButton() {
+		collectCardData("");
+	}
+	// function bitCount (n) {
+	// 	return n.toString(2).match(/1/g).length
+	//   }
 
-  const bookingHandler = async (time, AMPM, charger) => {
-    try {
-      const price = fullChargeCost(
-        user.level2.batteryCapacity,
-        charger.info.state
-      );
-      await requestCharger(charger, parseInt(time), AMPM, price);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+	const bookingHandler = async (time, AMPM, charger) => {
+		try {
+			const price = fullChargeCost(user.level2.batteryCapacity, charger.info.state);
+			await requestCharger(charger, parseInt(time), AMPM, price);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
   const setcurrentmarker = useCallback(() => {
     clearCharger();
@@ -152,121 +149,104 @@ const DashboardMap = ({
     uselocation.pathname,
   ]);
 
-  useEffect(() => {
-    if (user?.bookings.length > 0) {
-      const fetchData = async () => {
-        const res = user?.bookings?.map(
-          async (booking) => await getBooking(booking)
-        );
-        const resolvedBooking = await Promise.all(res);
-        const acceptedBooking = resolvedBooking.filter(
-          (booking) =>
-            booking.status === STATUS_ACCEPTED &&
-            booking.timeSlot === new Date().getHours()
-        );
+	useEffect(() => {
+		if (user?.bookings.length > 0) {
 
-        setUserCurrentBookingGoingOn(acceptedBooking[0]);
-      };
-      fetchData();
-    }
-  }, [user?.bookings]);
+			const fetchData = async () => {
+				const res = user?.bookings?.map(async (booking) => await getBooking(booking));
+				const resolvedBooking = await Promise.all(res);
+				const acceptedBooking = resolvedBooking.filter((booking) => booking.status === STATUS_ACCEPTED && booking.timeSlot === new Date().getHours());
 
-  return (
-    <Fragment>
-      <MapContainer
-        center={[29.9695, 76.8783]}
-        zoom={13}
-        scrollWheelZoom={true}
-        minZoom={2}
-        maxZoom={18}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+				setUserCurrentBookingGoingOn(acceptedBooking[0]);
+			}
+			fetchData();
+		}
+	}, [user, user?.bookings]);
 
-        {/* Current Chargers */}
-        {show === false &&
-          searchLocationCoordinates.searchlocation.coordinates === null && (
-            <div>
-              <LocationMarker
-                setPosition={setPosition}
-                position={position}
-                markerIcon={markerIcon}
-              />
-              {chargers &&
-                chargers.map((charger, index) => {
-                  return (
-                    <Marker
-                      key={index}
-                      icon={greenmarkerIcon}
-                      draggable={false}
-                      position={[
-                        charger.g.geopoint.latitude,
-                        charger.g.geopoint.longitude,
-                      ]}
-                    >
-                      <ChargerPopup
-                        user={user}
-                        chargerData={charger}
-                        bookingHandler={bookingHandler}
-                        userCurrentBookingGoingOn={userCurrentBookingGoingOn}
-                        tempValue={
-                          charger.timeSlot
-                            ? 24 -
-                              charger.timeSlot.toString(2).match(/1/g).length
-                            : 0
-                        }
-                      />
-                    </Marker>
-                  );
-                })}
-            </div>
-          )}
+	useEffect(() => {
+		console.log(userCurrentBookingGoingOn)
+	}, [userCurrentBookingGoingOn]);
+	console.log(userCurrentBookingGoingOn)
 
-        {/*Current Location Chargers */}
-        {show === false &&
-          searchLocationCoordinates.searchlocation.coordinates && (
-            <div>
-              <SearchLocationMark
-                cardDetails={{
-                  coordinates: {
-                    latitude:
-                      searchLocationCoordinates.searchlocation.coordinates[1],
-                    longitude:
-                      searchLocationCoordinates.searchlocation.coordinates[0],
-                  },
-                }}
-              />
-              {chargers &&
-                chargers.map((charger, index) => {
-                  return (
-                    <Marker
-                      key={index}
-                      icon={greenmarkerIcon}
-                      draggable={false}
-                      position={[
-                        charger?.g?.geopoint.latitude,
-                        charger?.g?.geopoint.longitude,
-                      ]}
-                    >
-                      <ChargerPopup
-                        user={user}
-                        chargerData={charger}
-                        bookingHandler={bookingHandler}
-                        tempValue={
-                          charger.timeSlot
-                            ? 24 -
-                              charger.timeSlot.toString(2).match(/1/g).length
-                            : 0
-                        }
-                        userCurrentBookingGoingOn={userCurrentBookingGoingOn}
-                      />
-                    </Marker>
-                  );
-                })}
-            </div>
-          )}
+	return (
+		<Fragment>
+			<MapContainer
+				center={[29.9695, 76.8783]}
+				zoom={13}
+				scrollWheelZoom={true}
+				minZoom={2}
+				maxZoom={18}
+			>
+				<TileLayer
+					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+				/>
+
+				{/* Current Chargers */}
+				{show === false &&
+					searchLocationCoordinates.searchlocation.coordinates === null && (
+						<div>
+							<LocationMarker
+								setPosition={setPosition}
+								position={position}
+								markerIcon={markerIcon}
+							/>
+							{chargers && chargers.map((charger, index) => {
+								return (
+									<Marker key={index} icon={greenmarkerIcon} draggable={false}
+										position={[charger.g.geopoint.latitude, charger.g.geopoint.longitude,]}
+									>
+										<ChargerPopup
+											user={user}
+											chargerData={charger}
+											bookingHandler={bookingHandler}
+											userCurrentBookingGoingOn={userCurrentBookingGoingOn}
+											tempValue={charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
+
+										/>
+									</Marker>
+								);
+							})}
+						</div>
+					)}
+
+				{/*Current Location Chargers */}
+				{show === false &&
+					searchLocationCoordinates.searchlocation.coordinates && (
+						<div>
+							<SearchLocationMark
+								cardDetails={{
+									coordinates: {
+										latitude:
+											searchLocationCoordinates.searchlocation.coordinates[1],
+										longitude:
+											searchLocationCoordinates.searchlocation.coordinates[0],
+									},
+								}}
+							/>
+							{chargers &&
+								chargers.map((charger, index) => {
+									return (
+										<Marker
+											key={index}
+											icon={greenmarkerIcon}
+											draggable={false}
+											position={[
+												charger?.g?.geopoint.latitude,
+												charger?.g?.geopoint.longitude,
+											]}
+										>
+											<ChargerPopup user={user}
+												chargerData={charger}
+												bookingHandler={bookingHandler}
+												tempValue={charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
+												userCurrentBookingGoingOn={userCurrentBookingGoingOn}
+											/>
+										</Marker>
+									);
+								})}
+						</div>
+					)}
 
         {show &&
           searchCoordinates.source.coordinates &&
@@ -290,33 +270,27 @@ const DashboardMap = ({
                 draggable={false}
               ></Marker>
 
-              {chargers &&
-                chargers.map((charger, index) => {
-                  return (
-                    <Marker
-                      key={index}
-                      icon={greenmarkerIcon}
-                      draggable={false}
-                      position={[
-                        charger?.g?.geopoint.latitude,
-                        charger?.g?.geopoint.longitude,
-                      ]}
-                    >
-                      <ChargerPopup
-                        user={user}
-                        chargerData={charger}
-                        bookingHandler={bookingHandler}
-                        tempValue={
-                          charger.timeSlot
-                            ? 24 -
-                              charger.timeSlot.toString(2).match(/1/g).length
-                            : 0
-                        }
-                        userCurrentBookingGoingOn={userCurrentBookingGoingOn}
-                      />
-                    </Marker>
-                  );
-                })}
+							{chargers &&
+								chargers.map((charger, index) => {
+									return (
+										<Marker
+											key={index}
+											icon={greenmarkerIcon}
+											draggable={false}
+											position={[
+												charger?.g?.geopoint.latitude,
+												charger?.g?.geopoint.longitude,
+											]}
+										>
+											<ChargerPopup user={user}
+												chargerData={charger}
+												bookingHandler={bookingHandler}
+												tempValue={charger.timeSlot ? 24 - charger.timeSlot.toString(2).match(/1/g).length : 0}
+												userCurrentBookingGoingOn={userCurrentBookingGoingOn}
+											/>
+										</Marker>
+									);
+								})}
 
               <RoutingMachine
                 searchCoordinates={searchCoordinates}
@@ -399,25 +373,19 @@ const Mark = ({
     }
   }, [map, latitude, longitude]);
 
-  return (
-    <Marker
-      icon={markerIcon}
-      draggable={false}
-      position={[
-        cardDetails.g.geopoint.latitude,
-        cardDetails.g.geopoint.longitude,
-      ]}
-      ref={markerRef}
-    >
-      <ChargerPopup
-        user={user}
-        chargerData={cardDetails}
-        bookingHandler={bookingHandler}
-        tempValue={24 - cardDetails.timeSlot.toString(2).match(/1/g).length}
-        userCurrentBookingGoingOn={userCurrentBookingGoingOn}
-      />
-    </Marker>
-  );
+	return (
+		<Marker
+			icon={markerIcon}
+			draggable={false}
+			position={[
+				cardDetails.g.geopoint.latitude,
+				cardDetails.g.geopoint.longitude,
+			]}
+			ref={markerRef}
+		>
+			<ChargerPopup user={user} chargerData={cardDetails} bookingHandler={bookingHandler} tempValue={24 - cardDetails.timeSlot.toString(2).match(/1/g).length} userCurrentBookingGoingOn={userCurrentBookingGoingOn} />
+		</Marker>
+	);
 };
 
 const SearchLocationMark = ({ cardDetails }) => {
