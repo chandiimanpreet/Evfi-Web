@@ -50,15 +50,11 @@ const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 	const handleClose = () => setOpen(false);
 
 	const changeDataHandler = (e) => {
-		if (e.target.name === 'chargerType') {
-			setUserData({
-				...data, [e.target.name]: e.target.value === 'string' ?
-					e.target.value.split(',') : e.target.value
-			});
-		}
-		else {
-			setUserData({ ...data, [e.target.name]: e.target.value });
-		}
+		const { name, value } = e.target;
+        setUserData({
+            ...data,
+            [name]: value
+        });
 	};
 
 	const timingHandler = (e, flag) => {
@@ -154,7 +150,7 @@ const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 								<FormControl fullWidth sx={otpStyle.registerTextfieldStyle} >
 									<InputLabel id="types" required>Charger Type</InputLabel>
 									<Select sx={{ color: '#fff', }} labelId="types" name='chargerType' value={data.chargerType}
-										label="Charger Type" onChange={changeDataHandler} multiple >
+										label="Charger Type" onChange={changeDataHandler}>
 										<MenuItem value={'Level 1'}>Level 1</MenuItem>
 										<MenuItem value={'Level 2'}>Level 2</MenuItem>
 										<MenuItem value={'Level 3'}>Level 3</MenuItem>

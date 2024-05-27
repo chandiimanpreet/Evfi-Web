@@ -39,6 +39,8 @@ export const useStyles = makeStyles({
 		backgroundColor: '#282828',
 		borderRadius: '4px',
 		padding: '12px 10px',
+		height: '1.7rem',
+		transition: 'transform 0.8s ease',
 	},
 	/////////////////////////////////////	 ListItem 	//////////////////////////////////////
 	listItemStyle: {
