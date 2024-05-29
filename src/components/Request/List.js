@@ -67,7 +67,6 @@ const List = ({ data, show }) => {
                                         backgroundColor: data.status === STATUS_DECLINED ? '#cf352e' : '#228b22',
                                         fontFamily: 'Manrope !important',
                                         fontSize: '1rem',
-                                        marginRight: '5rem',
                                     }}
                                     label={(data.status === STATUS_DECLINED && "Declined by Provider") ||
                                         (data.status === STATUS_CANCELED && "Declined by User") || (data.status === STATUS_CHARGING_COMPLETED && "Charging Completed")}

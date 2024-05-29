@@ -385,25 +385,30 @@ import { useSearchParams } from "react-router-dom";
 //import FindCurrentLocation from "../DashboardMap/FindCurrentLocation";
 
 const List = ({ setFetchChargerFromList, user, userBooking }) => {
-  //States
-  const [show, setShow] = useState("pending");
-  const [showFilter, setShowFilter] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({
-    chargerType: [],
-    sortBy: "",
-    from: null,
-    to: null,
-  });
-  const [pendingBookings, setPendingBookings] = useState(null);
-  const [recentBookings, setRecentBookings] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+
+	//States
+	const [show, setShow] = useState("pending");
+	const [showFilter, setShowFilter] = useState(false);
+	const [selectedFilters, setSelectedFilters] = useState({
+		chargerType: [],
+		sortBy: '',
+		from: null,
+		to: null,
+	});
+	const [pendingBookings, setPendingBookings] = useState(null);
+	const [recentBookings, setRecentBookings] = useState(null);
+	const [searchQuery, setSearchQuery] = useState('');
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [isRotated, setIsRotated] = useState(false);
 
   //Styling
   const classes = useStyles();
 
   //Handlers
-  const toggleFilter = () => setShowFilter(!showFilter);
+  const toggleFilter = () => {
+		setShowFilter(!showFilter);
+		setIsRotated(!isRotated);
+	};
 
   const filterHandler = (key, value) => {
     if (key === "chargerType") {
@@ -449,14 +454,15 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
     }
   };
 
-  const clearFilters = () => {
-    setSelectedFilters(() => ({
-      chargerType: [],
-      sortBy: "",
-      from: null,
-      to: null,
-    }));
-  };
+	const clearFilters = () => {
+		setSelectedFilters(() => ({
+			chargerType: [],
+			sortBy: '',
+			from: null,
+			to: null,
+		}))
+		setSearchParams({});
+	};
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -627,141 +633,76 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
     selectedFilters,
   ]);
 
-  return (
-    <Fragment>
-      <Box
-        sx={{ width: ["100vw", "100vw", "60vw"] }}
-        className={classes.outerBox}
-      >
-        <Box width="100%">
-          <Box
-            sx={{
-              width: "90%",
-              padding: { xs: "11px 0px 2px 15px", md: "11px 0px 2px 15px" },
-              display: "flex",
-            }}
-          >
-            <FormControl variant="standard" fullWidth>
-              <Input
-                sx={{ fontSize: { xs: "0.85rem", md: "1rem" } }}
-                placeholder="Search Charging Stations..."
-                className={classes.inputField}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Search sx={{ paddingLeft: "10px", color: "#fff" }} />
-                  </InputAdornment>
-                }
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-            </FormControl>
-            <Box
-              sx={{ display: "flex", cursor: "pointer", paddingTop: "5px" }}
-              onClick={toggleFilter}
-            >
-              <FilterList className={classes.filterIconStyle} />
-            </Box>
-          </Box>
+	return (
+		<Fragment>
+			<Box sx={{ width: ['100vw', '100vw', '60vw'] , overflowY: 'auto',  '::-webkit-scrollbar': { display: 'none', }, msOverflowStyle: 'none',scrollbarWidth: 'none'}} className={classes.outerBox}>
+				<Box width='100%' >
+					<Box sx={{ width: '90%', padding: { xs: '11px 0px 2px 15px', md: '11px 0px 2px 15px' }, display: 'flex' }} >
+						<FormControl variant="standard" fullWidth>
+							<Input sx={{ fontSize: { xs: '0.85rem', md: '1rem' } }} placeholder='Search Charging Stations...' className={classes.inputField}
+								startAdornment={<InputAdornment position="start" >
+									<Search sx={{ paddingLeft: '10px', color: '#fff' }} /></InputAdornment>}
+								value={searchQuery}
+								onChange={handleSearchChange}
+							/>
+						</FormControl>
+						<Box sx={{ display: 'flex', cursor: 'pointer', paddingTop: '5px', }} onClick={toggleFilter}>
+							<FilterList className={classes.filterIconStyle} style={{ transform: isRotated ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+						</Box>
+					</Box>
 
-          <Box
-            sx={{
-              marginLeft: "8px",
-              marginTop: "6px",
-              marginBottom: showFilter ? "4px" : "0px",
-            }}
-          >
-            <Accordion expanded={showFilter} sx={{ width: "98%" }}>
-              <AccordionSummary sx={{ display: "none" }}></AccordionSummary>
-              <AccordionDetails>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    padding: "4px 5px",
-                  }}
-                >
-                  <Box
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Box>
-                      <Typography
-                        mb={1}
-                        fontFamily="Manrope !important"
-                        fontWeight="600"
-                        color="#444"
-                      >
-                        Charger Type
-                      </Typography>
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                        <FilterGroup
-                          options={chargerTypeOptions}
-                          type="multi"
-                          property="chargerType"
-                          selected={selectedFilters.chargerType}
-                          setSelected={filterHandler}
-                        />
-                      </Box>
-                    </Box>
-                    <Box>
-                      <Typography mb={1} className={classes.filterHeadersStyle}>
-                        Sort
-                      </Typography>
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                        <FilterGroup
-                          options={sortByOptions}
-                          type="solo"
-                          property="sortBy"
-                          selected={selectedFilters.sortBy}
-                          setSelected={filterHandler}
-                        />
-                      </Box>
-                    </Box>
-                    <Box>
-                      <Button
-                        className={classes.clearAllBtnStyle}
-                        onClick={() => {
-                          clearFilters();
-                        }}
-                      >
-                        Clear <Clear />{" "}
-                      </Button>
-                    </Box>
-                  </Box>
-                  <br />
-                  <Box>
-                    <Typography className={classes.filterHeadersStyle}>
-                      Date
-                    </Typography>
-                    <Box>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={["DatePicker"]}>
-                          <DatePicker
-                            label="Start"
-                            value={selectedFilters.to}
-                            onChange={(newValue) =>
-                              filterHandler("to", newValue)
-                            }
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={["DatePicker"]}>
-                          <DatePicker
-                            label="End"
-                            value={selectedFilters.from}
-                            onChange={(newValue) =>
-                              filterHandler("from", newValue)
-                            }
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                    </Box>
-                  </Box>
-                </Box>
-              </AccordionDetails>
-            </Accordion>
-          </Box>
+					<Box sx={{ marginLeft: '6px', marginTop: '3px', marginBottom: showFilter ? '4px' : '0px' }}>
+						<Accordion expanded={showFilter} sx={{ width: '98%' }}>
+							<AccordionSummary sx={{ display: 'none' }}>
+							</AccordionSummary>
+							<AccordionDetails >
+								<Box sx={{ display: 'flex', flexDirection: 'column' }}>
+									<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+										<Box>
+											<Typography mb={1} fontFamily='Manrope !important'
+												fontWeight='600' color='#444' >Charger Type</Typography>
+											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+												<FilterGroup options={chargerTypeOptions} type='multi'
+													property='chargerType' selected={selectedFilters.chargerType} setSelected={filterHandler} />
+											</Box>
+										</Box>
+										<Box>
+											<Typography mb={1} className={classes.filterHeadersStyle}>Sort</Typography>
+											<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, }}>
+												<FilterGroup options={sortByOptions} type='solo'
+													property='sortBy' selected={selectedFilters.sortBy} setSelected={filterHandler} />
+											</Box>
+										</Box>
+										<Box>
+											<Button className={classes.clearAllBtnStyle}
+												onClick={() => { clearFilters() }} >Clear <Clear /> </Button>
+										</Box>
+									</Box><br />
+									<Box>
+										<Typography className={classes.filterHeadersStyle} >Date</Typography>
+										<Box  sx={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+											<Box sx={{ flex: 1 }}>
+											<LocalizationProvider dateAdapter={AdapterDayjs} >
+												<DemoContainer components={['DatePicker']}>
+													<DatePicker label="Start" value={selectedFilters.to}
+														onChange={(newValue) => filterHandler('to', newValue)} />
+												</DemoContainer>
+											</LocalizationProvider>
+											</Box>
+											<Box sx={{ flex: 1 }}>
+											<LocalizationProvider dateAdapter={AdapterDayjs}>
+												<DemoContainer components={['DatePicker']}>
+													<DatePicker label="End" value={selectedFilters.from}
+														onChange={(newValue) => filterHandler('from', newValue)} />
+												</DemoContainer>
+											</LocalizationProvider>
+											</Box>
+										</Box>
+									</Box>
+								</Box>
+							</AccordionDetails>
+						</Accordion>
+					</Box>
 
           <Box
             marginX={2}
@@ -815,63 +756,30 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
             </Box>
           </Box>
 
-          <Box display="flex" justifyContent="center">
-            <Box
-              sx={{
-                maxHeight: [
-                  "calc(100vh - 11.5rem)",
-                  "calc(100vh - 11.5rem)",
-                  "calc(100vh - 8rem)",
-                ],
-              }}
-              className={classes.searchResultsContainer}
-            >
-              {show === "pending"
-                ? !pendingBookingsInfo.length > 0
-                  ? "No new Bookings Available"
-                  : filteredBookings
-                      ?.map(([chargerData, status, timeSlot, bookingId]) => ({
-                        chargerData,
-                        status,
-                        timeSlot,
-                        bookingId,
-                      }))
-                      .map((charger, idx) => (
-                        <Box
-                          sx={{ marginBottom: { xs: "10px", md: "10px" } }}
-                          key={idx}
-                          onClick={() => {
-                            fetchData(charger);
-                          }}
-                        >
-                          <ListItem data={charger} show={show} />
-                        </Box>
-                      ))
-                : !recentBookingsInfo.length > 0
-                ? "No Recent Bookings Available"
-                : filteredBookings
-                    ?.map(([chargerData, status, timeSlot]) => ({
-                      chargerData,
-                      status,
-                      timeSlot,
-                    }))
-                    .map((charger, idx) => (
-                      <Box
-                        sx={{ marginBottom: { xs: "10px", md: "0px" } }}
-                        key={idx}
-                        onClick={() => {
-                          fetchData(charger);
-                        }}
-                      >
-                        <ListItem data={charger} show={show} />
-                      </Box>
-                    ))}
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-    </Fragment>
-  );
+					<Box display='flex' justifyContent='center'>
+						<Box sx={{ maxHeight: ['calc(100vh - 11.5rem)', 'calc(100vh - 11.5rem)', 'calc(100vh - 8rem)']}} className={classes.searchResultsContainer}>
+							{
+								show === "pending" ?
+									!pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
+										filteredBookings?.map(([chargerData, status, timeSlot, bookingId, price]) => ({ chargerData, status, timeSlot, bookingId, price })).map((charger, idx) => (
+											<Box sx={{ marginBottom: { xs: '10px', md: '10px' } , overflowY: 'auto',}} key={idx} onClick={() => { fetchData(charger) }} >
+												<ListItem data={charger} show={show} />
+											</Box>
+										)))
+									:
+									!recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
+										filteredBookings?.map(([chargerData, status, timeSlot, bookingId, price]) => ({ chargerData, status, timeSlot, bookingId, price })).map((charger, idx) => (
+											<Box sx={{ marginBottom: { xs: '10px', md: '0px' } ,overflowY: 'auto',}} key={idx} onClick={() => { fetchData(charger) }} >
+												<ListItem data={charger} show={show} />
+											</Box>
+										)))
+							}
+						</Box>
+					</Box>
+				</Box>
+			</Box>
+		</Fragment>
+	);
 };
 
 export default List;
