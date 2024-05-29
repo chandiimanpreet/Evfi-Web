@@ -635,7 +635,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
 
 	return (
 		<Fragment>
-			<Box sx={{ width: ['100vw', '100vw', '60vw'] , overflowY: 'auto'}} className={classes.outerBox}>
+			<Box sx={{ width: ['100vw', '100vw', '60vw'] , overflowY: 'auto',  '::-webkit-scrollbar': { display: 'none', }, msOverflowStyle: 'none',scrollbarWidth: 'none'}} className={classes.outerBox}>
 				<Box width='100%' >
 					<Box sx={{ width: '90%', padding: { xs: '11px 0px 2px 15px', md: '11px 0px 2px 15px' }, display: 'flex' }} >
 						<FormControl variant="standard" fullWidth>
