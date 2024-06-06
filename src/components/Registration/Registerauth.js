@@ -53,7 +53,7 @@ const Registerauth = ({ addUserData, userData }) => {
 	const [data, setUserData] = useState({
 		vehicleManufacturer: "",
 		chargingRequirements: "",
-		vehicleNumber: '',
+		vehicleRegistrationNumber: '',
 		mileage: '',
 		batteryCapacity: ''
 	});
