@@ -45,7 +45,7 @@ const CustomerForm = ({ user, data, classes, theme, changeDataHandler, idType, M
                 </Select>
             </FormControl>
 
-            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleNumber' value={data.vehicleNumber} />
+            <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='text' label='Vehicle No.' name='vehicleRegistrationNumber' value={data.vehicleRegistrationNumber} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Battery Capacity(kWh)' name='batteryCapacity' value={data.batteryCapacity} />
             <TextField sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler} required variant='outlined' type='number' label='Mileage' name='mileage' value={data.mileage} />
             <div>
