@@ -33,7 +33,6 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 	const [remember, setRemember] = useState(true);
 	const recaptchaWrapperRef = useRef(null);
 
-
 	useEffect(() => {
 		let id;
 		if (showOtpForm) {
@@ -143,19 +142,11 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 	}
 	return (
 		<Box className={classes.bodyPage} >
+			
 			<div ref={recaptchaWrapperRef}>
 				<div id="recaptcha-container"></div>
 			</div>
 
-			<BoltIcon
-				sx={{
-					color: "yellow",
-					width: '100%',
-					height: '100%',
-					position: 'absolute',
-					filter: 'blur(5px)',
-				}}
-			/>
 			{util.error && <Snackbar open={true} anchorOrigin={{ horizontal: 'right', vertical: 'top' }} autoHideDuration={6000} ClickAwayListenerProps={{ onClickAway: () => null }} onClose={() => {
 				setUtils({ ...util, error: null });
 			}}>
@@ -163,8 +154,19 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 					setUtils({ ...util, error: null });
 				}}>{util.error}</Alert>
 			</Snackbar>}
-			<Box className={classes.loginCard} >
+			<BoltIcon
+				sx={{
+					color: "yellow",
+					width: '100vh',
+					height: '100vw',
+					position: 'absolute',
+					// filter: 'blur(5px)',
+				}}
+			/>
+			<Box className={classes.loginCard} sx={{ overflow: 'hidden' }}>
+			
 				{!showOtpForm ?
+				
 					<Grid gap={3} display='flex' flexDirection='column' alignContent='center'
 						textAlign='center' padding='4rem 2rem' >
 						<Box>
@@ -258,11 +260,14 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 		</Box>
 	)
 }
+
 const mapStateToProps = state => ({
 	userData: state.userData
 })
+
 const mapDispatchFromProps = dispatch => ({
 	login: () => dispatch(login()),
 	setPhoneNo: (number) => dispatch(setPhoneNo(number))
 })
+
 export default connect(mapStateToProps, mapDispatchFromProps)(Phoneauth);

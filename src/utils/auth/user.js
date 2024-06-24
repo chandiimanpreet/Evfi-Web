@@ -378,9 +378,25 @@ const StatesVsPrice = {
 //     return (batteryCap / range) * dist * (costPerKWH[myState]!);
 // }
 
-export const fullChargeCost = (batteryCap, state) => {
-    const res = Math.round(parseInt(batteryCap) * StatesVsPrice[state]);
-    return isNaN(res) ? 0 : res;
+export const fullChargeCost = (chargerType, state) => {
+    let power;
+    if (chargerType === 'Level 1') {
+        power = 1.65;
+    } else if (chargerType === 'Level 2') {
+        power = 11.25;
+    } else if (chargerType === 'Level 3') {
+        power = 200;
+    } else {
+        console.error('Unknown charger type');
+        return 0;
+    }
+    const costPerKWH = StatesVsPrice[state];
+    if (costPerKWH === undefined) {
+        console.error('State not found');
+        return 0;
+    }
+    const cost = parseFloat((power * (1 + costPerKWH)).toFixed(2));
+    return Math.round(cost);
 }
 
 
