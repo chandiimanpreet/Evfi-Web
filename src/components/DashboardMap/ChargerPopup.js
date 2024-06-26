@@ -308,7 +308,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                                         <Typography sx={{ fontSize: '0.80rem', margin: '0px !important' }}>Price for full charge: {' '}</Typography>
                                         <CurrencyRupee sx={{ height: '15px', width: '15px', marginTop: '4px', }} />
                                         <Typography sx={{ fontSize: 16, margin: '0px !important', fontWeight: 'bold' }}>
-                                            {fullChargeCost(user.level2.batteryCapacity, chargerData.info.state)}
+                                            {fullChargeCost(chargerData.info.chargerType, chargerData.info.state)}
                                         </Typography>
                                     </Box>
                                     <Typography sx={{ fontSize: '0.80rem', margin: '0px !important' }}>*{tempValue} Available slots</Typography>

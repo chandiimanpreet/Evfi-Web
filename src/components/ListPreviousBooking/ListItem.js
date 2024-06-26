@@ -2,7 +2,7 @@ import React from 'react';
 // import Ratings from '../Rating';
 // import { CurrencyRupee } from '@mui/icons-material';
 import { Typography, Box, Button, Chip, Skeleton } from '@mui/material';
-import { convertTimeforUserUI, updateBookedCharger } from '../../utils/auth/user';
+import { convertTimeforUserUI, updateBookedCharger,getORUpdateTimeSlotOFCharger } from '../../utils/auth/user';
 import { useStyles } from './style';
 import {
 	STATUS_CANCELED, STATUS_REQUESTED,
@@ -17,6 +17,13 @@ const ListItem = ({ data, show }) => {
 
 	// Styles
 	const classes = useStyles();
+
+	const cancelBooking = () => {
+		updateBookedCharger(data.bookingId, STATUS_CANCELED);
+		const unSetDesiredBit = 1 << data.timeSlot;
+		const newTiming = unSetDesiredBit ^ data.chargerData.timeSlot;
+		getORUpdateTimeSlotOFCharger(data.chargerData.chargerId, newTiming);
+	};
 
 	return (
 		<Box className={classes.listItemStyle} sx={{
@@ -80,6 +87,7 @@ const ListItem = ({ data, show }) => {
 								<Button size='small' sx={{ fontSize: { xs: '0.5rem', md: '0.7rem' }, height: { xs: '1.2rem', md: '1.5rem' }, fontWeight: 'bold' }} onClick={(e) => {
 									e.stopPropagation();
 									updateBookedCharger(data.bookingId, STATUS_CANCELED);
+									cancelBooking();
 								}} className={classes.cancelBtn}>Cancel</Button>
 							)
 						}

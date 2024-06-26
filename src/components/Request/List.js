@@ -2,7 +2,7 @@ import { Done, Close } from '@mui/icons-material';
 import { Box, Card, CardMedia, Chip, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 import { useStyles } from './style';
-import { convertTimeforUserUI, updateBookedCharger } from '../../utils/auth/user';
+import { convertTimeforUserUI, updateBookedCharger,getORUpdateTimeSlotOFCharger } from '../../utils/auth/user';
 import { STATUS_ACCEPTED, STATUS_CANCELED, STATUS_DECLINED, STATUS_CHARGING_COMPLETED } from '../../constants';
 
 const List = ({ data, show }) => {
@@ -12,6 +12,13 @@ const List = ({ data, show }) => {
 
     //Styles
     const classes = useStyles();
+
+    const declineBooking = () => {
+        updateBookedCharger(data.bookingId, STATUS_DECLINED);
+        const unSetDesiredBit = 1 << data.timeSlot;
+        const newTiming = unSetDesiredBit ^ data.chargerData.timeSlot;
+        getORUpdateTimeSlotOFCharger(data.chargerData.chargerId, newTiming);
+    };
 
     return (
         <Box>
@@ -56,6 +63,7 @@ const List = ({ data, show }) => {
                                         className={classes.chipRed}
                                         label="Decline" onClick={() => {
                                             updateBookedCharger(data.bookingId, STATUS_DECLINED);
+                                            declineBooking();
                                         }}
                                         icon={<Close style={{ color: 'white' }} />}
                                         size='small'
