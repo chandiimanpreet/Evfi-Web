@@ -268,6 +268,18 @@ export const useStyles = makeStyles({
         "& .MuiOutlinedInput-root.MuiAutocomplete-input": {
           padding: "1.5px 4px 7.5px 5px!important",
         },
+        "& .css-ggd9dh-MuiSvgIcon-root": {
+          left: "3rem",
+          fontSize: "1.7rem",
+          top: "auto",
+          position: "relative",
+        },
+        "& .css-rvj3ka-MuiSvgIcon-root ": {
+          top: "-2rem",
+          left: "5.7rem",
+          border: "2px solid yellow",
+          fontSize: "1.5rem",
+        },
       },
     },
   },
