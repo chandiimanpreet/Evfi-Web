@@ -216,14 +216,6 @@ export const useStyles = makeStyles({
         cursor: "pointer",
         borderRadius: "2rem",
       },
-
-      // '@media (max-width: 768px)': {
-      // 	.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root: {
-      // 	  font-size: 0.8rem; /* Adjust the font size for smaller screens */
-      // 	  width: 100%; /* Make it full-width on smaller screens */
-      // 	  /* Add other responsive styles as needed */
-      // 	}
-      //   },
       "&:hover fieldset": {
         color: "#fff",
         backgroundColor: "#ffffff26!important",
@@ -252,15 +244,13 @@ export const useStyles = makeStyles({
         height: "3rem!important",
       },
 
-
       "& .MuiOutlinedInput-root": {
         "& fieldset": {
-          //right:"1rem",
-          borderRadius: "10px",
-          width: "91%",
-          fontSize: "0.4rem",
           top: "0.1rem",
-          // borderRadius: "10rem!important",
+          width: "101%",
+          fontSize: "0.4rem",
+          borderRadius: "21px",
+          left: "-1rem",
         },
       },
       searchPlaceAutoComplete: {
@@ -278,21 +268,19 @@ export const useStyles = makeStyles({
         "& .MuiOutlinedInput-root.MuiAutocomplete-input": {
           padding: "1.5px 4px 7.5px 5px!important",
         },
+        "& .css-ggd9dh-MuiSvgIcon-root": {
+          left: "3rem",
+          fontSize: "1.7rem",
+          top: "auto",
+          position: "relative",
+        },
+        "& .css-rvj3ka-MuiSvgIcon-root ": {
+          top: "-2rem",
+          left: "5.7rem",
+          border: "2px solid yellow",
+          fontSize: "1.5rem",
+        },
       },
-      // "& .MuiOutlinedInput-root": {
-      //   "& MuiAutocomplete-input": {
-      //     padding: "1.5px 4px 7.5px 5px!important",
-      //   },
-      // },
-
-      //.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-ejyr7l-MuiAutocomplete-root
-      //   '&:hover fieldset': {
-      // 	color: '#fff',
-      // 	backgroundColor: '#ffffff26!important',
-      // 	height:"2rem",
-      // 	border: 'none',
-      // 	cursor: 'pointer'
-      // },
     },
   },
 });

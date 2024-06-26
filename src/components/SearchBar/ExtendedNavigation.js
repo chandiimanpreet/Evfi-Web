@@ -61,9 +61,9 @@ const ExtendedNavigation = ({
               className={classes.bigboltIcon}
               sx={{
                 top: { xs: "0.5rem", sm: "-2.3rem" },
-                left: { xs: "5.3rem", sm: "6rem" },
+                left: { xs: "5.3rem", sm: "5.5rem", md: "6rem" },
                 border: { xs: "2px solid yellow", sm: "4px solid yellow" },
-                fontSize: { xs: "1.3rem", sm: "2.3rem" },
+                fontSize: { xs: "1.3rem", sm: "2rem", md: "2.3rem" },
               }}
               // fontSize={["1.1rem","1.1rem","1.1rem","2.3rem"]}
             />
@@ -77,7 +77,7 @@ const ExtendedNavigation = ({
               className={classes.myLocationIcon}
               onClick={() => setCurrentLocation(true)}
               sx={{
-                left: { xs: "0.6rem", sm: "4rem" },
+                left: { xs: "0.6rem", sm: "3.5rem", md: "4.5rem" },
                 fontSize: { xs: "1.8rem", sm: "2rem" },
                 top: { xs: "0.8rem", sm: "auto" },
                 position: { xs: "absolute", sm: "relative" },
@@ -95,9 +95,9 @@ const ExtendedNavigation = ({
               className={classes.autocompletestyle}
               sx={{
                 position: { xs: "sticky", sm: "relative", md: "relative" },
-                left: { xs: "2.3rem" },
-                width: { xs: "87vw", sm: "87svw", md: "33vw" },
-                padding: { xs: "0rem 0rem", sm: "0.5rem 0.5rem" },
+                left: { xs: "4rem", sm: "2.7rem" },
+                width: { xs: "84vw", sm: "84vw", md: "33vw" },
+                padding: { xs: "0rem 0rem", sm: "0.5rem 1rem" },
               }}
               //aria-posinset={["9rem","9rem","0rem"]}
               renderInput={(params) => (
@@ -144,8 +144,8 @@ const ExtendedNavigation = ({
               //fullWidth={["89rem","89rem","89rem","33rem"]}
               sx={{
                 position: { xs: "sticky", sm: "sticky", md: "relative" },
-                left: { xs: "2rem", sm: "2rem", md: "auto" },
-                width: { xs: "87vw", sm: "87vw", md: "33vw" },
+                left: { xs: "4rem", sm: "4rem", md: "auto" },
+                width: { xs: "84vw", sm: "84vw", md: "33vw" },
                 padding: { xs: "0rem 0rem", sm: "0.5rem 0.5rem" },
               }}
               renderInput={(params) => (
