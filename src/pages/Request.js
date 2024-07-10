@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState, useMemo } from "react";
-import { Badge, Box, Divider, Grid, Typography } from "@mui/material";
+import { Badge, Box, Divider, Grid, Typography, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import List from '../components/Request/List';
 import Provider from '../components/Registration/Provider';
@@ -13,6 +13,7 @@ import {
 import { getUserAndChargers } from "../utils/auth/user";
 import { Link, useSearchParams } from "react-router-dom";
 import { useStyles } from "./style";
+import AddIcon from '@mui/icons-material/Add';
 
 const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 
@@ -22,7 +23,9 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 	const [show, setShow] = useState("pending");
 	const [pendingRequests, setPendingRequests] = useState(null);
 	const [recentRequests, setRecentRequests] = useState(null);
+	const [addChargerBtn, setAddChargerBtn] = useState(false);
 	const [searchParams] = useSearchParams();
+	
 	// Styles
 	const classes = useStyles();
 
@@ -55,7 +58,6 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 		helperFunction();
 	}, [pendingRequestsInfo, recentRequestsInfo]);
 
-	console.log(pendingRequests)
 
 	return (
 		<motion.div key="lo"
@@ -64,32 +66,36 @@ const Request = ({ direction, user, moveToPageIndex, bookingRequests }) => {
 			transition={{ duration: 0.25, delay: 0 }}
 		>
 			{
-				user.level3 === false || searchParams.has('addCharger', 'true') === true ? <Provider /> :
+				user.level3 === false || addChargerBtn === true || searchParams.has('addCharger', 'true') === true ? <Provider /> :
 					<Fragment>
 						<Box className={classes.bodyPage}>
 							<Typography className={classes.heading} variant="h5">Booking Requests</Typography>
 							<Box marginX={2} paddingY={2} sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-								<Box sx={{ display: 'flex', gap: '2rem' }} >
-			
-									<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
-										onClick={() => setShow("pending")}>
-										Pending
-										{
-											pendingRequestsInfo.length > 0 && (
-												<Badge badgeContent={pendingRequestsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
-													anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" />)
-										}
-									</Link>
-									<Link className={classes.links} style={{ textDecoration: show === 'recent' ? 'underline' : 'none', }}
-										onClick={() => setShow("recent")}>
-										Recent
-										{
-											recentRequestsInfo.length > 0 && (
-												<Badge badgeContent={recentRequestsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
-													anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" variant="dot" />)
-										}
+								<Box sx={{display: 'flex', justifyContent: "space-between"}}>
+									<Box sx={{ display: 'flex', gap: '2rem' }} >
+										<Link className={classes.links} style={{ textDecoration: show === 'pending' ? 'underline' : 'none', }}
+											onClick={() => setShow("pending")}>
+											Pending
+											{
+												pendingRequestsInfo.length > 0 && (
+													<Badge badgeContent={pendingRequestsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+														anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" />)
+											}
+										</Link>
+										<Link className={classes.links} style={{ textDecoration: show === 'recent' ? 'underline' : 'none', }}
+											onClick={() => setShow("recent")}>
+											Recent
+											{
+												recentRequestsInfo.length > 0 && (
+													<Badge badgeContent={recentRequestsInfo.length} color="success" sx={{ top: '-13px', left: '4px' }}
+														anchorOrigin={{ vertical: 'top', horizontal: 'right', }} size="small" variant="dot" />)
+											}
 
-									</Link>
+										</Link>
+									</Box>
+									<Button onClick={() => {
+										setAddChargerBtn(true)
+									}} sx={{color: '#fff', textTransform: 'none'}}><AddIcon />Charger</Button>
 								</Box>
 								<Divider sx={{ backgroundColor: 'antiquewhite' }} />
 								<Grid justifyContent={'center'} container gap={2.5} sx={{ color: '#fff' }}>

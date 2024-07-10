@@ -135,11 +135,11 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
-    
+
     const handleDescriptionChange = (event) => setDescription(event.target.value);
 
     const handleOpenReview = () => setOpenReview(true);
-    
+
 
     const handleImageChange = (event) => {
         const files = event.target.files;
@@ -284,7 +284,8 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                             <br /><br />
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: 18, fontWeight: 'bold', color: '#454242', margin: '0px !important', marginTop: '0.8px !important' }}>{chargerData.info.stationName}</Typography>
-                                <Chip label="Available" color="success" size="small" variant="contained" sx={{ marginTop: "0.2rem" }} />
+                                {chargerData.info.status === 1 ? <Chip label="Available" color="success" size="small" variant="contained" sx={{ marginTop: "0.2rem" }} />
+                                    : <Chip label="Not Available" color="error" size="small" variant="contained" sx={{ marginTop: "0.2rem" }} />}
                             </Box>
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -311,11 +312,15 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                                             {fullChargeCost(chargerData.info.chargerType, chargerData.info.state)}
                                         </Typography>
                                     </Box>
-                                    <Typography sx={{ fontSize: '0.80rem', margin: '0px !important' }}>*{tempValue} Available slots</Typography>
+                                    {
+                                        chargerData.info.status === 1 &&
+                                        <Typography sx={{ fontSize: '0.80rem', margin: '0px !important' }}>*{tempValue} Available slots</Typography>
+                                    }
                                 </Box>
 
                                 <Box sx={{ display: 'flex', marginLeft: '3rem' }}>
                                     {
+                                        chargerData.info.status === 1 &&
                                         userCurrentBookingGoingOn?.timeSlot === new Date().getHours() &&
                                         <CircularProgressWithLabel value={progress} color="success" size={70} />
                                     }
@@ -393,41 +398,44 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
                         )
 
                 }
-                <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
-                    <Button type='button' onClick={(e) => {
+                {
+                    chargerData.info.status === 1 &&
+                    <Box sx={{ display: 'flex', justifyContent: 'end', marginTop: 1 }}>
+                        <Button type='button' onClick={(e) => {
 
-                        if (showSlot) {
-                            if (!user.level2) {
-                                navigate('/register/level1');
-                                return;
-                            }
-                            if (start === null) {
-                                toast.error('Please select a slot');
-                                return;
-                            }
-                            bookingHandler(start.split(" ")[0] === 0 ? 12 : start.split(" ")[0], AMPM, chargerData);
-                            setShowSlot(false);
-                            setStart(null);
-                            toast.success('Booking Request Successful');
-                        } else {
-                            if (complaintBox) {
-                                handleSubmit(e);
-                                setComplaintBox(false);
+                            if (showSlot) {
+                                if (!user.level2) {
+                                    navigate('/register/level1');
+                                    return;
+                                }
+                                if (start === null) {
+                                    toast.error('Please select a slot');
+                                    return;
+                                }
+                                bookingHandler(start.split(" ")[0] === 0 ? 12 : start.split(" ")[0], AMPM, chargerData);
                                 setShowSlot(false);
-                            }
-                            else {
-                                setShowSlot(true);
-                                setComplaintBox(false);
-                            }
+                                setStart(null);
+                                toast.success('Booking Request Successful');
+                            } else {
+                                if (complaintBox) {
+                                    handleSubmit(e);
+                                    setComplaintBox(false);
+                                    setShowSlot(false);
+                                }
+                                else {
+                                    setShowSlot(true);
+                                    setComplaintBox(false);
+                                }
 
+                            }
                         }
-                    }
-                    } variant="contained" sx={{
-                        height: '2rem', width: '20rem',
-                        backgroundColor: '#FCDD13', color: '#000000', fontSize: '13px', fontFamily: 'Manrope !important',
-                        textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '20px', padding: '0px 10px'
-                    }}>{showSlot ? "Book now" : (complaintBox ? "Submit" : "Select Charging Slot")}</Button>
-                </Box>
+                        } variant="contained" sx={{
+                            height: '2rem', width: '20rem',
+                            backgroundColor: '#FCDD13', color: '#000000', fontSize: '13px', fontFamily: 'Manrope !important',
+                            textTransform: 'capitalize', fontWeight: 'bold', borderRadius: '20px', padding: '0px 10px'
+                        }}>{showSlot ? "Book now" : (complaintBox ? "Submit" : "Select Charging Slot")}</Button>
+                    </Box>
+                }
             </Box>
         </Popup>
     )
