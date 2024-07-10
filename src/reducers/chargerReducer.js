@@ -22,6 +22,18 @@ const chargerReducer = (state = initialState, action) => {
                     { ...charger, timeSlot: action.payload.timeSlot } : charger
                 ),
             }
+        case 'UPDATE_STATUS':
+            return {
+                ...state,
+                chargers: state.chargers.map(charger => charger.chargerId === action.payload.id ? {
+                    ...charger,
+                    info: {
+                        ...charger.info,
+                        status: action.payload.status
+                    }
+                } : charger
+                )
+            }
         case 'CLEAR_CHARGER':
             return {
                 ...state,

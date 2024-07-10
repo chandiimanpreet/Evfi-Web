@@ -179,6 +179,7 @@ export const addCharger = (chargerData, chargerImages, idproofImages) => {
                     ...chargerData,
                     aadharImages,
                     imageUrl,
+                    status: 1,
                 },
                 timeSlot: 0,
             });
@@ -292,6 +293,30 @@ export const updateBookedCharger = (id, status) => {
             },)
 
             resolve({ msg: "success" });
+        } catch (error) {
+            reject({ error: error.message });
+        }
+    });
+};
+
+export const updateChargerStatus = (id, status) => {
+    return new Promise(async (resolve, reject) => {
+        const db = getFirestore();
+        try {
+            const docRef = doc(db, "chargers", id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                console.log("Charger Data:", docSnap.data());
+
+                await updateDoc(docRef, {
+                    "info.status": (status === true) ? 1 : 0,
+                })
+
+                resolve({ msg: "success" });
+            } else {
+                console.log("No such Charger!");
+            }
+
         } catch (error) {
             reject({ error: error.message });
         }

@@ -70,6 +70,15 @@ const DashboardMap = ({
         draggable: false,
     });
 
+    const redMarkerIcon = new L.icon({
+        iconUrl: require("./redMarker.png"),
+        iconSize: [100, 100],
+        iconAnchor: [12, 41],
+        popupAnchor: [41, -31],
+        focus: true,
+        draggable: false,
+    });
+
     // Handlers
     function handleBackButton() {
         collectCardData("");
@@ -193,8 +202,8 @@ const DashboardMap = ({
                             />
                             {chargers && chargers.map((charger, index) => {
                                 return (
-                                    <Marker key={index} icon={greenmarkerIcon} draggable={false}
-                                        position={[charger.g.geopoint.latitude, charger.g.geopoint.longitude,]}
+                                    <Marker key={index} icon={charger.info.status === 1 ? greenmarkerIcon : redMarkerIcon} draggable={false}
+                                        position={[charger.g.geopoint.latitude, charger.g.geopoint.longitude]}
                                     >
                                         <ChargerPopup
                                             user={user}
@@ -229,7 +238,7 @@ const DashboardMap = ({
                                     return (
                                         <Marker
                                             key={index}
-                                            icon={greenmarkerIcon}
+                                            icon={charger.info.status === 1 ? greenmarkerIcon : redMarkerIcon}
                                             draggable={false}
                                             position={[
                                                 charger?.g?.geopoint.latitude,
@@ -275,7 +284,7 @@ const DashboardMap = ({
                                     return (
                                         <Marker
                                             key={index}
-                                            icon={greenmarkerIcon}
+                                            icon={charger.info.status === 1 ? greenmarkerIcon : redMarkerIcon}
                                             draggable={false}
                                             position={[
                                                 charger?.g?.geopoint.latitude,
