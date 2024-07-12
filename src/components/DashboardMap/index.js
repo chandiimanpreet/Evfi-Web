@@ -89,7 +89,7 @@ const DashboardMap = ({
 
     const bookingHandler = async (time, AMPM, charger) => {
         try {
-            const price = fullChargeCost(user.level2.batteryCapacity, charger.info.state);
+            const price = fullChargeCost(charger.info.chargerType, charger.info.state)
             await requestCharger(charger, parseInt(time), AMPM, price);
         } catch (err) {
             console.log(err);

@@ -130,6 +130,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
   }, [userBooking]);
 
   console.log(pendingBookingsInfo);
+  
 
   const recentBookingsInfo = useMemo(() => {
     return userBooking.filter(
@@ -154,6 +155,7 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
             charger.timeSlot,
             charger.bookingId,
             charger.bookingDate,
+            charger.price,
           ];
         })
       );
@@ -168,7 +170,9 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
             fetchedChargerRequest.charger,
             charger.status,
             charger.timeSlot,
+            charger.bookingId,
             charger.bookingDate,
+            charger.price,
           ];
         })
       );
@@ -243,6 +247,8 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
       });
     }
 
+    
+
     if (searchParams.get("from") || searchParams.get("to")) {
       let fromDate = selectedFilters.to ? new Date(selectedFilters.to) : null;
       let toDate = selectedFilters.from ? new Date(selectedFilters.from) : null;
@@ -282,6 +288,8 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
     searchParams,
     selectedFilters,
   ]);
+
+  console.log("filteredbooking: ", filteredBookings);
 
   return (
     <Fragment>
@@ -411,14 +419,14 @@ const List = ({ setFetchChargerFromList, user, userBooking }) => {
               {
                 show === "pending" ?
                   !pendingBookingsInfo.length > 0 ? 'No new Bookings Available' : (
-                    filteredBookings?.map(([chargerData, status, timeSlot, bookingId, price]) => ({ chargerData, status, timeSlot, bookingId, price })).map((charger, idx) => (
+                    filteredBookings?.map(([chargerData, status, timeSlot, bookingId, bookingDate,price]) => ({ chargerData, status, timeSlot, bookingId, bookingDate,price })).map((charger, idx) => (
                       <Box sx={{ marginBottom: { xs: '10px', md: '10px' }, overflowY: 'auto', }} key={idx} onClick={() => { fetchData(charger) }} >
-                        <ListItem data={charger} show={show} />
+                        <ListItem data={charger} show={show}/>
                       </Box>
                     )))
                   :
                   !recentBookingsInfo.length > 0 ? 'No Recent Bookings Available' : (
-                    filteredBookings?.map(([chargerData, status, timeSlot, bookingId, price]) => ({ chargerData, status, timeSlot, bookingId, price })).map((charger, idx) => (
+                    filteredBookings?.map(([chargerData, status, timeSlot, bookingId, bookingDate,,price]) => ({ chargerData, status, timeSlot, bookingId,bookingDate, price })).map((charger, idx) => (
                       <Box sx={{ marginBottom: { xs: '10px', md: '0px' }, overflowY: 'auto', }} key={idx} onClick={() => { fetchData(charger) }} >
                         <ListItem data={charger} show={show} />
                       </Box>
