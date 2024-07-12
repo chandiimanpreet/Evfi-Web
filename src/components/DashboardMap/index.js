@@ -159,7 +159,7 @@ const DashboardMap = ({
     ]);
 
     useEffect(() => {
-        if (user?.bookings.length > 0) {
+        if (user?.bookings && user?.bookings.length > 0) {
 
             const fetchData = async () => {
                 const res = user?.bookings?.map(async (booking) => await getBooking(booking));

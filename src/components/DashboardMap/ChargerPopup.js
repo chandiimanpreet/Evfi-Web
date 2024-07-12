@@ -198,7 +198,6 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
         binaryTime = binaryTime.split("").reverse().join("");
 
         let intTime = parseInt(time.split('-')[0]);
-        console.log(intTime);
 
         if (AMPM === 'PM' && intTime === 12) {
             intTime = 12;
@@ -209,11 +208,14 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
             intTime += 12;
         }
 
-        if (intTime < chargerData.info.start || intTime >= chargerData.info.end || new Date().getHours() >= intTime) {
-            return { disable: true, booked: true };
+        for (let i = 0; i < 24; i++) {
+            if (binaryTime[i] === '1' && i === intTime) {
+                return { disable: true, booked: true };
+            }
         }
+       
         return { disable: false, booked: false };
-    }
+    };
 
     const timeSlotHandler = (e) => {
         const time = e.target.innerText.split('-');
@@ -222,11 +224,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
         } else {
             setStart((parseInt(time[1]) - 1) + " " + AMPM);
         }
-    }
-
-    // console.log(userCurrentBookingGoingOn)
-    // console.log(user.level2, chargerData.info)
-    // console.log(fullChargeCost(user.level2.batteryCapacity, chargerData.info.state))
+    };
 
     const chargingSuccessfullyCompleted = () => {
         updateBookedCharger(userCurrentBookingGoingOn.id, STATUS_CHARGING_COMPLETED);
@@ -239,7 +237,8 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
         setStopInterval(true);
         handleOpenReview();
         return;
-    }
+    };
+    
     // Progress Bar
     useEffect(() => {
         const timer = setInterval(() => {
