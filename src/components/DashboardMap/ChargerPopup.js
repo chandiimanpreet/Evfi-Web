@@ -209,7 +209,7 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
             intTime += 12;
         }
 
-        if (binaryTime[intTime] === '1') {
+        if (intTime < chargerData.info.start || intTime >= chargerData.info.end || new Date().getHours() >= intTime) {
             return { disable: true, booked: true };
         }
         return { disable: false, booked: false };
