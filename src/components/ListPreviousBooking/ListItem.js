@@ -12,8 +12,10 @@ import {
 	STATUS_CHARGING,
 } from '../../constants';
 
-const ListItem = ({ data, show }) => {
-	console.log(data)
+const ListItem = ({ data, show}) => {
+	console.log("chargerdata: ",data)
+	// console.log("userBooking",userBooking)
+	// console.log("price: ",userBooking[0].price)
 
 	// Styles
 	const classes = useStyles();
@@ -50,9 +52,11 @@ const ListItem = ({ data, show }) => {
 
 					<Box display="flex" justifyContent="flex-start">
 						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, marginRight: '4px', textOverflow: 'unset !important' }}>Price:</Typography>
-						<Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
-							{data.price || <Skeleton width={20} animation="wave" />}
-						</Typography>
+						{/* {userBooking.map((booking, index) => ( */}
+						 <Typography className={classes.cardTextStyle} sx={{ fontSize: { xs: '0.7rem', md: '0.8rem' }, fontWeight: "bold" }}>
+						 {data.price}
+					   </Typography>
+						{/* ))} */}
 					</Box>
 
 					<Box display="flex" justifyContent="flex-start">
