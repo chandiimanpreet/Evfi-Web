@@ -208,6 +208,16 @@ export default function ChargerPopup({ chargerData, bookingHandler, user, userCu
             intTime += 12;
         }
 
+        let start = chargerData.info.start;
+        let end = chargerData.info.end;
+
+        if(intTime <start || intTime>=end){
+            console.log("inttime",intTime);
+            console.log("start",start);
+            console.log("end",end);
+            return {disable: true, booked: false};
+        }
+
         for (let i = 0; i < 24; i++) {
             if (binaryTime[i] === '1' && i === intTime) {
                 return { disable: true, booked: true };
