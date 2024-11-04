@@ -106,7 +106,7 @@ const Registerauth = ({ addUserData, userData }) => {
 	} else {
 		return (
 			<Box className={classes.bodyPage}>
-				<Box sx={{ position: 'relative' }}>
+				<Box sx={{ position: 'absolute' }}>
 					<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
 				</Box>
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox}>

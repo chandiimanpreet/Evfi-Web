@@ -76,7 +76,7 @@ export const useStyles = makeStyles({
     boxBehindImgStyle: {
         maxWidth: '31rem',
         width: '100%',
-        position: 'absolute',
+        // position: 'absolute',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

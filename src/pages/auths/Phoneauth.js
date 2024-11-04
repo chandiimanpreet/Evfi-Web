@@ -142,6 +142,9 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 	}
 	return (
 		<Box className={classes.bodyPage} >
+			<Box sx={{ position: 'absolute !important' }}>
+					<img className={classes.boxBehindImgStyle} src='/resources/light.png' alt='' />
+				</Box>
 			
 			<div ref={recaptchaWrapperRef}>
 				<div id="recaptcha-container"></div>
@@ -154,15 +157,6 @@ const Phoneauth = ({ login, userData, setPhoneNo }) => {
 					setUtils({ ...util, error: null });
 				}}>{util.error}</Alert>
 			</Snackbar>}
-			<BoltIcon
-				sx={{
-					color: "yellow",
-					width: '100vh',
-					height: '100vw',
-					position: 'absolute',
-					// filter: 'blur(5px)',
-				}}
-			/>
 			<Box className={classes.loginCard} sx={{ overflow: 'hidden' }}>
 			
 				{!showOtpForm ?
