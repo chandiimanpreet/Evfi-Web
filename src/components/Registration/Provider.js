@@ -36,6 +36,7 @@ const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 		chargerLocation: null,
 		chargerType: [],
 		hostName: "",
+		status: "1",
 		start: null,
 		end: null,
 	});
@@ -113,7 +114,7 @@ const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 		return (
 
 			<Box className={classes.bodyPage}>
-				<Box sx={{ position: 'relative' }}>
+				<Box sx={{ position: 'absolute' }}>
 					<img className={classes.boxBehindImgStyle} style={{ left: '16rem', }} src='/resources/light.png' alt='' />
 				</Box>
 				<Box component='form' onSubmit={(e) => { e.preventDefault(); saveData(); }} sx={otpStyle.registerBox2}>
