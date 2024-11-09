@@ -216,36 +216,70 @@ const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 									</Select>
 								</FormControl>
 							</Grid>
-						</Grid>
 
-						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>
 							<Grid item xs={12} sm={6} lg={3} >
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='number' label='Pin-Code' name='pinCode' value={data.pinCode}
 									onInput={(e) => { e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 6) }}
 								/>
 							</Grid>
-							<Grid item xs={12} sm={6} lg={3} sx={otpStyle.gridItem}>
-								<LocalizationProvider dateAdapter={AdapterDayjs}>
-									<DemoContainer  components={['TimePicker']}>
-										<TimePicker views={['hours']} label='Opening Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
-											onChange={(e) => { timingHandler(e, true) }} variant='outlined' value={data.start} />
-									</DemoContainer>
-								</LocalizationProvider>
-							</Grid>
-							<Grid item xs={12} sm={6} lg={3} sx={otpStyle.gridItem}>
-								<LocalizationProvider dateAdapter={AdapterDayjs}>
-									<DemoContainer components={['TimePicker']}>
-										<TimePicker views={['hours']} label='Closing Time' required fullWidth sx={otpStyle.registerTextfieldStyle} disableOpenPicker={true}
-											onChange={(e) => { timingHandler(e, false) }} variant='outlined' value={data.end} />
-									</DemoContainer>
-								</LocalizationProvider>
-							</Grid>
+
 							<Grid item xs={12} sm={6} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Amenities' name='amenities' value={data.amenities}
 									InputProps={{ inputProps: { maxLength: 50, } }} />
 							</Grid>
+
+						</Grid>
+
+						<Grid container spacing={2} sx={{ marginBottom: '7px' }}>							
+							<Grid item xs={12} sm={6} lg={6} sx={{marginBottom: '0.8rem'}}>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DemoContainer  components={['TimePicker']}>
+										<TimePicker views={['hours']} label='Opening Time*' required fullWidth sx={{
+
+													marginBottom: '1rem',
+													width: '28rem',
+													backgroundColor: ' #ffffff26',
+													borderRadius: '5px',
+													fontWeight: '500',
+													'input': {
+													color: '#fff !important',
+													},
+													'& .MuiInputLabel-root': {
+													color: '#fff !important',
+													}
+
+										}} disableOpenPicker={true}
+											onChange={(e) => { timingHandler(e, true) }} variant='outlined' value={data.start} />
+									</DemoContainer>
+								</LocalizationProvider>
+							</Grid>
+							<Grid item xs={12} sm={6} lg={6} sx={{marginBottom: '0.8rem'}}>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DemoContainer components={['TimePicker']}>
+										<TimePicker views={['hours']} label='Closing Time*' required fullWidth sx={{
+
+												marginBottom: '1rem',
+												width: '28rem',
+												backgroundColor: ' #ffffff26',
+												borderRadius: '5px',
+												fontWeight: '500',
+												'input': {
+												color: '#fff !important',
+												},
+												'& .MuiInputLabel-root': {
+												color: '#fff !important',
+												}
+
+										}} disableOpenPicker={true}
+											onChange={(e) => { timingHandler(e, false) }} variant='outlined' value={data.end} />
+									</DemoContainer>
+								</LocalizationProvider>
+							</Grid>
+
+                            
+
 						</Grid>
 
 
