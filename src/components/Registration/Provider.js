@@ -224,7 +224,7 @@ const Provider = ({ userData, addChargerAction, setError, clearBooking }) => {
 								/>
 							</Grid>
 
-							<Grid item xs={12} sm={6} lg={3}>
+							<Grid item xs={12} sm={12} lg={3}>
 								<TextField required fullWidth sx={otpStyle.registerTextfieldStyle} onChange={changeDataHandler}
 									variant='outlined' type='text' label='Amenities' name='amenities' value={data.amenities}
 									InputProps={{ inputProps: { maxLength: 50, } }} />
